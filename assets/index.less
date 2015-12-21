@@ -1,5 +1,28 @@
 .rc-cascader {
-  &-menus-hidden {
-    display: none;
+  font-size: 12px;
+  &-menus {
+    overflow: hidden;
+    background: #fff;
+    position: absolute;
+    &-hidden {
+      display: none;
+    }
+  }
+  &-menu {
+    float: left;
+    width: 100px;
+    height: 180px;
+  }
+  &-menu-item {
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    &:hover {
+      background: #f9f9f9;
+    }
+    &-active {
+      color: #2db7f5;
+      background: #f9f9f9;
+    }
   }
 }
