@@ -43,9 +43,14 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
-      inputValue: '',
+      values: [],
     };
+  },
+  onSelect(values, labels) {
+    console.log('onSelect', values, labels);
+    this.setState({
+      values
+    });
   },
   onChange(values, labels) {
     console.log(values, labels);
@@ -55,7 +60,8 @@ const Demo = React.createClass({
   },
   render() {
     return (
-      <Cascader options={addressOptions} onChange={this.onChange}>
+      <Cascader values={this.state.values} options={addressOptions}
+        onSelect={this.onSelect} onChange={this.onChange}>
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );

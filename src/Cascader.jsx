@@ -31,22 +31,35 @@ class Cascader extends React.Component {
     };
     [
       'handleSelect',
+      'handleChange',
       'handlePopupVisibleChange',
     ].forEach(method => this[method] = this[method].bind(this));
   }
-  handleSelect(options) {
-    this.props.onChange(options);
+  handleChange(options) {
+    this.props.onChange(
+      options.map(o => o.value),
+      options.map(o => o.label),
+    );
     this.setState({
       popupVisible: false,
     });
+  }
+  handleSelect(options) {
+    this.props.onSelect(
+      options.map(o => o.value),
+      options.map(o => o.label),
+    );
   }
   handlePopupVisibleChange(popupVisible) {
     this.setState({ popupVisible });
     this.props.onVisibleChange(popupVisible);
   }
   render() {
-    const { options, prefixCls } = this.props;
-    const menus = <Menus prefixCls={prefixCls} options={options} onSelect={this.handleSelect} />;
+    const { refixCls } = this.props;
+    const menus = <Menus
+      {...this.props}
+      onSelect={this.handleSelect}
+      onChange={this.handleChange} />;
     return (
       <Trigger ref="trigger"
         popupPlacement="bottomLeft"
@@ -65,6 +78,7 @@ class Cascader extends React.Component {
 Cascader.defaultProps = {
   options: [],
   onChange() {},
+  onSelect() {},
   onVisibleChange() {},
   prefixCls: prefixCls,
 };
@@ -72,6 +86,7 @@ Cascader.defaultProps = {
 Cascader.propTypes = {
   options: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func,
+  onSelect: React.PropTypes.func,
   onVisibleChange: React.PropTypes.func,
   prefixCls: React.PropTypes.string,
 };

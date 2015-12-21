@@ -40,11 +40,22 @@ const addressOptions = [{
   }],
 }];
 
+const defaultOptions = [{
+  "label": "福建",
+  "value": "fj",
+}, {
+  "label": "福州",
+  "value": "fuzhou",
+}, {
+  "label": "马尾",
+  "value": "mawei",
+}];
+
 const Demo = React.createClass({
   getInitialState() {
     return {
       value: '',
-      inputValue: '',
+      inputValue: defaultOptions.map(o => o.label).join(', '),
     };
   },
   onChange(values, labels) {
@@ -54,8 +65,9 @@ const Demo = React.createClass({
     });
   },
   render() {
+    const defaultValue = defaultOptions.map(o => o.value);
     return (
-      <Cascader options={addressOptions} onChange={this.onChange}>
+      <Cascader defaultValues={defaultValue} options={addressOptions} onChange={this.onChange}>
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
