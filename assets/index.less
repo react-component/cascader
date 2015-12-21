@@ -1,3 +1,9 @@
+.effect() {
+  animation-duration: .3s;
+  animation-fill-mode: both;
+  transform-origin: 0 0;
+}
+
 .rc-cascader {
   font-size: 12px;
   &-menus {
@@ -6,6 +12,42 @@
     position: absolute;
     &-hidden {
       display: none;
+    }
+
+    &.slide-up-enter, &.slide-up-appear {
+      .effect();
+      opacity: 0;
+      animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+      animation-play-state: paused;
+    }
+
+    &.slide-up-leave {
+      .effect();
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+      animation-play-state: paused;
+    }
+
+    &.slide-up-enter.slide-up-enter-active&-placement-bottomLeft,
+    &.slide-up-appear.slide-up-appear-active&-placement-bottomLeft {
+      animation-name: SlideUpIn;
+      animation-play-state: running;
+    }
+
+    &.slide-up-enter.slide-up-enter-active&-placement-topLeft,
+    &.slide-up-appear.slide-up-appear-active&-placement-topLeft {
+      animation-name: SlideDownIn;
+      animation-play-state: running;
+    }
+
+    &.slide-up-leave.slide-up-leave-active&-placement-bottomLeft {
+      animation-name: SlideUpOut;
+      animation-play-state: running;
+    }
+
+    &.slide-up-leave.slide-up-leave-active&-placement-topLeft {
+      animation-name: SlideDownOut;
+      animation-play-state: running;
     }
   }
   &-menu {
@@ -24,5 +66,55 @@
       color: #2db7f5;
       background: #f9f9f9;
     }
+  }
+}
+
+@keyframes SlideUpIn {
+  0% {
+    opacity: 0;
+    transform-origin: 0% 0%;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform-origin: 0% 0%;
+    transform: scaleY(1);
+  }
+}
+@keyframes SlideUpOut {
+  0% {
+    opacity: 1;
+    transform-origin: 0% 0%;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform-origin: 0% 0%;
+    transform: scaleY(0);
+  }
+}
+
+@keyframes SlideDownIn {
+  0% {
+    opacity: 0;
+    transform-origin: 0% 100%;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform-origin: 0% 100%;
+    transform: scaleY(1);
+  }
+}
+@keyframes SlideDownOut {
+  0% {
+    opacity: 1;
+    transform-origin: 0% 100%;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0;
+    transform-origin: 0% 100%;
+    transform: scaleY(0);
   }
 }
