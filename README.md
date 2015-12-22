@@ -1,4 +1,5 @@
 # rc-cascader
+
 ---
 
 React Cascader Component
@@ -35,8 +36,7 @@ React Cascader Component
 
 ## Screenshots
 
-<img src="" width="288"/>
-
+<img src="https://os.alipayobjects.com/rmsportal/TYFXEbuQXIaMqQF.png" width="288"/>
 
 ## Development
 
@@ -49,7 +49,6 @@ npm start
 
 http://react-component.github.io/cascader/
 
-
 ## Feature
 
 * support ie8,ie8+,chrome,firefox,safari
@@ -58,7 +57,6 @@ http://react-component.github.io/cascader/
 
 
 ## install
-
 
 [![rc-cascader](https://nodei.co/npm/rc-cascader.png)](https://npmjs.org/package/rc-cascader)
 
@@ -69,30 +67,40 @@ http://react-component.github.io/cascader/
 var Cascader = require('rc-cascader');
 var React = require('react');
 
-const options = [{
-  "label": "福建",
-  "value": "fj",
-  "options": [{
-    "label": "福州",
-    "value": "fuzhou",
-    "options": [{
-      "label": "马尾",
-      "value": "mawei",
+const addressOptions = [{
+  'label': '福建',
+  'value': 'fj',
+  'options': [{
+    'label': '福州',
+    'value': 'fuzhou',
+    'options': [{
+      'label': '马尾',
+      'value': 'mawei',
     }],
   }, {
-    "label": "泉州",
-    "value": "quanzhou"
+    'label': '泉州',
+    'value': 'quanzhou',
   }],
 }, {
-  "label": "浙江",
-  "value": "zj",
-  "options": [{
-    "label": "杭州",
-    "value": "hangzhou",
-    "options": [{
-      "label": "余杭",
-      "value": "yuhang",
+  'label': '浙江',
+  'value': 'zj',
+  'options': [{
+    'label': '杭州',
+    'value': 'hangzhou',
+    'options': [{
+      'label': '余杭',
+      'value': 'yuhang',
     }],
+  }],
+}, {
+  'label': '北京',
+  'value': 'bj',
+  'options': [{
+    'label': '朝阳区',
+    'value': 'chaoyang',
+  }, {
+    'label': '海淀区',
+    'value': 'haidian',
   }],
 }];
 
