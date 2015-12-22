@@ -25,14 +25,14 @@ class Menus extends React.Component {
         return false;
       }
       result.push(target);
-      options = target.options || [];
+      options = target.children || [];
     });
     return result;
   }
   getShowOptions() {
     const { options } = this.props;
     const result = this.getActiveOptions()
-      .map(activeOption => activeOption.options)
+      .map(activeOption => activeOption.children)
       .filter(activeOption => !!activeOption);
     result.unshift(options);
     return result;
@@ -49,7 +49,7 @@ class Menus extends React.Component {
     }
     const activeOptions = this.getActiveOptions(activeValues);
     this.props.onSelect(activeOptions);
-    if (!targetOption.options || targetOption.options.length === 0) {
+    if (!targetOption.children || targetOption.children.length === 0) {
       this.props.onChange(activeOptions);
     }
   }

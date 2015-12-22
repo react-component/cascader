@@ -6,10 +6,10 @@ import ReactDOM from 'react-dom';
 const addressOptions = [{
   'label': '福建',
   'value': 'fj',
-  'options': [{
+  'children': [{
     'label': '福州',
     'value': 'fuzhou',
-    'options': [{
+    'children': [{
       'label': '马尾',
       'value': 'mawei',
     }],
@@ -20,10 +20,10 @@ const addressOptions = [{
 }, {
   'label': '浙江',
   'value': 'zj',
-  'options': [{
+  'children': [{
     'label': '杭州',
     'value': 'hangzhou',
-    'options': [{
+    'children': [{
       'label': '余杭',
       'value': 'yuhang',
     }],
@@ -31,7 +31,7 @@ const addressOptions = [{
 }, {
   'label': '北京',
   'value': 'bj',
-  'options': [{
+  'children': [{
     'label': '朝阳区',
     'value': 'chaoyang',
   }, {
