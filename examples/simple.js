@@ -46,16 +46,16 @@ const Demo = React.createClass({
       inputValue: '',
     };
   },
-  onChange(values, labels) {
-    console.log(values, labels);
+  onChange(value, label) {
+    console.log(value, label);
     this.setState({
-      inputValue: labels.join(', '),
+      inputValue: label.join(', '),
     });
   },
   render() {
     return (
       <Cascader options={addressOptions} onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly />
+        <input placeholder="please select address" value={this.state.inputValue} readOnly />
       </Cascader>
     );
   },

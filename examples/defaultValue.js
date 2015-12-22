@@ -57,16 +57,16 @@ const Demo = React.createClass({
       inputValue: defaultOptions.map(o => o.label).join(', '),
     };
   },
-  onChange(values, labels) {
-    console.log(values, labels);
+  onChange(value, label) {
+    console.log(value, label);
     this.setState({
-      inputValue: labels.join(', '),
+      inputValue: label.join(', '),
     });
   },
   render() {
     const defaultValue = defaultOptions.map(o => o.value);
     return (
-      <Cascader defaultValues={defaultValue} options={addressOptions} onChange={this.onChange}>
+      <Cascader defaultValue={defaultValue} options={addressOptions} onChange={this.onChange}>
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );

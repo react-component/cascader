@@ -43,22 +43,22 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      values: [],
+      value: [],
     };
   },
-  onSelect(values, labels) {
-    console.log('onSelect', values, labels);
-    this.setState({ values });
+  onSelect(value, label) {
+    console.log('onSelect', value, label);
+    this.setState({ value });
   },
-  onChange(values, labels) {
-    console.log(values, labels);
+  onChange(value, label) {
+    console.log(value, label);
     this.setState({
-      inputValue: labels.join(', '),
+      inputValue: label.join(', '),
     });
   },
   render() {
     return (
-      <Cascader values={this.state.values} options={addressOptions}
+      <Cascader value={this.state.value} options={addressOptions}
         onSelect={this.onSelect} onChange={this.onChange}>
         <input value={this.state.inputValue} readOnly />
       </Cascader>

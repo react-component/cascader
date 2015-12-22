@@ -46,10 +46,10 @@ const Demo = React.createClass({
       inputValue: '未选择',
     };
   },
-  onChange(values, labels) {
-    console.log(values, labels);
+  onChange(value, label) {
+    console.log(value, label);
     this.setState({
-      inputValue: labels.join(', '),
+      inputValue: label.join(', '),
     });
   },
   render() {

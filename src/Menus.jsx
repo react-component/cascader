@@ -2,16 +2,16 @@ import React from 'react';
 
 class Menus extends React.Component {
   constructor(props) {
-    const { values, defaultValues } = props;
+    const { value, defaultValue } = props;
     super();
     this.state = {
-      activeValues: values || defaultValues || [],
+      activeValues: value || defaultValue || [],
     };
   }
   componentWillReceiveProps(nextProps) {
-    if ('values' in nextProps) {
+    if ('value' in nextProps) {
       this.setState({
-        activeValues: nextProps.values,
+        activeValues: nextProps.value,
       });
     }
   }
@@ -44,7 +44,7 @@ class Menus extends React.Component {
     let activeValues = this.state.activeValues;
     activeValues = activeValues.slice(0, menuIndex + 1);
     activeValues[menuIndex] = targetOption.value;
-    if (!('values' in this.props)) {
+    if (!('value' in this.props)) {
       this.setState({ activeValues });
     }
     const activeOptions = this.getActiveOptions(activeValues);

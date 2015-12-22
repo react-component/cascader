@@ -43,14 +43,13 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
       inputValue: '',
     };
   },
-  onChange(values, labels) {
-    console.log(values, labels);
+  onChange(value, label) {
+    console.log(value, label);
     this.setState({
-      inputValue: labels.join(', '),
+      inputValue: label.join(', '),
     });
   },
   render() {

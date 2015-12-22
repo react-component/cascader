@@ -128,14 +128,26 @@ React.render(<Cascader options={options} />, container);
       <td>The data options of cascade</td>
     </tr>
     <tr>
+      <td>value</td>
+      <td>Array</td>
+      <td></td>
+      <td>selected value</td>
+    </tr>
+    <tr>
+      <td>defaultValue</td>
+      <td>Array</td>
+      <td></td>
+      <td>initial selected value</td>
+    </tr>
+    <tr>
       <td>onChange</td>
-      <td>Function(values, labels)</td>
+      <td>Function(value, label)</td>
       <td></td>
       <td>callback when finishing cascader select</td>
     </tr>
     <tr>
       <td>onSelect</td>
-      <td>Function(values, labels)</td>
+      <td>Function(value, label)</td>
       <td></td>
       <td>callback when select any item</td>
     </tr>
