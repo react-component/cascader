@@ -2,9 +2,10 @@ import React from 'react';
 
 class Menus extends React.Component {
   constructor(props) {
+    const { values, defaultValues } = props;
     super();
     this.state = {
-      activeValues: props.values || props.defaultValues || [],
+      activeValues: values || defaultValues || [],
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -13,6 +14,28 @@ class Menus extends React.Component {
         activeValues: nextProps.values,
       });
     }
+  }
+  getActiveOptions(values) {
+    const activeValues = values || this.state.activeValues;
+    let options = this.props.options;
+    const result = [];
+    activeValues.forEach(value => {
+      const target = options.filter(o => o.value === value)[0];
+      if (!target) {
+        return false;
+      }
+      result.push(target);
+      options = target.options || [];
+    });
+    return result;
+  }
+  getShowOptions() {
+    const { options } = this.props;
+    const result = this.getActiveOptions()
+      .map(activeOption => activeOption.options)
+      .filter(activeOption => !!activeOption);
+    result.unshift(options);
+    return result;
   }
   handleClick(targetOption, menuIndex) {
     if (!targetOption) {
@@ -30,28 +53,6 @@ class Menus extends React.Component {
       this.props.onChange(activeOptions);
     }
   }
-  getActiveOptions(activeValues) {
-    activeValues = activeValues || this.state.activeValues;
-    let options = this.props.options;
-    let result = [];
-    activeValues.forEach(value => {
-      const target = options.filter(o => o.value === value)[0];
-      if (!target) {
-        return false;
-      }
-      result.push(target);
-      options = target.options || [];
-    });
-    return result;
-  }
-  getShowOptions() {
-    let { options } = this.props;
-    const result = this.getActiveOptions()
-      .map(activeOption => activeOption.options)
-      .filter(activeOption => !!activeOption);
-    result.unshift(options);
-    return result;
-  }
   isActiveOption(option) {
     return this.state.activeValues.some(value => value === option.value);
   }
@@ -66,18 +67,20 @@ class Menus extends React.Component {
               if (this.isActiveOption(option)) {
                 menuItemCls += ` ${prefixCls}-menu-item-active`;
               }
-              return <li key={option.value}
+              return (
+                <li key={option.value}
                   className={menuItemCls}
                   onClick={this.handleClick.bind(this, option, menuIndex)}>
-                {option.label}
-              </li>;
+                  {option.label}
+                </li>
+              );
             })}
           </ul>
         )}
       </div>
     );
   }
-};
+}
 
 Menus.defaultProps = {
   options: [],

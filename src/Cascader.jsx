@@ -2,8 +2,6 @@ import React from 'react';
 import Trigger from 'rc-trigger';
 import Menus from './Menus';
 
-const prefixCls = 'rc-cascader';
-
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
     points: ['tl', 'bl'],
@@ -24,7 +22,7 @@ const BUILT_IN_PLACEMENTS = {
 };
 
 class Cascader extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       popupVisible: false,
@@ -55,11 +53,14 @@ class Cascader extends React.Component {
     this.props.onVisibleChange(popupVisible);
   }
   render() {
-    const { prefixCls, transitionName, popupClassName } = this.props;
-    const menus = <Menus
-      {...this.props}
-      onSelect={this.handleSelect}
-      onChange={this.handleChange} />;
+    const props = this.props;
+    const { prefixCls, transitionName, popupClassName } = props;
+    const menus = (
+      <Menus
+        {...props}
+        onSelect={this.handleSelect}
+        onChange={this.handleChange} />
+    );
     return (
       <Trigger ref="trigger"
         popupPlacement="bottomLeft"
@@ -71,11 +72,11 @@ class Cascader extends React.Component {
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName}
         popup={menus}>
-        {this.props.children}
+        {props.children}
       </Trigger>
     );
   }
-};
+}
 
 Cascader.defaultProps = {
   options: [],
@@ -83,7 +84,7 @@ Cascader.defaultProps = {
   onSelect() {},
   onVisibleChange() {},
   transitionName: '',
-  prefixCls: prefixCls,
+  prefixCls: 'rc-cascader',
   popupClassName: '',
 };
 
