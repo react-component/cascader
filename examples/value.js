@@ -48,9 +48,7 @@ const Demo = React.createClass({
   },
   onSelect(values, labels) {
     console.log('onSelect', values, labels);
-    this.setState({
-      values
-    });
+    this.setState({ values });
   },
   onChange(values, labels) {
     console.log(values, labels);
@@ -66,6 +64,6 @@ const Demo = React.createClass({
       </Cascader>
     );
   },
-})
+});
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

@@ -43,7 +43,6 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
       inputValue: '',
     };
   },
@@ -60,6 +59,6 @@ const Demo = React.createClass({
       </Cascader>
     );
   },
-})
+});
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

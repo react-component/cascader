@@ -43,8 +43,7 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
-      inputValue: '',
+      inputValue: '未选择',
     };
   },
   onChange(values, labels) {
@@ -55,9 +54,12 @@ const Demo = React.createClass({
   },
   render() {
     return (
-      <Cascader options={addressOptions} onChange={this.onChange} transitionName="slide-up">
-        <input value={this.state.inputValue} readOnly />
-      </Cascader>
+      <span>
+        {this.state.inputValue}
+        <Cascader options={addressOptions} onChange={this.onChange}>
+          <a href="#">切换地区</a>
+        </Cascader>
+      </span>
     );
   },
 });

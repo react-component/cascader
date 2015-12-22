@@ -54,7 +54,6 @@ const defaultOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      value: '',
       inputValue: defaultOptions.map(o => o.label).join(', '),
     };
   },
@@ -72,6 +71,6 @@ const Demo = React.createClass({
       </Cascader>
     );
   },
-})
+});
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

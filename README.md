@@ -3,7 +3,6 @@
 
 React Cascader Component
 
-
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][coveralls-image]][coveralls-url]
@@ -48,10 +47,7 @@ npm start
 
 ## Example
 
-http://localhost:8000/examples/
-
-
-online example: http://react-component.github.io/cascader/
+http://react-component.github.io/cascader/
 
 
 ## Feature
@@ -72,7 +68,35 @@ online example: http://react-component.github.io/cascader/
 ```js
 var Cascader = require('rc-cascader');
 var React = require('react');
-React.render(<Cascader />, container);
+
+const options = [{
+  "label": "福建",
+  "value": "fj",
+  "options": [{
+    "label": "福州",
+    "value": "fuzhou",
+    "options": [{
+      "label": "马尾",
+      "value": "mawei",
+    }],
+  }, {
+    "label": "泉州",
+    "value": "quanzhou"
+  }],
+}, {
+  "label": "浙江",
+  "value": "zj",
+  "options": [{
+    "label": "杭州",
+    "value": "hangzhou",
+    "options": [{
+      "label": "余杭",
+      "value": "yuhang",
+    }],
+  }],
+}];
+
+React.render(<Cascader options={options} />, container);
 ```
 
 ## API
@@ -80,22 +104,58 @@ React.render(<Cascader />, container);
 ### props
 
 <table class="table table-bordered table-striped">
-    <thead>
+  <thead>
+  <tr>
+    <th style="width: 100px;">name</th>
+    <th style="width: 50px;">type</th>
+    <th style="width: 50px;">default</th>
+    <th>description</th>
+  </tr>
+  </thead>
+  <tbody>
     <tr>
-        <th style="width: 100px;">name</th>
-        <th style="width: 50px;">type</th>
-        <th style="width: 50px;">default</th>
-        <th>description</th>
+      <td>options</td>
+      <td>Object</td>
+      <td></td>
+      <td>The data options of cascade</td>
     </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>className</td>
-          <td>String</td>
-          <td></td>
-          <td>additional css class of root dom node</td>
-        </tr>
-    </tbody>
+    <tr>
+      <td>onChange</td>
+      <td>Function(values, labels)</td>
+      <td></td>
+      <td>callback when finishing cascader select</td>
+    </tr>
+    <tr>
+      <td>onSelect</td>
+      <td>Function(values, labels)</td>
+      <td></td>
+      <td>callback when select any item</td>
+    </tr>
+    <tr>
+      <td>onVisibleChange</td>
+      <td>Function(visible)</td>
+      <td></td>
+      <td>callback when popup overlay's visibility changed</td>
+    </tr>
+    <tr>
+      <td>transitionName</td>
+      <td>String</td>
+      <td></td>
+      <td>transition className like "slide-up"</td>
+    </tr>
+    <tr>
+      <td>prefixCls</td>
+      <td>String</td>
+      <td>rc-cascader</td>
+      <td>prefix className of popup overlay</td>
+    </tr>
+    <tr>
+      <td>popupClassName</td>
+      <td>String</td>
+      <td></td>
+      <td>additional className of popup overlay</td>
+    </tr>
+  </tbody>
 </table>
 
 

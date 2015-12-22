@@ -55,7 +55,7 @@ class Cascader extends React.Component {
     this.props.onVisibleChange(popupVisible);
   }
   render() {
-    const { prefixCls, transitionName } = this.props;
+    const { prefixCls, transitionName, popupClassName } = this.props;
     const menus = <Menus
       {...this.props}
       onSelect={this.handleSelect}
@@ -69,6 +69,7 @@ class Cascader extends React.Component {
         popupVisible={this.state.popupVisible}
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
+        popupClassName={popupClassName}
         popup={menus}>
         {this.props.children}
       </Trigger>
@@ -83,6 +84,7 @@ Cascader.defaultProps = {
   onVisibleChange() {},
   transitionName: '',
   prefixCls: prefixCls,
+  popupClassName: '',
 };
 
 Cascader.propTypes = {
@@ -91,6 +93,7 @@ Cascader.propTypes = {
   onSelect: React.PropTypes.func,
   onVisibleChange: React.PropTypes.func,
   transitionName: React.PropTypes.string,
+  popupClassName: React.PropTypes.string,
   prefixCls: React.PropTypes.string,
 };
 
