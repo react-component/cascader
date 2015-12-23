@@ -35,7 +35,7 @@ class Cascader extends React.Component {
   handleChange(options) {
     this.props.onChange(
       options.map(o => o.value),
-      options.map(o => o.label),
+      options,
     );
     this.setState({
       popupVisible: false,
@@ -52,6 +52,7 @@ class Cascader extends React.Component {
       <Menus
         {...props}
         onChange={this.handleChange}
+        onSelect={this.props.onSelect}
         visible={this.state.popupVisible} />
     );
     return (
@@ -74,6 +75,7 @@ class Cascader extends React.Component {
 Cascader.defaultProps = {
   options: [],
   onChange() {},
+  onSelect() {},
   onVisibleChange() {},
   transitionName: '',
   prefixCls: 'rc-cascader',
@@ -83,7 +85,9 @@ Cascader.defaultProps = {
 Cascader.propTypes = {
   options: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func,
+  onSelect: React.PropTypes.func,
   onVisibleChange: React.PropTypes.func,
+  visible: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   popupClassName: React.PropTypes.string,
   prefixCls: React.PropTypes.string,

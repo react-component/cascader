@@ -47,10 +47,10 @@ const Demo = React.createClass({
       inputValue: '',
     };
   },
-  onChange(value, label) {
-    console.log(value, label);
+  onChange(value, selectedOptions) {
+    console.log(value, selectedOptions);
     this.setState({
-      inputValue: label.join(', '),
+      inputValue: selectedOptions.map(o => o.label).join(', '),
     });
   },
   render() {

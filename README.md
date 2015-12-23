@@ -141,15 +141,15 @@ React.render(<Cascader options={options} />, container);
     </tr>
     <tr>
       <td>onChange</td>
-      <td>Function(value, label)</td>
+      <td>Function(value, selectedOptions)</td>
       <td></td>
       <td>callback when finishing cascader select</td>
     </tr>
     <tr>
       <td>onSelect</td>
-      <td>Function(value, label)</td>
+      <td>Function(targetOptions, selectedOptions, done)</td>
       <td></td>
-      <td>callback when click any option</td>
+      <td>callback when click any option, argument "done" use for async select</td>
     </tr>
     <tr>
       <td>onVisibleChange</td>

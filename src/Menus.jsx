@@ -53,12 +53,25 @@ class Menus extends React.Component {
     activeValue = activeValue.slice(0, menuIndex + 1);
     activeValue[menuIndex] = targetOption.value;
     const activeOptions = this.getActiveOptions(activeValue);
-    const newState = { activeValue };
-    if (!targetOption.children || targetOption.children.length === 0) {
-      this.props.onChange(activeOptions);
-      newState.value = activeValue;
+    const selectCallback = () => {
+      if (!targetOption.children || targetOption.children.length === 0) {
+        this.props.onChange(activeOptions);
+      }
+      this.setState({
+        activeValue,
+        value: activeValue,
+      });
+    };
+    // specify the third argument `done`:
+    //  onSelect(targetOption, selectedOptions, done)
+    // it means async select
+    if (this.props.onSelect.length >= 3) {
+      this.props.onSelect(targetOption, activeOptions, selectCallback);
+      this.setState({ activeValue });
+    } else {
+      this.props.onSelect(targetOption, activeOptions);
+      selectCallback();
     }
-    this.setState(newState);
   }
   isActiveOption(option) {
     return this.state.activeValue.some(value => value === option.value);
@@ -77,6 +90,7 @@ class Menus extends React.Component {
               return (
                 <li key={option.value}
                   className={menuItemCls}
+                  title={option.label}
                   onClick={this.handleClick.bind(this, option, menuIndex)}>
                   {option.label}
                 </li>
@@ -92,6 +106,7 @@ class Menus extends React.Component {
 Menus.defaultProps = {
   options: [],
   onChange() {},
+  onSelect() {},
   prefixCls: 'rc-cascader-menus',
   visible: false,
 };
@@ -100,6 +115,7 @@ Menus.propTypes = {
   options: React.PropTypes.array.isRequired,
   prefixCls: React.PropTypes.string,
   onChange: React.PropTypes.func,
+  onSelect: React.PropTypes.func,
   visible: React.PropTypes.bool,
 };
 
