@@ -9,6 +9,7 @@ webpackJsonp([0],[
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint-disable no-console */
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -30,10 +31,10 @@ webpackJsonp([0],[
 	var addressOptions = [{
 	  'label': '福建',
 	  'value': 'fj',
-	  'options': [{
+	  'children': [{
 	    'label': '福州',
 	    'value': 'fuzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '马尾',
 	      'value': 'mawei'
 	    }]
@@ -44,10 +45,10 @@ webpackJsonp([0],[
 	}, {
 	  'label': '浙江',
 	  'value': 'zj',
-	  'options': [{
+	  'children': [{
 	    'label': '杭州',
 	    'value': 'hangzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '余杭',
 	      'value': 'yuhang'
 	    }]
@@ -55,7 +56,7 @@ webpackJsonp([0],[
 	}, {
 	  'label': '北京',
 	  'value': 'bj',
-	  'options': [{
+	  'children': [{
 	    'label': '朝阳区',
 	    'value': 'chaoyang'
 	  }, {
@@ -69,14 +70,13 @@ webpackJsonp([0],[
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      value: '',
 	      inputValue: ''
 	    };
 	  },
-	  onChange: function onChange(values, labels) {
-	    console.log(values, labels);
+	  onChange: function onChange(value, label) {
+	    console.log(value, label);
 	    this.setState({
-	      inputValue: labels.join(', ')
+	      inputValue: label.join(', ')
 	    });
 	  },
 	  render: function render() {

@@ -748,6 +748,8 @@
       
       <li><a href="examples/defaultValue.html">defaultValue</a></li>
       
+      <li><a href="examples/rc-form.html">rc-form</a></li>
+      
       <li><a href="examples/simple.html">simple</a></li>
       
       <li><a href="examples/text-trigger.html">text-trigger</a></li>
@@ -790,7 +792,7 @@
 </tr>
 </tbody>
 </table>
-<h2>Screenshots<a id="user-content-screenshots" name="screenshots" class="anchor" aria-hidden="true" href="#screenshots"><span class="octicon octicon-link"></span></a></h2><p><img src="" width="288"/></p>
+<h2>Screenshots<a id="user-content-screenshots" name="screenshots" class="anchor" aria-hidden="true" href="#screenshots"><span class="octicon octicon-link"></span></a></h2><p><img src="https://os.alipayobjects.com/rmsportal/TYFXEbuQXIaMqQF.png" width="288"/></p>
 <h2>Development<a id="user-content-development" name="development" class="anchor" aria-hidden="true" href="#development"><span class="octicon octicon-link"></span></a></h2><div class="highlight"><pre><code language="undefined">npm install
 npm start</code></pre></div><h2>Example<a id="user-content-example" name="example" class="anchor" aria-hidden="true" href="#example"><span class="octicon octicon-link"></span></a></h2><p><a href="http://react-component.github.io/cascader/" title="null">http://react-component.github.io/cascader/</a></p>
 <h2>Feature<a id="user-content-feature" name="feature" class="anchor" aria-hidden="true" href="#feature"><span class="octicon octicon-link"></span></a></h2><ul>
@@ -800,30 +802,40 @@ npm start</code></pre></div><h2>Example<a id="user-content-example" name="exampl
 <h2>Usage<a id="user-content-usage" name="usage" class="anchor" aria-hidden="true" href="#usage"><span class="octicon octicon-link"></span></a></h2><div class="highlight"><pre><code language="js"><span class="hljs-keyword">var</span> Cascader = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rc-cascader'</span>);
 <span class="hljs-keyword">var</span> React = <span class="hljs-built_in">require</span>(<span class="hljs-string">'react'</span>);
 
-<span class="hljs-keyword">const</span> options = [{
-  <span class="hljs-string">"label"</span>: <span class="hljs-string">"福建"</span>,
-  <span class="hljs-string">"value"</span>: <span class="hljs-string">"fj"</span>,
-  <span class="hljs-string">"options"</span>: [{
-    <span class="hljs-string">"label"</span>: <span class="hljs-string">"福州"</span>,
-    <span class="hljs-string">"value"</span>: <span class="hljs-string">"fuzhou"</span>,
-    <span class="hljs-string">"options"</span>: [{
-      <span class="hljs-string">"label"</span>: <span class="hljs-string">"马尾"</span>,
-      <span class="hljs-string">"value"</span>: <span class="hljs-string">"mawei"</span>,
+<span class="hljs-keyword">const</span> addressOptions = [{
+  <span class="hljs-string">'label'</span>: <span class="hljs-string">'福建'</span>,
+  <span class="hljs-string">'value'</span>: <span class="hljs-string">'fj'</span>,
+  <span class="hljs-string">'children'</span>: [{
+    <span class="hljs-string">'label'</span>: <span class="hljs-string">'福州'</span>,
+    <span class="hljs-string">'value'</span>: <span class="hljs-string">'fuzhou'</span>,
+    <span class="hljs-string">'children'</span>: [{
+      <span class="hljs-string">'label'</span>: <span class="hljs-string">'马尾'</span>,
+      <span class="hljs-string">'value'</span>: <span class="hljs-string">'mawei'</span>,
     }],
   }, {
-    <span class="hljs-string">"label"</span>: <span class="hljs-string">"泉州"</span>,
-    <span class="hljs-string">"value"</span>: <span class="hljs-string">"quanzhou"</span>
+    <span class="hljs-string">'label'</span>: <span class="hljs-string">'泉州'</span>,
+    <span class="hljs-string">'value'</span>: <span class="hljs-string">'quanzhou'</span>,
   }],
 }, {
-  <span class="hljs-string">"label"</span>: <span class="hljs-string">"浙江"</span>,
-  <span class="hljs-string">"value"</span>: <span class="hljs-string">"zj"</span>,
-  <span class="hljs-string">"options"</span>: [{
-    <span class="hljs-string">"label"</span>: <span class="hljs-string">"杭州"</span>,
-    <span class="hljs-string">"value"</span>: <span class="hljs-string">"hangzhou"</span>,
-    <span class="hljs-string">"options"</span>: [{
-      <span class="hljs-string">"label"</span>: <span class="hljs-string">"余杭"</span>,
-      <span class="hljs-string">"value"</span>: <span class="hljs-string">"yuhang"</span>,
+  <span class="hljs-string">'label'</span>: <span class="hljs-string">'浙江'</span>,
+  <span class="hljs-string">'value'</span>: <span class="hljs-string">'zj'</span>,
+  <span class="hljs-string">'children'</span>: [{
+    <span class="hljs-string">'label'</span>: <span class="hljs-string">'杭州'</span>,
+    <span class="hljs-string">'value'</span>: <span class="hljs-string">'hangzhou'</span>,
+    <span class="hljs-string">'children'</span>: [{
+      <span class="hljs-string">'label'</span>: <span class="hljs-string">'余杭'</span>,
+      <span class="hljs-string">'value'</span>: <span class="hljs-string">'yuhang'</span>,
     }],
+  }],
+}, {
+  <span class="hljs-string">'label'</span>: <span class="hljs-string">'北京'</span>,
+  <span class="hljs-string">'value'</span>: <span class="hljs-string">'bj'</span>,
+  <span class="hljs-string">'children'</span>: [{
+    <span class="hljs-string">'label'</span>: <span class="hljs-string">'朝阳区'</span>,
+    <span class="hljs-string">'value'</span>: <span class="hljs-string">'chaoyang'</span>,
+  }, {
+    <span class="hljs-string">'label'</span>: <span class="hljs-string">'海淀区'</span>,
+    <span class="hljs-string">'value'</span>: <span class="hljs-string">'haidian'</span>,
   }],
 }];
 
@@ -844,16 +856,22 @@ React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-titl
       <td>The data options of cascade</td>
     </tr>
     <tr>
-      <td>onChange</td>
-      <td>Function(values, labels)</td>
+      <td>value</td>
+      <td>Array</td>
       <td></td>
-      <td>callback when finishing cascader select</td>
+      <td>selected value</td>
     </tr>
     <tr>
-      <td>onSelect</td>
-      <td>Function(values, labels)</td>
+      <td>defaultValue</td>
+      <td>Array</td>
       <td></td>
-      <td>callback when select any item</td>
+      <td>initial selected value</td>
+    </tr>
+    <tr>
+      <td>onChange</td>
+      <td>Function(value, label)</td>
+      <td></td>
+      <td>callback when finishing cascader select</td>
     </tr>
     <tr>
       <td>onVisibleChange</td>

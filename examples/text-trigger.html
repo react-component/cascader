@@ -264,7 +264,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
   <script src="text-trigger.js?nowrap"></script>
-  <div class="highlight"><pre><code language="js">import <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
+  <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console */</span>
+import <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
 import Cascader from <span class="hljs-string">'rc-cascader'</span>;
 import React from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
@@ -272,10 +273,10 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 <span class="hljs-keyword">const</span> addressOptions = [{
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'福建'</span>,
   <span class="hljs-string">'value'</span>: <span class="hljs-string">'fj'</span>,
-  <span class="hljs-string">'options'</span>: [{
+  <span class="hljs-string">'children'</span>: [{
     <span class="hljs-string">'label'</span>: <span class="hljs-string">'福州'</span>,
     <span class="hljs-string">'value'</span>: <span class="hljs-string">'fuzhou'</span>,
-    <span class="hljs-string">'options'</span>: [{
+    <span class="hljs-string">'children'</span>: [{
       <span class="hljs-string">'label'</span>: <span class="hljs-string">'马尾'</span>,
       <span class="hljs-string">'value'</span>: <span class="hljs-string">'mawei'</span>,
     }],
@@ -286,10 +287,10 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 }, {
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'浙江'</span>,
   <span class="hljs-string">'value'</span>: <span class="hljs-string">'zj'</span>,
-  <span class="hljs-string">'options'</span>: [{
+  <span class="hljs-string">'children'</span>: [{
     <span class="hljs-string">'label'</span>: <span class="hljs-string">'杭州'</span>,
     <span class="hljs-string">'value'</span>: <span class="hljs-string">'hangzhou'</span>,
-    <span class="hljs-string">'options'</span>: [{
+    <span class="hljs-string">'children'</span>: [{
       <span class="hljs-string">'label'</span>: <span class="hljs-string">'余杭'</span>,
       <span class="hljs-string">'value'</span>: <span class="hljs-string">'yuhang'</span>,
     }],
@@ -297,7 +298,7 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 }, {
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'北京'</span>,
   <span class="hljs-string">'value'</span>: <span class="hljs-string">'bj'</span>,
-  <span class="hljs-string">'options'</span>: [{
+  <span class="hljs-string">'children'</span>: [{
     <span class="hljs-string">'label'</span>: <span class="hljs-string">'朝阳区'</span>,
     <span class="hljs-string">'value'</span>: <span class="hljs-string">'chaoyang'</span>,
   }, {
@@ -312,10 +313,10 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
       inputValue: <span class="hljs-string">'未选择'</span>,
     };
   },
-  onChange(values, labels) {
-    <span class="hljs-built_in">console</span>.log(values, labels);
+  onChange(value, label) {
+    <span class="hljs-built_in">console</span>.log(value, label);
     <span class="hljs-keyword">this</span>.setState({
-      inputValue: labels.join(<span class="hljs-string">', '</span>),
+      inputValue: label.join(<span class="hljs-string">', '</span>),
     });
   },
   render() {

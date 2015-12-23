@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		5:0
+/******/ 		6:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"simple","3":"text-trigger","4":"value"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"rc-form","3":"simple","4":"text-trigger","5":"value"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -204,7 +204,7 @@
 	    this.state = {
 	      popupVisible: false
 	    };
-	    ['handleSelect', 'handleChange', 'handlePopupVisibleChange'].forEach(function (method) {
+	    ['handleChange', 'handlePopupVisibleChange'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
 	    });
 	  }
@@ -222,15 +222,6 @@
 	      });
 	    }
 	  }, {
-	    key: 'handleSelect',
-	    value: function handleSelect(options) {
-	      this.props.onSelect(options.map(function (o) {
-	        return o.value;
-	      }), options.map(function (o) {
-	        return o.label;
-	      }));
-	    }
-	  }, {
 	    key: 'handlePopupVisibleChange',
 	    value: function handlePopupVisibleChange(popupVisible) {
 	      this.setState({ popupVisible: popupVisible });
@@ -245,8 +236,8 @@
 	      var popupClassName = props.popupClassName;
 	
 	      var menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
-	        onSelect: this.handleSelect,
-	        onChange: this.handleChange }));
+	        onChange: this.handleChange,
+	        visible: this.state.popupVisible }));
 	      return _react2['default'].createElement(
 	        _rcTrigger2['default'],
 	        { ref: 'trigger',
@@ -270,7 +261,6 @@
 	Cascader.defaultProps = {
 	  options: [],
 	  onChange: function onChange() {},
-	  onSelect: function onSelect() {},
 	  onVisibleChange: function onVisibleChange() {},
 	  transitionName: '',
 	  prefixCls: 'rc-cascader',
@@ -280,7 +270,6 @@
 	Cascader.propTypes = {
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  onChange: _react2['default'].PropTypes.func,
-	  onSelect: _react2['default'].PropTypes.func,
 	  onVisibleChange: _react2['default'].PropTypes.func,
 	  transitionName: _react2['default'].PropTypes.string,
 	  popupClassName: _react2['default'].PropTypes.string,
@@ -24638,31 +24627,39 @@
 	  function Menus(props) {
 	    _classCallCheck(this, Menus);
 	
-	    var values = props.values;
-	    var defaultValues = props.defaultValues;
-	
 	    _get(Object.getPrototypeOf(Menus.prototype), 'constructor', this).call(this);
+	    var value = props.value;
+	    var defaultValue = props.defaultValue;
+	
+	    var initialValue = value || defaultValue || [];
 	    this.state = {
-	      activeValues: values || defaultValues || []
+	      activeValue: initialValue,
+	      value: initialValue
 	    };
 	  }
 	
 	  _createClass(Menus, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      if ('values' in nextProps) {
+	      if ('value' in nextProps) {
 	        this.setState({
-	          activeValues: nextProps.values
+	          activeValue: nextProps.value || [],
+	          value: nextProps.value || []
+	        });
+	      }
+	      if (!nextProps.visible) {
+	        this.setState({
+	          activeValue: this.state.value
 	        });
 	      }
 	    }
 	  }, {
 	    key: 'getActiveOptions',
 	    value: function getActiveOptions(values) {
-	      var activeValues = values || this.state.activeValues;
+	      var activeValue = values || this.state.activeValue;
 	      var options = this.props.options;
 	      var result = [];
-	      activeValues.forEach(function (value) {
+	      activeValue.forEach(function (value) {
 	        var target = options.filter(function (o) {
 	          return o.value === value;
 	        })[0];
@@ -24670,7 +24667,7 @@
 	          return false;
 	        }
 	        result.push(target);
-	        options = target.options || [];
+	        options = target.children || [];
 	      });
 	      return result;
 	    }
@@ -24680,7 +24677,7 @@
 	      var options = this.props.options;
 	
 	      var result = this.getActiveOptions().map(function (activeOption) {
-	        return activeOption.options;
+	        return activeOption.children;
 	      }).filter(function (activeOption) {
 	        return !!activeOption;
 	      });
@@ -24693,22 +24690,21 @@
 	      if (!targetOption) {
 	        return;
 	      }
-	      var activeValues = this.state.activeValues;
-	      activeValues = activeValues.slice(0, menuIndex + 1);
-	      activeValues[menuIndex] = targetOption.value;
-	      if (!('values' in this.props)) {
-	        this.setState({ activeValues: activeValues });
-	      }
-	      var activeOptions = this.getActiveOptions(activeValues);
-	      this.props.onSelect(activeOptions);
-	      if (!targetOption.options || targetOption.options.length === 0) {
+	      var activeValue = this.state.activeValue;
+	      activeValue = activeValue.slice(0, menuIndex + 1);
+	      activeValue[menuIndex] = targetOption.value;
+	      var activeOptions = this.getActiveOptions(activeValue);
+	      var newState = { activeValue: activeValue };
+	      if (!targetOption.children || targetOption.children.length === 0) {
 	        this.props.onChange(activeOptions);
+	        newState.value = activeValue;
 	      }
+	      this.setState(newState);
 	    }
 	  }, {
 	    key: 'isActiveOption',
 	    value: function isActiveOption(option) {
-	      return this.state.activeValues.some(function (value) {
+	      return this.state.activeValue.some(function (value) {
 	        return value === option.value;
 	      });
 	    }
@@ -24750,16 +24746,16 @@
 	
 	Menus.defaultProps = {
 	  options: [],
-	  onSelect: function onSelect() {},
 	  onChange: function onChange() {},
-	  prefixCls: 'rc-cascader-menus'
+	  prefixCls: 'rc-cascader-menus',
+	  visible: false
 	};
 	
 	Menus.propTypes = {
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  prefixCls: _react2['default'].PropTypes.string,
-	  onSelect: _react2['default'].PropTypes.func,
-	  onChange: _react2['default'].PropTypes.func
+	  onChange: _react2['default'].PropTypes.func,
+	  visible: _react2['default'].PropTypes.bool
 	};
 	
 	exports['default'] = Menus;

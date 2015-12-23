@@ -1,16 +1,17 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(215);
+	module.exports = __webpack_require__(244);
 
 
 /***/ },
 
-/***/ 215:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint-disable no-console */
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -32,10 +33,10 @@ webpackJsonp([4],{
 	var addressOptions = [{
 	  'label': '福建',
 	  'value': 'fj',
-	  'options': [{
+	  'children': [{
 	    'label': '福州',
 	    'value': 'fuzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '马尾',
 	      'value': 'mawei'
 	    }]
@@ -46,10 +47,10 @@ webpackJsonp([4],{
 	}, {
 	  'label': '浙江',
 	  'value': 'zj',
-	  'options': [{
+	  'children': [{
 	    'label': '杭州',
 	    'value': 'hangzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '余杭',
 	      'value': 'yuhang'
 	    }]
@@ -57,7 +58,7 @@ webpackJsonp([4],{
 	}, {
 	  'label': '北京',
 	  'value': 'bj',
-	  'options': [{
+	  'children': [{
 	    'label': '朝阳区',
 	    'value': 'chaoyang'
 	  }, {
@@ -71,25 +72,36 @@ webpackJsonp([4],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      values: []
+	      value: []
 	    };
 	  },
-	  onSelect: function onSelect(values, labels) {
-	    console.log('onSelect', values, labels);
-	    this.setState({ values: values });
-	  },
-	  onChange: function onChange(values, labels) {
-	    console.log(values, labels);
+	  onChange: function onChange(value, label) {
+	    console.log(value, label);
 	    this.setState({
-	      inputValue: labels.join(', ')
+	      value: value,
+	      inputValue: label.join(', ')
+	    });
+	  },
+	  setValue: function setValue() {
+	    this.setState({
+	      value: ['bj', 'chaoyang'],
+	      inputValue: ['北京', '朝阳区'].join(', ')
 	    });
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
-	      _rcCascader2['default'],
-	      { values: this.state.values, options: addressOptions,
-	        onSelect: this.onSelect, onChange: this.onChange },
-	      _react2['default'].createElement('input', { value: this.state.inputValue, readOnly: true })
+	      'div',
+	      null,
+	      _react2['default'].createElement(
+	        'button',
+	        { onClick: this.setValue },
+	        'set value to 北京朝阳区'
+	      ),
+	      _react2['default'].createElement(
+	        _rcCascader2['default'],
+	        { value: this.state.value, options: addressOptions, onChange: this.onChange },
+	        _react2['default'].createElement('input', { value: this.state.inputValue, readOnly: true })
+	      )
 	    );
 	  }
 	});

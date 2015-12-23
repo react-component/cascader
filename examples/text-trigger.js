@@ -1,16 +1,17 @@
-webpackJsonp([3],{
+webpackJsonp([4],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(214);
+	module.exports = __webpack_require__(243);
 
 
 /***/ },
 
-/***/ 214:
+/***/ 243:
 /***/ function(module, exports, __webpack_require__) {
 
+	/* eslint-disable no-console */
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -32,10 +33,10 @@ webpackJsonp([3],{
 	var addressOptions = [{
 	  'label': '福建',
 	  'value': 'fj',
-	  'options': [{
+	  'children': [{
 	    'label': '福州',
 	    'value': 'fuzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '马尾',
 	      'value': 'mawei'
 	    }]
@@ -46,10 +47,10 @@ webpackJsonp([3],{
 	}, {
 	  'label': '浙江',
 	  'value': 'zj',
-	  'options': [{
+	  'children': [{
 	    'label': '杭州',
 	    'value': 'hangzhou',
-	    'options': [{
+	    'children': [{
 	      'label': '余杭',
 	      'value': 'yuhang'
 	    }]
@@ -57,7 +58,7 @@ webpackJsonp([3],{
 	}, {
 	  'label': '北京',
 	  'value': 'bj',
-	  'options': [{
+	  'children': [{
 	    'label': '朝阳区',
 	    'value': 'chaoyang'
 	  }, {
@@ -74,10 +75,10 @@ webpackJsonp([3],{
 	      inputValue: '未选择'
 	    };
 	  },
-	  onChange: function onChange(values, labels) {
-	    console.log(values, labels);
+	  onChange: function onChange(value, label) {
+	    console.log(value, label);
 	    this.setState({
-	      inputValue: labels.join(', ')
+	      inputValue: label.join(', ')
 	    });
 	  },
 	  render: function render() {
