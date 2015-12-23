@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'rc-cascader/assets/index.less';
 import Cascader from 'rc-cascader';
 import React from 'react';

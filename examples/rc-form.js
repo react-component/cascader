@@ -1,5 +1,4 @@
-/* eslint-disable no-alert, no-console, react/no-multi-comp */
-
+/* eslint-disable no-console, react/no-multi-comp */
 import 'rc-cascader/assets/index.less';
 import Cascader from 'rc-cascader';
 import React, { Component } from 'react';
