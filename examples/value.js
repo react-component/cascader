@@ -46,22 +46,27 @@ const Demo = React.createClass({
       value: [],
     };
   },
-  onSelect(value, label) {
-    console.log('onSelect', value, label);
-    this.setState({ value });
-  },
   onChange(value, label) {
     console.log(value, label);
     this.setState({
+      value,
       inputValue: label.join(', '),
+    });
+  },
+  setValue() {
+    this.setState({
+      value: ['bj', 'chaoyang'],
+      inputValue: ['北京', '朝阳区'].join(', '),
     });
   },
   render() {
     return (
-      <Cascader value={this.state.value} options={addressOptions}
-        onSelect={this.onSelect} onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly />
-      </Cascader>
+      <div>
+        <button onClick={this.setValue}>set value to 北京朝阳区</button>
+        <Cascader value={this.state.value} options={addressOptions} onChange={this.onChange}>
+          <input value={this.state.inputValue} readOnly />
+        </Cascader>
+      </div>
     );
   },
 });
