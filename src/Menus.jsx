@@ -2,24 +2,32 @@ import React from 'react';
 
 class Menus extends React.Component {
   constructor(props) {
-    const { value, defaultValue } = props;
     super();
+    const { value, defaultValue } = props;
+    const initialValue = value || defaultValue || [];
     this.state = {
-      activeValues: value || defaultValue || [],
+      activeValue: initialValue,
+      value: initialValue,
     };
   }
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       this.setState({
-        activeValues: nextProps.value,
+        activeValue: nextProps.value || [],
+        value: nextProps.value || [],
+      });
+    }
+    if (!nextProps.visible) {
+      this.setState({
+        activeValue: this.state.value,
       });
     }
   }
   getActiveOptions(values) {
-    const activeValues = values || this.state.activeValues;
+    const activeValue = values || this.state.activeValue;
     let options = this.props.options;
     const result = [];
-    activeValues.forEach(value => {
+    activeValue.forEach(value => {
       const target = options.filter(o => o.value === value)[0];
       if (!target) {
         return false;
@@ -41,20 +49,19 @@ class Menus extends React.Component {
     if (!targetOption) {
       return;
     }
-    let activeValues = this.state.activeValues;
-    activeValues = activeValues.slice(0, menuIndex + 1);
-    activeValues[menuIndex] = targetOption.value;
-    if (!('value' in this.props)) {
-      this.setState({ activeValues });
-    }
-    const activeOptions = this.getActiveOptions(activeValues);
-    this.props.onSelect(activeOptions);
+    let activeValue = this.state.activeValue;
+    activeValue = activeValue.slice(0, menuIndex + 1);
+    activeValue[menuIndex] = targetOption.value;
+    const activeOptions = this.getActiveOptions(activeValue);
+    const newState = { activeValue };
     if (!targetOption.children || targetOption.children.length === 0) {
       this.props.onChange(activeOptions);
+      newState.value = activeValue;
     }
+    this.setState(newState);
   }
   isActiveOption(option) {
-    return this.state.activeValues.some(value => value === option.value);
+    return this.state.activeValue.some(value => value === option.value);
   }
   render() {
     const { prefixCls } = this.props;
@@ -84,16 +91,16 @@ class Menus extends React.Component {
 
 Menus.defaultProps = {
   options: [],
-  onSelect() {},
   onChange() {},
   prefixCls: 'rc-cascader-menus',
+  visible: false,
 };
 
 Menus.propTypes = {
   options: React.PropTypes.array.isRequired,
   prefixCls: React.PropTypes.string,
-  onSelect: React.PropTypes.func,
   onChange: React.PropTypes.func,
+  visible: React.PropTypes.bool,
 };
 
 export default Menus;
