@@ -43,26 +43,31 @@ const addressOptions = [{
 }];
 
 class CascaderInput extends Component {
-  constructor() {
-    super();
-    this.state = {
-      inputValue: '',
-    };
-  }
-  onChange(value, label) {
+  onChange(value) {
     const props = this.props;
-    this.setState({
-      inputValue: label.join(', '),
-    });
     if (props.onChange) {
-      props.onChange(value, label);
+      props.onChange(value);
     }
+  }
+  getLabel() {
+    const props = this.props;
+    let options = props.options;
+    const result = [];
+    (props.value || []).forEach(v => {
+      const target = options.find(o => o.value === v);
+      if (!target) {
+        return false;
+      }
+      result.push(target.label);
+      options = target.children || [];
+    });
+    return result.join(', ');
   }
   render() {
     const props = this.props;
     return (
       <Cascader {...this.props} onChange={this.onChange.bind(this)}>
-        <input placeholder={props.placeholder} value={this.state.inputValue} readOnly />
+        <input placeholder={props.placeholder} value={this.getLabel()} readOnly />
       </Cascader>
     );
   }

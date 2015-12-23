@@ -146,6 +146,12 @@ React.render(<Cascader options={options} />, container);
       <td>callback when finishing cascader select</td>
     </tr>
     <tr>
+      <td>onSelect</td>
+      <td>Function(value, label)</td>
+      <td></td>
+      <td>callback when click any option</td>
+    </tr>
+    <tr>
       <td>onVisibleChange</td>
       <td>Function(visible)</td>
       <td></td>

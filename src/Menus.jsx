@@ -28,7 +28,7 @@ class Menus extends React.Component {
     let options = this.props.options;
     const result = [];
     activeValue.forEach(value => {
-      const target = options.filter(o => o.value === value)[0];
+      const target = options.find(o => o.value === value);
       if (!target) {
         return false;
       }

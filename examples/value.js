@@ -47,25 +47,34 @@ const Demo = React.createClass({
       value: [],
     };
   },
-  onChange(value, label) {
-    console.log(value, label);
-    this.setState({
-      value,
-      inputValue: label.join(', '),
-    });
+  onChange(value) {
+    console.log(value);
+    this.setState({ value });
   },
   setValue() {
     this.setState({
       value: ['bj', 'chaoyang'],
-      inputValue: ['北京', '朝阳区'].join(', '),
     });
+  },
+  getLabel() {
+    let options = addressOptions;
+    const result = [];
+    this.state.value.forEach(v => {
+      const target = options.find(o => o.value === v);
+      if (!target) {
+        return false;
+      }
+      result.push(target.label);
+      options = target.children || [];
+    });
+    return result.join(', ');
   },
   render() {
     return (
       <div>
         <button onClick={this.setValue}>set value to 北京朝阳区</button>
         <Cascader value={this.state.value} options={addressOptions} onChange={this.onChange}>
-          <input value={this.state.inputValue} readOnly />
+          <input value={this.getLabel()} readOnly />
         </Cascader>
       </div>
     );
