@@ -83,6 +83,9 @@
   line-height: 32px;
   padding: 0 16px;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   -webkit-transition: all 0.3s ease;
           transition: all 0.3s ease;
 }

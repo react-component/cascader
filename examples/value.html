@@ -313,25 +313,34 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
       value: [],
     };
   },
-  onChange(value, label) {
-    <span class="hljs-built_in">console</span>.log(value, label);
-    <span class="hljs-keyword">this</span>.setState({
-      value,
-      inputValue: label.join(<span class="hljs-string">', '</span>),
-    });
+  onChange(value) {
+    <span class="hljs-built_in">console</span>.log(value);
+    <span class="hljs-keyword">this</span>.setState({ value });
   },
   setValue() {
     <span class="hljs-keyword">this</span>.setState({
       value: [<span class="hljs-string">'bj'</span>, <span class="hljs-string">'chaoyang'</span>],
-      inputValue: [<span class="hljs-string">'北京'</span>, <span class="hljs-string">'朝阳区'</span>].join(<span class="hljs-string">', '</span>),
     });
+  },
+  getLabel() {
+    <span class="hljs-keyword">let</span> options = addressOptions;
+    <span class="hljs-keyword">const</span> result = [];
+    <span class="hljs-keyword">this</span>.state.value.forEach(v =&gt; {
+      <span class="hljs-keyword">const</span> target = options.find(o =&gt; o.value === v);
+      <span class="hljs-keyword">if</span> (!target) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+      result.push(target.label);
+      options = target.children || [];
+    });
+    <span class="hljs-keyword">return</span> result.join(<span class="hljs-string">', '</span>);
   },
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.setValue}</span>&gt;</span>set value to 北京朝阳区<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.getLabel()}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     );

@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(243);
+	module.exports = __webpack_require__(244);
 
 
 /***/ },
 
-/***/ 243:
+/***/ 244:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -75,10 +75,12 @@ webpackJsonp([4],{
 	      inputValue: '未选择'
 	    };
 	  },
-	  onChange: function onChange(value, label) {
-	    console.log(value, label);
+	  onChange: function onChange(value, selectedOptions) {
+	    console.log(value, selectedOptions);
 	    this.setState({
-	      inputValue: label.join(', ')
+	      inputValue: selectedOptions.map(function (o) {
+	        return o.label;
+	      }).join(', ')
 	    });
 	  },
 	  render: function render() {

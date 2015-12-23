@@ -88,10 +88,12 @@ webpackJsonp([1],{
 	      }).join(', ')
 	    };
 	  },
-	  onChange: function onChange(value, label) {
-	    console.log(value, label);
+	  onChange: function onChange(value, selectedOptions) {
+	    console.log(value, selectedOptions);
 	    this.setState({
-	      inputValue: label.join(', ')
+	      inputValue: selectedOptions.map(function (o) {
+	        return o.label;
+	      }).join(', ')
 	    });
 	  },
 	  render: function render() {

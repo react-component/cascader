@@ -748,6 +748,8 @@
       
       <li><a href="examples/defaultValue.html">defaultValue</a></li>
       
+      <li><a href="examples/dynamic-options.html">dynamic-options</a></li>
+      
       <li><a href="examples/rc-form.html">rc-form</a></li>
       
       <li><a href="examples/simple.html">simple</a></li>
@@ -869,9 +871,15 @@ React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-titl
     </tr>
     <tr>
       <td>onChange</td>
-      <td>Function(value, label)</td>
+      <td>Function(value, selectedOptions)</td>
       <td></td>
       <td>callback when finishing cascader select</td>
+    </tr>
+    <tr>
+      <td>onSelect</td>
+      <td>Function(targetOptions, selectedOptions, done)</td>
+      <td></td>
+      <td>callback when click any option, argument &quot;done&quot; use for async select</td>
     </tr>
     <tr>
       <td>onVisibleChange</td>

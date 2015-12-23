@@ -309,26 +309,31 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 }];
 
 <span class="hljs-keyword">class</span> CascaderInput extends Component {
-  constructor() {
-    super();
-    <span class="hljs-keyword">this</span>.state = {
-      inputValue: <span class="hljs-string">''</span>,
-    };
-  }
-  onChange(value, label) {
+  onChange(value) {
     <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">this</span>.setState({
-      inputValue: label.join(<span class="hljs-string">', '</span>),
-    });
     <span class="hljs-keyword">if</span> (props.onChange) {
-      props.onChange(value, label);
+      props.onChange(value);
     }
+  }
+  getLabel() {
+    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
+    <span class="hljs-keyword">let</span> options = props.options;
+    <span class="hljs-keyword">const</span> result = [];
+    (props.value || []).forEach(v =&gt; {
+      <span class="hljs-keyword">const</span> target = options.find(o =&gt; o.value === v);
+      <span class="hljs-keyword">if</span> (!target) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+      result.push(target.label);
+      options = target.children || [];
+    });
+    <span class="hljs-keyword">return</span> result.join(<span class="hljs-string">', '</span>);
   }
   render() {
     <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> {<span class="hljs-attribute">...this.props</span>} <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange.bind(this)}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{props.placeholder}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{props.placeholder}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.getLabel()}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     );
   }

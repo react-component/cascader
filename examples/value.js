@@ -1,14 +1,14 @@
-webpackJsonp([5],{
+webpackJsonp([6],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(244);
+	module.exports = __webpack_require__(245);
 
 
 /***/ },
 
-/***/ 244:
+/***/ 245:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -75,18 +75,29 @@ webpackJsonp([5],{
 	      value: []
 	    };
 	  },
-	  onChange: function onChange(value, label) {
-	    console.log(value, label);
-	    this.setState({
-	      value: value,
-	      inputValue: label.join(', ')
-	    });
+	  onChange: function onChange(value) {
+	    console.log(value);
+	    this.setState({ value: value });
 	  },
 	  setValue: function setValue() {
 	    this.setState({
-	      value: ['bj', 'chaoyang'],
-	      inputValue: ['北京', '朝阳区'].join(', ')
+	      value: ['bj', 'chaoyang']
 	    });
+	  },
+	  getLabel: function getLabel() {
+	    var options = addressOptions;
+	    var result = [];
+	    this.state.value.forEach(function (v) {
+	      var target = options.find(function (o) {
+	        return o.value === v;
+	      });
+	      if (!target) {
+	        return false;
+	      }
+	      result.push(target.label);
+	      options = target.children || [];
+	    });
+	    return result.join(', ');
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
@@ -100,7 +111,7 @@ webpackJsonp([5],{
 	      _react2['default'].createElement(
 	        _rcCascader2['default'],
 	        { value: this.state.value, options: addressOptions, onChange: this.onChange },
-	        _react2['default'].createElement('input', { value: this.state.inputValue, readOnly: true })
+	        _react2['default'].createElement('input', { value: this.getLabel(), readOnly: true })
 	      )
 	    );
 	  }

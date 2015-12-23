@@ -1,14 +1,14 @@
-webpackJsonp([2],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(213);
+	module.exports = __webpack_require__(214);
 
 
 /***/ },
 
-/***/ 213:
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console, react/no-multi-comp */
@@ -36,7 +36,7 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcForm = __webpack_require__(214);
+	var _rcForm = __webpack_require__(215);
 	
 	var _reactDom = __webpack_require__(165);
 	
@@ -85,22 +85,34 @@ webpackJsonp([2],{
 	  function CascaderInput() {
 	    _classCallCheck(this, CascaderInput);
 	
-	    _get(Object.getPrototypeOf(CascaderInput.prototype), 'constructor', this).call(this);
-	    this.state = {
-	      inputValue: ''
-	    };
+	    _get(Object.getPrototypeOf(CascaderInput.prototype), 'constructor', this).apply(this, arguments);
 	  }
 	
 	  _createClass(CascaderInput, [{
 	    key: 'onChange',
-	    value: function onChange(value, label) {
+	    value: function onChange(value) {
 	      var props = this.props;
-	      this.setState({
-	        inputValue: label.join(', ')
-	      });
 	      if (props.onChange) {
-	        props.onChange(value, label);
+	        props.onChange(value);
 	      }
+	    }
+	  }, {
+	    key: 'getLabel',
+	    value: function getLabel() {
+	      var props = this.props;
+	      var options = props.options;
+	      var result = [];
+	      (props.value || []).forEach(function (v) {
+	        var target = options.find(function (o) {
+	          return o.value === v;
+	        });
+	        if (!target) {
+	          return false;
+	        }
+	        result.push(target.label);
+	        options = target.children || [];
+	      });
+	      return result.join(', ');
 	    }
 	  }, {
 	    key: 'render',
@@ -109,7 +121,7 @@ webpackJsonp([2],{
 	      return _react2['default'].createElement(
 	        _rcCascader2['default'],
 	        _extends({}, this.props, { onChange: this.onChange.bind(this) }),
-	        _react2['default'].createElement('input', { placeholder: props.placeholder, value: this.state.inputValue, readOnly: true })
+	        _react2['default'].createElement('input', { placeholder: props.placeholder, value: this.getLabel(), readOnly: true })
 	      );
 	    }
 	  }]);
@@ -192,7 +204,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 214:
+/***/ 215:
 /***/ function(module, exports, __webpack_require__) {
 
 	// export this package's api
@@ -204,13 +216,13 @@ webpackJsonp([2],{
 	
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 	
-	var _createForm = __webpack_require__(215);
+	var _createForm = __webpack_require__(216);
 	
 	exports.createForm = _interopRequire(_createForm);
 
 /***/ },
 
-/***/ 215:
+/***/ 216:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -237,9 +249,9 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(216);
+	var _utils = __webpack_require__(217);
 	
-	var _asyncValidator = __webpack_require__(218);
+	var _asyncValidator = __webpack_require__(219);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
@@ -621,7 +633,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 216:
+/***/ 217:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -637,7 +649,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _hoistNonReactStatics = __webpack_require__(217);
+	var _hoistNonReactStatics = __webpack_require__(218);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -690,7 +702,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 217:
+/***/ 218:
 /***/ function(module, exports) {
 
 	/**
@@ -733,7 +745,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 218:
+/***/ 219:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -746,19 +758,19 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _validator = __webpack_require__(220);
+	var _validator = __webpack_require__(221);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(241);
+	var _messages2 = __webpack_require__(242);
 	
 	var _messages3 = _interopRequireDefault(_messages2);
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	function asyncMap(arr, func, callback) {
 	  var results = [];
@@ -985,7 +997,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 219:
+/***/ 220:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1049,7 +1061,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 220:
+/***/ 221:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1058,27 +1070,27 @@ webpackJsonp([2],{
 	  value: true
 	});
 	exports['default'] = {
-	  string: __webpack_require__(221),
-	  method: __webpack_require__(229),
-	  number: __webpack_require__(230),
-	  boolean: __webpack_require__(231),
-	  regexp: __webpack_require__(232),
-	  integer: __webpack_require__(233),
-	  'float': __webpack_require__(234),
-	  array: __webpack_require__(235),
-	  object: __webpack_require__(236),
-	  'enum': __webpack_require__(237),
-	  pattern: __webpack_require__(238),
-	  email: __webpack_require__(239),
-	  url: __webpack_require__(239),
-	  date: __webpack_require__(240),
-	  hex: __webpack_require__(239)
+	  string: __webpack_require__(222),
+	  method: __webpack_require__(230),
+	  number: __webpack_require__(231),
+	  boolean: __webpack_require__(232),
+	  regexp: __webpack_require__(233),
+	  integer: __webpack_require__(234),
+	  'float': __webpack_require__(235),
+	  array: __webpack_require__(236),
+	  object: __webpack_require__(237),
+	  'enum': __webpack_require__(238),
+	  pattern: __webpack_require__(239),
+	  email: __webpack_require__(240),
+	  url: __webpack_require__(240),
+	  date: __webpack_require__(241),
+	  hex: __webpack_require__(240)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 221:
+/***/ 222:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1089,11 +1101,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	/**
 	 *  Performs validation for string types.
@@ -1130,7 +1142,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 222:
+/***/ 223:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1139,18 +1151,18 @@ webpackJsonp([2],{
 	  value: true
 	});
 	exports['default'] = {
-	  required: __webpack_require__(223),
-	  whitespace: __webpack_require__(224),
-	  type: __webpack_require__(225),
-	  range: __webpack_require__(226),
-	  'enum': __webpack_require__(227),
-	  pattern: __webpack_require__(228)
+	  required: __webpack_require__(224),
+	  whitespace: __webpack_require__(225),
+	  type: __webpack_require__(226),
+	  range: __webpack_require__(227),
+	  'enum': __webpack_require__(228),
+	  pattern: __webpack_require__(229)
 	};
 	module.exports = exports['default'];
 
 /***/ },
 
-/***/ 223:
+/***/ 224:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1161,7 +1173,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1187,7 +1199,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 224:
+/***/ 225:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1198,7 +1210,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1224,7 +1236,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 225:
+/***/ 226:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1237,11 +1249,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(223);
+	var _required = __webpack_require__(224);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
@@ -1330,7 +1342,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 226:
+/***/ 227:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1341,7 +1353,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1399,7 +1411,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 227:
+/***/ 228:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1410,7 +1422,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1439,7 +1451,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 228:
+/***/ 229:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1450,7 +1462,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	var util = _interopRequireWildcard(_util);
 	
@@ -1478,7 +1490,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 229:
+/***/ 230:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1489,7 +1501,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1523,7 +1535,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 230:
+/***/ 231:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1534,7 +1546,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1569,7 +1581,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 231:
+/***/ 232:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1580,7 +1592,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1614,7 +1626,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 232:
+/***/ 233:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1625,11 +1637,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	/**
 	 *  Validates the regular expression type.
@@ -1661,7 +1673,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 233:
+/***/ 234:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1672,7 +1684,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1707,7 +1719,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 234:
+/***/ 235:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1718,7 +1730,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1753,7 +1765,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 235:
+/***/ 236:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1764,11 +1776,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	/**
 	 *  Validates an array.
@@ -1801,7 +1813,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 236:
+/***/ 237:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1812,7 +1824,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1846,7 +1858,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 237:
+/***/ 238:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1857,7 +1869,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1893,7 +1905,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 238:
+/***/ 239:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1904,11 +1916,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	/**
 	 *  Validates a regular expression pattern.
@@ -1943,7 +1955,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 239:
+/***/ 240:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1954,7 +1966,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
@@ -1969,7 +1981,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 240:
+/***/ 241:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1980,11 +1992,11 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _rule = __webpack_require__(222);
+	var _rule = __webpack_require__(223);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(219);
+	var _util = __webpack_require__(220);
 	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
@@ -2011,7 +2023,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 241:
+/***/ 242:
 /***/ function(module, exports) {
 
 	'use strict';

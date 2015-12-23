@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(243);
+	module.exports = __webpack_require__(213);
 
 
 /***/ },
 
-/***/ 243:
+/***/ 213:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -32,39 +32,10 @@ webpackJsonp([4],{
 	
 	var addressOptions = [{
 	  'label': '福建',
-	  'value': 'fj',
-	  'children': [{
-	    'label': '福州',
-	    'value': 'fuzhou',
-	    'children': [{
-	      'label': '马尾',
-	      'value': 'mawei'
-	    }]
-	  }, {
-	    'label': '泉州',
-	    'value': 'quanzhou'
-	  }]
+	  'value': 'fj'
 	}, {
 	  'label': '浙江',
-	  'value': 'zj',
-	  'children': [{
-	    'label': '杭州',
-	    'value': 'hangzhou',
-	    'children': [{
-	      'label': '余杭',
-	      'value': 'yuhang'
-	    }]
-	  }]
-	}, {
-	  'label': '北京',
-	  'value': 'bj',
-	  'children': [{
-	    'label': '朝阳区',
-	    'value': 'chaoyang'
-	  }, {
-	    'label': '海淀区',
-	    'value': 'haidian'
-	  }]
+	  'value': 'zj'
 	}];
 	
 	var Demo = _react2['default'].createClass({
@@ -72,11 +43,34 @@ webpackJsonp([4],{
 	
 	  getInitialState: function getInitialState() {
 	    return {
-	      inputValue: ''
+	      inputValues: [],
+	      options: addressOptions
 	    };
 	  },
+	  onSelect: function onSelect(targetOption, selectedOptions, done) {
+	    var _this = this;
+	
+	    var options = this.state.options;
+	    if (selectedOptions.length === 1 && !targetOption.children) {
+	      targetOption.label += ' loading';
+	      // 动态加载下级数据
+	      setTimeout(function () {
+	        targetOption.label = targetOption.label.replace(' loading', '');
+	        targetOption.children = [{
+	          'label': targetOption.label + '动态加载1',
+	          'value': 'dynamic1'
+	        }, {
+	          'label': targetOption.label + '动态加载2',
+	          'value': 'dynamic2'
+	        }];
+	        _this.setState({ options: options });
+	        done();
+	      }, 1000);
+	      return;
+	    }
+	    done();
+	  },
 	  onChange: function onChange(value, selectedOptions) {
-	    console.log(value, selectedOptions);
 	    this.setState({
 	      inputValue: selectedOptions.map(function (o) {
 	        return o.label;
@@ -86,8 +80,10 @@ webpackJsonp([4],{
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      _rcCascader2['default'],
-	      { options: addressOptions, onChange: this.onChange },
-	      _react2['default'].createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
+	      { options: this.state.options,
+	        onSelect: this.onSelect,
+	        onChange: this.onChange },
+	      _react2['default'].createElement('input', { value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});
@@ -97,4 +93,4 @@ webpackJsonp([4],{
 /***/ }
 
 });
-//# sourceMappingURL=simple.js.map
+//# sourceMappingURL=dynamic-options.js.map

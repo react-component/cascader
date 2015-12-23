@@ -313,10 +313,10 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
       inputValue: <span class="hljs-string">''</span>,
     };
   },
-  onChange(value, label) {
-    <span class="hljs-built_in">console</span>.log(value, label);
+  onChange(value, selectedOptions) {
+    <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
-      inputValue: label.join(<span class="hljs-string">', '</span>),
+      inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
   },
   render() {
