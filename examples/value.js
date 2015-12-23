@@ -3,6 +3,7 @@ import 'rc-cascader/assets/index.less';
 import Cascader from 'rc-cascader';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import arrayTreeFilter from 'array-tree-filter';
 
 const addressOptions = [{
   'label': '福建',
@@ -57,17 +58,8 @@ const Demo = React.createClass({
     });
   },
   getLabel() {
-    let options = addressOptions;
-    const result = [];
-    this.state.value.forEach(v => {
-      const target = options.find(o => o.value === v);
-      if (!target) {
-        return false;
-      }
-      result.push(target.label);
-      options = target.children || [];
-    });
-    return result.join(', ');
+    return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
+      .map(o => o.label).join(', ');
   },
   render() {
     return (

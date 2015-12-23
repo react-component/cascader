@@ -51,6 +51,7 @@
     "lint"
   ],
   "dependencies": {
+    "array-tree-filter": "^1.0.0",
     "rc-trigger": "^1.0.6"
   }
 }

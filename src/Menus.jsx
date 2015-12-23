@@ -1,4 +1,5 @@
 import React from 'react';
+import arrayTreeFilter from 'array-tree-filter';
 
 class Menus extends React.Component {
   constructor(props) {
@@ -25,17 +26,8 @@ class Menus extends React.Component {
   }
   getActiveOptions(values) {
     const activeValue = values || this.state.activeValue;
-    let options = this.props.options;
-    const result = [];
-    activeValue.forEach(value => {
-      const target = options.find(o => o.value === value);
-      if (!target) {
-        return false;
-      }
-      result.push(target);
-      options = target.children || [];
-    });
-    return result;
+    const options = this.props.options;
+    return arrayTreeFilter(options, (o, level) => o.value === activeValue[level]);
   }
   getShowOptions() {
     const { options } = this.props;

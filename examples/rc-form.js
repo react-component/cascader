@@ -4,6 +4,7 @@ import Cascader from 'rc-cascader';
 import React, { Component } from 'react';
 import { createForm } from 'rc-form';
 import ReactDOM from 'react-dom';
+import arrayTreeFilter from 'array-tree-filter';
 
 const addressOptions = [{
   'label': '福建',
@@ -51,17 +52,9 @@ class CascaderInput extends Component {
   }
   getLabel() {
     const props = this.props;
-    let options = props.options;
-    const result = [];
-    (props.value || []).forEach(v => {
-      const target = options.find(o => o.value === v);
-      if (!target) {
-        return false;
-      }
-      result.push(target.label);
-      options = target.children || [];
-    });
-    return result.join(', ');
+    const value = props.value || [];
+    return arrayTreeFilter(props.options, (o, level) => o.value === value[level])
+      .map(o => o.label).join(', ');
   }
   render() {
     const props = this.props;
