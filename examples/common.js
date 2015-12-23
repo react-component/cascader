@@ -24623,6 +24623,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _arrayTreeFilter = __webpack_require__(212);
+	
+	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
+	
 	var Menus = (function (_React$Component) {
 	  _inherits(Menus, _React$Component);
 	
@@ -24660,18 +24664,9 @@
 	    value: function getActiveOptions(values) {
 	      var activeValue = values || this.state.activeValue;
 	      var options = this.props.options;
-	      var result = [];
-	      activeValue.forEach(function (value) {
-	        var target = options.find(function (o) {
-	          return o.value === value;
-	        });
-	        if (!target) {
-	          return false;
-	        }
-	        result.push(target);
-	        options = target.children || [];
+	      return (0, _arrayTreeFilter2['default'])(options, function (o, level) {
+	        return o.value === activeValue[level];
 	      });
-	      return result;
 	    }
 	  }, {
 	    key: 'getShowOptions',
@@ -24780,6 +24775,34 @@
 	
 	exports['default'] = Menus;
 	module.exports = exports['default'];
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	function arrayTreeFilter(data, filterFn, options) {
+	  options = options || {};
+	  options.childrenKeyName = options.childrenKeyName || 'children';
+	  var children = data || [];
+	  var result = [];
+	  var level = 0;
+	  var foundItem;
+	  do {
+	    var foundItem = children.filter(function(item) {
+	      return filterFn(item, level);
+	    })[0];
+	    if (!foundItem) {
+	      break;
+	    }
+	    result.push(foundItem);
+	    children = foundItem[options.childrenKeyName] || [];
+	    level += 1;
+	  } while(children.length > 0);
+	  return result;
+	}
+	
+	module.exports = arrayTreeFilter;
+
 
 /***/ }
 /******/ ]);

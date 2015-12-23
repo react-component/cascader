@@ -3,12 +3,12 @@ webpackJsonp([6],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(245);
+	module.exports = __webpack_require__(246);
 
 
 /***/ },
 
-/***/ 245:
+/***/ 246:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -29,6 +29,10 @@ webpackJsonp([6],{
 	var _reactDom = __webpack_require__(165);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
+	var _arrayTreeFilter = __webpack_require__(212);
+	
+	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
 	
 	var addressOptions = [{
 	  'label': '福建',
@@ -85,19 +89,13 @@ webpackJsonp([6],{
 	    });
 	  },
 	  getLabel: function getLabel() {
-	    var options = addressOptions;
-	    var result = [];
-	    this.state.value.forEach(function (v) {
-	      var target = options.find(function (o) {
-	        return o.value === v;
-	      });
-	      if (!target) {
-	        return false;
-	      }
-	      result.push(target.label);
-	      options = target.children || [];
-	    });
-	    return result.join(', ');
+	    var _this = this;
+	
+	    return (0, _arrayTreeFilter2['default'])(addressOptions, function (o, level) {
+	      return o.value === _this.state.value[level];
+	    }).map(function (o) {
+	      return o.label;
+	    }).join(', ');
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(

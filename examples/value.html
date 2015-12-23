@@ -269,6 +269,7 @@ import <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
 import Cascader from <span class="hljs-string">'rc-cascader'</span>;
 import React from <span class="hljs-string">'react'</span>;
 import ReactDOM from <span class="hljs-string">'react-dom'</span>;
+import arrayTreeFilter from <span class="hljs-string">'array-tree-filter'</span>;
 
 <span class="hljs-keyword">const</span> addressOptions = [{
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'福建'</span>,
@@ -323,17 +324,8 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
     });
   },
   getLabel() {
-    <span class="hljs-keyword">let</span> options = addressOptions;
-    <span class="hljs-keyword">const</span> result = [];
-    <span class="hljs-keyword">this</span>.state.value.forEach(v =&gt; {
-      <span class="hljs-keyword">const</span> target = options.find(o =&gt; o.value === v);
-      <span class="hljs-keyword">if</span> (!target) {
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-      }
-      result.push(target.label);
-      options = target.children || [];
-    });
-    <span class="hljs-keyword">return</span> result.join(<span class="hljs-string">', '</span>);
+    <span class="hljs-keyword">return</span> arrayTreeFilter(addressOptions, (o, level) =&gt; o.value === <span class="hljs-keyword">this</span>.state.value[level])
+      .map(o =&gt; o.label).join(<span class="hljs-string">', '</span>);
   },
   render() {
     <span class="hljs-keyword">return</span> (
