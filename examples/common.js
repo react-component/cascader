@@ -24702,14 +24702,14 @@
 	          value: activeValue
 	        });
 	      };
-	      // specify the third argument `done`:
-	      //  onSelect(targetOption, selectedOptions, done)
+	      // specify the last argument `done`:
+	      //  onSelect(selectedOptions, done)
 	      // it means async select
-	      if (this.props.onSelect.length >= 3) {
-	        this.props.onSelect(targetOption, activeOptions, selectCallback);
+	      if (this.props.onSelect.length >= 2) {
+	        this.props.onSelect(activeOptions, selectCallback);
 	        this.setState({ activeValue: activeValue });
 	      } else {
-	        this.props.onSelect(targetOption, activeOptions);
+	        this.props.onSelect(activeOptions);
 	        selectCallback();
 	      }
 	    }

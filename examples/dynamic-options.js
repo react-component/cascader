@@ -47,10 +47,11 @@ webpackJsonp([2],{
 	      options: addressOptions
 	    };
 	  },
-	  onSelect: function onSelect(targetOption, selectedOptions, done) {
+	  onSelect: function onSelect(selectedOptions, done) {
 	    var _this = this;
 	
 	    var options = this.state.options;
+	    var targetOption = selectedOptions[selectedOptions.length - 1];
 	    if (selectedOptions.length === 1 && !targetOption.children) {
 	      targetOption.label += ' loading';
 	      // 动态加载下级数据

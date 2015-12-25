@@ -259,7 +259,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <div class="header">
     <h1>rc-cascader@0.1.0</h1>
 
-    <p>cascader ui component for react</p>
+    <p>cascade select ui component for react</p>
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
@@ -285,8 +285,9 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
       options: addressOptions,
     };
   },
-  onSelect(targetOption, selectedOptions, done) {
+  onSelect(selectedOptions, done) {
     <span class="hljs-keyword">const</span> options = <span class="hljs-keyword">this</span>.state.options;
+    <span class="hljs-keyword">const</span> targetOption = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
     <span class="hljs-keyword">if</span> (selectedOptions.length === <span class="hljs-number">1</span> &amp;&amp; !targetOption.children) {
       targetOption.label += <span class="hljs-string">' loading'</span>;
       <span class="hljs-comment">// 动态加载下级数据</span>
