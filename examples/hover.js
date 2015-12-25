@@ -55,9 +55,12 @@ const Demo = React.createClass({
   },
   render() {
     return (
-      <Cascader expandTrigger="hover" options={addressOptions} onChange={this.onChange}>
-        <input placeholder="please select address" value={this.state.inputValue} readOnly />
-      </Cascader>
+      <div>
+        <p>Hover to expand children</p>
+        <Cascader expandTrigger="hover" options={addressOptions} onChange={this.onChange}>
+          <input placeholder="please select address" value={this.state.inputValue} readOnly />
+        </Cascader>
+      </div>
     );
   },
 });
