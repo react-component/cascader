@@ -98,6 +98,17 @@
 .rc-cascader-menu-item-active:hover {
   background: #d5f1fd;
 }
+.rc-cascader-menu-item-expand {
+  position: relative;
+}
+.rc-cascader-menu-item-expand:after {
+  content: '>';
+  font-size: 12px;
+  color: #999;
+  position: absolute;
+  right: 16px;
+  line-height: 32px;
+}
 @-webkit-keyframes SlideUpIn {
   0% {
     opacity: 0;

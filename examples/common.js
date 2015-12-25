@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		7:0
+/******/ 		8:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"dynamic-options","3":"rc-form","4":"simple","5":"text-trigger","6":"value"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"dynamic-options","3":"hover","4":"rc-form","5":"simple","6":"text-trigger","7":"value"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -24609,6 +24609,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -24682,8 +24684,8 @@
 	      return result;
 	    }
 	  }, {
-	    key: 'handleClick',
-	    value: function handleClick(targetOption, menuIndex) {
+	    key: 'handleSelect',
+	    value: function handleSelect(targetOption, menuIndex) {
 	      var _this = this;
 	
 	      if (!targetOption) {
@@ -24725,7 +24727,9 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var prefixCls = this.props.prefixCls;
+	      var _props = this.props;
+	      var prefixCls = _props.prefixCls;
+	      var expandTrigger = _props.expandTrigger;
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -24739,12 +24743,22 @@
 	              if (_this2.isActiveOption(option)) {
 	                menuItemCls += ' ' + prefixCls + '-menu-item-active';
 	              }
+	              var handleSelect = _this2.handleSelect.bind(_this2, option, menuIndex);
+	              var expandProps = {
+	                onClick: handleSelect
+	              };
+	              if (expandTrigger === 'hover' && option.children && option.children.length > 0) {
+	                expandProps = {
+	                  onMouseEnter: handleSelect
+	                };
+	                menuItemCls += ' ' + prefixCls + '-menu-item-expand';
+	              }
 	              return _react2['default'].createElement(
 	                'li',
-	                { key: option.value,
+	                _extends({ key: option.value,
 	                  className: menuItemCls,
-	                  title: option.label,
-	                  onClick: _this2.handleClick.bind(_this2, option, menuIndex) },
+	                  title: option.label
+	                }, expandProps),
 	                option.label
 	              );
 	            })
@@ -24762,12 +24776,14 @@
 	  onChange: function onChange() {},
 	  onSelect: function onSelect() {},
 	  prefixCls: 'rc-cascader-menus',
-	  visible: false
+	  visible: false,
+	  expandTrigger: 'click'
 	};
 	
 	Menus.propTypes = {
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  prefixCls: _react2['default'].PropTypes.string,
+	  expandTrigger: _react2['default'].PropTypes.string,
 	  onChange: _react2['default'].PropTypes.func,
 	  onSelect: _react2['default'].PropTypes.func,
 	  visible: _react2['default'].PropTypes.bool
