@@ -37,7 +37,7 @@ class Menus extends React.Component {
     result.unshift(options);
     return result;
   }
-  handleClick(targetOption, menuIndex) {
+  handleSelect(targetOption, menuIndex) {
     if (!targetOption) {
       return;
     }
@@ -69,7 +69,7 @@ class Menus extends React.Component {
     return this.state.activeValue.some(value => value === option.value);
   }
   render() {
-    const { prefixCls } = this.props;
+    const { prefixCls, expandTrigger } = this.props;
     return (
       <div>
         {this.getShowOptions().map((options, menuIndex) =>
@@ -79,11 +79,23 @@ class Menus extends React.Component {
               if (this.isActiveOption(option)) {
                 menuItemCls += ` ${prefixCls}-menu-item-active`;
               }
+              const handleSelect = this.handleSelect.bind(this, option, menuIndex);
+              let expandProps = {
+                onClick: handleSelect,
+              };
+              if (expandTrigger === 'hover' &&
+                  option.children &&
+                  option.children.length > 0) {
+                expandProps = {
+                  onMouseEnter: handleSelect,
+                };
+                menuItemCls += ` ${prefixCls}-menu-item-expand`;
+              }
               return (
                 <li key={option.value}
                   className={menuItemCls}
                   title={option.label}
-                  onClick={this.handleClick.bind(this, option, menuIndex)}>
+                  {...expandProps}>
                   {option.label}
                 </li>
               );
@@ -101,11 +113,13 @@ Menus.defaultProps = {
   onSelect() {},
   prefixCls: 'rc-cascader-menus',
   visible: false,
+  expandTrigger: 'click',
 };
 
 Menus.propTypes = {
   options: React.PropTypes.array.isRequired,
   prefixCls: React.PropTypes.string,
+  expandTrigger: React.PropTypes.string,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
   visible: React.PropTypes.bool,

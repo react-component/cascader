@@ -152,6 +152,12 @@ React.render(<Cascader options={options} />, container);
       <td>callback when click any option, argument "done" use for async select</td>
     </tr>
     <tr>
+      <td>expandTrigger</td>
+      <td>String</td>
+      <td>'click'</td>
+      <td>expand current item when click or hover</td>
+    </tr>
+    <tr>
       <td>onVisibleChange</td>
       <td>Function(visible)</td>
       <td></td>
