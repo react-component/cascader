@@ -131,4 +131,77 @@ describe('Cascader', () => {
     expect(instance.state.popupVisible).not.to.be.ok();
     done();
   });
+
+  it('should clear active selection when no finish select', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={addressOptions}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    Simulate.click(menu1Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).to.be.ok();
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    done();
+  });
+
+  it('should set back to defaultValue when no finish select', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(3);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    Simulate.click(menu1Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).to.be.ok();
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(3);
+    done();
+  });
+
+  it('should not change value when it is a controlled component', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={addressOptions} value={['fj']}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+
+    Simulate.click(menu1Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    const menu2Items = menus[1].querySelectorAll('.rc-cascader-menu-item');
+
+    Simulate.click(menu2Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(3);
+    const menu3Items = menus[2].querySelectorAll('.rc-cascader-menu-item');
+
+    Simulate.click(menu3Items[0]);
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(instance.state.popupVisible).to.be.ok();
+    expect(menus.length).to.be(2);
+    done();
+  });
 });
