@@ -30,7 +30,11 @@ class Cascader extends React.Component {
     [
       'handleChange',
       'handlePopupVisibleChange',
+      'getPopupDOMNode',
     ].forEach(method => this[method] = this[method].bind(this));
+  }
+  getPopupDOMNode() {
+    return this.refs.trigger.getPopupDomNode();
   }
   handleChange(options) {
     this.props.onChange(
