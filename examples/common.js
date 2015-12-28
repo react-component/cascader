@@ -204,12 +204,17 @@
 	    this.state = {
 	      popupVisible: false
 	    };
-	    ['handleChange', 'handlePopupVisibleChange'].forEach(function (method) {
+	    ['handleChange', 'handlePopupVisibleChange', 'getPopupDOMNode'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
 	    });
 	  }
 	
 	  _createClass(Cascader, [{
+	    key: 'getPopupDOMNode',
+	    value: function getPopupDOMNode() {
+	      return this.refs.trigger.getPopupDomNode();
+	    }
+	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(options) {
 	      this.props.onChange(options.map(function (o) {
@@ -24650,9 +24655,10 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if ('value' in nextProps) {
+	        var value = nextProps.value || [];
 	        this.setState({
-	          activeValue: nextProps.value || [],
-	          value: nextProps.value || []
+	          activeValue: value,
+	          value: value
 	        });
 	      }
 	      if (!nextProps.visible) {
@@ -24698,22 +24704,23 @@
 	      var selectCallback = function selectCallback() {
 	        if (!targetOption.children || targetOption.children.length === 0) {
 	          _this.props.onChange(activeOptions);
+	          // finish select
+	          // should set value to activeValue
+	          _this.setState({ value: activeValue });
 	        }
-	        _this.setState({
-	          activeValue: activeValue,
-	          value: activeValue
-	        });
+	        _this.forceUpdate();
 	      };
 	      // specify the last argument `done`:
 	      //  onSelect(selectedOptions, done)
 	      // it means async select
 	      if (this.props.onSelect.length >= 2) {
 	        this.props.onSelect(activeOptions, selectCallback);
-	        this.setState({ activeValue: activeValue });
 	      } else {
 	        this.props.onSelect(activeOptions);
 	        selectCallback();
 	      }
+	      // set activeValue, waiting for async callback
+	      this.setState({ activeValue: activeValue });
 	    }
 	  }, {
 	    key: 'isActiveOption',
