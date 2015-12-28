@@ -13,9 +13,10 @@ class Menus extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
+      const value = nextProps.value || [];
       this.setState({
-        activeValue: nextProps.value || [],
-        value: nextProps.value || [],
+        activeValue: value,
+        value: value,
       });
     }
     if (!nextProps.visible) {
@@ -48,22 +49,23 @@ class Menus extends React.Component {
     const selectCallback = () => {
       if (!targetOption.children || targetOption.children.length === 0) {
         this.props.onChange(activeOptions);
+        // finish select
+        // should set value to activeValue
+        this.setState({ value: activeValue });
       }
-      this.setState({
-        activeValue,
-        value: activeValue,
-      });
+      this.forceUpdate();
     };
     // specify the last argument `done`:
     //  onSelect(selectedOptions, done)
     // it means async select
     if (this.props.onSelect.length >= 2) {
       this.props.onSelect(activeOptions, selectCallback);
-      this.setState({ activeValue });
     } else {
       this.props.onSelect(activeOptions);
       selectCallback();
     }
+    // set activeValue, waiting for async callback
+    this.setState({ activeValue });
   }
   isActiveOption(option) {
     return this.state.activeValue.some(value => value === option.value);
