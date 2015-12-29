@@ -30,6 +30,7 @@ class Cascader extends React.Component {
     [
       'handleChange',
       'handlePopupVisibleChange',
+      'setPopupVisible',
       'getPopupDOMNode',
     ].forEach(method => this[method] = this[method].bind(this));
   }
@@ -43,20 +44,21 @@ class Cascader extends React.Component {
   getPopupDOMNode() {
     return this.refs.trigger.getPopupDomNode();
   }
+  setPopupVisible(popupVisible) {
+    if (!('popupVisible' in this.props)) {
+      this.setState({ popupVisible });
+    }
+    this.props.onPopupVisibleChange(popupVisible);
+  }
   handleChange(options) {
     this.props.onChange(
       options.map(o => o.value),
       options,
     );
-    this.setState({
-      popupVisible: false,
-    });
+    this.setPopupVisible(false);
   }
   handlePopupVisibleChange(popupVisible) {
-    if (!('popupVisible' in this.props)) {
-      this.setState({ popupVisible });
-    }
-    this.props.onPopupVisibleChange(popupVisible);
+    this.setPopupVisible(popupVisible);
   }
   render() {
     const props = this.props;
