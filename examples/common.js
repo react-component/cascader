@@ -24655,12 +24655,11 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if ('value' in nextProps) {
-	        var value = nextProps.value || [];
 	        this.setState({
-	          activeValue: value,
-	          value: value
+	          value: nextProps.value || []
 	        });
 	      }
+	      // sync activeValue with value when panel open
 	      if (nextProps.visible) {
 	        this.setState({
 	          activeValue: this.state.value
