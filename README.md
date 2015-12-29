@@ -158,7 +158,13 @@ React.render(<Cascader options={options} />, container);
       <td>expand current item when click or hover</td>
     </tr>
     <tr>
-      <td>onVisibleChange</td>
+      <td>popupVisible</td>
+      <td>Boolean</td>
+      <td></td>
+      <td>visibility of popup overlay</td>
+    </tr>
+    <tr>
+      <td>onPopupVisibleChange</td>
       <td>Function(visible)</td>
       <td></td>
       <td>callback when popup overlay's visibility changed</td>

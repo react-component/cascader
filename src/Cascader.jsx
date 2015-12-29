@@ -22,16 +22,23 @@ const BUILT_IN_PLACEMENTS = {
 };
 
 class Cascader extends React.Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      popupVisible: false,
+      popupVisible: props.popupVisible,
     };
     [
       'handleChange',
       'handlePopupVisibleChange',
       'getPopupDOMNode',
     ].forEach(method => this[method] = this[method].bind(this));
+  }
+  componentWillReceiveProps(nextProps) {
+    if ('popupVisible' in nextProps) {
+      this.setState({
+        popupVisible: nextProps.popupVisible,
+      });
+    }
   }
   getPopupDOMNode() {
     return this.refs.trigger.getPopupDomNode();
@@ -46,8 +53,10 @@ class Cascader extends React.Component {
     });
   }
   handlePopupVisibleChange(popupVisible) {
-    this.setState({ popupVisible });
-    this.props.onVisibleChange(popupVisible);
+    if (!('popupVisible' in this.props)) {
+      this.setState({ popupVisible });
+    }
+    this.props.onPopupVisibleChange(popupVisible);
   }
   render() {
     const props = this.props;
@@ -80,7 +89,7 @@ Cascader.defaultProps = {
   options: [],
   onChange() {},
   onSelect() {},
-  onVisibleChange() {},
+  onPopupVisibleChange() {},
   transitionName: '',
   prefixCls: 'rc-cascader',
   popupClassName: '',
@@ -90,8 +99,8 @@ Cascader.propTypes = {
   options: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
-  onVisibleChange: React.PropTypes.func,
-  visible: React.PropTypes.bool,
+  onPopupVisibleChange: React.PropTypes.func,
+  popupVisible: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   popupClassName: React.PropTypes.string,
   prefixCls: React.PropTypes.string,
