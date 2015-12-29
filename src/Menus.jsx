@@ -19,7 +19,7 @@ class Menus extends React.Component {
         value: value,
       });
     }
-    if (!nextProps.visible) {
+    if (nextProps.visible) {
       this.setState({
         activeValue: this.state.value,
       });
