@@ -24661,7 +24661,7 @@
 	          value: value
 	        });
 	      }
-	      if (!nextProps.visible) {
+	      if (nextProps.visible) {
 	        this.setState({
 	          activeValue: this.state.value
 	        });
