@@ -195,14 +195,14 @@
 	var Cascader = (function (_React$Component) {
 	  _inherits(Cascader, _React$Component);
 	
-	  function Cascader() {
+	  function Cascader(props) {
 	    var _this = this;
 	
 	    _classCallCheck(this, Cascader);
 	
 	    _get(Object.getPrototypeOf(Cascader.prototype), 'constructor', this).call(this);
 	    this.state = {
-	      popupVisible: false
+	      popupVisible: props.popupVisible
 	    };
 	    ['handleChange', 'handlePopupVisibleChange', 'getPopupDOMNode'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
@@ -210,6 +210,15 @@
 	  }
 	
 	  _createClass(Cascader, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if ('popupVisible' in nextProps) {
+	        this.setState({
+	          popupVisible: nextProps.popupVisible
+	        });
+	      }
+	    }
+	  }, {
 	    key: 'getPopupDOMNode',
 	    value: function getPopupDOMNode() {
 	      return this.refs.trigger.getPopupDomNode();
@@ -227,8 +236,10 @@
 	  }, {
 	    key: 'handlePopupVisibleChange',
 	    value: function handlePopupVisibleChange(popupVisible) {
-	      this.setState({ popupVisible: popupVisible });
-	      this.props.onVisibleChange(popupVisible);
+	      if (!('popupVisible' in this.props)) {
+	        this.setState({ popupVisible: popupVisible });
+	      }
+	      this.props.onPopupVisibleChange(popupVisible);
 	    }
 	  }, {
 	    key: 'render',
@@ -266,7 +277,7 @@
 	  options: [],
 	  onChange: function onChange() {},
 	  onSelect: function onSelect() {},
-	  onVisibleChange: function onVisibleChange() {},
+	  onPopupVisibleChange: function onPopupVisibleChange() {},
 	  transitionName: '',
 	  prefixCls: 'rc-cascader',
 	  popupClassName: ''
@@ -276,8 +287,8 @@
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  onChange: _react2['default'].PropTypes.func,
 	  onSelect: _react2['default'].PropTypes.func,
-	  onVisibleChange: _react2['default'].PropTypes.func,
-	  visible: _react2['default'].PropTypes.bool,
+	  onPopupVisibleChange: _react2['default'].PropTypes.func,
+	  popupVisible: _react2['default'].PropTypes.bool,
 	  transitionName: _react2['default'].PropTypes.string,
 	  popupClassName: _react2['default'].PropTypes.string,
 	  prefixCls: _react2['default'].PropTypes.string
