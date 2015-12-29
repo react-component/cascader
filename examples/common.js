@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		8:0
+/******/ 		9:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"dynamic-options","3":"hover","4":"rc-form","5":"simple","6":"text-trigger","7":"value"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"dynamic-options","3":"hover","4":"rc-form","5":"simple","6":"text-trigger","7":"value","8":"visible"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -204,7 +204,7 @@
 	    this.state = {
 	      popupVisible: props.popupVisible
 	    };
-	    ['handleChange', 'handlePopupVisibleChange', 'getPopupDOMNode'].forEach(function (method) {
+	    ['handleChange', 'handlePopupVisibleChange', 'setPopupVisible', 'getPopupDOMNode'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
 	    });
 	  }
@@ -224,22 +224,25 @@
 	      return this.refs.trigger.getPopupDomNode();
 	    }
 	  }, {
+	    key: 'setPopupVisible',
+	    value: function setPopupVisible(popupVisible) {
+	      if (!('popupVisible' in this.props)) {
+	        this.setState({ popupVisible: popupVisible });
+	      }
+	      this.props.onPopupVisibleChange(popupVisible);
+	    }
+	  }, {
 	    key: 'handleChange',
 	    value: function handleChange(options) {
 	      this.props.onChange(options.map(function (o) {
 	        return o.value;
 	      }), options);
-	      this.setState({
-	        popupVisible: false
-	      });
+	      this.setPopupVisible(false);
 	    }
 	  }, {
 	    key: 'handlePopupVisibleChange',
 	    value: function handlePopupVisibleChange(popupVisible) {
-	      if (!('popupVisible' in this.props)) {
-	        this.setState({ popupVisible: popupVisible });
-	      }
-	      this.props.onPopupVisibleChange(popupVisible);
+	      this.setPopupVisible(popupVisible);
 	    }
 	  }, {
 	    key: 'render',
