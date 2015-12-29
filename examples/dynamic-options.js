@@ -6,9 +6,11 @@ import ReactDOM from 'react-dom';
 
 const addressOptions = [{
   'label': '福建',
+  isLeaf: false,
   'value': 'fj',
 }, {
   'label': '浙江',
+  isLeaf: false,
   'value': 'zj',
 }];
 
@@ -19,39 +21,35 @@ const Demo = React.createClass({
       options: addressOptions,
     };
   },
-  onSelect(selectedOptions, done) {
-    const options = this.state.options;
-    const targetOption = selectedOptions[selectedOptions.length - 1];
-    if (selectedOptions.length === 1 && !targetOption.children) {
-      targetOption.label += ' loading';
-      // 动态加载下级数据
-      setTimeout(() => {
-        targetOption.label = targetOption.label.replace(' loading', '');
-        targetOption.children = [{
-          'label': targetOption.label + '动态加载1',
-          'value': 'dynamic1',
-        }, {
-          'label': targetOption.label + '动态加载2',
-          'value': 'dynamic2',
-        }];
-        this.setState({ options });
-        done();
-      }, 1000);
-      return;
-    }
-    done();
-  },
   onChange(value, selectedOptions) {
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
   },
+  loadData(selectedOptions) {
+    const options = this.state.options;
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    targetOption.label += ' loading';
+    // 动态加载下级数据
+    setTimeout(() => {
+      targetOption.label = targetOption.label.replace(' loading', '');
+      targetOption.children = [{
+        'label': targetOption.label + '动态加载1',
+        'value': 'dynamic1',
+      }, {
+        'label': targetOption.label + '动态加载2',
+        'value': 'dynamic2',
+      }];
+      this.setState({options});
+    }, 1000);
+    this.setState({options});
+  },
   render() {
     return (
       <Cascader options={this.state.options}
-        onSelect={this.onSelect}
-        onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly />
+                loadData={this.loadData}
+                onChange={this.onChange}>
+        <input value={this.state.inputValue} readOnly/>
       </Cascader>
     );
   },

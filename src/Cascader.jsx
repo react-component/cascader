@@ -53,7 +53,7 @@ class Cascader extends React.Component {
   handleChange(options) {
     this.props.onChange(
       options.map(o => o.value),
-      options,
+      options
     );
     this.setPopupVisible(false);
   }
