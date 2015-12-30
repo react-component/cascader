@@ -24674,11 +24674,65 @@
 	        });
 	      }
 	      // sync activeValue with value when panel open
-	      if (nextProps.visible) {
+	      if (nextProps.visible && !this.props.visible) {
 	        this.setState({
 	          activeValue: this.state.value
 	        });
 	      }
+	    }
+	  }, {
+	    key: 'onSelect',
+	    value: function onSelect(targetOption, menuIndex) {
+	      if (!targetOption) {
+	        return;
+	      }
+	      var activeValue = this.state.activeValue;
+	      activeValue = activeValue.slice(0, menuIndex + 1);
+	      activeValue[menuIndex] = targetOption.value;
+	      var activeOptions = this.getActiveOptions(activeValue);
+	      if (targetOption.isLeaf === false && !targetOption.children) {
+	        if (this.props.loadData) {
+	          this.setState({ activeValue: activeValue });
+	          this.props.loadData(activeOptions);
+	        }
+	      } else if (!targetOption.children || !targetOption.children.length) {
+	        this.props.onChange(activeOptions);
+	        // finish select
+	        // should set value to activeValue
+	        this.setState({ value: activeValue });
+	      } else {
+	        this.setState({ activeValue: activeValue });
+	      }
+	    }
+	  }, {
+	    key: 'getOption',
+	    value: function getOption(option, menuIndex) {
+	      var _props = this.props;
+	      var prefixCls = _props.prefixCls;
+	      var expandTrigger = _props.expandTrigger;
+	
+	      var menuItemCls = prefixCls + '-menu-item';
+	      if (this.isActiveOption(option)) {
+	        menuItemCls += ' ' + prefixCls + '-menu-item-active';
+	      }
+	      var onSelect = this.onSelect.bind(this, option, menuIndex);
+	      var expandProps = {
+	        onClick: onSelect
+	      };
+	      if (expandTrigger === 'hover' && option.children && option.children.length > 0) {
+	        expandProps = {
+	          onMouseEnter: onSelect
+	        };
+	        menuItemCls += ' ' + prefixCls + '-menu-item-expand';
+	      }
+	      return _react2['default'].createElement(
+	        'li',
+	        _extends({ key: option.value,
+	          className: menuItemCls,
+	          title: option.label
+	        }, expandProps),
+	        option.label
+	      );
 	    }
 	  }, {
 	    key: 'getActiveOptions',
@@ -24703,39 +24757,6 @@
 	      return result;
 	    }
 	  }, {
-	    key: 'handleSelect',
-	    value: function handleSelect(targetOption, menuIndex) {
-	      var _this = this;
-	
-	      if (!targetOption) {
-	        return;
-	      }
-	      var activeValue = this.state.activeValue;
-	      activeValue = activeValue.slice(0, menuIndex + 1);
-	      activeValue[menuIndex] = targetOption.value;
-	      var activeOptions = this.getActiveOptions(activeValue);
-	      var selectCallback = function selectCallback() {
-	        if (!targetOption.children || targetOption.children.length === 0) {
-	          _this.props.onChange(activeOptions);
-	          // finish select
-	          // should set value to activeValue
-	          _this.setState({ value: activeValue });
-	        }
-	        _this.forceUpdate();
-	      };
-	      // specify the last argument `done`:
-	      //  onSelect(selectedOptions, done)
-	      // it means async select
-	      if (this.props.onSelect.length >= 2) {
-	        this.props.onSelect(activeOptions, selectCallback);
-	      } else {
-	        this.props.onSelect(activeOptions);
-	        selectCallback();
-	      }
-	      // set activeValue, waiting for async callback
-	      this.setState({ activeValue: activeValue });
-	    }
-	  }, {
 	    key: 'isActiveOption',
 	    value: function isActiveOption(option) {
 	      return this.state.activeValue.some(function (value) {
@@ -24745,11 +24766,9 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this = this;
 	
-	      var _props = this.props;
-	      var prefixCls = _props.prefixCls;
-	      var expandTrigger = _props.expandTrigger;
+	      var prefixCls = this.props.prefixCls;
 	
 	      return _react2['default'].createElement(
 	        'div',
@@ -24759,28 +24778,7 @@
 	            'ul',
 	            { className: prefixCls + '-menu', key: menuIndex },
 	            options.map(function (option) {
-	              var menuItemCls = prefixCls + '-menu-item';
-	              if (_this2.isActiveOption(option)) {
-	                menuItemCls += ' ' + prefixCls + '-menu-item-active';
-	              }
-	              var handleSelect = _this2.handleSelect.bind(_this2, option, menuIndex);
-	              var expandProps = {
-	                onClick: handleSelect
-	              };
-	              if (expandTrigger === 'hover' && option.children && option.children.length > 0) {
-	                expandProps = {
-	                  onMouseEnter: handleSelect
-	                };
-	                menuItemCls += ' ' + prefixCls + '-menu-item-expand';
-	              }
-	              return _react2['default'].createElement(
-	                'li',
-	                _extends({ key: option.value,
-	                  className: menuItemCls,
-	                  title: option.label
-	                }, expandProps),
-	                option.label
-	              );
+	              return _this.getOption(option, menuIndex);
 	            })
 	          );
 	        })
@@ -24805,7 +24803,7 @@
 	  prefixCls: _react2['default'].PropTypes.string,
 	  expandTrigger: _react2['default'].PropTypes.string,
 	  onChange: _react2['default'].PropTypes.func,
-	  onSelect: _react2['default'].PropTypes.func,
+	  loadData: _react2['default'].PropTypes.func,
 	  visible: _react2['default'].PropTypes.bool
 	};
 	

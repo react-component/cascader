@@ -272,9 +272,11 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
 
 <span class="hljs-keyword">const</span> addressOptions = [{
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'福建'</span>,
+  isLeaf: <span class="hljs-literal">false</span>,
   <span class="hljs-string">'value'</span>: <span class="hljs-string">'fj'</span>,
 }, {
   <span class="hljs-string">'label'</span>: <span class="hljs-string">'浙江'</span>,
+  isLeaf: <span class="hljs-literal">false</span>,
   <span class="hljs-string">'value'</span>: <span class="hljs-string">'zj'</span>,
 }];
 
@@ -285,39 +287,35 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
       options: addressOptions,
     };
   },
-  onSelect(selectedOptions, done) {
-    <span class="hljs-keyword">const</span> options = <span class="hljs-keyword">this</span>.state.options;
-    <span class="hljs-keyword">const</span> targetOption = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
-    <span class="hljs-keyword">if</span> (selectedOptions.length === <span class="hljs-number">1</span> &amp;&amp; !targetOption.children) {
-      targetOption.label += <span class="hljs-string">' loading'</span>;
-      <span class="hljs-comment">// 动态加载下级数据</span>
-      setTimeout(() =&gt; {
-        targetOption.label = targetOption.label.replace(<span class="hljs-string">' loading'</span>, <span class="hljs-string">''</span>);
-        targetOption.children = [{
-          <span class="hljs-string">'label'</span>: targetOption.label + <span class="hljs-string">'动态加载1'</span>,
-          <span class="hljs-string">'value'</span>: <span class="hljs-string">'dynamic1'</span>,
-        }, {
-          <span class="hljs-string">'label'</span>: targetOption.label + <span class="hljs-string">'动态加载2'</span>,
-          <span class="hljs-string">'value'</span>: <span class="hljs-string">'dynamic2'</span>,
-        }];
-        <span class="hljs-keyword">this</span>.setState({ options });
-        done();
-      }, <span class="hljs-number">1000</span>);
-      <span class="hljs-keyword">return</span>;
-    }
-    done();
-  },
   onChange(value, selectedOptions) {
     <span class="hljs-keyword">this</span>.setState({
       inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
   },
+  loadData(selectedOptions) {
+    <span class="hljs-keyword">const</span> options = <span class="hljs-keyword">this</span>.state.options;
+    <span class="hljs-keyword">const</span> targetOption = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
+    targetOption.label += <span class="hljs-string">' loading'</span>;
+    <span class="hljs-comment">// 动态加载下级数据</span>
+    setTimeout(() =&gt; {
+      targetOption.label = targetOption.label.replace(<span class="hljs-string">' loading'</span>, <span class="hljs-string">''</span>);
+      targetOption.children = [{
+        <span class="hljs-string">'label'</span>: targetOption.label + <span class="hljs-string">'动态加载1'</span>,
+        <span class="hljs-string">'value'</span>: <span class="hljs-string">'dynamic1'</span>,
+      }, {
+        <span class="hljs-string">'label'</span>: targetOption.label + <span class="hljs-string">'动态加载2'</span>,
+        <span class="hljs-string">'value'</span>: <span class="hljs-string">'dynamic2'</span>,
+      }];
+      <span class="hljs-keyword">this</span>.setState({options});
+    }, <span class="hljs-number">1000</span>);
+    <span class="hljs-keyword">this</span>.setState({options});
+  },
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{this.state.options}</span>
-        <span class="hljs-attribute">onSelect</span>=<span class="hljs-value">{this.onSelect}</span>
-        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+                <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{this.loadData}</span>
+                <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span>/&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     );
   },
