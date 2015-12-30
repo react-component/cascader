@@ -2,6 +2,11 @@
 
 ---
 
+## 0.5.0 / 2015-12-30
+
+- Remove `onSelect`
+- Add `loadData` for dynamicly changing options
+
 ## 0.4.0 / 2015-12-29
 
 - Add prop `popupVisible`.
