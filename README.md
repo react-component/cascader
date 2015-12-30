@@ -146,7 +146,7 @@ React.render(<Cascader options={options} />, container);
       <td>loadData</td>
       <td>Function(selectedOptions)</td>
       <td></td>
-      <td>callback when click any option, used for load more data</td>
+      <td>callback when click any option, use for loading more options</td>
     </tr>
     <tr>
       <td>expandTrigger</td>
