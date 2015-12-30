@@ -71,9 +71,8 @@ describe('Cascader', () => {
     expect(selectedValue).not.to.be.ok();
 
     Simulate.click(menu3Items[0]);
-    expect(menu3Items[0].className).to.contain('rc-cascader-menu-item-active');
-    expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
     expect(instance.state.popupVisible).not.to.be.ok();
+    expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
     done();
   });
 
@@ -126,9 +125,8 @@ describe('Cascader', () => {
     expect(selectedValue).not.to.be.ok();
 
     Simulate.click(menu3Items[0]);
-    expect(menu3Items[0].className).to.contain('rc-cascader-menu-item-active');
-    expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
     expect(instance.state.popupVisible).not.to.be.ok();
+    expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
     done();
   });
 
