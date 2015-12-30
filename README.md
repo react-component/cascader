@@ -143,10 +143,10 @@ React.render(<Cascader options={options} />, container);
       <td>callback when finishing cascader select</td>
     </tr>
     <tr>
-      <td>onSelect</td>
-      <td>Function(selectedOptions, done)</td>
+      <td>loadData</td>
+      <td>Function(selectedOptions)</td>
       <td></td>
-      <td>callback when click any option, argument "done" use for async select</td>
+      <td>callback when click any option, use for loading more options</td>
     </tr>
     <tr>
       <td>expandTrigger</td>

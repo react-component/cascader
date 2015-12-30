@@ -11,6 +11,7 @@ class Menus extends React.Component {
       value: initialValue,
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       this.setState({
@@ -18,17 +19,70 @@ class Menus extends React.Component {
       });
     }
     // sync activeValue with value when panel open
-    if (nextProps.visible) {
+    if (nextProps.visible && !this.props.visible) {
       this.setState({
         activeValue: this.state.value,
       });
     }
   }
+
+  onSelect(targetOption, menuIndex) {
+    if (!targetOption) {
+      return;
+    }
+    let activeValue = this.state.activeValue;
+    activeValue = activeValue.slice(0, menuIndex + 1);
+    activeValue[menuIndex] = targetOption.value;
+    const activeOptions = this.getActiveOptions(activeValue);
+    if (targetOption.isLeaf === false && !targetOption.children) {
+      if (this.props.loadData) {
+        this.setState({activeValue});
+        this.props.loadData(activeOptions);
+      }
+    } else if (!targetOption.children || !targetOption.children.length) {
+      this.props.onChange(activeOptions);
+      // finish select
+      // should set value to activeValue
+      this.setState({value: activeValue});
+    } else {
+      this.setState({activeValue});
+    }
+  }
+
+  getOption(option, menuIndex) {
+    const { prefixCls, expandTrigger } = this.props;
+    let menuItemCls = `${prefixCls}-menu-item`;
+    if (this.isActiveOption(option)) {
+      menuItemCls += ` ${prefixCls}-menu-item-active`;
+    }
+    const onSelect = this.onSelect.bind(this, option, menuIndex);
+    let expandProps = {
+      onClick: onSelect,
+    };
+    if (expandTrigger === 'hover' &&
+      option.children &&
+      option.children.length > 0) {
+      expandProps = {
+        onMouseEnter: onSelect,
+      };
+      menuItemCls += ` ${prefixCls}-menu-item-expand`;
+    }
+    return (
+      <li key={option.value}
+          className={menuItemCls}
+          title={option.label}
+        {...expandProps}>
+        {option.label}
+      </li>
+    );
+  }
+
   getActiveOptions(values) {
     const activeValue = values || this.state.activeValue;
     const options = this.props.options;
     return arrayTreeFilter(options, (o, level) => o.value === activeValue[level]);
   }
+
   getShowOptions() {
     const { options } = this.props;
     const result = this.getActiveOptions()
@@ -37,72 +91,24 @@ class Menus extends React.Component {
     result.unshift(options);
     return result;
   }
-  handleSelect(targetOption, menuIndex) {
-    if (!targetOption) {
-      return;
-    }
-    let activeValue = this.state.activeValue;
-    activeValue = activeValue.slice(0, menuIndex + 1);
-    activeValue[menuIndex] = targetOption.value;
-    const activeOptions = this.getActiveOptions(activeValue);
-    const selectCallback = () => {
-      if (!targetOption.children || targetOption.children.length === 0) {
-        this.props.onChange(activeOptions);
-        // finish select
-        // should set value to activeValue
-        this.setState({ value: activeValue });
-      }
-      this.forceUpdate();
-    };
-    // specify the last argument `done`:
-    //  onSelect(selectedOptions, done)
-    // it means async select
-    if (this.props.onSelect.length >= 2) {
-      this.props.onSelect(activeOptions, selectCallback);
-    } else {
-      this.props.onSelect(activeOptions);
-      selectCallback();
-    }
-    // set activeValue, waiting for async callback
-    this.setState({ activeValue });
-  }
+
   isActiveOption(option) {
     return this.state.activeValue.some(value => value === option.value);
   }
+
   render() {
-    const { prefixCls, expandTrigger } = this.props;
+    const { prefixCls } = this.props;
     return (
       <div>
         {this.getShowOptions().map((options, menuIndex) =>
-          <ul className={`${prefixCls}-menu`} key={menuIndex}>
-            {options.map(option => {
-              let menuItemCls = `${prefixCls}-menu-item`;
-              if (this.isActiveOption(option)) {
-                menuItemCls += ` ${prefixCls}-menu-item-active`;
-              }
-              const handleSelect = this.handleSelect.bind(this, option, menuIndex);
-              let expandProps = {
-                onClick: handleSelect,
-              };
-              if (expandTrigger === 'hover' &&
-                  option.children &&
-                  option.children.length > 0) {
-                expandProps = {
-                  onMouseEnter: handleSelect,
-                };
-                menuItemCls += ` ${prefixCls}-menu-item-expand`;
-              }
-              return (
-                <li key={option.value}
-                  className={menuItemCls}
-                  title={option.label}
-                  {...expandProps}>
-                  {option.label}
-                </li>
-              );
-            })}
-          </ul>
-        )}
+        <ul className={`${prefixCls}-menu`} key={menuIndex}>
+          {
+            options.map(option => {
+              return this.getOption(option, menuIndex);
+            })
+            }
+        </ul>
+          )}
       </div>
     );
   }
@@ -110,8 +116,10 @@ class Menus extends React.Component {
 
 Menus.defaultProps = {
   options: [],
-  onChange() {},
-  onSelect() {},
+  onChange() {
+  },
+  onSelect() {
+  },
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
@@ -122,7 +130,7 @@ Menus.propTypes = {
   prefixCls: React.PropTypes.string,
   expandTrigger: React.PropTypes.string,
   onChange: React.PropTypes.func,
-  onSelect: React.PropTypes.func,
+  loadData: React.PropTypes.func,
   visible: React.PropTypes.bool,
 };
 
