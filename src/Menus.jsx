@@ -1,5 +1,6 @@
 import React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
+import { findDOMNode } from 'react-dom';
 
 class Menus extends React.Component {
   constructor(props) {
@@ -10,6 +11,10 @@ class Menus extends React.Component {
       activeValue: initialValue,
       value: initialValue,
     };
+  }
+
+  componentDidMount() {
+    this.scrollActiveItemToView();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -23,6 +28,12 @@ class Menus extends React.Component {
       this.setState({
         activeValue: this.state.value,
       });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.visible && this.props.visible) {
+      this.scrollActiveItemToView();
     }
   }
 
@@ -51,14 +62,11 @@ class Menus extends React.Component {
 
   getOption(option, menuIndex) {
     const { prefixCls, expandTrigger } = this.props;
-    let menuItemCls = `${prefixCls}-menu-item`;
-    if (this.isActiveOption(option)) {
-      menuItemCls += ` ${prefixCls}-menu-item-active`;
-    }
     const onSelect = this.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
     };
+    let menuItemCls = `${prefixCls}-menu-item`;
     if (expandTrigger === 'hover' &&
       option.children &&
       option.children.length > 0) {
@@ -66,6 +74,10 @@ class Menus extends React.Component {
         onMouseEnter: onSelect,
       };
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
+    }
+    if (this.isActiveOption(option)) {
+      menuItemCls += ` ${prefixCls}-menu-item-active`;
+      expandProps.ref = 'activeItem' + menuIndex;
     }
     return (
       <li key={option.value}
@@ -92,6 +104,18 @@ class Menus extends React.Component {
     return result;
   }
 
+  scrollActiveItemToView() {
+    // scroll into view
+    const optionsLength = this.getShowOptions().length;
+    for (let i = 0; i < optionsLength; i++) {
+      const itemComponent = this.refs['activeItem' + i];
+      if (itemComponent) {
+        const target = findDOMNode(itemComponent);
+        target.parentNode.scrollTop = target.offsetTop;
+      }
+    }
+  }
+
   isActiveOption(option) {
     return this.state.activeValue.some(value => value === option.value);
   }
@@ -101,14 +125,10 @@ class Menus extends React.Component {
     return (
       <div>
         {this.getShowOptions().map((options, menuIndex) =>
-        <ul className={`${prefixCls}-menu`} key={menuIndex}>
-          {
-            options.map(option => {
-              return this.getOption(option, menuIndex);
-            })
-            }
-        </ul>
-          )}
+          <ul className={`${prefixCls}-menu`} key={menuIndex}>
+            {options.map(option => this.getOption(option, menuIndex))}
+          </ul>
+        )}
       </div>
     );
   }

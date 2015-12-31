@@ -2,6 +2,10 @@
 
 ---
 
+## 0.5.1 / 2015-12-31
+
+- Always scroll to show active menu item
+
 ## 0.5.0 / 2015-12-30
 
 - Remove `onSelect`

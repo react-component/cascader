@@ -19,6 +19,21 @@ const addressOptions = [{
     'value': 'quanzhou',
   }],
 }, {
+  'label': '占位1',
+  'value': 'zw1',
+}, {
+  'label': '占位2',
+  'value': 'zw2',
+}, {
+  'label': '占位3',
+  'value': 'zw3',
+}, {
+  'label': '占位4',
+  'value': 'zw4',
+}, {
+  'label': '占位5',
+  'value': 'zw5',
+}, {
   'label': '浙江',
   'value': 'zj',
   'children': [{
@@ -42,14 +57,14 @@ const addressOptions = [{
 }];
 
 const defaultOptions = [{
-  'label': '福建',
-  'value': 'fj',
+  'label': '浙江',
+  'value': 'zj',
 }, {
-  'label': '福州',
-  'value': 'fuzhou',
+  'label': '杭州',
+  'value': 'hangzhou',
 }, {
-  'label': '马尾',
-  'value': 'mawei',
+  'label': '余杭',
+  'value': 'yuhang',
 }];
 
 const Demo = React.createClass({
