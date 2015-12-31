@@ -24648,6 +24648,8 @@
 	
 	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
 	
+	var _reactDom = __webpack_require__(165);
+	
 	var Menus = (function (_React$Component) {
 	  _inherits(Menus, _React$Component);
 	
@@ -24666,6 +24668,11 @@
 	  }
 	
 	  _createClass(Menus, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.scrollActiveItemToView();
+	    }
+	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      if ('value' in nextProps) {
@@ -24678,6 +24685,13 @@
 	        this.setState({
 	          activeValue: this.state.value
 	        });
+	      }
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps) {
+	      if (!prevProps.visible && this.props.visible) {
+	        this.scrollActiveItemToView();
 	      }
 	    }
 	  }, {
@@ -24711,19 +24725,20 @@
 	      var prefixCls = _props.prefixCls;
 	      var expandTrigger = _props.expandTrigger;
 	
-	      var menuItemCls = prefixCls + '-menu-item';
-	      if (this.isActiveOption(option)) {
-	        menuItemCls += ' ' + prefixCls + '-menu-item-active';
-	      }
 	      var onSelect = this.onSelect.bind(this, option, menuIndex);
 	      var expandProps = {
 	        onClick: onSelect
 	      };
+	      var menuItemCls = prefixCls + '-menu-item';
 	      if (expandTrigger === 'hover' && option.children && option.children.length > 0) {
 	        expandProps = {
 	          onMouseEnter: onSelect
 	        };
 	        menuItemCls += ' ' + prefixCls + '-menu-item-expand';
+	      }
+	      if (this.isActiveOption(option)) {
+	        menuItemCls += ' ' + prefixCls + '-menu-item-active';
+	        expandProps.ref = 'activeItem' + menuIndex;
 	      }
 	      return _react2['default'].createElement(
 	        'li',
@@ -24755,6 +24770,19 @@
 	      });
 	      result.unshift(options);
 	      return result;
+	    }
+	  }, {
+	    key: 'scrollActiveItemToView',
+	    value: function scrollActiveItemToView() {
+	      // scroll into view
+	      var optionsLength = this.getShowOptions().length;
+	      for (var i = 0; i < optionsLength; i++) {
+	        var itemComponent = this.refs['activeItem' + i];
+	        if (itemComponent) {
+	          var target = (0, _reactDom.findDOMNode)(itemComponent);
+	          target.parentNode.scrollTop = target.offsetTop;
+	        }
+	      }
 	    }
 	  }, {
 	    key: 'isActiveOption',
