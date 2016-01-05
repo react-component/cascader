@@ -75,8 +75,8 @@ class Cascader extends React.Component {
         popupPlacement="bottomLeft"
         builtinPlacements={BUILT_IN_PLACEMENTS}
         popupTransitionName={transitionName}
-        action={['click']}
-        popupVisible={this.state.popupVisible}
+        action={props.disabled ? [] : ['click']}
+        popupVisible={props.disabled ? false : this.state.popupVisible}
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName}
@@ -92,6 +92,7 @@ Cascader.defaultProps = {
   onChange() {},
   onSelect() {},
   onPopupVisibleChange() {},
+  disabled: false,
   transitionName: '',
   prefixCls: 'rc-cascader',
   popupClassName: '',
@@ -103,6 +104,7 @@ Cascader.propTypes = {
   onSelect: React.PropTypes.func,
   onPopupVisibleChange: React.PropTypes.func,
   popupVisible: React.PropTypes.bool,
+  disabled: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   popupClassName: React.PropTypes.string,
   prefixCls: React.PropTypes.string,

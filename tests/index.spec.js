@@ -202,4 +202,18 @@ describe('Cascader', () => {
     expect(menus.length).to.be(2);
     done();
   });
+
+  it('should be disabled', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={addressOptions} disabled onChange={onChange}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).not.to.be.ok();
+    done();
+  });
 });
