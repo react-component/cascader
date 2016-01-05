@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		9:0
+/******/ 		10:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"dynamic-options","3":"hover","4":"rc-form","5":"simple","6":"text-trigger","7":"value","8":"visible"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"disabled","3":"dynamic-options","4":"hover","5":"rc-form","6":"simple","7":"text-trigger","8":"value","9":"visible"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -262,8 +262,8 @@
 	          popupPlacement: 'bottomLeft',
 	          builtinPlacements: BUILT_IN_PLACEMENTS,
 	          popupTransitionName: transitionName,
-	          action: ['click'],
-	          popupVisible: this.state.popupVisible,
+	          action: props.disabled ? [] : ['click'],
+	          popupVisible: props.disabled ? false : this.state.popupVisible,
 	          onPopupVisibleChange: this.handlePopupVisibleChange,
 	          prefixCls: prefixCls + '-menus',
 	          popupClassName: popupClassName,
@@ -281,6 +281,7 @@
 	  onChange: function onChange() {},
 	  onSelect: function onSelect() {},
 	  onPopupVisibleChange: function onPopupVisibleChange() {},
+	  disabled: false,
 	  transitionName: '',
 	  prefixCls: 'rc-cascader',
 	  popupClassName: ''
@@ -292,6 +293,7 @@
 	  onSelect: _react2['default'].PropTypes.func,
 	  onPopupVisibleChange: _react2['default'].PropTypes.func,
 	  popupVisible: _react2['default'].PropTypes.bool,
+	  disabled: _react2['default'].PropTypes.bool,
 	  transitionName: _react2['default'].PropTypes.string,
 	  popupClassName: _react2['default'].PropTypes.string,
 	  prefixCls: _react2['default'].PropTypes.string

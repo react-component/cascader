@@ -1,14 +1,14 @@
-webpackJsonp([6],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(246);
+	module.exports = __webpack_require__(214);
 
 
 /***/ },
 
-/***/ 246:
+/***/ 214:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -75,19 +75,11 @@ webpackJsonp([6],{
 	      inputValue: ''
 	    };
 	  },
-	  onChange: function onChange(value, selectedOptions) {
-	    console.log(value, selectedOptions);
-	    this.setState({
-	      inputValue: selectedOptions.map(function (o) {
-	        return o.label;
-	      }).join(', ')
-	    });
-	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
 	      _rcCascader2['default'],
-	      { options: addressOptions, onChange: this.onChange },
-	      _react2['default'].createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
+	      { options: addressOptions, disabled: true },
+	      _react2['default'].createElement('input', { placeholder: 'please select address', disabled: true, value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});
@@ -97,4 +89,4 @@ webpackJsonp([6],{
 /***/ }
 
 });
-//# sourceMappingURL=simple.js.map
+//# sourceMappingURL=disabled.js.map
