@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.0 / 2016-01-05
+
+- Add prop `disabled`.
+
 ## 0.5.1 / 2015-12-31
 
 - Always scroll to show active menu item
