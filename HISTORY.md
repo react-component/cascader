@@ -2,6 +2,10 @@
 
 ---
 
+## 0.6.1 / 2016-01-18
+
+- Hide popup menu when there is no options, fix #4
+
 ## 0.6.0 / 2016-01-05
 
 - Add prop `disabled`.
