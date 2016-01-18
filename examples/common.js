@@ -252,10 +252,14 @@
 	      var transitionName = props.transitionName;
 	      var popupClassName = props.popupClassName;
 	
-	      var menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
-	        onChange: this.handleChange,
-	        onSelect: this.props.onSelect,
-	        visible: this.state.popupVisible }));
+	      // Did not show popup when there is no options
+	      var menus = _react2['default'].createElement('div', null);
+	      if (props.options && props.options.length > 0) {
+	        menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
+	          onChange: this.handleChange,
+	          onSelect: this.props.onSelect,
+	          visible: this.state.popupVisible }));
+	      }
 	      return _react2['default'].createElement(
 	        _rcTrigger2['default'],
 	        { ref: 'trigger',
