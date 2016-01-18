@@ -63,13 +63,17 @@ class Cascader extends React.Component {
   render() {
     const props = this.props;
     const { prefixCls, transitionName, popupClassName } = props;
-    const menus = (
-      <Menus
-        {...props}
-        onChange={this.handleChange}
-        onSelect={this.props.onSelect}
-        visible={this.state.popupVisible} />
-    );
+    // Did not show popup when there is no options
+    let menus = <div />;
+    if (props.options && props.options.length > 0) {
+      menus = (
+        <Menus
+          {...props}
+          onChange={this.handleChange}
+          onSelect={this.props.onSelect}
+          visible={this.state.popupVisible} />
+      );
+    }
     return (
       <Trigger ref="trigger"
         popupPlacement="bottomLeft"

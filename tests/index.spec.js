@@ -216,4 +216,19 @@ describe('Cascader', () => {
     expect(instance.state.popupVisible).not.to.be.ok();
     done();
   });
+
+  it('should not display popup when there is no options', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={[]} onChange={onChange}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(0);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(0);
+    done();
+  });
 });
