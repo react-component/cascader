@@ -38,7 +38,7 @@ class Menus extends React.Component {
   }
 
   onSelect(targetOption, menuIndex) {
-    if (!targetOption) {
+    if (!targetOption || targetOption.disabled) {
       return;
     }
     let activeValue = this.state.activeValue;
@@ -78,6 +78,9 @@ class Menus extends React.Component {
     if (this.isActiveOption(option)) {
       menuItemCls += ` ${prefixCls}-menu-item-active`;
       expandProps.ref = 'activeItem' + menuIndex;
+    }
+    if (option.disabled) {
+      menuItemCls += ` ${prefixCls}-menu-item-disabled`;
     }
     return (
       <li key={option.value}

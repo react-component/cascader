@@ -27,6 +27,7 @@ const addressOptions = [{
     'children': [{
       'label': '余杭',
       'value': 'yuhang',
+      'disabled': true,
     }],
   }],
 }, {

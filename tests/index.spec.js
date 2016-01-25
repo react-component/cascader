@@ -231,4 +231,27 @@ describe('Cascader', () => {
     expect(menus.length).to.be(0);
     done();
   });
+
+  it('should be unselectable when option is disabled', (done) => {
+    const newAddressOptions = [...addressOptions];
+    newAddressOptions[0].disabled = true;
+    console.log(newAddressOptions);
+    instance = ReactDOM.render(
+      <Cascader options={newAddressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    expect(menu1Items.length).to.be(3);
+    expect(selectedValue).not.to.be.ok();
+
+    Simulate.click(menu1Items[0]);
+    expect(menu1Items[0].className).to.contain('rc-cascader-menu-item-disabled');
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    done();
+  });
 });
