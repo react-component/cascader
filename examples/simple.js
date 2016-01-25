@@ -52,7 +52,8 @@ webpackJsonp([6],{
 	    'value': 'hangzhou',
 	    'children': [{
 	      'label': '余杭',
-	      'value': 'yuhang'
+	      'value': 'yuhang',
+	      'disabled': true
 	    }]
 	  }]
 	}, {

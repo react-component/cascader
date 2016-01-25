@@ -24703,7 +24703,7 @@
 	  }, {
 	    key: 'onSelect',
 	    value: function onSelect(targetOption, menuIndex) {
-	      if (!targetOption) {
+	      if (!targetOption || targetOption.disabled) {
 	        return;
 	      }
 	      var activeValue = this.state.activeValue;
@@ -24745,6 +24745,9 @@
 	      if (this.isActiveOption(option)) {
 	        menuItemCls += ' ' + prefixCls + '-menu-item-active';
 	        expandProps.ref = 'activeItem' + menuIndex;
+	      }
+	      if (option.disabled) {
+	        menuItemCls += ' ' + prefixCls + '-menu-item-disabled';
 	      }
 	      return _react2['default'].createElement(
 	        'li',

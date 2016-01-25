@@ -93,6 +93,13 @@
 .rc-cascader-menu-item:hover {
   background: #eaf8fe;
 }
+.rc-cascader-menu-item-disabled {
+  cursor: not-allowed;
+  color: #ccc;
+}
+.rc-cascader-menu-item-disabled:hover {
+  background: transparent;
+}
 .rc-cascader-menu-item-active {
   background: #d5f1fd;
 }
