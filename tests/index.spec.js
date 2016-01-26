@@ -173,6 +173,31 @@ describe('Cascader', () => {
     done();
   });
 
+  it('should set the value on each selection', (done) => {
+    instance = ReactDOM.render(
+      <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']} onChange={onChange} changeOnSelect>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(3);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    Simulate.click(menu1Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    console.log(menus);
+    expect(menus.length).to.be(2);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).not.to.be.ok();
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    expect(instance.state.popupVisible).to.be.ok();
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    expect(selectedValue.length).to.be(1);
+    expect(selectedValue[0]).to.be('fj');
+    done();
+  });
+
   it('should not change value when it is a controlled component', (done) => {
     instance = ReactDOM.render(
       <Cascader options={addressOptions} value={['fj']}>
