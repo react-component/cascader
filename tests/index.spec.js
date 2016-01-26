@@ -185,7 +185,6 @@ describe('Cascader', () => {
     const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     Simulate.click(menu1Items[0]);
     menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
-    console.log(menus);
     expect(menus.length).to.be(2);
     Simulate.click(ReactDOM.findDOMNode(instance));
     expect(instance.state.popupVisible).not.to.be.ok();
