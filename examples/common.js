@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		10:0
+/******/ 		11:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"defaultValue","2":"disabled","3":"dynamic-options","4":"hover","5":"rc-form","6":"simple","7":"text-trigger","8":"value","9":"visible"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"change-on-select","2":"defaultValue","3":"disabled","4":"dynamic-options","5":"hover","6":"rc-form","7":"simple","8":"text-trigger","9":"value","10":"visible"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -233,11 +233,11 @@
 	    }
 	  }, {
 	    key: 'handleChange',
-	    value: function handleChange(options) {
+	    value: function handleChange(options, setProps) {
 	      this.props.onChange(options.map(function (o) {
 	        return o.value;
 	      }), options);
-	      this.setPopupVisible(false);
+	      this.setPopupVisible(setProps.visible);
 	    }
 	  }, {
 	    key: 'handlePopupVisibleChange',
@@ -24710,19 +24710,21 @@
 	      activeValue = activeValue.slice(0, menuIndex + 1);
 	      activeValue[menuIndex] = targetOption.value;
 	      var activeOptions = this.getActiveOptions(activeValue);
-	      if (targetOption.isLeaf === false && !targetOption.children) {
-	        if (this.props.loadData) {
-	          this.setState({ activeValue: activeValue });
-	          this.props.loadData(activeOptions);
-	        }
-	      } else if (!targetOption.children || !targetOption.children.length) {
-	        this.props.onChange(activeOptions);
-	        // finish select
-	        // should set value to activeValue
-	        this.setState({ value: activeValue });
-	      } else {
+	      if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
 	        this.setState({ activeValue: activeValue });
+	        this.props.loadData(activeOptions);
+	        return;
 	      }
+	      if (!targetOption.children || !targetOption.children.length) {
+	        this.props.onChange(activeOptions, { visible: false });
+	        // set value to activeValue when select leaf option
+	        this.setState({ value: activeValue });
+	      } else if (this.props.changeOnSelect) {
+	        this.props.onChange(activeOptions, { visible: true });
+	        // set value to activeValue on every select
+	        this.setState({ value: activeValue });
+	      }
+	      this.setState({ activeValue: activeValue });
 	    }
 	  }, {
 	    key: 'getOption',
@@ -24832,7 +24834,8 @@
 	  onSelect: function onSelect() {},
 	  prefixCls: 'rc-cascader-menus',
 	  visible: false,
-	  expandTrigger: 'click'
+	  expandTrigger: 'click',
+	  changeOnSelect: false
 	};
 	
 	Menus.propTypes = {
@@ -24841,7 +24844,8 @@
 	  expandTrigger: _react2['default'].PropTypes.string,
 	  onChange: _react2['default'].PropTypes.func,
 	  loadData: _react2['default'].PropTypes.func,
-	  visible: _react2['default'].PropTypes.bool
+	  visible: _react2['default'].PropTypes.bool,
+	  changeOnSelect: _react2['default'].PropTypes.bool
 	};
 	
 	exports['default'] = Menus;

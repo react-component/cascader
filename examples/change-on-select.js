@@ -1,14 +1,14 @@
-webpackJsonp([5],{
+webpackJsonp([1],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(217);
+	module.exports = __webpack_require__(213);
 
 
 /***/ },
 
-/***/ 217:
+/***/ 213:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -85,18 +85,9 @@ webpackJsonp([5],{
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
-	      'div',
-	      null,
-	      _react2['default'].createElement(
-	        'p',
-	        null,
-	        'Hover to expand children'
-	      ),
-	      _react2['default'].createElement(
-	        _rcCascader2['default'],
-	        { expandTrigger: 'hover', options: addressOptions, onChange: this.onChange },
-	        _react2['default'].createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
-	      )
+	      _rcCascader2['default'],
+	      { options: addressOptions, onChange: this.onChange, changeOnSelect: true },
+	      _react2['default'].createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});
@@ -106,4 +97,4 @@ webpackJsonp([5],{
 /***/ }
 
 });
-//# sourceMappingURL=hover.js.map
+//# sourceMappingURL=change-on-select.js.map

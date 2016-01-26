@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>hover.js - example - rc-cascader@0.8.0</title>
+  <title>change-on-select.js - example - rc-cascader@0.8.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   </div>
   <div class="example" id="__react-content"></div>
   <script src="common.js?nowrap"></script>
-  <script src="hover.js?nowrap"></script>
+  <script src="change-on-select.js?nowrap"></script>
   <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console */</span>
 import <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
 import Cascader from <span class="hljs-string">'rc-cascader'</span>;
@@ -321,12 +321,9 @@ import ReactDOM from <span class="hljs-string">'react-dom'</span>;
   },
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>Hover to expand children<span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">expandTrigger</span>=<span class="hljs-value">"hover"</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span> <span class="hljs-attribute">changeOnSelect</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     );
   },
 });

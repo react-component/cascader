@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-cascader@0.7.0 - cascade select ui component for react</title>
+  <title>rc-cascader@0.8.0 - cascade select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-cascader@0.7.0</h1>
+  <h1>rc-cascader@0.8.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -745,6 +745,8 @@
     <ul>
       
       <li><a href="examples/animation.html">animation</a></li>
+      
+      <li><a href="examples/change-on-select.html">change-on-select</a></li>
       
       <li><a href="examples/defaultValue.html">defaultValue</a></li>
       
@@ -878,6 +880,12 @@ React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-titl
       <td>Function(value, selectedOptions)</td>
       <td></td>
       <td>callback when finishing cascader select</td>
+    </tr>
+    <tr>
+      <td>changeOnSelect</td>
+      <td>Boolean</td>
+      <td>false</td>
+      <td>change value on each selection</td>
     </tr>
     <tr>
       <td>loadData</td>

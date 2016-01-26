@@ -1,14 +1,14 @@
-webpackJsonp([6],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(246);
+	module.exports = __webpack_require__(247);
 
 
 /***/ },
 
-/***/ 246:
+/***/ 247:
 /***/ function(module, exports, __webpack_require__) {
 
 	/* eslint-disable no-console */
@@ -52,8 +52,7 @@ webpackJsonp([6],{
 	    'value': 'hangzhou',
 	    'children': [{
 	      'label': '余杭',
-	      'value': 'yuhang',
-	      'disabled': true
+	      'value': 'yuhang'
 	    }]
 	  }]
 	}, {
@@ -64,7 +63,8 @@ webpackJsonp([6],{
 	    'value': 'chaoyang'
 	  }, {
 	    'label': '海淀区',
-	    'value': 'haidian'
+	    'value': 'haidian',
+	    'disabled': true
 	  }]
 	}];
 	
