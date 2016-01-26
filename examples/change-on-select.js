@@ -38,7 +38,6 @@ const addressOptions = [{
   }, {
     'label': '海淀区',
     'value': 'haidian',
-    'disabled': true,
   }],
 }];
 
@@ -56,7 +55,7 @@ const Demo = React.createClass({
   },
   render() {
     return (
-      <Cascader options={addressOptions} onChange={this.onChange}>
+      <Cascader options={addressOptions} onChange={this.onChange} changeOnSelect>
         <input placeholder="please select address" value={this.state.inputValue} readOnly />
       </Cascader>
     );

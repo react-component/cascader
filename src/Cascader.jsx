@@ -50,12 +50,12 @@ class Cascader extends React.Component {
     }
     this.props.onPopupVisibleChange(popupVisible);
   }
-  handleChange(options) {
+  handleChange(options, setProps) {
     this.props.onChange(
       options.map(o => o.value),
       options
     );
-    this.setPopupVisible(false);
+    this.setPopupVisible(setProps.visible);
   }
   handlePopupVisibleChange(popupVisible) {
     this.setPopupVisible(popupVisible);

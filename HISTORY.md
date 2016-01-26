@@ -2,6 +2,10 @@
 
 ---
 
+## 0.8.0 / 2016-01-26
+
+- Add prop `changeOnSelect`
+
 ## 0.7.0 / 2016-01-25
 
 - Support disabled item

@@ -45,19 +45,21 @@ class Menus extends React.Component {
     activeValue = activeValue.slice(0, menuIndex + 1);
     activeValue[menuIndex] = targetOption.value;
     const activeOptions = this.getActiveOptions(activeValue);
-    if (targetOption.isLeaf === false && !targetOption.children) {
-      if (this.props.loadData) {
-        this.setState({activeValue});
-        this.props.loadData(activeOptions);
-      }
-    } else if (!targetOption.children || !targetOption.children.length) {
-      this.props.onChange(activeOptions);
-      // finish select
-      // should set value to activeValue
-      this.setState({value: activeValue});
-    } else {
-      this.setState({activeValue});
+    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
+      this.setState({ activeValue });
+      this.props.loadData(activeOptions);
+      return;
     }
+    if (!targetOption.children || !targetOption.children.length) {
+      this.props.onChange(activeOptions, { visible: false });
+      // set value to activeValue when select leaf option
+      this.setState({ value: activeValue });
+    } else if (this.props.changeOnSelect) {
+      this.props.onChange(activeOptions, { visible: true });
+      // set value to activeValue on every select
+      this.setState({ value: activeValue });
+    }
+    this.setState({ activeValue });
   }
 
   getOption(option, menuIndex) {
@@ -146,6 +148,7 @@ Menus.defaultProps = {
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
+  changeOnSelect: false,
 };
 
 Menus.propTypes = {
@@ -155,6 +158,7 @@ Menus.propTypes = {
   onChange: React.PropTypes.func,
   loadData: React.PropTypes.func,
   visible: React.PropTypes.bool,
+  changeOnSelect: React.PropTypes.bool,
 };
 
 export default Menus;
