@@ -65,6 +65,7 @@ class Cascader extends React.Component {
     const { prefixCls, transitionName, popupClassName } = props;
     // Did not show popup when there is no options
     let menus = <div />;
+    let emptyMenuClassName = '';
     if (props.options && props.options.length > 0) {
       menus = (
         <Menus
@@ -73,6 +74,8 @@ class Cascader extends React.Component {
           onSelect={this.props.onSelect}
           visible={this.state.popupVisible} />
       );
+    } else {
+      emptyMenuClassName = ` ${prefixCls}-menus-empty`;
     }
     return (
       <Trigger ref="trigger"
@@ -83,7 +86,7 @@ class Cascader extends React.Component {
         popupVisible={props.disabled ? false : this.state.popupVisible}
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
-        popupClassName={popupClassName}
+        popupClassName={popupClassName + emptyMenuClassName}
         popup={menus}>
         {props.children}
       </Trigger>
