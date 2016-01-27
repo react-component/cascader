@@ -254,11 +254,14 @@
 	
 	      // Did not show popup when there is no options
 	      var menus = _react2['default'].createElement('div', null);
+	      var emptyMenuClassName = '';
 	      if (props.options && props.options.length > 0) {
 	        menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
 	          onChange: this.handleChange,
 	          onSelect: this.props.onSelect,
 	          visible: this.state.popupVisible }));
+	      } else {
+	        emptyMenuClassName = ' ' + prefixCls + '-menus-empty';
 	      }
 	      return _react2['default'].createElement(
 	        _rcTrigger2['default'],
@@ -270,7 +273,7 @@
 	          popupVisible: props.disabled ? false : this.state.popupVisible,
 	          onPopupVisibleChange: this.handlePopupVisibleChange,
 	          prefixCls: prefixCls + '-menus',
-	          popupClassName: popupClassName,
+	          popupClassName: popupClassName + emptyMenuClassName,
 	          popup: menus },
 	        props.children
 	      );
