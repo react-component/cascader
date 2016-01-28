@@ -193,6 +193,45 @@ React.render(<Cascader options={options} />, container);
   </tbody>
 </table>
 
+### option
+
+<table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th style="width: 100px;">name</th>
+    <th style="width: 50px;">type</th>
+    <th style="width: 50px;">default</th>
+    <th>description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>label</td>
+      <td>String</td>
+      <td></td>
+      <td>option text to display</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>String</td>
+      <td></td>
+      <td>option value as react key</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td>Boolean</td>
+      <td></td>
+      <td>disabled option</td>
+    </tr>
+    <tr>
+      <td>children</td>
+      <td>Array</td>
+      <td></td>
+      <td>children options</td>
+    </tr>
+  </tbody>
+</table>
+
 
 ## Test Case
 
