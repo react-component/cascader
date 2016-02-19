@@ -143,8 +143,6 @@ Menus.defaultProps = {
   options: [],
   onChange() {
   },
-  onSelect() {
-  },
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',

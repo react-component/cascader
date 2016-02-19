@@ -87,7 +87,6 @@ class Cascader extends React.Component {
         <Menus
           {...props}
           onChange={this.handleChange}
-          onSelect={this.props.onSelect}
           visible={this.state.popupVisible} />
       );
     } else {
@@ -113,7 +112,6 @@ class Cascader extends React.Component {
 Cascader.defaultProps = {
   options: [],
   onChange() {},
-  onSelect() {},
   onPopupVisibleChange() {},
   disabled: false,
   transitionName: '',
@@ -125,7 +123,6 @@ Cascader.defaultProps = {
 Cascader.propTypes = {
   options: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func,
-  onSelect: React.PropTypes.func,
   onPopupVisibleChange: React.PropTypes.func,
   popupVisible: React.PropTypes.bool,
   disabled: React.PropTypes.bool,
