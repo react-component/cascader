@@ -190,6 +190,12 @@ React.render(<Cascader options={options} />, container);
       <td></td>
       <td>additional className of popup overlay</td>
     </tr>
+    <tr>
+      <td>popupPlacement</td>
+      <td>String</td>
+      <td>bottomLeft</td>
+      <td>use preset popup align config from builtinPlacements：bottomRight topRight bottomLeft topLeft</td>
+    </tr>
   </tbody>
 </table>
 

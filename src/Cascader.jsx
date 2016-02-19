@@ -19,6 +19,22 @@ const BUILT_IN_PLACEMENTS = {
       adjustY: 1,
     },
   },
+  bottomRight: {
+    points: ['tr', 'br'],
+    offset: [0, 4],
+    overflow: {
+      adjustX: 0,
+      adjustY: 1,
+    },
+  },
+  topRight: {
+    points: ['br', 'tr'],
+    offset: [0, -4],
+    overflow: {
+      adjustX: 0,
+      adjustY: 1,
+    },
+  },
 };
 
 class Cascader extends React.Component {
@@ -62,7 +78,7 @@ class Cascader extends React.Component {
   }
   render() {
     const props = this.props;
-    const { prefixCls, transitionName, popupClassName } = props;
+    const { prefixCls, transitionName, popupClassName, popupPlacement } = props;
     // Did not show popup when there is no options
     let menus = <div />;
     let emptyMenuClassName = '';
@@ -79,7 +95,7 @@ class Cascader extends React.Component {
     }
     return (
       <Trigger ref="trigger"
-        popupPlacement="bottomLeft"
+        popupPlacement={popupPlacement}
         builtinPlacements={BUILT_IN_PLACEMENTS}
         popupTransitionName={transitionName}
         action={props.disabled ? [] : ['click']}
@@ -103,6 +119,7 @@ Cascader.defaultProps = {
   transitionName: '',
   prefixCls: 'rc-cascader',
   popupClassName: '',
+  popupPlacement: 'bottomLeft',
 };
 
 Cascader.propTypes = {
@@ -114,6 +131,7 @@ Cascader.propTypes = {
   disabled: React.PropTypes.bool,
   transitionName: React.PropTypes.string,
   popupClassName: React.PropTypes.string,
+  popupPlacement: React.PropTypes.string,
   prefixCls: React.PropTypes.string,
 };
 
