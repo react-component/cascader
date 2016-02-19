@@ -189,6 +189,22 @@
 	      adjustX: 0,
 	      adjustY: 1
 	    }
+	  },
+	  bottomRight: {
+	    points: ['tr', 'br'],
+	    offset: [0, 4],
+	    overflow: {
+	      adjustX: 0,
+	      adjustY: 1
+	    }
+	  },
+	  topRight: {
+	    points: ['br', 'tr'],
+	    offset: [0, -4],
+	    overflow: {
+	      adjustX: 0,
+	      adjustY: 1
+	    }
 	  }
 	};
 	
@@ -251,6 +267,7 @@
 	      var prefixCls = props.prefixCls;
 	      var transitionName = props.transitionName;
 	      var popupClassName = props.popupClassName;
+	      var popupPlacement = props.popupPlacement;
 	
 	      // Did not show popup when there is no options
 	      var menus = _react2['default'].createElement('div', null);
@@ -266,7 +283,7 @@
 	      return _react2['default'].createElement(
 	        _rcTrigger2['default'],
 	        { ref: 'trigger',
-	          popupPlacement: 'bottomLeft',
+	          popupPlacement: popupPlacement,
 	          builtinPlacements: BUILT_IN_PLACEMENTS,
 	          popupTransitionName: transitionName,
 	          action: props.disabled ? [] : ['click'],
@@ -291,7 +308,8 @@
 	  disabled: false,
 	  transitionName: '',
 	  prefixCls: 'rc-cascader',
-	  popupClassName: ''
+	  popupClassName: '',
+	  popupPlacement: 'bottomLeft'
 	};
 	
 	Cascader.propTypes = {
@@ -303,6 +321,7 @@
 	  disabled: _react2['default'].PropTypes.bool,
 	  transitionName: _react2['default'].PropTypes.string,
 	  popupClassName: _react2['default'].PropTypes.string,
+	  popupPlacement: _react2['default'].PropTypes.string,
 	  prefixCls: _react2['default'].PropTypes.string
 	};
 	

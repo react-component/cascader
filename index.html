@@ -7,7 +7,7 @@
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css" rel="stylesheet"/>
-  <title>rc-cascader@0.8.1 - cascade select ui component for react</title>
+  <title>rc-cascader@0.9.0 - cascade select ui component for react</title>
   <style>
     @font-face {
       font-family: octicons-anchor;
@@ -737,7 +737,7 @@
 
 <body>
 <div class="header">
-  <h1>rc-cascader@0.8.1</h1>
+  <h1>rc-cascader@0.9.0</h1>
 </div>
 <div class="examples">
   <h3>EXAMPLES</h3>
@@ -928,6 +928,49 @@ React.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-titl
       <td>String</td>
       <td></td>
       <td>additional className of popup overlay</td>
+    </tr>
+    <tr>
+      <td>popupPlacement</td>
+      <td>String</td>
+      <td>bottomLeft</td>
+      <td>use preset popup align config from builtinPlacements：bottomRight topRight bottomLeft topLeft</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>option<a id="user-content-option" name="option" class="anchor" aria-hidden="true" href="#option"><span class="octicon octicon-link"></span></a></h3><table class="table table-bordered table-striped">
+  <thead>
+  <tr>
+    <th style="width: 100px;">name</th>
+    <th style="width: 50px;">type</th>
+    <th style="width: 50px;">default</th>
+    <th>description</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>label</td>
+      <td>String</td>
+      <td></td>
+      <td>option text to display</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>String</td>
+      <td></td>
+      <td>option value as react key</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td>Boolean</td>
+      <td></td>
+      <td>disabled option</td>
+    </tr>
+    <tr>
+      <td>children</td>
+      <td>Array</td>
+      <td></td>
+      <td>children options</td>
     </tr>
   </tbody>
 </table>
