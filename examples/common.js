@@ -275,7 +275,6 @@
 	      if (props.options && props.options.length > 0) {
 	        menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
 	          onChange: this.handleChange,
-	          onSelect: this.props.onSelect,
 	          visible: this.state.popupVisible }));
 	      } else {
 	        emptyMenuClassName = ' ' + prefixCls + '-menus-empty';
@@ -303,7 +302,6 @@
 	Cascader.defaultProps = {
 	  options: [],
 	  onChange: function onChange() {},
-	  onSelect: function onSelect() {},
 	  onPopupVisibleChange: function onPopupVisibleChange() {},
 	  disabled: false,
 	  transitionName: '',
@@ -315,7 +313,6 @@
 	Cascader.propTypes = {
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  onChange: _react2['default'].PropTypes.func,
-	  onSelect: _react2['default'].PropTypes.func,
 	  onPopupVisibleChange: _react2['default'].PropTypes.func,
 	  popupVisible: _react2['default'].PropTypes.bool,
 	  disabled: _react2['default'].PropTypes.bool,
@@ -24762,7 +24759,8 @@
 	      var menuItemCls = prefixCls + '-menu-item';
 	      if (expandTrigger === 'hover' && option.children && option.children.length > 0) {
 	        expandProps = {
-	          onMouseEnter: onSelect
+	          onMouseEnter: this.delayOnSelect.bind(this, onSelect),
+	          onMouseLeave: this.delayOnSelect.bind(this)
 	        };
 	        menuItemCls += ' ' + prefixCls + '-menu-item-expand';
 	      }
@@ -24805,6 +24803,22 @@
 	      return result;
 	    }
 	  }, {
+	    key: 'delayOnSelect',
+	    value: function delayOnSelect(onSelect) {
+	      var _this = this;
+	
+	      if (this.delayTimer) {
+	        clearTimeout(this.delayTimer);
+	        this.delayTimer = null;
+	      }
+	      if (onSelect) {
+	        this.delayTimer = setTimeout(function () {
+	          onSelect();
+	          _this.delayTimer = null;
+	        }, 150);
+	      }
+	    }
+	  }, {
 	    key: 'scrollActiveItemToView',
 	    value: function scrollActiveItemToView() {
 	      // scroll into view
@@ -24827,7 +24841,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this = this;
+	      var _this2 = this;
 	
 	      var prefixCls = this.props.prefixCls;
 	
@@ -24839,7 +24853,7 @@
 	            'ul',
 	            { className: prefixCls + '-menu', key: menuIndex },
 	            options.map(function (option) {
-	              return _this.getOption(option, menuIndex);
+	              return _this2.getOption(option, menuIndex);
 	            })
 	          );
 	        })
@@ -24853,7 +24867,6 @@
 	Menus.defaultProps = {
 	  options: [],
 	  onChange: function onChange() {},
-	  onSelect: function onSelect() {},
 	  prefixCls: 'rc-cascader-menus',
 	  visible: false,
 	  expandTrigger: 'click',
