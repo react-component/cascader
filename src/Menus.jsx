@@ -119,7 +119,7 @@ class Menus extends React.Component {
       this.delayTimer = setTimeout(() => {
         onSelect();
         this.delayTimer = null;
-      }, 300);
+      }, 150);
     }
   }
 

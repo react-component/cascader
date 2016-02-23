@@ -107,27 +107,31 @@ describe('Cascader', () => {
     expect(selectedValue).not.to.be.ok();
 
     Simulate.mouseEnter(menu1Items[0]);
-    expect(menu1Items[0].className).to.contain('rc-cascader-menu-item-active');
-    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
-    expect(menus.length).to.be(2);
-    const menu2Items = menus[1].querySelectorAll('.rc-cascader-menu-item');
-    expect(menu2Items.length).to.be(2);
-    expect(instance.state.popupVisible).to.be.ok();
-    expect(selectedValue).not.to.be.ok();
+    setTimeout(() => {
+      expect(menu1Items[0].className).to.contain('rc-cascader-menu-item-active');
+      menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+      expect(menus.length).to.be(2);
+      const menu2Items = menus[1].querySelectorAll('.rc-cascader-menu-item');
+      expect(menu2Items.length).to.be(2);
+      expect(instance.state.popupVisible).to.be.ok();
+      expect(selectedValue).not.to.be.ok();
 
-    Simulate.mouseEnter(menu2Items[0]);
-    expect(menu2Items[0].className).to.contain('rc-cascader-menu-item-active');
-    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
-    expect(menus.length).to.be(3);
-    const menu3Items = menus[2].querySelectorAll('.rc-cascader-menu-item');
-    expect(menu3Items.length).to.be(1);
-    expect(instance.state.popupVisible).to.be.ok();
-    expect(selectedValue).not.to.be.ok();
+      Simulate.mouseEnter(menu2Items[0]);
+      setTimeout(() => {
+        expect(menu2Items[0].className).to.contain('rc-cascader-menu-item-active');
+        menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+        expect(menus.length).to.be(3);
+        const menu3Items = menus[2].querySelectorAll('.rc-cascader-menu-item');
+        expect(menu3Items.length).to.be(1);
+        expect(instance.state.popupVisible).to.be.ok();
+        expect(selectedValue).not.to.be.ok();
 
-    Simulate.click(menu3Items[0]);
-    expect(instance.state.popupVisible).not.to.be.ok();
-    expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
-    done();
+        Simulate.click(menu3Items[0]);
+        expect(instance.state.popupVisible).not.to.be.ok();
+        expect(selectedValue.join(',')).to.be('fj,fuzhou,mawei');
+        done();
+      }, 150);
+    }, 150);
   });
 
   it('should clear active selection when no finish select', (done) => {
