@@ -73,7 +73,8 @@ class Menus extends React.Component {
       option.children &&
       option.children.length > 0) {
       expandProps = {
-        onMouseEnter: onSelect,
+        onMouseEnter: this.delayOnSelect.bind(this, onSelect),
+        onMouseLeave: this.delayOnSelect.bind(this),
       };
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
     }
@@ -107,6 +108,19 @@ class Menus extends React.Component {
       .filter(activeOption => !!activeOption);
     result.unshift(options);
     return result;
+  }
+
+  delayOnSelect(onSelect) {
+    if (this.delayTimer) {
+      clearTimeout(this.delayTimer);
+      this.delayTimer = null;
+    }
+    if (onSelect) {
+      this.delayTimer = setTimeout(() => {
+        onSelect();
+        this.delayTimer = null;
+      }, 300);
+    }
   }
 
   scrollActiveItemToView() {
