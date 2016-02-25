@@ -24811,7 +24811,7 @@
 	        clearTimeout(this.delayTimer);
 	        this.delayTimer = null;
 	      }
-	      if (onSelect) {
+	      if (typeof onSelect === 'function') {
 	        this.delayTimer = setTimeout(function () {
 	          onSelect();
 	          _this.delayTimer = null;
