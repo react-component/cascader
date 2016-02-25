@@ -115,7 +115,7 @@ class Menus extends React.Component {
       clearTimeout(this.delayTimer);
       this.delayTimer = null;
     }
-    if (onSelect) {
+    if (typeof onSelect === 'function') {
       this.delayTimer = setTimeout(() => {
         onSelect();
         this.delayTimer = null;
