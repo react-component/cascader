@@ -60,6 +60,7 @@ class Menus extends React.Component {
       this.setState({ value: activeValue });
     }
     this.setState({ activeValue });
+    this.props.onSelect(activeOptions);
   }
 
   getOption(option, menuIndex) {
@@ -157,6 +158,9 @@ Menus.defaultProps = {
   options: [],
   onChange() {
   },
+  onSelect() {
+
+  },
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
@@ -168,6 +172,7 @@ Menus.propTypes = {
   prefixCls: React.PropTypes.string,
   expandTrigger: React.PropTypes.string,
   onChange: React.PropTypes.func,
+  onSelect: React.PropTypes.func,
   loadData: React.PropTypes.func,
   visible: React.PropTypes.bool,
   changeOnSelect: React.PropTypes.bool,

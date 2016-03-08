@@ -7,7 +7,7 @@ const BUILT_IN_PLACEMENTS = {
     points: ['tl', 'bl'],
     offset: [0, 4],
     overflow: {
-      adjustX: 0,
+      adjustX: 1,
       adjustY: 1,
     },
   },
@@ -15,7 +15,7 @@ const BUILT_IN_PLACEMENTS = {
     points: ['bl', 'tl'],
     offset: [0, -4],
     overflow: {
-      adjustX: 0,
+      adjustX: 1,
       adjustY: 1,
     },
   },
@@ -23,7 +23,7 @@ const BUILT_IN_PLACEMENTS = {
     points: ['tr', 'br'],
     offset: [0, 4],
     overflow: {
-      adjustX: 0,
+      adjustX: 1,
       adjustY: 1,
     },
   },
@@ -31,7 +31,7 @@ const BUILT_IN_PLACEMENTS = {
     points: ['br', 'tr'],
     offset: [0, -4],
     overflow: {
-      adjustX: 0,
+      adjustX: 1,
       adjustY: 1,
     },
   },
@@ -45,6 +45,7 @@ class Cascader extends React.Component {
     };
     [
       'handleChange',
+      'handleSelect',
       'handlePopupVisibleChange',
       'setPopupVisible',
       'getPopupDOMNode',
@@ -76,6 +77,10 @@ class Cascader extends React.Component {
   handlePopupVisibleChange(popupVisible) {
     this.setPopupVisible(popupVisible);
   }
+  handleSelect() {
+    // reAlign on select
+    this.setState({});
+  }
   render() {
     const props = this.props;
     const { prefixCls, transitionName, popupClassName, popupPlacement } = props;
@@ -86,6 +91,7 @@ class Cascader extends React.Component {
       menus = (
         <Menus
           {...props}
+          onSelect={this.handleSelect}
           onChange={this.handleChange}
           visible={this.state.popupVisible} />
       );
