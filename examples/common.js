@@ -178,7 +178,7 @@
 	    points: ['tl', 'bl'],
 	    offset: [0, 4],
 	    overflow: {
-	      adjustX: 0,
+	      adjustX: 1,
 	      adjustY: 1
 	    }
 	  },
@@ -186,7 +186,7 @@
 	    points: ['bl', 'tl'],
 	    offset: [0, -4],
 	    overflow: {
-	      adjustX: 0,
+	      adjustX: 1,
 	      adjustY: 1
 	    }
 	  },
@@ -194,7 +194,7 @@
 	    points: ['tr', 'br'],
 	    offset: [0, 4],
 	    overflow: {
-	      adjustX: 0,
+	      adjustX: 1,
 	      adjustY: 1
 	    }
 	  },
@@ -202,7 +202,7 @@
 	    points: ['br', 'tr'],
 	    offset: [0, -4],
 	    overflow: {
-	      adjustX: 0,
+	      adjustX: 1,
 	      adjustY: 1
 	    }
 	  }
@@ -220,7 +220,7 @@
 	    this.state = {
 	      popupVisible: props.popupVisible
 	    };
-	    ['handleChange', 'handlePopupVisibleChange', 'setPopupVisible', 'getPopupDOMNode'].forEach(function (method) {
+	    ['handleChange', 'handleSelect', 'handlePopupVisibleChange', 'setPopupVisible', 'getPopupDOMNode'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
 	    });
 	  }
@@ -261,6 +261,12 @@
 	      this.setPopupVisible(popupVisible);
 	    }
 	  }, {
+	    key: 'handleSelect',
+	    value: function handleSelect() {
+	      // reAlign on select
+	      this.setState({});
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var props = this.props;
@@ -274,6 +280,7 @@
 	      var emptyMenuClassName = '';
 	      if (props.options && props.options.length > 0) {
 	        menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
+	          onSelect: this.handleSelect,
 	          onChange: this.handleChange,
 	          visible: this.state.popupVisible }));
 	      } else {
@@ -24744,6 +24751,7 @@
 	        this.setState({ value: activeValue });
 	      }
 	      this.setState({ activeValue: activeValue });
+	      this.props.onSelect(activeOptions);
 	    }
 	  }, {
 	    key: 'getOption',
@@ -24867,6 +24875,7 @@
 	Menus.defaultProps = {
 	  options: [],
 	  onChange: function onChange() {},
+	  onSelect: function onSelect() {},
 	  prefixCls: 'rc-cascader-menus',
 	  visible: false,
 	  expandTrigger: 'click',
@@ -24878,6 +24887,7 @@
 	  prefixCls: _react2['default'].PropTypes.string,
 	  expandTrigger: _react2['default'].PropTypes.string,
 	  onChange: _react2['default'].PropTypes.func,
+	  onSelect: _react2['default'].PropTypes.func,
 	  loadData: _react2['default'].PropTypes.func,
 	  visible: _react2['default'].PropTypes.bool,
 	  changeOnSelect: _react2['default'].PropTypes.bool

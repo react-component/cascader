@@ -9,6 +9,7 @@
   border: 1px solid #d9d9d9;
   border-radius: 6px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.17);
+  white-space: nowrap;
 }
 .rc-cascader-menus-hidden {
   display: none;
@@ -67,7 +68,7 @@
           animation-play-state: running;
 }
 .rc-cascader-menu {
-  float: left;
+  display: inline-block;
   width: 100px;
   height: 192px;
   list-style: none;
