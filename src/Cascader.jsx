@@ -40,9 +40,19 @@ const BUILT_IN_PLACEMENTS = {
 class Cascader extends React.Component {
   constructor(props) {
     super();
+    let initialValue = [];
+    if ('value' in props) {
+      initialValue = props.value || [];
+    } else if ('defaultValue' in props) {
+      initialValue = props.defaultValue || [];
+    }
+
     this.state = {
       popupVisible: props.popupVisible,
+      activeValue: initialValue,
+      value: initialValue,
     };
+
     [
       'handleChange',
       'handleSelect',
@@ -52,6 +62,11 @@ class Cascader extends React.Component {
     ].forEach(method => this[method] = this[method].bind(this));
   }
   componentWillReceiveProps(nextProps) {
+    if ('value' in nextProps) {
+      this.setState({
+        value: nextProps.value || [],
+      });
+    }
     if ('popupVisible' in nextProps) {
       this.setState({
         popupVisible: nextProps.popupVisible,
@@ -62,24 +77,29 @@ class Cascader extends React.Component {
     return this.refs.trigger.getPopupDomNode();
   }
   setPopupVisible(popupVisible) {
-    if (!('popupVisible' in this.props)) {
-      this.setState({ popupVisible });
+    if ('popupVisible' in this.props) {
+      this.props.onPopupVisibleChange(popupVisible);
+      return;
     }
-    this.props.onPopupVisibleChange(popupVisible);
+    const newState = { popupVisible };
+    // sync activeValue with value when panel open
+    if (popupVisible && !this.state.visible) {
+      newState.activeValue = this.state.value;
+    }
+    this.setState(newState);
   }
   handleChange(options, setProps) {
-    this.props.onChange(
-      options.map(o => o.value),
-      options
-    );
+    this.props.onChange(options.map(o => o.value), options);
     this.setPopupVisible(setProps.visible);
   }
   handlePopupVisibleChange(popupVisible) {
     this.setPopupVisible(popupVisible);
   }
-  handleSelect() {
-    // reAlign on select
-    this.setState({});
+  handleSelect({ ...info }) {
+    if ('value' in this.props) {
+      delete info.value;
+    }
+    this.setState(info);
   }
   render() {
     const props = this.props;
@@ -91,6 +111,8 @@ class Cascader extends React.Component {
       menus = (
         <Menus
           {...props}
+          value={this.state.value}
+          activeValue={this.state.activeValue}
           onSelect={this.handleSelect}
           onChange={this.handleChange}
           visible={this.state.popupVisible} />
@@ -127,6 +149,8 @@ Cascader.defaultProps = {
 };
 
 Cascader.propTypes = {
+  value: React.PropTypes.array,
+  defaultValue: React.PropTypes.array,
   options: React.PropTypes.array.isRequired,
   onChange: React.PropTypes.func,
   onPopupVisibleChange: React.PropTypes.func,

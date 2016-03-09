@@ -3,32 +3,12 @@ import arrayTreeFilter from 'array-tree-filter';
 import { findDOMNode } from 'react-dom';
 
 class Menus extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
-    const { value, defaultValue } = props;
-    const initialValue = value || defaultValue || [];
-    this.state = {
-      activeValue: initialValue,
-      value: initialValue,
-    };
   }
 
   componentDidMount() {
     this.scrollActiveItemToView();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
-      this.setState({
-        value: nextProps.value || [],
-      });
-    }
-    // sync activeValue with value when panel open
-    if (nextProps.visible && !this.props.visible) {
-      this.setState({
-        activeValue: this.state.value,
-      });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -41,26 +21,27 @@ class Menus extends React.Component {
     if (!targetOption || targetOption.disabled) {
       return;
     }
-    let activeValue = this.state.activeValue;
+    let activeValue = this.props.activeValue;
     activeValue = activeValue.slice(0, menuIndex + 1);
     activeValue[menuIndex] = targetOption.value;
     const activeOptions = this.getActiveOptions(activeValue);
     if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
-      this.setState({ activeValue });
+      this.props.onSelect({ activeValue });
       this.props.loadData(activeOptions);
       return;
     }
+    const onSelectArgument = {};
     if (!targetOption.children || !targetOption.children.length) {
       this.props.onChange(activeOptions, { visible: false });
       // set value to activeValue when select leaf option
-      this.setState({ value: activeValue });
+      onSelectArgument.value = activeValue;
     } else if (this.props.changeOnSelect) {
       this.props.onChange(activeOptions, { visible: true });
       // set value to activeValue on every select
-      this.setState({ value: activeValue });
+      onSelectArgument.value = activeValue;
     }
-    this.setState({ activeValue });
-    this.props.onSelect(activeOptions);
+    onSelectArgument.activeValue = activeValue;
+    this.props.onSelect(onSelectArgument);
   }
 
   getOption(option, menuIndex) {
@@ -97,7 +78,7 @@ class Menus extends React.Component {
   }
 
   getActiveOptions(values) {
-    const activeValue = values || this.state.activeValue;
+    const activeValue = values || this.props.activeValue;
     const options = this.props.options;
     return arrayTreeFilter(options, (o, level) => o.value === activeValue[level]);
   }
@@ -137,7 +118,7 @@ class Menus extends React.Component {
   }
 
   isActiveOption(option) {
-    return this.state.activeValue.some(value => value === option.value);
+    return this.props.activeValue.some(value => value === option.value);
   }
 
   render() {
@@ -156,6 +137,8 @@ class Menus extends React.Component {
 
 Menus.defaultProps = {
   options: [],
+  value: [],
+  activeValue: [],
   onChange() {
   },
   onSelect() {
@@ -167,6 +150,8 @@ Menus.defaultProps = {
 };
 
 Menus.propTypes = {
+  value: React.PropTypes.array,
+  activeValue: React.PropTypes.array,
   options: React.PropTypes.array.isRequired,
   prefixCls: React.PropTypes.string,
   expandTrigger: React.PropTypes.string,

@@ -57,7 +57,7 @@ const Demo = React.createClass({
   render() {
     return (
       <Cascader popupPlacement="bottomRight" options={addressOptions} onChange={this.onChange}>
-        <input placeholder="please select address" value={this.state.inputValue} readOnly />
+        <input placeholder="please select address" style={{ marginLeft: 300 }} value={this.state.inputValue} readOnly />
       </Cascader>
     );
   },

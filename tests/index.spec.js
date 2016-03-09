@@ -201,7 +201,7 @@ describe('Cascader', () => {
     done();
   });
 
-  it('should not change value when it is a controlled component', (done) => {
+  it('should not change value inside when it is a controlled component', (done) => {
     instance = ReactDOM.render(
       <Cascader options={addressOptions} value={['fj']}>
         <input readOnly />
