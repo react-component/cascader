@@ -86,13 +86,9 @@ webpackJsonp([7],{
 	  },
 	  render: function render() {
 	    return _react2['default'].createElement(
-	      'div',
-	      { style: { marginLeft: 400 } },
-	      _react2['default'].createElement(
-	        _rcCascader2['default'],
-	        { popupPlacement: 'bottomRight', options: addressOptions, onChange: this.onChange },
-	        _react2['default'].createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
-	      )
+	      _rcCascader2['default'],
+	      { popupPlacement: 'bottomRight', options: addressOptions, onChange: this.onChange },
+	      _react2['default'].createElement('input', { placeholder: 'please select address', style: { marginLeft: 300 }, value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});

@@ -157,6 +157,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -217,9 +219,19 @@
 	    _classCallCheck(this, Cascader);
 	
 	    _get(Object.getPrototypeOf(Cascader.prototype), 'constructor', this).call(this);
+	    var initialValue = [];
+	    if ('value' in props) {
+	      initialValue = props.value || [];
+	    } else if ('defaultValue' in props) {
+	      initialValue = props.defaultValue || [];
+	    }
+	
 	    this.state = {
-	      popupVisible: props.popupVisible
+	      popupVisible: props.popupVisible,
+	      activeValue: initialValue,
+	      value: initialValue
 	    };
+	
 	    ['handleChange', 'handleSelect', 'handlePopupVisibleChange', 'setPopupVisible', 'getPopupDOMNode'].forEach(function (method) {
 	      return _this[method] = _this[method].bind(_this);
 	    });
@@ -228,6 +240,11 @@
 	  _createClass(Cascader, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      if ('value' in nextProps) {
+	        this.setState({
+	          value: nextProps.value || []
+	        });
+	      }
 	      if ('popupVisible' in nextProps) {
 	        this.setState({
 	          popupVisible: nextProps.popupVisible
@@ -242,10 +259,16 @@
 	  }, {
 	    key: 'setPopupVisible',
 	    value: function setPopupVisible(popupVisible) {
-	      if (!('popupVisible' in this.props)) {
-	        this.setState({ popupVisible: popupVisible });
+	      if ('popupVisible' in this.props) {
+	        this.props.onPopupVisibleChange(popupVisible);
+	        return;
 	      }
-	      this.props.onPopupVisibleChange(popupVisible);
+	      var newState = { popupVisible: popupVisible };
+	      // sync activeValue with value when panel open
+	      if (popupVisible && !this.state.visible) {
+	        newState.activeValue = this.state.value;
+	      }
+	      this.setState(newState);
 	    }
 	  }, {
 	    key: 'handleChange',
@@ -262,9 +285,13 @@
 	    }
 	  }, {
 	    key: 'handleSelect',
-	    value: function handleSelect() {
-	      // reAlign on select
-	      this.setState({});
+	    value: function handleSelect(_ref) {
+	      var info = _objectWithoutProperties(_ref, []);
+	
+	      if ('value' in this.props) {
+	        delete info.value;
+	      }
+	      this.setState(info);
 	    }
 	  }, {
 	    key: 'render',
@@ -280,6 +307,8 @@
 	      var emptyMenuClassName = '';
 	      if (props.options && props.options.length > 0) {
 	        menus = _react2['default'].createElement(_Menus2['default'], _extends({}, props, {
+	          value: this.state.value,
+	          activeValue: this.state.activeValue,
 	          onSelect: this.handleSelect,
 	          onChange: this.handleChange,
 	          visible: this.state.popupVisible }));
@@ -318,6 +347,8 @@
 	};
 	
 	Cascader.propTypes = {
+	  value: _react2['default'].PropTypes.array,
+	  defaultValue: _react2['default'].PropTypes.array,
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  onChange: _react2['default'].PropTypes.func,
 	  onPopupVisibleChange: _react2['default'].PropTypes.func,
@@ -24685,39 +24716,16 @@
 	var Menus = (function (_React$Component) {
 	  _inherits(Menus, _React$Component);
 	
-	  function Menus(props) {
+	  function Menus() {
 	    _classCallCheck(this, Menus);
 	
 	    _get(Object.getPrototypeOf(Menus.prototype), 'constructor', this).call(this);
-	    var value = props.value;
-	    var defaultValue = props.defaultValue;
-	
-	    var initialValue = value || defaultValue || [];
-	    this.state = {
-	      activeValue: initialValue,
-	      value: initialValue
-	    };
 	  }
 	
 	  _createClass(Menus, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.scrollActiveItemToView();
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if ('value' in nextProps) {
-	        this.setState({
-	          value: nextProps.value || []
-	        });
-	      }
-	      // sync activeValue with value when panel open
-	      if (nextProps.visible && !this.props.visible) {
-	        this.setState({
-	          activeValue: this.state.value
-	        });
-	      }
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
@@ -24732,26 +24740,27 @@
 	      if (!targetOption || targetOption.disabled) {
 	        return;
 	      }
-	      var activeValue = this.state.activeValue;
+	      var activeValue = this.props.activeValue;
 	      activeValue = activeValue.slice(0, menuIndex + 1);
 	      activeValue[menuIndex] = targetOption.value;
 	      var activeOptions = this.getActiveOptions(activeValue);
 	      if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
-	        this.setState({ activeValue: activeValue });
+	        this.props.onSelect({ activeValue: activeValue });
 	        this.props.loadData(activeOptions);
 	        return;
 	      }
+	      var onSelectArgument = {};
 	      if (!targetOption.children || !targetOption.children.length) {
 	        this.props.onChange(activeOptions, { visible: false });
 	        // set value to activeValue when select leaf option
-	        this.setState({ value: activeValue });
+	        onSelectArgument.value = activeValue;
 	      } else if (this.props.changeOnSelect) {
 	        this.props.onChange(activeOptions, { visible: true });
 	        // set value to activeValue on every select
-	        this.setState({ value: activeValue });
+	        onSelectArgument.value = activeValue;
 	      }
-	      this.setState({ activeValue: activeValue });
-	      this.props.onSelect(activeOptions);
+	      onSelectArgument.activeValue = activeValue;
+	      this.props.onSelect(onSelectArgument);
 	    }
 	  }, {
 	    key: 'getOption',
@@ -24791,7 +24800,7 @@
 	  }, {
 	    key: 'getActiveOptions',
 	    value: function getActiveOptions(values) {
-	      var activeValue = values || this.state.activeValue;
+	      var activeValue = values || this.props.activeValue;
 	      var options = this.props.options;
 	      return (0, _arrayTreeFilter2['default'])(options, function (o, level) {
 	        return o.value === activeValue[level];
@@ -24842,7 +24851,7 @@
 	  }, {
 	    key: 'isActiveOption',
 	    value: function isActiveOption(option) {
-	      return this.state.activeValue.some(function (value) {
+	      return this.props.activeValue.some(function (value) {
 	        return value === option.value;
 	      });
 	    }
@@ -24874,6 +24883,8 @@
 	
 	Menus.defaultProps = {
 	  options: [],
+	  value: [],
+	  activeValue: [],
 	  onChange: function onChange() {},
 	  onSelect: function onSelect() {},
 	  prefixCls: 'rc-cascader-menus',
@@ -24883,6 +24894,8 @@
 	};
 	
 	Menus.propTypes = {
+	  value: _react2['default'].PropTypes.array,
+	  activeValue: _react2['default'].PropTypes.array,
 	  options: _react2['default'].PropTypes.array.isRequired,
 	  prefixCls: _react2['default'].PropTypes.string,
 	  expandTrigger: _react2['default'].PropTypes.string,
