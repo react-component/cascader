@@ -39,7 +39,7 @@ const BUILT_IN_PLACEMENTS = {
 
 class Cascader extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     let initialValue = [];
     if ('value' in props) {
       initialValue = props.value || [];
