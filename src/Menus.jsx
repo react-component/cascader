@@ -3,10 +3,6 @@ import arrayTreeFilter from 'array-tree-filter';
 import { findDOMNode } from 'react-dom';
 
 class Menus extends React.Component {
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
     this.scrollActiveItemToView();
   }
