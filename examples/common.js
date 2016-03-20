@@ -24788,11 +24788,17 @@
 	      if (option.disabled) {
 	        menuItemCls += ' ' + prefixCls + '-menu-item-disabled';
 	      }
+	      var title = '';
+	      if (option.title) {
+	        title = option.title;
+	      } else if (typeof option.label === 'string') {
+	        title = option.label;
+	      }
 	      return _react2['default'].createElement(
 	        'li',
 	        _extends({ key: option.value,
 	          className: menuItemCls,
-	          title: option.label
+	          title: title
 	        }, expandProps),
 	        option.label
 	      );
