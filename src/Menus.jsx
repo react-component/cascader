@@ -67,10 +67,16 @@ class Menus extends React.Component {
     if (option.disabled) {
       menuItemCls += ` ${prefixCls}-menu-item-disabled`;
     }
+    let title = '';
+    if (option.title) {
+      title = option.title;
+    } else if (typeof option.label === 'string') {
+      title = option.label;
+    }
     return (
       <li key={option.value}
-          className={menuItemCls}
-          title={option.label}
+        className={menuItemCls}
+        title={title}
         {...expandProps}>
         {option.label}
       </li>
