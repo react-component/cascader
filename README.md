@@ -196,6 +196,12 @@ React.render(<Cascader options={options} />, container);
       <td>bottomLeft</td>
       <td>use preset popup align config from builtinPlacements：bottomRight topRight bottomLeft topLeft</td>
     </tr>
+    <tr>
+      <td>getPopupContainer</td>
+      <td>function(trigger:Node):Node</td>
+      <td>() => document.body</td>
+      <td>container which popup select menu rendered into</td>
+    </tr>
   </tbody>
 </table>
 
