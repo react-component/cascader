@@ -1,6 +1,6 @@
 {
   "name": "rc-cascader",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "cascade select ui component for react",
   "keywords": [
     "react",
@@ -55,6 +55,6 @@
   ],
   "dependencies": {
     "array-tree-filter": "^1.0.0",
-    "rc-trigger": "^1.0.6"
+    "rc-trigger": "1.x"
   }
 }

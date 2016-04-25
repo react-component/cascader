@@ -103,7 +103,7 @@ class Cascader extends React.Component {
   }
   render() {
     const props = this.props;
-    const { prefixCls, transitionName, popupClassName, popupPlacement } = props;
+    const { prefixCls, transitionName, popupClassName, popupPlacement, ...restProps } = props;
     // Did not show popup when there is no options
     let menus = <div />;
     let emptyMenuClassName = '';
@@ -122,6 +122,7 @@ class Cascader extends React.Component {
     }
     return (
       <Trigger ref="trigger"
+        {...restProps}
         popupPlacement={popupPlacement}
         builtinPlacements={BUILT_IN_PLACEMENTS}
         popupTransitionName={transitionName}
