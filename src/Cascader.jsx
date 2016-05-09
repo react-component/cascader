@@ -77,16 +77,16 @@ class Cascader extends React.Component {
     return this.refs.trigger.getPopupDomNode();
   }
   setPopupVisible(popupVisible) {
-    if ('popupVisible' in this.props) {
-      this.props.onPopupVisibleChange(popupVisible);
-      return;
+    if (!('popupVisible' in this.props)) {
+      this.setState({ popupVisible });
     }
-    const newState = { popupVisible };
     // sync activeValue with value when panel open
     if (popupVisible && !this.state.visible) {
-      newState.activeValue = this.state.value;
+      this.setState({
+        activeValue: this.state.value,
+      });
     }
-    this.setState(newState);
+    this.props.onPopupVisibleChange(popupVisible);
   }
   handleChange(options, setProps) {
     this.props.onChange(options.map(o => o.value), options);
