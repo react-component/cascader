@@ -259,16 +259,16 @@
 	  }, {
 	    key: 'setPopupVisible',
 	    value: function setPopupVisible(popupVisible) {
-	      if ('popupVisible' in this.props) {
-	        this.props.onPopupVisibleChange(popupVisible);
-	        return;
+	      if (!('popupVisible' in this.props)) {
+	        this.setState({ popupVisible: popupVisible });
 	      }
-	      var newState = { popupVisible: popupVisible };
 	      // sync activeValue with value when panel open
 	      if (popupVisible && !this.state.visible) {
-	        newState.activeValue = this.state.value;
+	        this.setState({
+	          activeValue: this.state.value
+	        });
 	      }
-	      this.setState(newState);
+	      this.props.onPopupVisibleChange(popupVisible);
 	    }
 	  }, {
 	    key: 'handleChange',
