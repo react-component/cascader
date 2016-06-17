@@ -65,6 +65,7 @@ class Cascader extends React.Component {
     if ('value' in nextProps) {
       this.setState({
         value: nextProps.value || [],
+        activeValue: nextProps.value || [],
       });
     }
     if ('popupVisible' in nextProps) {
