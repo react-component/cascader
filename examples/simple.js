@@ -1,20 +1,17 @@
-webpackJsonp([7],{
+webpackJsonp([8],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(248);
+	module.exports = __webpack_require__(251);
 
 
 /***/ },
 
-/***/ 248:
+/***/ 251:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint-disable no-console */
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	__webpack_require__(2);
 	
@@ -26,51 +23,55 @@ webpackJsonp([7],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(165);
+	var _reactDom = __webpack_require__(40);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	/* eslint-disable no-console */
+	
+	
 	var addressOptions = [{
-	  'label': '福建',
-	  'value': 'fj',
-	  'children': [{
-	    'label': '福州',
-	    'value': 'fuzhou',
-	    'children': [{
-	      'label': '马尾',
-	      'value': 'mawei'
+	  label: '福建',
+	  value: 'fj',
+	  children: [{
+	    label: '福州',
+	    value: 'fuzhou',
+	    children: [{
+	      label: '马尾',
+	      value: 'mawei'
 	    }]
 	  }, {
-	    'label': '泉州',
-	    'value': 'quanzhou'
+	    label: '泉州',
+	    value: 'quanzhou'
 	  }]
 	}, {
-	  'label': '浙江',
-	  'value': 'zj',
-	  'children': [{
-	    'label': '杭州',
-	    'value': 'hangzhou',
-	    'children': [{
-	      'label': '余杭',
-	      'value': 'yuhang'
+	  label: '浙江',
+	  value: 'zj',
+	  children: [{
+	    label: '杭州',
+	    value: 'hangzhou',
+	    children: [{
+	      label: '余杭',
+	      value: 'yuhang'
 	    }]
 	  }]
 	}, {
-	  'label': '北京',
-	  'value': 'bj',
-	  'children': [{
-	    'label': '朝阳区',
-	    'value': 'chaoyang'
+	  label: '北京',
+	  value: 'bj',
+	  children: [{
+	    label: '朝阳区',
+	    value: 'chaoyang'
 	  }, {
-	    'label': '海淀区',
-	    'value': 'haidian',
-	    'disabled': true
+	    label: '海淀区',
+	    value: 'haidian',
+	    disabled: true
 	  }]
 	}];
 	
-	var Demo = _react2['default'].createClass({
+	var Demo = _react2.default.createClass({
 	  displayName: 'Demo',
-	
 	  getInitialState: function getInitialState() {
 	    return {
 	      inputValue: ''
@@ -85,15 +86,20 @@ webpackJsonp([7],{
 	    });
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
-	      _rcCascader2['default'],
+	    return _react2.default.createElement(
+	      _rcCascader2.default,
 	      { popupPlacement: 'bottomRight', options: addressOptions, onChange: this.onChange },
-	      _react2['default'].createElement('input', { placeholder: 'please select address', style: { marginLeft: 300 }, value: this.state.inputValue, readOnly: true })
+	      _react2.default.createElement('input', {
+	        placeholder: 'please select address',
+	        style: { marginLeft: 300 },
+	        value: this.state.inputValue,
+	        readOnly: true
+	      })
 	    );
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }
 

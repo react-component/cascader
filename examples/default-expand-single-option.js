@@ -1,12 +1,14 @@
-webpackJsonp([0],[
-/* 0 */
+webpackJsonp([2],{
+
+/***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	module.exports = __webpack_require__(210);
 
 
 /***/ },
-/* 1 */
+
+/***/ 210:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27,72 +29,69 @@ webpackJsonp([0],[
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/* eslint-disable no-console */
-	
-	
-	var addressOptions = [{
-	  label: '福建',
-	  value: 'fj',
-	  children: [{
-	    label: '福州',
-	    value: 'fuzhou',
-	    children: [{
-	      label: '马尾',
-	      value: 'mawei'
-	    }]
-	  }, {
-	    label: '泉州',
-	    value: 'quanzhou'
-	  }]
-	}, {
+	var options = [{
+	  value: 'zhejiang',
 	  label: '浙江',
-	  value: 'zj',
 	  children: [{
-	    label: '杭州',
 	    value: 'hangzhou',
+	    label: '杭州',
 	    children: [{
-	      label: '余杭',
-	      value: 'yuhang'
+	      value: 'xihu',
+	      label: '西湖'
 	    }]
 	  }]
 	}, {
-	  label: '北京',
-	  value: 'bj',
+	  value: 'jiangsu',
+	  label: '江苏',
 	  children: [{
-	    label: '朝阳区',
-	    value: 'chaoyang'
-	  }, {
-	    label: '海淀区',
-	    value: 'haidian'
+	    value: 'nanjing',
+	    label: '南京',
+	    children: [{
+	      value: 'zhonghuamen',
+	      label: '中华门'
+	    }]
 	  }]
 	}];
 	
-	var Demo = _react2.default.createClass({
-	  displayName: 'Demo',
+	var App = _react2.default.createClass({
+	  displayName: 'App',
 	  getInitialState: function getInitialState() {
 	    return {
-	      inputValue: ''
+	      inputValue: '',
+	      value: []
 	    };
 	  },
 	  onChange: function onChange(value, selectedOptions) {
-	    console.log(value, selectedOptions);
+	    var lastSelected = selectedOptions[selectedOptions.length - 1];
+	    if (lastSelected.children && lastSelected.children.length === 1) {
+	      value.push(lastSelected.children[0].value);
+	      this.setState({
+	        inputValue: selectedOptions.map(function (o) {
+	          return o.label;
+	        }).join(', '),
+	        value: value
+	      });
+	      return;
+	    }
 	    this.setState({
 	      inputValue: selectedOptions.map(function (o) {
 	        return o.label;
-	      }).join(', ')
+	      }).join(', '),
+	      value: value
 	    });
 	  },
 	  render: function render() {
 	    return _react2.default.createElement(
 	      _rcCascader2.default,
-	      { options: addressOptions, onChange: this.onChange, transitionName: 'slide-up' },
+	      { options: options, value: this.state.value, changeOnSelect: true, onChange: this.onChange },
 	      _react2.default.createElement('input', { value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});
 	
-	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('__react-content'));
 
 /***/ }
-]);
-//# sourceMappingURL=animation.js.map
+
+});
+//# sourceMappingURL=default-expand-single-option.js.map

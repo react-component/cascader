@@ -1,20 +1,17 @@
-webpackJsonp([4],{
+webpackJsonp([5],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(217);
+	module.exports = __webpack_require__(213);
 
 
 /***/ },
 
-/***/ 217:
+/***/ 213:
 /***/ function(module, exports, __webpack_require__) {
 
-	/* eslint-disable no-console */
 	'use strict';
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	__webpack_require__(2);
 	
@@ -26,26 +23,30 @@ webpackJsonp([4],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(165);
+	var _reactDom = __webpack_require__(40);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* eslint-disable no-console */
+	
+	
 	var addressOptions = [{
-	  'label': '福建',
+	  label: '福建',
 	  isLeaf: false,
-	  'value': 'fj'
+	  value: 'fj'
 	}, {
-	  'label': '浙江',
+	  label: '浙江',
 	  isLeaf: false,
-	  'value': 'zj'
+	  value: 'zj'
 	}];
 	
-	var Demo = _react2['default'].createClass({
+	var Demo = _react2.default.createClass({
 	  displayName: 'Demo',
-	
 	  getInitialState: function getInitialState() {
 	    return {
-	      inputValues: [],
+	      inputValue: '',
 	      options: addressOptions
 	    };
 	  },
@@ -59,35 +60,37 @@ webpackJsonp([4],{
 	  loadData: function loadData(selectedOptions) {
 	    var _this = this;
 	
-	    var options = this.state.options;
 	    var targetOption = selectedOptions[selectedOptions.length - 1];
-	    targetOption.label += ' loading';
+	    targetOption.loading = true;
 	    // 动态加载下级数据
 	    setTimeout(function () {
-	      targetOption.label = targetOption.label.replace(' loading', '');
+	      targetOption.loading = false;
 	      targetOption.children = [{
-	        'label': targetOption.label + '动态加载1',
-	        'value': 'dynamic1'
+	        label: targetOption.label + '动态加载1',
+	        value: 'dynamic1'
 	      }, {
-	        'label': targetOption.label + '动态加载2',
-	        'value': 'dynamic2'
+	        label: targetOption.label + '动态加载2',
+	        value: 'dynamic2'
 	      }];
-	      _this.setState({ options: options });
+	      _this.setState({
+	        options: [].concat(_toConsumableArray(_this.state.options))
+	      });
 	    }, 1000);
-	    this.setState({ options: options });
 	  },
 	  render: function render() {
-	    return _react2['default'].createElement(
-	      _rcCascader2['default'],
-	      { options: this.state.options,
+	    return _react2.default.createElement(
+	      _rcCascader2.default,
+	      {
+	        options: this.state.options,
 	        loadData: this.loadData,
-	        onChange: this.onChange },
-	      _react2['default'].createElement('input', { value: this.state.inputValue, readOnly: true })
+	        onChange: this.onChange
+	      },
+	      _react2.default.createElement('input', { value: this.state.inputValue, readOnly: true })
 	    );
 	  }
 	});
 	
-	_reactDom2['default'].render(_react2['default'].createElement(Demo, null), document.getElementById('__react-content'));
+	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
 
 /***/ }
 

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>value.js - example - rc-cascader@0.9.11</title>
+  <title>default-expand-single-option.js - example - rc-cascader@0.9.11</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -264,82 +264,67 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console */</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
+    <div class="highlight"><pre><code language="js"><span class="hljs-keyword">import</span> <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
 <span class="hljs-keyword">import</span> Cascader <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-cascader'</span>;
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> arrayTreeFilter <span class="hljs-keyword">from</span> <span class="hljs-string">'array-tree-filter'</span>;
 
-<span class="hljs-keyword">const</span> addressOptions = [{
-  label: <span class="hljs-string">'福建'</span>,
-  value: <span class="hljs-string">'fj'</span>,
-  children: [{
-    label: <span class="hljs-string">'福州'</span>,
-    value: <span class="hljs-string">'fuzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'马尾'</span>,
-      value: <span class="hljs-string">'mawei'</span>,
-    }],
-  }, {
-    label: <span class="hljs-string">'泉州'</span>,
-    value: <span class="hljs-string">'quanzhou'</span>,
-  }],
-}, {
+<span class="hljs-keyword">const</span> options = [{
+  value: <span class="hljs-string">'zhejiang'</span>,
   label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
   children: [{
-    label: <span class="hljs-string">'杭州'</span>,
     value: <span class="hljs-string">'hangzhou'</span>,
+    label: <span class="hljs-string">'杭州'</span>,
     children: [{
-      label: <span class="hljs-string">'余杭'</span>,
-      value: <span class="hljs-string">'yuhang'</span>,
+      value: <span class="hljs-string">'xihu'</span>,
+      label: <span class="hljs-string">'西湖'</span>,
     }],
   }],
 }, {
-  label: <span class="hljs-string">'北京'</span>,
-  value: <span class="hljs-string">'bj'</span>,
+  value: <span class="hljs-string">'jiangsu'</span>,
+  label: <span class="hljs-string">'江苏'</span>,
   children: [{
-    label: <span class="hljs-string">'朝阳区'</span>,
-    value: <span class="hljs-string">'chaoyang'</span>,
-  }, {
-    label: <span class="hljs-string">'海淀区'</span>,
-    value: <span class="hljs-string">'haidian'</span>,
+    value: <span class="hljs-string">'nanjing'</span>,
+    label: <span class="hljs-string">'南京'</span>,
+    children: [{
+      value: <span class="hljs-string">'zhonghuamen'</span>,
+      label: <span class="hljs-string">'中华门'</span>,
+    }],
   }],
 }];
 
-<span class="hljs-keyword">const</span> Demo = React.createClass({
+<span class="hljs-keyword">const</span> App = React.createClass({
   getInitialState() {
     <span class="hljs-keyword">return</span> {
+      inputValue: <span class="hljs-string">''</span>,
       value: [],
     };
   },
-  onChange(value) {
-    <span class="hljs-built_in">console</span>.log(value);
-    <span class="hljs-keyword">this</span>.setState({ value });
-  },
-  setValue() {
+  onChange(value, selectedOptions) {
+    <span class="hljs-keyword">const</span> lastSelected = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (lastSelected.children &amp;&amp; lastSelected.children.length === <span class="hljs-number">1</span>) {
+      value.push(lastSelected.children[<span class="hljs-number">0</span>].value);
+      <span class="hljs-keyword">this</span>.setState({
+        inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
+        value,
+      });
+      <span class="hljs-keyword">return</span>;
+    }
     <span class="hljs-keyword">this</span>.setState({
-      value: [<span class="hljs-string">'bj'</span>, <span class="hljs-string">'chaoyang'</span>],
+      inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
+      value,
     });
-  },
-  getLabel() {
-    <span class="hljs-keyword">return</span> arrayTreeFilter(addressOptions, (o, level) =&gt; o.value === <span class="hljs-keyword">this</span>.state.value[level])
-      .map(o =&gt; o.label).join(<span class="hljs-string">', '</span>);
   },
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">onClick</span>=<span class="hljs-value">{this.setValue}</span>&gt;</span>set value to 北京朝阳区<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.getLabel()}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{options}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.value}</span> <span class="hljs-attribute">changeOnSelect</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     )</span>;
   },
 });
 
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
+ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">App</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
   </div>
   <a href="https://github.com/react-component/cascader">
@@ -350,7 +335,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   
   <script src="common.js?nowrap"></script>
-  <script src="value.js?nowrap"></script>
+  <script src="default-expand-single-option.js?nowrap"></script>
 </body>
 
 </html>
