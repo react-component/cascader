@@ -116,7 +116,8 @@ class Cascader extends React.Component {
           activeValue={this.state.activeValue}
           onSelect={this.handleSelect}
           onChange={this.handleChange}
-          visible={this.state.popupVisible} />
+          visible={this.state.popupVisible}
+        />
       );
     } else {
       emptyMenuClassName = ` ${prefixCls}-menus-empty`;
@@ -132,7 +133,8 @@ class Cascader extends React.Component {
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName + emptyMenuClassName}
-        popup={menus}>
+        popup={menus}
+      >
         {props.children}
       </Trigger>
     );

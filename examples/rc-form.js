@@ -7,39 +7,39 @@ import ReactDOM from 'react-dom';
 import arrayTreeFilter from 'array-tree-filter';
 
 const addressOptions = [{
-  'label': '福建',
-  'value': 'fj',
-  'children': [{
-    'label': '福州',
-    'value': 'fuzhou',
-    'children': [{
-      'label': '马尾',
-      'value': 'mawei',
+  label: '福建',
+  value: 'fj',
+  children: [{
+    label: '福州',
+    value: 'fuzhou',
+    children: [{
+      label: '马尾',
+      value: 'mawei',
     }],
   }, {
-    'label': '泉州',
-    'value': 'quanzhou',
+    label: '泉州',
+    value: 'quanzhou',
   }],
 }, {
-  'label': '浙江',
-  'value': 'zj',
-  'children': [{
-    'label': '杭州',
-    'value': 'hangzhou',
-    'children': [{
-      'label': '余杭',
-      'value': 'yuhang',
+  label: '浙江',
+  value: 'zj',
+  children: [{
+    label: '杭州',
+    value: 'hangzhou',
+    children: [{
+      label: '余杭',
+      value: 'yuhang',
     }],
   }],
 }, {
-  'label': '北京',
-  'value': 'bj',
-  'children': [{
-    'label': '朝阳区',
-    'value': 'chaoyang',
+  label: '北京',
+  value: 'bj',
+  children: [{
+    label: '朝阳区',
+    value: 'chaoyang',
   }, {
-    'label': '海淀区',
-    'value': 'haidian',
+    label: '海淀区',
+    value: 'haidian',
   }],
 }];
 
@@ -66,7 +66,6 @@ class CascaderInput extends Component {
   }
 }
 
-@createForm()
 class Form extends Component {
   constructor() {
     super();
@@ -88,16 +87,19 @@ class Form extends Component {
     const props = this.props;
     const { form } = props;
     const addressFieldProps = form.getFieldProps('address', {
-      rules: [{required: true, type: 'array'}],
+      rules: [{ required: true, type: 'array' }],
     });
     const addressFieldError = form.getFieldError('address');
     return (
-      <div style={{margin: 20}}>
+      <div style={{ margin: 20 }}>
         <form onSubmit={this.onSubmit}>
           <p>
-            <CascaderInput placeholder="please select address"
-              options={addressOptions} {...addressFieldProps} />
-            <span style={{ color: '#f50'}}>
+            <CascaderInput
+              placeholder="please select address"
+              options={addressOptions}
+              {...addressFieldProps}
+            />
+            <span style={{ color: '#f50' }}>
               {addressFieldError ? addressFieldError.join(' ') : null}
             </span>
           </p>
@@ -110,4 +112,6 @@ class Form extends Component {
   }
 }
 
-ReactDOM.render(<Form />, document.getElementById('__react-content'));
+const NewForm = createForm()(Form);
+
+ReactDOM.render(<NewForm />, document.getElementById('__react-content'));

@@ -58,7 +58,7 @@ class Menus extends React.Component {
     }
     if (this.isActiveOption(option)) {
       menuItemCls += ` ${prefixCls}-menu-item-active`;
-      expandProps.ref = 'activeItem' + menuIndex;
+      expandProps.ref = `activeItem${menuIndex}`;
     }
     if (option.disabled) {
       menuItemCls += ` ${prefixCls}-menu-item-disabled`;
@@ -70,10 +70,12 @@ class Menus extends React.Component {
       title = option.label;
     }
     return (
-      <li key={option.value}
+      <li
+        key={option.value}
         className={menuItemCls}
         title={title}
-        {...expandProps}>
+        {...expandProps}
+      >
         {option.label}
       </li>
     );
@@ -111,7 +113,7 @@ class Menus extends React.Component {
     // scroll into view
     const optionsLength = this.getShowOptions().length;
     for (let i = 0; i < optionsLength; i++) {
-      const itemComponent = this.refs['activeItem' + i];
+      const itemComponent = this.refs[`activeItem${i}`];
       if (itemComponent) {
         const target = findDOMNode(itemComponent);
         target.parentNode.scrollTop = target.offsetTop;

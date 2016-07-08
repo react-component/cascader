@@ -78,14 +78,19 @@ describe('Cascader', () => {
 
   it('should has defaultValue', (done) => {
     instance = ReactDOM.render(
-      <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']} onChange={onChange}>
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+      >
         <input readOnly />
       </Cascader>
     , div);
     Simulate.click(ReactDOM.findDOMNode(instance));
     const menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
     expect(menus.length).to.be(3);
-    const activeMenuItems = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu-item-active');
+    const activeMenuItems =
+      instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).to.be(3);
     expect(activeMenuItems[0].innerHTML).to.be('福建');
     expect(activeMenuItems[1].innerHTML).to.be('福州');
@@ -179,7 +184,12 @@ describe('Cascader', () => {
 
   it('should set the value on each selection', (done) => {
     instance = ReactDOM.render(
-      <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']} onChange={onChange} changeOnSelect>
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+        changeOnSelect
+      >
         <input readOnly />
       </Cascader>
     , div);

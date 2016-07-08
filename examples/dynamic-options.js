@@ -5,13 +5,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const addressOptions = [{
-  'label': '福建',
+  label: '福建',
   isLeaf: false,
-  'value': 'fj',
+  value: 'fj',
 }, {
-  'label': '浙江',
+  label: '浙江',
   isLeaf: false,
-  'value': 'zj',
+  value: 'zj',
 }];
 
 const Demo = React.createClass({
@@ -34,22 +34,24 @@ const Demo = React.createClass({
     setTimeout(() => {
       targetOption.label = targetOption.label.replace(' loading', '');
       targetOption.children = [{
-        'label': targetOption.label + '动态加载1',
-        'value': 'dynamic1',
+        label: `${targetOption.label}动态加载1`,
+        value: 'dynamic1',
       }, {
-        'label': targetOption.label + '动态加载2',
-        'value': 'dynamic2',
+        label: `${targetOption.label}动态加载2`,
+        value: 'dynamic2',
       }];
-      this.setState({options});
+      this.setState({ options });
     }, 1000);
-    this.setState({options});
+    this.setState({ options });
   },
   render() {
     return (
-      <Cascader options={this.state.options}
-                loadData={this.loadData}
-                onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly/>
+      <Cascader
+        options={this.state.options}
+        loadData={this.loadData}
+        onChange={this.onChange}
+      >
+        <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
   },
