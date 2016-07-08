@@ -17,7 +17,7 @@ const addressOptions = [{
 const Demo = React.createClass({
   getInitialState() {
     return {
-      inputValues: [],
+      inputValue: '',
       options: addressOptions,
     };
   },
@@ -27,12 +27,11 @@ const Demo = React.createClass({
     });
   },
   loadData(selectedOptions) {
-    const options = this.state.options;
     const targetOption = selectedOptions[selectedOptions.length - 1];
-    targetOption.label += ' loading';
+    targetOption.loading = true;
     // 动态加载下级数据
     setTimeout(() => {
-      targetOption.label = targetOption.label.replace(' loading', '');
+      targetOption.loading = false;
       targetOption.children = [{
         label: `${targetOption.label}动态加载1`,
         value: 'dynamic1',
@@ -40,9 +39,10 @@ const Demo = React.createClass({
         label: `${targetOption.label}动态加载2`,
         value: 'dynamic2',
       }];
-      this.setState({ options });
+      this.setState({
+        options: [...this.state.options],
+      });
     }, 1000);
-    this.setState({ options });
   },
   render() {
     return (

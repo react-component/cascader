@@ -54,7 +54,7 @@ class Cascader extends React.Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
+    if ('value' in nextProps && this.props.value !== nextProps.value) {
       this.setState({
         value: nextProps.value || [],
         activeValue: nextProps.value || [],
