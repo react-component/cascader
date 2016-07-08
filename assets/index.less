@@ -78,6 +78,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.3s ease;
+    position: relative;
     &:hover {
       background: tint(#2db7f5, 90%);
     }
@@ -87,6 +88,13 @@
       &:hover {
         background: transparent;
       }
+    }
+    &-loading:after {
+      position: absolute;
+      right: 12px;
+      content: 'loading';
+      color: #aaa;
+      font-style: italic;
     }
     &-active {
       background: tint(#2db7f5, 80%);

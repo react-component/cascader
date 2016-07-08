@@ -63,6 +63,9 @@ class Menus extends React.Component {
     if (option.disabled) {
       menuItemCls += ` ${prefixCls}-menu-item-disabled`;
     }
+    if (option.loading) {
+      menuItemCls += ` ${prefixCls}-menu-item-loading`;
+    }
     let title = '';
     if (option.title) {
       title = option.title;
