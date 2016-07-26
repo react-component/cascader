@@ -38,9 +38,6 @@ React Cascader Component
 
 http://react-component.github.io/cascader/
 
-## Compatibility
-
-* support ie8+, chrome, firefox, safari.
 
 ## Install
 
