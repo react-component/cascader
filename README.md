@@ -61,10 +61,10 @@ http://react-component.github.io/cascader/
 ## Usage
 
 ```js
-var Cascader = require('rc-cascader');
-var React = require('react');
+import React from 'react';
+import Cascader from 'rc-cascader';
 
-const addressOptions = [{
+const options = [{
   'label': '福建',
   'value': 'fj',
   'children': [{
@@ -101,7 +101,11 @@ const addressOptions = [{
   }],
 }];
 
-React.render(<Cascader options={options} />, container);
+React.render(
+  <Cascader options={options}>
+    ...
+  </Cascader>
+, container);
 ```
 
 ## API
