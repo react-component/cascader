@@ -24,7 +24,6 @@ React Cascader Component
 [download-image]: https://img.shields.io/npm/dm/rc-cascader.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-cascader
 
-
 ## Browser Support
 
 |![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_48x48.png) | ![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_48x48.png)|
@@ -48,15 +47,11 @@ http://react-component.github.io/cascader/
 
 ## Feature
 
-* support ie8,ie8+,chrome,firefox,safari
-
-### Keyboard
-
+* support ie8+, chrome, firefox, safari.
 
 ## install
 
 [![rc-cascader](https://nodei.co/npm/rc-cascader.png)](https://npmjs.org/package/rc-cascader)
-
 
 ## Usage
 
@@ -251,11 +246,15 @@ React.render(
 
 ## Test Case
 
-http://localhost:8000/tests/runner.html?coverage
+```bash
+$ npm test
+```
 
 ## Coverage
 
-http://localhost:8000/node_modules/rc-server/node_modules/node-jscover/lib/front-end/jscoverage.html?w=http://localhost:8000/tests/runner.html?coverage
+```bash
+$ npm run coverage
+```
 
 ## License
 
