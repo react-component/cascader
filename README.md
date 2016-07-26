@@ -34,24 +34,21 @@ React Cascader Component
 
 <img src="https://os.alipayobjects.com/rmsportal/TYFXEbuQXIaMqQF.png" width="288"/>
 
-## Development
-
-```
-npm install
-npm start
-```
-
 ## Example
 
 http://react-component.github.io/cascader/
 
-## Feature
+## Compatibility
 
 * support ie8+, chrome, firefox, safari.
 
-## install
+## Install
 
 [![rc-cascader](https://nodei.co/npm/rc-cascader.png)](https://npmjs.org/package/rc-cascader)
+
+```bash
+$ npm install rc-cascader --save
+```
 
 ## Usage
 
@@ -243,6 +240,12 @@ React.render(
   </tbody>
 </table>
 
+## Development
+
+```bash
+$ npm install
+$ npm start
+```
 
 ## Test Case
 
