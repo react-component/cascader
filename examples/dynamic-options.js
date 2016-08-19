@@ -22,6 +22,7 @@ const Demo = React.createClass({
     };
   },
   onChange(value, selectedOptions) {
+    console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
@@ -50,6 +51,7 @@ const Demo = React.createClass({
         options={this.state.options}
         loadData={this.loadData}
         onChange={this.onChange}
+        changeOnSelect
       >
         <input value={this.state.inputValue} readOnly />
       </Cascader>
