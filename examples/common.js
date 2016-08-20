@@ -268,10 +268,16 @@
 	
 	  Cascader.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
 	    if ('value' in nextProps && this.props.value !== nextProps.value) {
-	      this.setState({
+	      var newValues = {
 	        value: nextProps.value || [],
 	        activeValue: nextProps.value || []
-	      });
+	      };
+	      // allow activeValue diff from value
+	      // https://github.com/ant-design/ant-design/issues/2767
+	      if ('loadData' in nextProps) {
+	        delete newValues.activeValue;
+	      }
+	      this.setState(newValues);
 	    }
 	    if ('popupVisible' in nextProps) {
 	      this.setState({
