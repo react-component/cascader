@@ -352,7 +352,8 @@
 	  transitionName: _react2.default.PropTypes.string,
 	  popupClassName: _react2.default.PropTypes.string,
 	  popupPlacement: _react2.default.PropTypes.string,
-	  prefixCls: _react2.default.PropTypes.string
+	  prefixCls: _react2.default.PropTypes.string,
+	  dropdownMenuColumnStyle: _react2.default.PropTypes.object
 	};
 	
 	exports.default = Cascader;
@@ -24947,6 +24948,9 @@
 	    activeValue[menuIndex] = targetOption.value;
 	    var activeOptions = this.getActiveOptions(activeValue);
 	    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
+	      if (this.props.changeOnSelect) {
+	        this.props.onChange(activeOptions, { visible: true });
+	      }
 	      this.props.onSelect({ activeValue: activeValue });
 	      this.props.loadData(activeOptions);
 	      return;
@@ -25065,7 +25069,9 @@
 	  Menus.prototype.render = function render() {
 	    var _this3 = this;
 	
-	    var prefixCls = this.props.prefixCls;
+	    var _props2 = this.props;
+	    var prefixCls = _props2.prefixCls;
+	    var dropdownMenuColumnStyle = _props2.dropdownMenuColumnStyle;
 	
 	    return _react2.default.createElement(
 	      'div',
@@ -25073,7 +25079,7 @@
 	      this.getShowOptions().map(function (options, menuIndex) {
 	        return _react2.default.createElement(
 	          'ul',
-	          { className: prefixCls + '-menu', key: menuIndex },
+	          { className: prefixCls + '-menu', key: menuIndex, style: dropdownMenuColumnStyle },
 	          options.map(function (option) {
 	            return _this3.getOption(option, menuIndex);
 	          })
@@ -25108,7 +25114,8 @@
 	  onSelect: _react2.default.PropTypes.func,
 	  loadData: _react2.default.PropTypes.func,
 	  visible: _react2.default.PropTypes.bool,
-	  changeOnSelect: _react2.default.PropTypes.bool
+	  changeOnSelect: _react2.default.PropTypes.bool,
+	  dropdownMenuColumnStyle: _react2.default.PropTypes.object
 	};
 	
 	exports.default = Menus;

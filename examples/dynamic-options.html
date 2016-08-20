@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>dynamic-options.js - example - rc-cascader@0.9.11</title>
+  <title>dynamic-options.js - example - rc-cascader@0.10.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -258,7 +258,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.9.11</h1>
+      <h1>rc-cascader@0.10.0</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -288,6 +288,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     };
   },
   onChange(value, selectedOptions) {
+    <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
       inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
@@ -316,6 +317,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-attribute">options</span>=<span class="hljs-value">{this.state.options}</span>
         <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{this.loadData}</span>
         <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+        <span class="hljs-attribute">changeOnSelect</span>
       &gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>

@@ -51,6 +51,7 @@ webpackJsonp([5],{
 	    };
 	  },
 	  onChange: function onChange(value, selectedOptions) {
+	    console.log(value, selectedOptions);
 	    this.setState({
 	      inputValue: selectedOptions.map(function (o) {
 	        return o.label;
@@ -83,7 +84,8 @@ webpackJsonp([5],{
 	      {
 	        options: this.state.options,
 	        loadData: this.loadData,
-	        onChange: this.onChange
+	        onChange: this.onChange,
+	        changeOnSelect: true
 	      },
 	      _react2.default.createElement('input', { value: this.state.inputValue, readOnly: true })
 	    );
