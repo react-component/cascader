@@ -129,11 +129,11 @@ class Menus extends React.Component {
   }
 
   render() {
-    const { prefixCls } = this.props;
+    const { prefixCls, dropdownMenuColumnStyle } = this.props;
     return (
       <div>
         {this.getShowOptions().map((options, menuIndex) =>
-          <ul className={`${prefixCls}-menu`} key={menuIndex}>
+          <ul className={`${prefixCls}-menu`} key={menuIndex} style={dropdownMenuColumnStyle}>
             {options.map(option => this.getOption(option, menuIndex))}
           </ul>
         )}
@@ -167,6 +167,7 @@ Menus.propTypes = {
   loadData: React.PropTypes.func,
   visible: React.PropTypes.bool,
   changeOnSelect: React.PropTypes.bool,
+  dropdownMenuColumnStyle: React.PropTypes.object,
 };
 
 export default Menus;

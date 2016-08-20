@@ -156,6 +156,7 @@ Cascader.propTypes = {
   popupClassName: React.PropTypes.string,
   popupPlacement: React.PropTypes.string,
   prefixCls: React.PropTypes.string,
+  dropdownMenuColumnStyle: React.PropTypes.object,
 };
 
 export default Cascader;
