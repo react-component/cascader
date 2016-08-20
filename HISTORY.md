@@ -2,6 +2,11 @@
 
 ---
 
+## 0.10.0 / 2016-08-20
+
+- Add `dropdownMenuColumnStyle`
+- Fix `changeOnSelect` when load data dynamicly
+
 ## 0.9.0 / 2016-02-19
 
 - support `popupPlacement`

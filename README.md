@@ -195,6 +195,12 @@ React.render(
       <td>() => document.body</td>
       <td>container which popup select menu rendered into</td>
     </tr>
+    <tr>
+      <td>dropdownMenuColumnStyle</td>
+      <td>Object</td>
+      <td></td>
+      <td>style object for each cascader pop menu</td>
+    </tr>
   </tbody>
 </table>
 
