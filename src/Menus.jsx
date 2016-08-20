@@ -22,6 +22,9 @@ class Menus extends React.Component {
     activeValue[menuIndex] = targetOption.value;
     const activeOptions = this.getActiveOptions(activeValue);
     if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
+      if (this.props.changeOnSelect) {
+        this.props.onChange(activeOptions, { visible: true });
+      }
       this.props.onSelect({ activeValue });
       this.props.loadData(activeOptions);
       return;
