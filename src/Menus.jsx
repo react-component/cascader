@@ -50,14 +50,15 @@ class Menus extends React.Component {
       onClick: onSelect,
     };
     let menuItemCls = `${prefixCls}-menu-item`;
-    if (expandTrigger === 'hover' &&
-      option.children &&
-      option.children.length > 0) {
+    const hasChildren = option.children && option.children.length > 0;
+    if (hasChildren || option.isLeaf === false) {
+      menuItemCls += ` ${prefixCls}-menu-item-expand`;
+    }
+    if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {
         onMouseEnter: this.delayOnSelect.bind(this, onSelect),
         onMouseLeave: this.delayOnSelect.bind(this),
       };
-      menuItemCls += ` ${prefixCls}-menu-item-expand`;
     }
     if (this.isActiveOption(option)) {
       menuItemCls += ` ${prefixCls}-menu-item-active`;
