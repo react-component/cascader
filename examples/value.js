@@ -3,12 +3,12 @@ webpackJsonp([10],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(253);
+	module.exports = __webpack_require__(289);
 
 
 /***/ },
 
-/***/ 253:
+/***/ 289:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,11 +23,11 @@ webpackJsonp([10],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(40);
+	var _reactDom = __webpack_require__(79);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _arrayTreeFilter = __webpack_require__(208);
+	var _arrayTreeFilter = __webpack_require__(250);
 	
 	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
 	
@@ -103,7 +103,7 @@ webpackJsonp([10],{
 	      _react2.default.createElement(
 	        'button',
 	        { onClick: this.setValue },
-	        'set value to 北京朝阳区'
+	        'set value to \u5317\u4EAC\u671D\u9633\u533A'
 	      ),
 	      _react2.default.createElement(
 	        _rcCascader2.default,

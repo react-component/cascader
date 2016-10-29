@@ -3,12 +3,12 @@ webpackJsonp([5],{
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(213);
+	module.exports = __webpack_require__(255);
 
 
 /***/ },
 
-/***/ 213:
+/***/ 255:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23,7 +23,7 @@ webpackJsonp([5],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactDom = __webpack_require__(40);
+	var _reactDom = __webpack_require__(79);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
@@ -67,10 +67,10 @@ webpackJsonp([5],{
 	    setTimeout(function () {
 	      targetOption.loading = false;
 	      targetOption.children = [{
-	        label: targetOption.label + '动态加载1',
+	        label: targetOption.label + '\u52A8\u6001\u52A0\u8F7D1',
 	        value: 'dynamic1'
 	      }, {
-	        label: targetOption.label + '动态加载2',
+	        label: targetOption.label + '\u52A8\u6001\u52A0\u8F7D2',
 	        value: 'dynamic2'
 	      }];
 	      _this.setState({
