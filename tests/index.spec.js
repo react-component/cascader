@@ -4,7 +4,8 @@ const ReactDOM = require('react-dom');
 const TestUtils = require('react-addons-test-utils');
 const Simulate = TestUtils.Simulate;
 const Cascader = require('../');
-const addressOptions = require('./demoOptions');
+const addressOptions = require('./demoOptions').addressOptions;
+const optionsForActiveMenuItems = require('./demoOptions').optionsForActiveMenuItems;
 
 describe('Cascader', () => {
   let instance;
@@ -290,5 +291,22 @@ describe('Cascader', () => {
     menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
     expect(menus.length).to.be(1);
     done();
+  });
+
+  it('should have correct active menu items', () => {
+    instance = ReactDOM.render(
+      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']}>
+        <input readOnly />
+      </Cascader>
+    , div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    const popup = instance.getPopupDOMNode();
+    const activeMenuItems = popup.querySelectorAll('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).to.be(2);
+    expect(activeMenuItems[0].innerHTML).to.be('1');
+    expect(activeMenuItems[1].innerHTML).to.be('2');
+    const menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    const activeMenuItemsInMenu1 = menus[0].querySelectorAll('.rc-cascader-menu-item-active');
+    expect(activeMenuItemsInMenu1.length).to.be(1);
   });
 });

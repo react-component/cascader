@@ -60,7 +60,7 @@ class Menus extends React.Component {
         onMouseLeave: this.delayOnSelect.bind(this),
       };
     }
-    if (this.isActiveOption(option)) {
+    if (this.isActiveOption(option, menuIndex)) {
       menuItemCls += ` ${prefixCls}-menu-item-active`;
       expandProps.ref = `activeItem${menuIndex}`;
     }
@@ -128,8 +128,9 @@ class Menus extends React.Component {
     }
   }
 
-  isActiveOption(option) {
-    return this.props.activeValue.some(value => value === option.value);
+  isActiveOption(option, menuIndex) {
+    const { activeValue = [] } = this.props;
+    return activeValue[menuIndex] === option.value;
   }
 
   render() {

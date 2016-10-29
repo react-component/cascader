@@ -1,4 +1,29 @@
-export default [{
+export const optionsForActiveMenuItems = [{
+  value: '1',
+  label: '1',
+  children: [{
+    value: '1',
+    label: '1',
+  }, {
+    value: '2',
+    label: '2',
+  }],
+}, {
+  value: '2',
+  label: '2',
+  children: [{
+    value: '1',
+    label: '1',
+  }, {
+    value: '2',
+    label: '2',
+  }, {
+    value: '3',
+    label: '3',
+  }],
+}];
+
+export const addressOptions = [{
   label: '福建',
   value: 'fj',
   children: [{
