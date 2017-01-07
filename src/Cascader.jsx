@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Component, PropTypes, cloneElement } from 'react';
 import Trigger from 'rc-trigger';
 import Menus from './Menus';
+import KeyCode from 'rc-util/lib/KeyCode';
+import arrayTreeFilter from 'array-tree-filter';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -37,7 +39,7 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-class Cascader extends React.Component {
+class Cascader extends Component {
   constructor(props) {
     super(props);
     let initialValue = [];
@@ -75,6 +77,18 @@ class Cascader extends React.Component {
   getPopupDOMNode() {
     return this.refs.trigger.getPopupDomNode();
   }
+  getCurrentLevelOptions() {
+    const { options } = this.props;
+    const { activeValue = [] } = this.state;
+    const result = arrayTreeFilter(options, (o, level) => o.value === activeValue[level]);
+    if (result[result.length - 2]) {
+      return result[result.length - 2].children;
+    }
+    return [...options].filter(o => !o.disabled);
+  }
+  getActiveOptions(activeValue) {
+    return arrayTreeFilter(this.props.options, (o, level) => o.value === activeValue[level]);
+  }
   setPopupVisible = (popupVisible) => {
     if (!('popupVisible' in this.props)) {
       this.setState({ popupVisible });
@@ -87,23 +101,106 @@ class Cascader extends React.Component {
     }
     this.props.onPopupVisibleChange(popupVisible);
   }
-  handleChange = (options, setProps) => {
-    this.props.onChange(options.map(o => o.value), options);
-    this.setPopupVisible(setProps.visible);
+  handleChange = (options, setProps, e) => {
+    if (e.type !== 'keydown' || e.keyCode === KeyCode.ENTER) {
+      this.props.onChange(options.map(o => o.value), options);
+      this.setPopupVisible(setProps.visible);
+    }
   }
   handlePopupVisibleChange = (popupVisible) => {
     this.setPopupVisible(popupVisible);
   }
-  handleSelect = ({ ...info }) => {
-    if ('value' in this.props) {
-      delete info.value;
+  handleMenuSelect = (targetOption, menuIndex, e) => {
+    if (!targetOption || targetOption.disabled) {
+      return;
     }
-    this.setState(info);
+    let { activeValue } = this.state;
+    activeValue = activeValue.slice(0, menuIndex + 1);
+    activeValue[menuIndex] = targetOption.value;
+    const activeOptions = this.getActiveOptions(activeValue);
+    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
+      if (this.props.changeOnSelect) {
+        this.handleChange(activeOptions, { visible: true }, e);
+      }
+      this.setState({ activeValue });
+      this.props.loadData(activeOptions);
+      return;
+    }
+    const newState = {};
+    if (!targetOption.children || !targetOption.children.length) {
+      this.handleChange(activeOptions, { visible: false }, e);
+      // set value to activeValue when select leaf option
+      newState.value = activeValue;
+    } else if (this.props.changeOnSelect) {
+      this.handleChange(activeOptions, { visible: true }, e);
+      // set value to activeValue on every select
+      newState.value = activeValue;
+    }
+    newState.activeValue = activeValue;
+    //  not change the value by keyboard
+    if ('value' in this.props ||
+        (e.type === 'keydown' && e.keyCode !== KeyCode.ENTER)) {
+      delete newState.value;
+    }
+    this.setState(newState);
+  }
+  handleKeyDown = (e) => {
+    e.preventDefault();
+    const activeValue = [...this.state.activeValue];
+    const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
+    const currentOptions = this.getCurrentLevelOptions();
+    const currentIndex = currentOptions.map(o => o.value).indexOf(activeValue[currentLevel]);
+    if (e.keyCode !== KeyCode.DOWN &&
+        e.keyCode !== KeyCode.UP &&
+        e.keyCode !== KeyCode.LEFT &&
+        e.keyCode !== KeyCode.RIGHT &&
+        e.keyCode !== KeyCode.ENTER &&
+        e.keyCode !== KeyCode.BACKSPACE &&
+        e.keyCode !== KeyCode.ESC) {
+      return;
+    }
+    // Press any keys above to reopen menu
+    if (!this.state.popupVisible &&
+        e.keyCode !== KeyCode.BACKSPACE &&
+        e.keyCode !== KeyCode.ESC) {
+      this.setPopupVisible(true);
+      return;
+    }
+    if (e.keyCode === KeyCode.DOWN || e.keyCode === KeyCode.UP) {
+      let nextIndex = currentIndex;
+      if (nextIndex !== -1) {
+        if (e.keyCode === KeyCode.DOWN) {
+          nextIndex += 1;
+          nextIndex = nextIndex >= currentOptions.length ? 0 : nextIndex;
+        } else {
+          nextIndex -= 1;
+          nextIndex = nextIndex < 0 ? currentOptions.length - 1 : nextIndex;
+        }
+      } else {
+        nextIndex = 0;
+      }
+      activeValue[currentLevel] = currentOptions[nextIndex].value;
+    } else if (e.keyCode === KeyCode.LEFT || e.keyCode === KeyCode.BACKSPACE) {
+      activeValue.splice(activeValue.length - 1, 1);
+    } else if (e.keyCode === KeyCode.RIGHT) {
+      if (currentOptions[currentIndex] && currentOptions[currentIndex].children) {
+        activeValue.push(currentOptions[currentIndex].children[0].value);
+      }
+    } else if (e.keyCode === KeyCode.ESC) {
+      this.setPopupVisible(false);
+      return;
+    }
+    if (!activeValue || activeValue.length === 0) {
+      this.setPopupVisible(false);
+    }
+    const activeOptions = this.getActiveOptions(activeValue);
+    const targetOption = activeOptions[activeOptions.length - 1];
+    this.handleMenuSelect(targetOption, activeOptions.length - 1, e);
   }
   render() {
     const {
       prefixCls, transitionName, popupClassName, options, disabled,
-      builtinPlacements, popupPlacement, ...restProps,
+      builtinPlacements, popupPlacement, children, ...restProps,
     } = this.props;
     // Did not show popup when there is no options
     let menus = <div />;
@@ -114,8 +211,7 @@ class Cascader extends React.Component {
           {...this.props}
           value={this.state.value}
           activeValue={this.state.activeValue}
-          onSelect={this.handleSelect}
-          onChange={this.handleChange}
+          onSelect={this.handleMenuSelect}
           visible={this.state.popupVisible}
         />
       );
@@ -137,7 +233,11 @@ class Cascader extends React.Component {
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName + emptyMenuClassName}
         popup={menus}
-      />
+      >
+        {cloneElement(children, {
+          onKeyDown: this.handleKeyDown,
+        })}
+      </Trigger>
     );
   }
 }
@@ -155,19 +255,22 @@ Cascader.defaultProps = {
 };
 
 Cascader.propTypes = {
-  value: React.PropTypes.array,
-  defaultValue: React.PropTypes.array,
-  options: React.PropTypes.array.isRequired,
-  onChange: React.PropTypes.func,
-  onPopupVisibleChange: React.PropTypes.func,
-  popupVisible: React.PropTypes.bool,
-  disabled: React.PropTypes.bool,
-  transitionName: React.PropTypes.string,
-  popupClassName: React.PropTypes.string,
-  popupPlacement: React.PropTypes.string,
-  prefixCls: React.PropTypes.string,
-  dropdownMenuColumnStyle: React.PropTypes.object,
-  builtinPlacements: React.PropTypes.object,
+  value: PropTypes.array,
+  defaultValue: PropTypes.array,
+  options: PropTypes.array.isRequired,
+  onChange: PropTypes.func,
+  onPopupVisibleChange: PropTypes.func,
+  popupVisible: PropTypes.bool,
+  disabled: PropTypes.bool,
+  transitionName: PropTypes.string,
+  popupClassName: PropTypes.string,
+  popupPlacement: PropTypes.string,
+  prefixCls: PropTypes.string,
+  dropdownMenuColumnStyle: PropTypes.object,
+  builtinPlacements: PropTypes.object,
+  loadData: PropTypes.func,
+  changeOnSelect: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 export default Cascader;
