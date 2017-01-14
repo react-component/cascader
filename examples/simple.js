@@ -1,14 +1,14 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(287);
+	module.exports = __webpack_require__(288);
 
 
 /***/ },
 
-/***/ 287:
+/***/ 288:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -86,12 +86,10 @@ webpackJsonp([8],{
 	  render: function render() {
 	    return _react2.default.createElement(
 	      _rcCascader2.default,
-	      { popupPlacement: 'bottomRight', options: addressOptions, onChange: this.onChange },
+	      { options: addressOptions, onChange: this.onChange },
 	      _react2.default.createElement('input', {
 	        placeholder: 'please select address',
-	        style: { marginLeft: 300 },
-	        value: this.state.inputValue,
-	        readOnly: true
+	        value: this.state.inputValue
 	      })
 	    );
 	  }

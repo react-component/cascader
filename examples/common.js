@@ -30,7 +30,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		12:0
+/******/ 		13:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -76,7 +76,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"animation","1":"change-on-select","2":"default-expand-single-option","3":"defaultValue","4":"disabled","5":"dynamic-options","6":"hover","7":"rc-form","8":"simple","9":"text-trigger","10":"value","11":"visible"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"adjust-overflow","1":"animation","2":"change-on-select","3":"default-expand-single-option","4":"defaultValue","5":"disabled","6":"dynamic-options","7":"hover","8":"rc-form","9":"simple","10":"text-trigger","11":"value","12":"visible"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
@@ -291,20 +291,22 @@
 	  };
 	
 	  Cascader.prototype.render = function render() {
-	    var props = this.props;
-	
-	    var prefixCls = props.prefixCls,
-	        transitionName = props.transitionName,
-	        popupClassName = props.popupClassName,
-	        popupPlacement = props.popupPlacement,
-	        restProps = _objectWithoutProperties(props, ['prefixCls', 'transitionName', 'popupClassName', 'popupPlacement']);
+	    var _props = this.props,
+	        prefixCls = _props.prefixCls,
+	        transitionName = _props.transitionName,
+	        popupClassName = _props.popupClassName,
+	        options = _props.options,
+	        disabled = _props.disabled,
+	        builtinPlacements = _props.builtinPlacements,
+	        popupPlacement = _props.popupPlacement,
+	        restProps = _objectWithoutProperties(_props, ['prefixCls', 'transitionName', 'popupClassName', 'options', 'disabled', 'builtinPlacements', 'popupPlacement']);
 	    // Did not show popup when there is no options
 	
 	
 	    var menus = _react2.default.createElement('div', null);
 	    var emptyMenuClassName = '';
-	    if (props.options && props.options.length > 0) {
-	      menus = _react2.default.createElement(_Menus2.default, _extends({}, props, {
+	    if (options && options.length > 0) {
+	      menus = _react2.default.createElement(_Menus2.default, _extends({}, this.props, {
 	        value: this.state.value,
 	        activeValue: this.state.activeValue,
 	        onSelect: this.handleSelect,
@@ -314,22 +316,21 @@
 	    } else {
 	      emptyMenuClassName = ' ' + prefixCls + '-menus-empty';
 	    }
-	    return _react2.default.createElement(
-	      _rcTrigger2.default,
-	      _extends({ ref: 'trigger'
-	      }, restProps, {
-	        popupPlacement: popupPlacement,
-	        builtinPlacements: BUILT_IN_PLACEMENTS,
-	        popupTransitionName: transitionName,
-	        action: props.disabled ? [] : ['click'],
-	        popupVisible: props.disabled ? false : this.state.popupVisible,
-	        onPopupVisibleChange: this.handlePopupVisibleChange,
-	        prefixCls: prefixCls + '-menus',
-	        popupClassName: popupClassName + emptyMenuClassName,
-	        popup: menus
-	      }),
-	      props.children
-	    );
+	    return _react2.default.createElement(_rcTrigger2.default, _extends({
+	      ref: 'trigger'
+	    }, restProps, {
+	      options: options,
+	      disabled: disabled,
+	      popupPlacement: popupPlacement,
+	      builtinPlacements: builtinPlacements,
+	      popupTransitionName: transitionName,
+	      action: disabled ? [] : ['click'],
+	      popupVisible: disabled ? false : this.state.popupVisible,
+	      onPopupVisibleChange: this.handlePopupVisibleChange,
+	      prefixCls: prefixCls + '-menus',
+	      popupClassName: popupClassName + emptyMenuClassName,
+	      popup: menus
+	    }));
 	  };
 	
 	  return Cascader;
@@ -344,7 +345,8 @@
 	  transitionName: '',
 	  prefixCls: 'rc-cascader',
 	  popupClassName: '',
-	  popupPlacement: 'bottomLeft'
+	  popupPlacement: 'bottomLeft',
+	  builtinPlacements: BUILT_IN_PLACEMENTS
 	};
 	
 	Cascader.propTypes = {
@@ -359,7 +361,8 @@
 	  popupClassName: _react2.default.PropTypes.string,
 	  popupPlacement: _react2.default.PropTypes.string,
 	  prefixCls: _react2.default.PropTypes.string,
-	  dropdownMenuColumnStyle: _react2.default.PropTypes.object
+	  dropdownMenuColumnStyle: _react2.default.PropTypes.object,
+	  builtinPlacements: _react2.default.PropTypes.object
 	};
 	
 	exports.default = Cascader;

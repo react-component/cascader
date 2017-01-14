@@ -1,14 +1,12 @@
-webpackJsonp([2],{
-
-/***/ 0:
+webpackJsonp([0],[
+/* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(252);
+	module.exports = __webpack_require__(1);
 
 
 /***/ },
-
-/***/ 252:
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29,7 +27,7 @@ webpackJsonp([2],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/* eslint-disable no-console */
+	/* eslint-disable no-console, react/prop-types */
 	var addressOptions = [{
 	  label: '福建',
 	  value: 'fj',
@@ -63,12 +61,13 @@ webpackJsonp([2],{
 	    value: 'chaoyang'
 	  }, {
 	    label: '海淀区',
-	    value: 'haidian'
+	    value: 'haidian',
+	    disabled: true
 	  }]
 	}];
 	
-	var Demo = _react2.default.createClass({
-	  displayName: 'Demo',
+	var MyCascader = _react2.default.createClass({
+	  displayName: 'MyCascader',
 	  getInitialState: function getInitialState() {
 	    return {
 	      inputValue: ''
@@ -83,17 +82,64 @@ webpackJsonp([2],{
 	    });
 	  },
 	  render: function render() {
+	    var builtinPlacements = this.props.builtinPlacements;
+	
 	    return _react2.default.createElement(
 	      _rcCascader2.default,
-	      { options: addressOptions, onChange: this.onChange, changeOnSelect: true },
-	      _react2.default.createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
+	      {
+	        options: addressOptions,
+	        builtinPlacements: builtinPlacements,
+	        onChange: this.onChange
+	      },
+	      _react2.default.createElement('input', {
+	        placeholder: builtinPlacements ? 'Will not adjust position' : 'Will adjust position',
+	        value: this.state.inputValue,
+	        style: { width: 170 }
+	      })
 	    );
 	  }
 	});
 	
-	_reactDom2.default.render(_react2.default.createElement(Demo, null), document.getElementById('__react-content'));
+	var placements = {
+	  bottomLeft: {
+	    points: ['tl', 'bl'],
+	    offset: [0, 4],
+	    overflow: {
+	      adjustY: 1
+	    }
+	  },
+	  topLeft: {
+	    points: ['bl', 'tl'],
+	    offset: [0, -4],
+	    overflow: {
+	      adjustY: 1
+	    }
+	  },
+	  bottomRight: {
+	    points: ['tr', 'br'],
+	    offset: [0, 4],
+	    overflow: {
+	      adjustY: 1
+	    }
+	  },
+	  topRight: {
+	    points: ['br', 'tr'],
+	    offset: [0, -4],
+	    overflow: {
+	      adjustY: 1
+	    }
+	  }
+	};
+	
+	_reactDom2.default.render(_react2.default.createElement(
+	  'div',
+	  { style: { textAlign: 'right', margin: '0 80px' } },
+	  _react2.default.createElement(MyCascader, null),
+	  _react2.default.createElement('br', null),
+	  _react2.default.createElement('br', null),
+	  _react2.default.createElement(MyCascader, { builtinPlacements: placements })
+	), document.getElementById('__react-content'));
 
 /***/ }
-
-});
-//# sourceMappingURL=change-on-select.js.map
+]);
+//# sourceMappingURL=adjust-overflow.js.map
