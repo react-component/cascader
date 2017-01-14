@@ -101,15 +101,17 @@ class Cascader extends React.Component {
     this.setState(info);
   }
   render() {
-    const props = this.props;
-    const { prefixCls, transitionName, popupClassName, popupPlacement, ...restProps } = props;
+    const {
+      prefixCls, transitionName, popupClassName, options, disabled,
+      builtinPlacements, popupPlacement, ...restProps,
+    } = this.props;
     // Did not show popup when there is no options
     let menus = <div />;
     let emptyMenuClassName = '';
-    if (props.options && props.options.length > 0) {
+    if (options && options.length > 0) {
       menus = (
         <Menus
-          {...props}
+          {...this.props}
           value={this.state.value}
           activeValue={this.state.activeValue}
           onSelect={this.handleSelect}
@@ -121,20 +123,21 @@ class Cascader extends React.Component {
       emptyMenuClassName = ` ${prefixCls}-menus-empty`;
     }
     return (
-      <Trigger ref="trigger"
+      <Trigger
+        ref="trigger"
         {...restProps}
+        options={options}
+        disabled={disabled}
         popupPlacement={popupPlacement}
-        builtinPlacements={BUILT_IN_PLACEMENTS}
+        builtinPlacements={builtinPlacements}
         popupTransitionName={transitionName}
-        action={props.disabled ? [] : ['click']}
-        popupVisible={props.disabled ? false : this.state.popupVisible}
+        action={disabled ? [] : ['click']}
+        popupVisible={disabled ? false : this.state.popupVisible}
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName + emptyMenuClassName}
         popup={menus}
-      >
-        {props.children}
-      </Trigger>
+      />
     );
   }
 }
@@ -148,6 +151,7 @@ Cascader.defaultProps = {
   prefixCls: 'rc-cascader',
   popupClassName: '',
   popupPlacement: 'bottomLeft',
+  builtinPlacements: BUILT_IN_PLACEMENTS,
 };
 
 Cascader.propTypes = {
@@ -163,6 +167,7 @@ Cascader.propTypes = {
   popupPlacement: React.PropTypes.string,
   prefixCls: React.PropTypes.string,
   dropdownMenuColumnStyle: React.PropTypes.object,
+  builtinPlacements: React.PropTypes.object,
 };
 
 export default Cascader;
