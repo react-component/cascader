@@ -111,6 +111,7 @@ class Cascader extends Component {
     this.setPopupVisible(popupVisible);
   }
   handleMenuSelect = (targetOption, menuIndex, e) => {
+    const { changeOnSelect, loadData } = this.props;
     if (!targetOption || targetOption.disabled) {
       return;
     }
@@ -118,12 +119,12 @@ class Cascader extends Component {
     activeValue = activeValue.slice(0, menuIndex + 1);
     activeValue[menuIndex] = targetOption.value;
     const activeOptions = this.getActiveOptions(activeValue);
-    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
-      if (this.props.changeOnSelect) {
+    if (targetOption.isLeaf === false && !targetOption.children && loadData) {
+      if (changeOnSelect) {
         this.handleChange(activeOptions, { visible: true }, e);
       }
       this.setState({ activeValue });
-      this.props.loadData(activeOptions);
+      loadData(activeOptions);
       return;
     }
     const newState = {};
@@ -131,7 +132,7 @@ class Cascader extends Component {
       this.handleChange(activeOptions, { visible: false }, e);
       // set value to activeValue when select leaf option
       newState.value = activeValue;
-    } else if (this.props.changeOnSelect) {
+    } else if (changeOnSelect) {
       this.handleChange(activeOptions, { visible: true }, e);
       // set value to activeValue on every select
       newState.value = activeValue;
