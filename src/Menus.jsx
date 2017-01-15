@@ -17,7 +17,7 @@ class Menus extends React.Component {
     const { prefixCls, expandTrigger } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
-      onClick: onSelect.bind(this, option, menuIndex),
+      onClick: onSelect,
     };
     let menuItemCls = `${prefixCls}-menu-item`;
     const hasChildren = option.children && option.children.length > 0;

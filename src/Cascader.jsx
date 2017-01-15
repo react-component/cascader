@@ -114,6 +114,11 @@ class Cascader extends Component {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
+    // Keep focused state for keyboard support
+    const triggerNode = this.refs.trigger.getRootDomNode();
+    if (triggerNode && triggerNode.focus) {
+      triggerNode.focus();
+    }
     const { changeOnSelect, loadData } = this.props;
     if (!targetOption || targetOption.disabled) {
       return;
@@ -202,6 +207,10 @@ class Cascader extends Component {
     const activeOptions = this.getActiveOptions(activeValue);
     const targetOption = activeOptions[activeOptions.length - 1];
     this.handleMenuSelect(targetOption, activeOptions.length - 1, e);
+
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(e);
+    }
   }
   render() {
     const {
@@ -242,6 +251,7 @@ class Cascader extends Component {
       >
         {cloneElement(children, {
           onKeyDown: this.handleKeyDown,
+          tabIndex: 0,
         })}
       </Trigger>
     );
@@ -277,6 +287,7 @@ Cascader.propTypes = {
   loadData: PropTypes.func,
   changeOnSelect: PropTypes.bool,
   children: PropTypes.node,
+  onKeyDown: PropTypes.func,
 };
 
 export default Cascader;
