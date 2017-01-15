@@ -273,7 +273,10 @@ describe('Cascader', () => {
 
   it('should be unselectable when option is disabled', (done) => {
     const newAddressOptions = [...addressOptions];
-    newAddressOptions[0].disabled = true;
+    newAddressOptions[0] = {
+      ...newAddressOptions[0],
+      disabled: true,
+    };
     instance = ReactDOM.render(
       <Cascader options={newAddressOptions} onChange={onChange}>
         <input readOnly />
