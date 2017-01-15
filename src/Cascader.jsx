@@ -111,6 +111,9 @@ class Cascader extends Component {
     this.setPopupVisible(popupVisible);
   }
   handleMenuSelect = (targetOption, menuIndex, e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     const { changeOnSelect, loadData } = this.props;
     if (!targetOption || targetOption.disabled) {
       return;
@@ -146,7 +149,9 @@ class Cascader extends Component {
     this.setState(newState);
   }
   handleKeyDown = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     const activeValue = [...this.state.activeValue];
     const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
     const currentOptions = this.getCurrentLevelOptions();

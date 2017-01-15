@@ -14,7 +14,8 @@ class Menus extends React.Component {
   }
 
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger, onSelect } = this.props;
+    const { prefixCls, expandTrigger } = this.props;
+    const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect.bind(this, option, menuIndex),
     };
@@ -72,14 +73,14 @@ class Menus extends React.Component {
     return result;
   }
 
-  delayOnSelect(onSelect) {
+  delayOnSelect(onSelect, ...args) {
     if (this.delayTimer) {
       clearTimeout(this.delayTimer);
       this.delayTimer = null;
     }
     if (typeof onSelect === 'function') {
       this.delayTimer = setTimeout(() => {
-        onSelect();
+        onSelect(args);
         this.delayTimer = null;
       }, 150);
     }
