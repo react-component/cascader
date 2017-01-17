@@ -2,6 +2,10 @@
 
 ---
 
+## 0.11.0 / 2017-01-17
+
+- Add Keyboard support
+
 ## 0.10.0 / 2016-08-20
 
 - Add `dropdownMenuColumnStyle`
