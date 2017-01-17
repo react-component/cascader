@@ -163,11 +163,21 @@
 	
 	var _Menus2 = _interopRequireDefault(_Menus);
 	
+	var _KeyCode = __webpack_require__(251);
+	
+	var _KeyCode2 = _interopRequireDefault(_KeyCode);
+	
+	var _arrayTreeFilter = __webpack_require__(250);
+	
+	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
 	
 	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -210,13 +220,13 @@
 	  }
 	};
 	
-	var Cascader = function (_React$Component) {
-	  _inherits(Cascader, _React$Component);
+	var Cascader = function (_Component) {
+	  _inherits(Cascader, _Component);
 	
 	  function Cascader(props) {
 	    _classCallCheck(this, Cascader);
 	
-	    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 	
 	    _this.setPopupVisible = function (popupVisible) {
 	      if (!('popupVisible' in _this.props)) {
@@ -231,24 +241,118 @@
 	      _this.props.onPopupVisibleChange(popupVisible);
 	    };
 	
-	    _this.handleChange = function (options, setProps) {
-	      _this.props.onChange(options.map(function (o) {
-	        return o.value;
-	      }), options);
-	      _this.setPopupVisible(setProps.visible);
+	    _this.handleChange = function (options, setProps, e) {
+	      if (e.type !== 'keydown' || e.keyCode === _KeyCode2.default.ENTER) {
+	        _this.props.onChange(options.map(function (o) {
+	          return o.value;
+	        }), options);
+	        _this.setPopupVisible(setProps.visible);
+	      }
 	    };
 	
 	    _this.handlePopupVisibleChange = function (popupVisible) {
 	      _this.setPopupVisible(popupVisible);
 	    };
 	
-	    _this.handleSelect = function (_ref) {
-	      var info = _objectWithoutProperties(_ref, []);
-	
-	      if ('value' in _this.props) {
-	        delete info.value;
+	    _this.handleMenuSelect = function (targetOption, menuIndex, e) {
+	      if (e && e.preventDefault) {
+	        e.preventDefault();
 	      }
-	      _this.setState(info);
+	      // Keep focused state for keyboard support
+	      var triggerNode = _this.refs.trigger.getRootDomNode();
+	      if (triggerNode && triggerNode.focus) {
+	        triggerNode.focus();
+	      }
+	      var _this$props = _this.props,
+	          changeOnSelect = _this$props.changeOnSelect,
+	          loadData = _this$props.loadData;
+	
+	      if (!targetOption || targetOption.disabled) {
+	        return;
+	      }
+	      var activeValue = _this.state.activeValue;
+	
+	      activeValue = activeValue.slice(0, menuIndex + 1);
+	      activeValue[menuIndex] = targetOption.value;
+	      var activeOptions = _this.getActiveOptions(activeValue);
+	      if (targetOption.isLeaf === false && !targetOption.children && loadData) {
+	        if (changeOnSelect) {
+	          _this.handleChange(activeOptions, { visible: true }, e);
+	        }
+	        _this.setState({ activeValue: activeValue });
+	        loadData(activeOptions);
+	        return;
+	      }
+	      var newState = {};
+	      if (!targetOption.children || !targetOption.children.length) {
+	        _this.handleChange(activeOptions, { visible: false }, e);
+	        // set value to activeValue when select leaf option
+	        newState.value = activeValue;
+	      } else if (changeOnSelect) {
+	        _this.handleChange(activeOptions, { visible: true }, e);
+	        // set value to activeValue on every select
+	        newState.value = activeValue;
+	      }
+	      newState.activeValue = activeValue;
+	      //  not change the value by keyboard
+	      if ('value' in _this.props || e.type === 'keydown' && e.keyCode !== _KeyCode2.default.ENTER) {
+	        delete newState.value;
+	      }
+	      _this.setState(newState);
+	    };
+	
+	    _this.handleKeyDown = function (e) {
+	      if (e && e.preventDefault) {
+	        e.preventDefault();
+	      }
+	      var activeValue = [].concat(_toConsumableArray(_this.state.activeValue));
+	      var currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
+	      var currentOptions = _this.getCurrentLevelOptions();
+	      var currentIndex = currentOptions.map(function (o) {
+	        return o.value;
+	      }).indexOf(activeValue[currentLevel]);
+	      if (e.keyCode !== _KeyCode2.default.DOWN && e.keyCode !== _KeyCode2.default.UP && e.keyCode !== _KeyCode2.default.LEFT && e.keyCode !== _KeyCode2.default.RIGHT && e.keyCode !== _KeyCode2.default.ENTER && e.keyCode !== _KeyCode2.default.BACKSPACE && e.keyCode !== _KeyCode2.default.ESC) {
+	        return;
+	      }
+	      // Press any keys above to reopen menu
+	      if (!_this.state.popupVisible && e.keyCode !== _KeyCode2.default.BACKSPACE && e.keyCode !== _KeyCode2.default.ESC) {
+	        _this.setPopupVisible(true);
+	        return;
+	      }
+	      if (e.keyCode === _KeyCode2.default.DOWN || e.keyCode === _KeyCode2.default.UP) {
+	        var nextIndex = currentIndex;
+	        if (nextIndex !== -1) {
+	          if (e.keyCode === _KeyCode2.default.DOWN) {
+	            nextIndex += 1;
+	            nextIndex = nextIndex >= currentOptions.length ? 0 : nextIndex;
+	          } else {
+	            nextIndex -= 1;
+	            nextIndex = nextIndex < 0 ? currentOptions.length - 1 : nextIndex;
+	          }
+	        } else {
+	          nextIndex = 0;
+	        }
+	        activeValue[currentLevel] = currentOptions[nextIndex].value;
+	      } else if (e.keyCode === _KeyCode2.default.LEFT || e.keyCode === _KeyCode2.default.BACKSPACE) {
+	        activeValue.splice(activeValue.length - 1, 1);
+	      } else if (e.keyCode === _KeyCode2.default.RIGHT) {
+	        if (currentOptions[currentIndex] && currentOptions[currentIndex].children) {
+	          activeValue.push(currentOptions[currentIndex].children[0].value);
+	        }
+	      } else if (e.keyCode === _KeyCode2.default.ESC) {
+	        _this.setPopupVisible(false);
+	        return;
+	      }
+	      if (!activeValue || activeValue.length === 0) {
+	        _this.setPopupVisible(false);
+	      }
+	      var activeOptions = _this.getActiveOptions(activeValue);
+	      var targetOption = activeOptions[activeOptions.length - 1];
+	      _this.handleMenuSelect(targetOption, activeOptions.length - 1, e);
+	
+	      if (_this.props.onKeyDown) {
+	        _this.props.onKeyDown(e);
+	      }
 	    };
 	
 	    var initialValue = [];
@@ -290,6 +394,28 @@
 	    return this.refs.trigger.getPopupDomNode();
 	  };
 	
+	  Cascader.prototype.getCurrentLevelOptions = function getCurrentLevelOptions() {
+	    var options = this.props.options;
+	    var _state$activeValue = this.state.activeValue,
+	        activeValue = _state$activeValue === undefined ? [] : _state$activeValue;
+	
+	    var result = (0, _arrayTreeFilter2.default)(options, function (o, level) {
+	      return o.value === activeValue[level];
+	    });
+	    if (result[result.length - 2]) {
+	      return result[result.length - 2].children;
+	    }
+	    return [].concat(_toConsumableArray(options)).filter(function (o) {
+	      return !o.disabled;
+	    });
+	  };
+	
+	  Cascader.prototype.getActiveOptions = function getActiveOptions(activeValue) {
+	    return (0, _arrayTreeFilter2.default)(this.props.options, function (o, level) {
+	      return o.value === activeValue[level];
+	    });
+	  };
+	
 	  Cascader.prototype.render = function render() {
 	    var _props = this.props,
 	        prefixCls = _props.prefixCls,
@@ -299,7 +425,8 @@
 	        disabled = _props.disabled,
 	        builtinPlacements = _props.builtinPlacements,
 	        popupPlacement = _props.popupPlacement,
-	        restProps = _objectWithoutProperties(_props, ['prefixCls', 'transitionName', 'popupClassName', 'options', 'disabled', 'builtinPlacements', 'popupPlacement']);
+	        children = _props.children,
+	        restProps = _objectWithoutProperties(_props, ['prefixCls', 'transitionName', 'popupClassName', 'options', 'disabled', 'builtinPlacements', 'popupPlacement', 'children']);
 	    // Did not show popup when there is no options
 	
 	
@@ -309,32 +436,38 @@
 	      menus = _react2.default.createElement(_Menus2.default, _extends({}, this.props, {
 	        value: this.state.value,
 	        activeValue: this.state.activeValue,
-	        onSelect: this.handleSelect,
-	        onChange: this.handleChange,
+	        onSelect: this.handleMenuSelect,
 	        visible: this.state.popupVisible
 	      }));
 	    } else {
 	      emptyMenuClassName = ' ' + prefixCls + '-menus-empty';
 	    }
-	    return _react2.default.createElement(_rcTrigger2.default, _extends({
-	      ref: 'trigger'
-	    }, restProps, {
-	      options: options,
-	      disabled: disabled,
-	      popupPlacement: popupPlacement,
-	      builtinPlacements: builtinPlacements,
-	      popupTransitionName: transitionName,
-	      action: disabled ? [] : ['click'],
-	      popupVisible: disabled ? false : this.state.popupVisible,
-	      onPopupVisibleChange: this.handlePopupVisibleChange,
-	      prefixCls: prefixCls + '-menus',
-	      popupClassName: popupClassName + emptyMenuClassName,
-	      popup: menus
-	    }));
+	    return _react2.default.createElement(
+	      _rcTrigger2.default,
+	      _extends({
+	        ref: 'trigger'
+	      }, restProps, {
+	        options: options,
+	        disabled: disabled,
+	        popupPlacement: popupPlacement,
+	        builtinPlacements: builtinPlacements,
+	        popupTransitionName: transitionName,
+	        action: disabled ? [] : ['click'],
+	        popupVisible: disabled ? false : this.state.popupVisible,
+	        onPopupVisibleChange: this.handlePopupVisibleChange,
+	        prefixCls: prefixCls + '-menus',
+	        popupClassName: popupClassName + emptyMenuClassName,
+	        popup: menus
+	      }),
+	      (0, _react.cloneElement)(children, {
+	        onKeyDown: this.handleKeyDown,
+	        tabIndex: 0
+	      })
+	    );
 	  };
 	
 	  return Cascader;
-	}(_react2.default.Component);
+	}(_react.Component);
 	
 	Cascader.defaultProps = {
 	  options: [],
@@ -350,19 +483,23 @@
 	};
 	
 	Cascader.propTypes = {
-	  value: _react2.default.PropTypes.array,
-	  defaultValue: _react2.default.PropTypes.array,
-	  options: _react2.default.PropTypes.array.isRequired,
-	  onChange: _react2.default.PropTypes.func,
-	  onPopupVisibleChange: _react2.default.PropTypes.func,
-	  popupVisible: _react2.default.PropTypes.bool,
-	  disabled: _react2.default.PropTypes.bool,
-	  transitionName: _react2.default.PropTypes.string,
-	  popupClassName: _react2.default.PropTypes.string,
-	  popupPlacement: _react2.default.PropTypes.string,
-	  prefixCls: _react2.default.PropTypes.string,
-	  dropdownMenuColumnStyle: _react2.default.PropTypes.object,
-	  builtinPlacements: _react2.default.PropTypes.object
+	  value: _react.PropTypes.array,
+	  defaultValue: _react.PropTypes.array,
+	  options: _react.PropTypes.array.isRequired,
+	  onChange: _react.PropTypes.func,
+	  onPopupVisibleChange: _react.PropTypes.func,
+	  popupVisible: _react.PropTypes.bool,
+	  disabled: _react.PropTypes.bool,
+	  transitionName: _react.PropTypes.string,
+	  popupClassName: _react.PropTypes.string,
+	  popupPlacement: _react.PropTypes.string,
+	  prefixCls: _react.PropTypes.string,
+	  dropdownMenuColumnStyle: _react.PropTypes.object,
+	  builtinPlacements: _react.PropTypes.object,
+	  loadData: _react.PropTypes.func,
+	  changeOnSelect: _react.PropTypes.bool,
+	  children: _react.PropTypes.node,
+	  onKeyDown: _react.PropTypes.func
 	};
 	
 	exports.default = Cascader;
@@ -26273,42 +26410,12 @@
 	    }
 	  };
 	
-	  Menus.prototype.onSelect = function onSelect(targetOption, menuIndex) {
-	    if (!targetOption || targetOption.disabled) {
-	      return;
-	    }
-	    var activeValue = this.props.activeValue;
-	    activeValue = activeValue.slice(0, menuIndex + 1);
-	    activeValue[menuIndex] = targetOption.value;
-	    var activeOptions = this.getActiveOptions(activeValue);
-	    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
-	      if (this.props.changeOnSelect) {
-	        this.props.onChange(activeOptions, { visible: true });
-	      }
-	      this.props.onSelect({ activeValue: activeValue });
-	      this.props.loadData(activeOptions);
-	      return;
-	    }
-	    var onSelectArgument = {};
-	    if (!targetOption.children || !targetOption.children.length) {
-	      this.props.onChange(activeOptions, { visible: false });
-	      // set value to activeValue when select leaf option
-	      onSelectArgument.value = activeValue;
-	    } else if (this.props.changeOnSelect) {
-	      this.props.onChange(activeOptions, { visible: true });
-	      // set value to activeValue on every select
-	      onSelectArgument.value = activeValue;
-	    }
-	    onSelectArgument.activeValue = activeValue;
-	    this.props.onSelect(onSelectArgument);
-	  };
-	
 	  Menus.prototype.getOption = function getOption(option, menuIndex) {
 	    var _props = this.props,
 	        prefixCls = _props.prefixCls,
 	        expandTrigger = _props.expandTrigger;
 	
-	    var onSelect = this.onSelect.bind(this, option, menuIndex);
+	    var onSelect = this.props.onSelect.bind(this, option, menuIndex);
 	    var expandProps = {
 	      onClick: onSelect
 	    };
@@ -26373,13 +26480,17 @@
 	  Menus.prototype.delayOnSelect = function delayOnSelect(onSelect) {
 	    var _this2 = this;
 	
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+	
 	    if (this.delayTimer) {
 	      clearTimeout(this.delayTimer);
 	      this.delayTimer = null;
 	    }
 	    if (typeof onSelect === 'function') {
 	      this.delayTimer = setTimeout(function () {
-	        onSelect();
+	        onSelect(args);
 	        _this2.delayTimer = null;
 	      }, 150);
 	    }
@@ -26433,13 +26544,11 @@
 	  options: [],
 	  value: [],
 	  activeValue: [],
-	  onChange: function onChange() {},
 	  onSelect: function onSelect() {},
 	
 	  prefixCls: 'rc-cascader-menus',
 	  visible: false,
-	  expandTrigger: 'click',
-	  changeOnSelect: false
+	  expandTrigger: 'click'
 	};
 	
 	Menus.propTypes = {
@@ -26448,11 +26557,8 @@
 	  options: _react2.default.PropTypes.array.isRequired,
 	  prefixCls: _react2.default.PropTypes.string,
 	  expandTrigger: _react2.default.PropTypes.string,
-	  onChange: _react2.default.PropTypes.func,
 	  onSelect: _react2.default.PropTypes.func,
-	  loadData: _react2.default.PropTypes.func,
 	  visible: _react2.default.PropTypes.bool,
-	  changeOnSelect: _react2.default.PropTypes.bool,
 	  dropdownMenuColumnStyle: _react2.default.PropTypes.object
 	};
 	
@@ -26486,6 +26592,535 @@
 	
 	module.exports = arrayTreeFilter;
 
+
+/***/ },
+/* 251 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * @ignore
+	 * some key-codes definition and utils from closure-library
+	 * @author yiminghe@gmail.com
+	 */
+	
+	var KeyCode = {
+	  /**
+	   * MAC_ENTER
+	   */
+	  MAC_ENTER: 3,
+	  /**
+	   * BACKSPACE
+	   */
+	  BACKSPACE: 8,
+	  /**
+	   * TAB
+	   */
+	  TAB: 9,
+	  /**
+	   * NUMLOCK on FF/Safari Mac
+	   */
+	  NUM_CENTER: 12, // NUMLOCK on FF/Safari Mac
+	  /**
+	   * ENTER
+	   */
+	  ENTER: 13,
+	  /**
+	   * SHIFT
+	   */
+	  SHIFT: 16,
+	  /**
+	   * CTRL
+	   */
+	  CTRL: 17,
+	  /**
+	   * ALT
+	   */
+	  ALT: 18,
+	  /**
+	   * PAUSE
+	   */
+	  PAUSE: 19,
+	  /**
+	   * CAPS_LOCK
+	   */
+	  CAPS_LOCK: 20,
+	  /**
+	   * ESC
+	   */
+	  ESC: 27,
+	  /**
+	   * SPACE
+	   */
+	  SPACE: 32,
+	  /**
+	   * PAGE_UP
+	   */
+	  PAGE_UP: 33, // also NUM_NORTH_EAST
+	  /**
+	   * PAGE_DOWN
+	   */
+	  PAGE_DOWN: 34, // also NUM_SOUTH_EAST
+	  /**
+	   * END
+	   */
+	  END: 35, // also NUM_SOUTH_WEST
+	  /**
+	   * HOME
+	   */
+	  HOME: 36, // also NUM_NORTH_WEST
+	  /**
+	   * LEFT
+	   */
+	  LEFT: 37, // also NUM_WEST
+	  /**
+	   * UP
+	   */
+	  UP: 38, // also NUM_NORTH
+	  /**
+	   * RIGHT
+	   */
+	  RIGHT: 39, // also NUM_EAST
+	  /**
+	   * DOWN
+	   */
+	  DOWN: 40, // also NUM_SOUTH
+	  /**
+	   * PRINT_SCREEN
+	   */
+	  PRINT_SCREEN: 44,
+	  /**
+	   * INSERT
+	   */
+	  INSERT: 45, // also NUM_INSERT
+	  /**
+	   * DELETE
+	   */
+	  DELETE: 46, // also NUM_DELETE
+	  /**
+	   * ZERO
+	   */
+	  ZERO: 48,
+	  /**
+	   * ONE
+	   */
+	  ONE: 49,
+	  /**
+	   * TWO
+	   */
+	  TWO: 50,
+	  /**
+	   * THREE
+	   */
+	  THREE: 51,
+	  /**
+	   * FOUR
+	   */
+	  FOUR: 52,
+	  /**
+	   * FIVE
+	   */
+	  FIVE: 53,
+	  /**
+	   * SIX
+	   */
+	  SIX: 54,
+	  /**
+	   * SEVEN
+	   */
+	  SEVEN: 55,
+	  /**
+	   * EIGHT
+	   */
+	  EIGHT: 56,
+	  /**
+	   * NINE
+	   */
+	  NINE: 57,
+	  /**
+	   * QUESTION_MARK
+	   */
+	  QUESTION_MARK: 63, // needs localization
+	  /**
+	   * A
+	   */
+	  A: 65,
+	  /**
+	   * B
+	   */
+	  B: 66,
+	  /**
+	   * C
+	   */
+	  C: 67,
+	  /**
+	   * D
+	   */
+	  D: 68,
+	  /**
+	   * E
+	   */
+	  E: 69,
+	  /**
+	   * F
+	   */
+	  F: 70,
+	  /**
+	   * G
+	   */
+	  G: 71,
+	  /**
+	   * H
+	   */
+	  H: 72,
+	  /**
+	   * I
+	   */
+	  I: 73,
+	  /**
+	   * J
+	   */
+	  J: 74,
+	  /**
+	   * K
+	   */
+	  K: 75,
+	  /**
+	   * L
+	   */
+	  L: 76,
+	  /**
+	   * M
+	   */
+	  M: 77,
+	  /**
+	   * N
+	   */
+	  N: 78,
+	  /**
+	   * O
+	   */
+	  O: 79,
+	  /**
+	   * P
+	   */
+	  P: 80,
+	  /**
+	   * Q
+	   */
+	  Q: 81,
+	  /**
+	   * R
+	   */
+	  R: 82,
+	  /**
+	   * S
+	   */
+	  S: 83,
+	  /**
+	   * T
+	   */
+	  T: 84,
+	  /**
+	   * U
+	   */
+	  U: 85,
+	  /**
+	   * V
+	   */
+	  V: 86,
+	  /**
+	   * W
+	   */
+	  W: 87,
+	  /**
+	   * X
+	   */
+	  X: 88,
+	  /**
+	   * Y
+	   */
+	  Y: 89,
+	  /**
+	   * Z
+	   */
+	  Z: 90,
+	  /**
+	   * META
+	   */
+	  META: 91, // WIN_KEY_LEFT
+	  /**
+	   * WIN_KEY_RIGHT
+	   */
+	  WIN_KEY_RIGHT: 92,
+	  /**
+	   * CONTEXT_MENU
+	   */
+	  CONTEXT_MENU: 93,
+	  /**
+	   * NUM_ZERO
+	   */
+	  NUM_ZERO: 96,
+	  /**
+	   * NUM_ONE
+	   */
+	  NUM_ONE: 97,
+	  /**
+	   * NUM_TWO
+	   */
+	  NUM_TWO: 98,
+	  /**
+	   * NUM_THREE
+	   */
+	  NUM_THREE: 99,
+	  /**
+	   * NUM_FOUR
+	   */
+	  NUM_FOUR: 100,
+	  /**
+	   * NUM_FIVE
+	   */
+	  NUM_FIVE: 101,
+	  /**
+	   * NUM_SIX
+	   */
+	  NUM_SIX: 102,
+	  /**
+	   * NUM_SEVEN
+	   */
+	  NUM_SEVEN: 103,
+	  /**
+	   * NUM_EIGHT
+	   */
+	  NUM_EIGHT: 104,
+	  /**
+	   * NUM_NINE
+	   */
+	  NUM_NINE: 105,
+	  /**
+	   * NUM_MULTIPLY
+	   */
+	  NUM_MULTIPLY: 106,
+	  /**
+	   * NUM_PLUS
+	   */
+	  NUM_PLUS: 107,
+	  /**
+	   * NUM_MINUS
+	   */
+	  NUM_MINUS: 109,
+	  /**
+	   * NUM_PERIOD
+	   */
+	  NUM_PERIOD: 110,
+	  /**
+	   * NUM_DIVISION
+	   */
+	  NUM_DIVISION: 111,
+	  /**
+	   * F1
+	   */
+	  F1: 112,
+	  /**
+	   * F2
+	   */
+	  F2: 113,
+	  /**
+	   * F3
+	   */
+	  F3: 114,
+	  /**
+	   * F4
+	   */
+	  F4: 115,
+	  /**
+	   * F5
+	   */
+	  F5: 116,
+	  /**
+	   * F6
+	   */
+	  F6: 117,
+	  /**
+	   * F7
+	   */
+	  F7: 118,
+	  /**
+	   * F8
+	   */
+	  F8: 119,
+	  /**
+	   * F9
+	   */
+	  F9: 120,
+	  /**
+	   * F10
+	   */
+	  F10: 121,
+	  /**
+	   * F11
+	   */
+	  F11: 122,
+	  /**
+	   * F12
+	   */
+	  F12: 123,
+	  /**
+	   * NUMLOCK
+	   */
+	  NUMLOCK: 144,
+	  /**
+	   * SEMICOLON
+	   */
+	  SEMICOLON: 186, // needs localization
+	  /**
+	   * DASH
+	   */
+	  DASH: 189, // needs localization
+	  /**
+	   * EQUALS
+	   */
+	  EQUALS: 187, // needs localization
+	  /**
+	   * COMMA
+	   */
+	  COMMA: 188, // needs localization
+	  /**
+	   * PERIOD
+	   */
+	  PERIOD: 190, // needs localization
+	  /**
+	   * SLASH
+	   */
+	  SLASH: 191, // needs localization
+	  /**
+	   * APOSTROPHE
+	   */
+	  APOSTROPHE: 192, // needs localization
+	  /**
+	   * SINGLE_QUOTE
+	   */
+	  SINGLE_QUOTE: 222, // needs localization
+	  /**
+	   * OPEN_SQUARE_BRACKET
+	   */
+	  OPEN_SQUARE_BRACKET: 219, // needs localization
+	  /**
+	   * BACKSLASH
+	   */
+	  BACKSLASH: 220, // needs localization
+	  /**
+	   * CLOSE_SQUARE_BRACKET
+	   */
+	  CLOSE_SQUARE_BRACKET: 221, // needs localization
+	  /**
+	   * WIN_KEY
+	   */
+	  WIN_KEY: 224,
+	  /**
+	   * MAC_FF_META
+	   */
+	  MAC_FF_META: 224, // Firefox (Gecko) fires this for the meta key instead of 91
+	  /**
+	   * WIN_IME
+	   */
+	  WIN_IME: 229
+	};
+	
+	/*
+	 whether text and modified key is entered at the same time.
+	 */
+	KeyCode.isTextModifyingKeyEvent = function isTextModifyingKeyEvent(e) {
+	  var keyCode = e.keyCode;
+	  if (e.altKey && !e.ctrlKey || e.metaKey ||
+	  // Function keys don't generate text
+	  keyCode >= KeyCode.F1 && keyCode <= KeyCode.F12) {
+	    return false;
+	  }
+	
+	  // The following keys are quite harmless, even in combination with
+	  // CTRL, ALT or SHIFT.
+	  switch (keyCode) {
+	    case KeyCode.ALT:
+	    case KeyCode.CAPS_LOCK:
+	    case KeyCode.CONTEXT_MENU:
+	    case KeyCode.CTRL:
+	    case KeyCode.DOWN:
+	    case KeyCode.END:
+	    case KeyCode.ESC:
+	    case KeyCode.HOME:
+	    case KeyCode.INSERT:
+	    case KeyCode.LEFT:
+	    case KeyCode.MAC_FF_META:
+	    case KeyCode.META:
+	    case KeyCode.NUMLOCK:
+	    case KeyCode.NUM_CENTER:
+	    case KeyCode.PAGE_DOWN:
+	    case KeyCode.PAGE_UP:
+	    case KeyCode.PAUSE:
+	    case KeyCode.PRINT_SCREEN:
+	    case KeyCode.RIGHT:
+	    case KeyCode.SHIFT:
+	    case KeyCode.UP:
+	    case KeyCode.WIN_KEY:
+	    case KeyCode.WIN_KEY_RIGHT:
+	      return false;
+	    default:
+	      return true;
+	  }
+	};
+	
+	/*
+	 whether character is entered.
+	 */
+	KeyCode.isCharacterKey = function isCharacterKey(keyCode) {
+	  if (keyCode >= KeyCode.ZERO && keyCode <= KeyCode.NINE) {
+	    return true;
+	  }
+	
+	  if (keyCode >= KeyCode.NUM_ZERO && keyCode <= KeyCode.NUM_MULTIPLY) {
+	    return true;
+	  }
+	
+	  if (keyCode >= KeyCode.A && keyCode <= KeyCode.Z) {
+	    return true;
+	  }
+	
+	  // Safari sends zero key code for non-latin characters.
+	  if (window.navigation.userAgent.indexOf('WebKit') !== -1 && keyCode === 0) {
+	    return true;
+	  }
+	
+	  switch (keyCode) {
+	    case KeyCode.SPACE:
+	    case KeyCode.QUESTION_MARK:
+	    case KeyCode.NUM_PLUS:
+	    case KeyCode.NUM_MINUS:
+	    case KeyCode.NUM_PERIOD:
+	    case KeyCode.NUM_DIVISION:
+	    case KeyCode.SEMICOLON:
+	    case KeyCode.DASH:
+	    case KeyCode.EQUALS:
+	    case KeyCode.COMMA:
+	    case KeyCode.PERIOD:
+	    case KeyCode.SLASH:
+	    case KeyCode.APOSTROPHE:
+	    case KeyCode.SINGLE_QUOTE:
+	    case KeyCode.OPEN_SQUARE_BRACKET:
+	    case KeyCode.BACKSLASH:
+	    case KeyCode.CLOSE_SQUARE_BRACKET:
+	      return true;
+	    default:
+	      return false;
+	  }
+	};
+	
+	exports["default"] = KeyCode;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
