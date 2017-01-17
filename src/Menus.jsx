@@ -13,39 +13,9 @@ class Menus extends React.Component {
     }
   }
 
-  onSelect(targetOption, menuIndex) {
-    if (!targetOption || targetOption.disabled) {
-      return;
-    }
-    let activeValue = this.props.activeValue;
-    activeValue = activeValue.slice(0, menuIndex + 1);
-    activeValue[menuIndex] = targetOption.value;
-    const activeOptions = this.getActiveOptions(activeValue);
-    if (targetOption.isLeaf === false && !targetOption.children && this.props.loadData) {
-      if (this.props.changeOnSelect) {
-        this.props.onChange(activeOptions, { visible: true });
-      }
-      this.props.onSelect({ activeValue });
-      this.props.loadData(activeOptions);
-      return;
-    }
-    const onSelectArgument = {};
-    if (!targetOption.children || !targetOption.children.length) {
-      this.props.onChange(activeOptions, { visible: false });
-      // set value to activeValue when select leaf option
-      onSelectArgument.value = activeValue;
-    } else if (this.props.changeOnSelect) {
-      this.props.onChange(activeOptions, { visible: true });
-      // set value to activeValue on every select
-      onSelectArgument.value = activeValue;
-    }
-    onSelectArgument.activeValue = activeValue;
-    this.props.onSelect(onSelectArgument);
-  }
-
   getOption(option, menuIndex) {
     const { prefixCls, expandTrigger } = this.props;
-    const onSelect = this.onSelect.bind(this, option, menuIndex);
+    const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
     };
@@ -103,14 +73,14 @@ class Menus extends React.Component {
     return result;
   }
 
-  delayOnSelect(onSelect) {
+  delayOnSelect(onSelect, ...args) {
     if (this.delayTimer) {
       clearTimeout(this.delayTimer);
       this.delayTimer = null;
     }
     if (typeof onSelect === 'function') {
       this.delayTimer = setTimeout(() => {
-        onSelect();
+        onSelect(args);
         this.delayTimer = null;
       }, 150);
     }
@@ -151,14 +121,10 @@ Menus.defaultProps = {
   options: [],
   value: [],
   activeValue: [],
-  onChange() {
-  },
-  onSelect() {
-  },
+  onSelect() {},
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
-  changeOnSelect: false,
 };
 
 Menus.propTypes = {
@@ -167,11 +133,8 @@ Menus.propTypes = {
   options: React.PropTypes.array.isRequired,
   prefixCls: React.PropTypes.string,
   expandTrigger: React.PropTypes.string,
-  onChange: React.PropTypes.func,
   onSelect: React.PropTypes.func,
-  loadData: React.PropTypes.func,
   visible: React.PropTypes.bool,
-  changeOnSelect: React.PropTypes.bool,
   dropdownMenuColumnStyle: React.PropTypes.object,
 };
 
