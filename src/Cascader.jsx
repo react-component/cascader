@@ -153,10 +153,7 @@ class Cascader extends Component {
     }
     this.setState(newState);
   }
-  handleKeyDown = (e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
+  handleKeyDown = (e) => {  
     const activeValue = [...this.state.activeValue];
     const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
     const currentOptions = this.getCurrentLevelOptions();
