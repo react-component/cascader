@@ -302,9 +302,6 @@
 	    };
 	
 	    _this.handleKeyDown = function (e) {
-	      if (e && e.preventDefault) {
-	        e.preventDefault();
-	      }
 	      var activeValue = [].concat(_toConsumableArray(_this.state.activeValue));
 	      var currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
 	      var currentOptions = _this.getCurrentLevelOptions();
