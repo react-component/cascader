@@ -312,4 +312,50 @@ describe('Cascader', () => {
     const activeMenuItemsInMenu1 = menus[0].querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItemsInMenu1.length).to.be(1);
   });
+
+  // https://github.com/ant-design/ant-design/issues/5666
+  it('should have not change active value when value is not changed', (done) => {
+    const Demo = React.createClass({
+      getInitialState() {
+        return { value: [] };
+      },
+      componentDidMount() {
+        this.timeout = setInterval(() => {
+          this.setState({
+            value: [],
+          });
+        }, 10);
+      },
+      componentWillUnmount() {
+        clearInterval(this.timeout);
+      },
+      getPopupDOMNode() {
+        return this.cascader.getPopupDOMNode();
+      },
+      render() {
+        return (
+          <Cascader
+            options={addressOptions}
+            value={this.state.value}
+            ref={node => { this.cascader = node; }}
+          >
+            <input readOnly />
+          </Cascader>
+        );
+      },
+    });
+    instance = ReactDOM.render(<Demo />, div);
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    Simulate.click(menu1Items[0]);
+    menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(2);
+    setTimeout(() => {
+      menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+      expect(menus.length).to.be(2);
+      done();
+    }, 100);
+  });
 });

@@ -3,6 +3,7 @@ import Trigger from 'rc-trigger';
 import Menus from './Menus';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
+import shallowEqualArrays from 'shallow-equal/arrays';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -56,7 +57,7 @@ class Cascader extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps && this.props.value !== nextProps.value) {
+    if ('value' in nextProps && !shallowEqualArrays(this.props.value, nextProps.value)) {
       const newValues = {
         value: nextProps.value || [],
         activeValue: nextProps.value || [],
