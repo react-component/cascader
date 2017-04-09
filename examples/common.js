@@ -171,6 +171,10 @@
 	
 	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
 	
+	var _arrays = __webpack_require__(252);
+	
+	var _arrays2 = _interopRequireDefault(_arrays);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
@@ -368,7 +372,7 @@
 	  }
 	
 	  Cascader.prototype.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
-	    if ('value' in nextProps && this.props.value !== nextProps.value) {
+	    if ('value' in nextProps && !(0, _arrays2.default)(this.props.value, nextProps.value)) {
 	      var newValues = {
 	        value: nextProps.value || [],
 	        activeValue: nextProps.value || []
@@ -27118,6 +27122,31 @@
 	
 	exports["default"] = KeyCode;
 	module.exports = exports['default'];
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	module.exports = function shallowEqualArrays(arrA, arrB) {
+	  if (arrA === arrB) {
+	    return true;
+	  }
+	
+	  var len = arrA.length;
+	
+	  if (arrB.length !== len) {
+	    return false;
+	  }
+	
+	  for (var i = 0; i < len; i++) {
+	    if (arrA[i] !== arrB[i]) {
+	      return false;
+	    }
+	  }
+	
+	  return true;
+	};
+
 
 /***/ }
 /******/ ]);
