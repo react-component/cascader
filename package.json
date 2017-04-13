@@ -55,6 +55,7 @@
   ],
   "dependencies": {
     "array-tree-filter": "^1.0.0",
+    "prop-types": "^15.5.8",
     "rc-trigger": "1.x",
     "rc-util": "4.x",
     "shallow-equal": "^1.0.0"
