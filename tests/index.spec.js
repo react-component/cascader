@@ -1,7 +1,7 @@
 const expect = require('expect.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
-const TestUtils = require('react-addons-test-utils');
+const TestUtils = require('react-dom/test-utils');
 const Simulate = TestUtils.Simulate;
 const Cascader = require('../');
 const addressOptions = require('./demoOptions').addressOptions;
@@ -315,23 +315,27 @@ describe('Cascader', () => {
 
   // https://github.com/ant-design/ant-design/issues/5666
   it('should have not change active value when value is not changed', (done) => {
-    const Demo = React.createClass({
-      getInitialState() {
-        return { value: [] };
-      },
+    class Demo extends React.Component {
+      state = {
+        value: [],
+      };
+
       componentDidMount() {
         this.timeout = setInterval(() => {
           this.setState({
             value: [],
           });
         }, 10);
-      },
+      }
+
       componentWillUnmount() {
         clearInterval(this.timeout);
-      },
+      }
+
       getPopupDOMNode() {
         return this.cascader.getPopupDOMNode();
-      },
+      }
+
       render() {
         return (
           <Cascader
@@ -342,8 +346,8 @@ describe('Cascader', () => {
             <input readOnly />
           </Cascader>
         );
-      },
-    });
+      }
+    }
     instance = ReactDOM.render(<Demo />, div);
     Simulate.click(ReactDOM.findDOMNode(instance));
     let menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');

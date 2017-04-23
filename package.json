@@ -47,7 +47,6 @@
     "rc-form": "^0.5.1",
     "rc-tools": "5.x",
     "react": "^15.2.0",
-    "react-addons-test-utils": "^15.2.0",
     "react-dom": "^15.2.0"
   },
   "pre-commit": [
@@ -55,6 +54,7 @@
   ],
   "dependencies": {
     "array-tree-filter": "^1.0.0",
+    "prop-types": "^15.5.8",
     "rc-trigger": "1.x",
     "rc-util": "4.x",
     "shallow-equal": "^1.0.0"

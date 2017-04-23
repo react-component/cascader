@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import arrayTreeFilter from 'array-tree-filter';
 import { findDOMNode } from 'react-dom';
 
@@ -128,14 +129,14 @@ Menus.defaultProps = {
 };
 
 Menus.propTypes = {
-  value: React.PropTypes.array,
-  activeValue: React.PropTypes.array,
-  options: React.PropTypes.array.isRequired,
-  prefixCls: React.PropTypes.string,
-  expandTrigger: React.PropTypes.string,
-  onSelect: React.PropTypes.func,
-  visible: React.PropTypes.bool,
-  dropdownMenuColumnStyle: React.PropTypes.object,
+  value: PropTypes.array,
+  activeValue: PropTypes.array,
+  options: PropTypes.array.isRequired,
+  prefixCls: PropTypes.string,
+  expandTrigger: PropTypes.string,
+  onSelect: PropTypes.func,
+  visible: PropTypes.bool,
+  dropdownMenuColumnStyle: PropTypes.object,
 };
 
 export default Menus;
