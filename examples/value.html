@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>value.js - example - rc-cascader@0.11.2</title>
+  <title>value.js - example - rc-cascader@0.11.3</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.11.2</h1>
+      <h1>rc-cascader@0.11.3</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -313,25 +313,27 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   }],
 }];
 
-<span class="hljs-keyword">const</span> Demo = React.createClass({
-  getInitialState() {
-    <span class="hljs-keyword">return</span> {
-      value: [],
-    };
-  },
-  onChange(value) {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  state = {
+    value: [],
+  };
+
+  onChange = (value) =&gt; {
     <span class="hljs-built_in">console</span>.log(value);
     <span class="hljs-keyword">this</span>.setState({ value });
-  },
-  setValue() {
+  }
+
+  setValue = () =&gt; {
     <span class="hljs-keyword">this</span>.setState({
       value: [<span class="hljs-string">'bj'</span>, <span class="hljs-string">'chaoyang'</span>],
     });
-  },
+  }
+
   getLabel() {
     <span class="hljs-keyword">return</span> arrayTreeFilter(addressOptions, (o, level) =&gt; o.value === <span class="hljs-keyword">this</span>.state.value[level])
       .map(o =&gt; o.label).join(<span class="hljs-string">', '</span>);
-  },
+  }
+
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span>
@@ -341,8 +343,8 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
         <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;
-  },
-});
+  }
+}
 
 ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Demo</span> /&gt;</span>, document.getElementById('__react-content'));
 </span></code></pre></div>
