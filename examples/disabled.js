@@ -41,12 +41,11 @@ const addressOptions = [{
   }],
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '',
-    };
-  },
+class Demo extends React.Component {
+  state = {
+    inputValue: '',
+  }
+
   render() {
     return (
       <Cascader options={addressOptions} disabled>
@@ -58,7 +57,7 @@ const Demo = React.createClass({
         />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

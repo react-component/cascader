@@ -42,18 +42,18 @@ const addressOptions = [{
   }],
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '',
-    };
-  },
-  onChange(value, selectedOptions) {
+class Demo extends React.Component {
+  state = {
+    inputValue: '',
+  }
+
+  onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  },
+  }
+
   render() {
     return (
       <Cascader options={addressOptions} onChange={this.onChange}>
@@ -63,7 +63,7 @@ const Demo = React.createClass({
         />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

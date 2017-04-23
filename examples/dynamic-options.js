@@ -14,20 +14,20 @@ const addressOptions = [{
   value: 'zj',
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '',
-      options: addressOptions,
-    };
-  },
-  onChange(value, selectedOptions) {
+class Demo extends React.Component {
+  state = {
+    inputValue: '',
+    options: addressOptions,
+  }
+
+  onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  },
-  loadData(selectedOptions) {
+  }
+
+  loadData = (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据
@@ -44,7 +44,8 @@ const Demo = React.createClass({
         options: [...this.state.options],
       });
     }, 1000);
-  },
+  }
+
   render() {
     return (
       <Cascader
@@ -56,7 +57,7 @@ const Demo = React.createClass({
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

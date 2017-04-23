@@ -42,25 +42,27 @@ const addressOptions = [{
   }],
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      value: [],
-    };
-  },
-  onChange(value) {
+class Demo extends React.Component {
+  state = {
+    value: [],
+  };
+
+  onChange = (value) => {
     console.log(value);
     this.setState({ value });
-  },
-  setValue() {
+  }
+
+  setValue = () => {
     this.setState({
       value: ['bj', 'chaoyang'],
     });
-  },
+  }
+
   getLabel() {
     return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
       .map(o => o.label).join(', ');
-  },
+  }
+
   render() {
     return (
       <div>
@@ -70,7 +72,7 @@ const Demo = React.createClass({
         </Cascader>
       </div>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

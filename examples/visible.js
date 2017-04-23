@@ -42,23 +42,25 @@ const addressOptions = [{
   }],
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      value: [],
-      popupVisible: false,
-    };
-  },
-  onChange(value) {
+class Demo extends React.Component {
+  state = {
+    value: [],
+    popupVisible: false,
+  }
+
+  onChange = (value) => {
     this.setState({ value });
-  },
-  onPopupVisibleChange(popupVisible) {
+  }
+
+  onPopupVisibleChange = (popupVisible) => {
     this.setState({ popupVisible });
-  },
+  }
+
   getLabel() {
     return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
       .map(o => o.label).join(', ');
-  },
+  }
+
   render() {
     return (
       <Cascader
@@ -71,7 +73,7 @@ const Demo = React.createClass({
         <input value={this.getLabel()} readOnly />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

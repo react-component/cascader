@@ -42,18 +42,18 @@ const addressOptions = [{
   }],
 }];
 
-const MyCascader = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '',
-    };
-  },
-  onChange(value, selectedOptions) {
+class MyCascader extends React.Component {
+  state = {
+    inputValue: '',
+  }
+
+  onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  },
+  }
+
   render() {
     const { builtinPlacements } = this.props;
     return (
@@ -69,8 +69,8 @@ const MyCascader = React.createClass({
         />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 const placements = {
   bottomLeft: {

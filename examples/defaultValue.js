@@ -67,18 +67,18 @@ const defaultOptions = [{
   value: 'yuhang',
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: defaultOptions.map(o => o.label).join(', '),
-    };
-  },
-  onChange(value, selectedOptions) {
+class Demo extends React.Component {
+  state = {
+    inputValue: defaultOptions.map(o => o.label).join(', '),
+  }
+
+  onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  },
+  }
+
   render() {
     const defaultValue = defaultOptions.map(o => o.value);
     return (
@@ -86,7 +86,7 @@ const Demo = React.createClass({
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));

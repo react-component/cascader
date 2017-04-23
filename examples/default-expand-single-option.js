@@ -27,14 +27,13 @@ const options = [{
   }],
 }];
 
-const App = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '',
-      value: [],
-    };
-  },
-  onChange(value, selectedOptions) {
+class App extends React.Component {
+  state = {
+    inputValue: '',
+    value: [],
+  }
+
+  onChange = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
       value.push(lastSelected.children[0].value);
@@ -48,14 +47,15 @@ const App = React.createClass({
       inputValue: selectedOptions.map(o => o.label).join(', '),
       value,
     });
-  },
+  }
+
   render() {
     return (
       <Cascader options={options} value={this.state.value} changeOnSelect onChange={this.onChange}>
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById('__react-content'));

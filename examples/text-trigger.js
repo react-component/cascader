@@ -41,18 +41,18 @@ const addressOptions = [{
   }],
 }];
 
-const Demo = React.createClass({
-  getInitialState() {
-    return {
-      inputValue: '未选择',
-    };
-  },
-  onChange(value, selectedOptions) {
+class Demo extends React.Component {
+  state = {
+    inputValue: '未选择',
+  }
+
+  onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  },
+  }
+
   render() {
     return (
       <span>
@@ -62,7 +62,7 @@ const Demo = React.createClass({
         </Cascader>
       </span>
     );
-  },
-});
+  }
+}
 
 ReactDOM.render(<Demo />, document.getElementById('__react-content'));
