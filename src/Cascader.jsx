@@ -156,6 +156,13 @@ class Cascader extends Component {
     this.setState(newState);
   }
   handleKeyDown = (e) => {
+    const { children } = this.props;
+    // https://github.com/ant-design/ant-design/issues/6717
+    // Don't bind keyboard support when children specify the onKeyDown
+    if (children && children.props.onKeyDown) {
+      children.props.onKeyDown(e);
+      return;
+    }
     const activeValue = [...this.state.activeValue];
     const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
     const currentOptions = this.getCurrentLevelOptions();
