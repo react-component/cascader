@@ -3,12 +3,12 @@ webpackJsonp([8],{
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(319);
+	module.exports = __webpack_require__(323);
 
 
 /***/ }),
 
-/***/ 319:
+/***/ 323:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25,13 +25,13 @@ webpackJsonp([8],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _rcForm = __webpack_require__(320);
+	var _rcForm = __webpack_require__(324);
 	
 	var _reactDom = __webpack_require__(83);
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _arrayTreeFilter = __webpack_require__(309);
+	var _arrayTreeFilter = __webpack_require__(313);
 	
 	var _arrayTreeFilter2 = _interopRequireDefault(_arrayTreeFilter);
 	
@@ -196,7 +196,7 @@ webpackJsonp([8],{
 
 /***/ }),
 
-/***/ 320:
+/***/ 324:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// export this package's api
@@ -208,13 +208,13 @@ webpackJsonp([8],{
 	
 	function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 	
-	var _createForm = __webpack_require__(321);
+	var _createForm = __webpack_require__(325);
 	
 	exports.createForm = _interopRequire(_createForm);
 
 /***/ }),
 
-/***/ 321:
+/***/ 325:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -241,9 +241,9 @@ webpackJsonp([8],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(322);
+	var _utils = __webpack_require__(326);
 	
-	var _asyncValidator = __webpack_require__(324);
+	var _asyncValidator = __webpack_require__(328);
 	
 	var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
 	
@@ -624,7 +624,7 @@ webpackJsonp([8],{
 
 /***/ }),
 
-/***/ 322:
+/***/ 326:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -640,7 +640,7 @@ webpackJsonp([8],{
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _hoistNonReactStatics = __webpack_require__(323);
+	var _hoistNonReactStatics = __webpack_require__(327);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
@@ -693,7 +693,7 @@ webpackJsonp([8],{
 
 /***/ }),
 
-/***/ 323:
+/***/ 327:
 /***/ (function(module, exports) {
 
 	/**
@@ -750,7 +750,7 @@ webpackJsonp([8],{
 
 /***/ }),
 
-/***/ 324:
+/***/ 328:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -759,21 +759,23 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(45);
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _util = __webpack_require__(325);
+	var _typeof2 = __webpack_require__(243);
 	
-	var _validator = __webpack_require__(326);
+	var _typeof3 = _interopRequireDefault(_typeof2);
+	
+	var _util = __webpack_require__(329);
+	
+	var _validator = __webpack_require__(330);
 	
 	var _validator2 = _interopRequireDefault(_validator);
 	
-	var _messages2 = __webpack_require__(348);
+	var _messages2 = __webpack_require__(352);
 	
-	var _rule = __webpack_require__(328);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Encapsulates a validation schema.
@@ -798,7 +800,7 @@ webpackJsonp([8],{
 	    if (!rules) {
 	      throw new Error('Cannot configure a schema with no rules');
 	    }
-	    if ((typeof rules === 'undefined' ? 'undefined' : _typeof(rules)) !== 'object' || Array.isArray(rules)) {
+	    if ((typeof rules === 'undefined' ? 'undefined' : (0, _typeof3['default'])(rules)) !== 'object' || Array.isArray(rules)) {
 	      throw new Error('Rules must be an object');
 	    }
 	    this.rules = {};
@@ -870,8 +872,6 @@ webpackJsonp([8],{
 	    } else {
 	      options.messages = this.messages();
 	    }
-	
-	    options.error = _rule.error;
 	    var arr = void 0;
 	    var value = void 0;
 	    var series = {};
@@ -883,7 +883,7 @@ webpackJsonp([8],{
 	        var rule = r;
 	        if (typeof rule.transform === 'function') {
 	          if (source === source_) {
-	            source = _extends({}, source);
+	            source = (0, _extends3['default'])({}, source);
 	          }
 	          value = source[z] = rule.transform(value);
 	        }
@@ -892,7 +892,7 @@ webpackJsonp([8],{
 	            validator: rule
 	          };
 	        } else {
-	          rule = _extends({}, rule);
+	          rule = (0, _extends3['default'])({}, rule);
 	        }
 	        rule.validator = _this.getValidationMethod(rule);
 	        rule.field = z;
@@ -913,11 +913,11 @@ webpackJsonp([8],{
 	    var errorFields = {};
 	    (0, _util.asyncMap)(series, options, function (data, doIt) {
 	      var rule = data.rule;
-	      var deep = (rule.type === 'object' || rule.type === 'array') && (_typeof(rule.fields) === 'object' || _typeof(rule.defaultField) === 'object');
+	      var deep = (rule.type === 'object' || rule.type === 'array') && ((0, _typeof3['default'])(rule.fields) === 'object' || (0, _typeof3['default'])(rule.defaultField) === 'object');
 	      deep = deep && (rule.required || !rule.required && data.value);
 	      rule.field = data.field;
 	      function addFullfield(key, schema) {
-	        return _extends({}, schema, {
+	        return (0, _extends3['default'])({}, schema, {
 	          fullField: rule.fullField + '.' + key
 	        });
 	      }
@@ -951,8 +951,10 @@ webpackJsonp([8],{
 	          if (rule.required && !data.value) {
 	            if (rule.message) {
 	              errors = [].concat(rule.message).map((0, _util.complementError)(rule));
-	            } else {
+	            } else if (options.error) {
 	              errors = [options.error(rule, (0, _util.format)(options.messages.required, rule.field))];
+	            } else {
+	              errors = [];
 	            }
 	            return doIt(errors);
 	          }
@@ -965,7 +967,7 @@ webpackJsonp([8],{
 	              }
 	            }
 	          }
-	          fieldsSchema = _extends({}, fieldsSchema, data.rule.fields);
+	          fieldsSchema = (0, _extends3['default'])({}, fieldsSchema, data.rule.fields);
 	          for (var f in fieldsSchema) {
 	            if (fieldsSchema.hasOwnProperty(f)) {
 	              var fieldSchema = Array.isArray(fieldsSchema[f]) ? fieldsSchema[f] : [fieldsSchema[f]];
@@ -993,7 +995,7 @@ webpackJsonp([8],{
 	    if (rule.type === undefined && rule.pattern instanceof RegExp) {
 	      rule.type = 'pattern';
 	    }
-	    if (typeof rule.validator !== 'function' && rule.type && !_validator2["default"].hasOwnProperty(rule.type)) {
+	    if (typeof rule.validator !== 'function' && rule.type && !_validator2['default'].hasOwnProperty(rule.type)) {
 	      throw new Error((0, _util.format)('Unknown rule type %s', rule.type));
 	    }
 	    return rule.type || 'string';
@@ -1008,9 +1010,9 @@ webpackJsonp([8],{
 	      keys.splice(messageIndex, 1);
 	    }
 	    if (keys.length === 1 && keys[0] === 'required') {
-	      return _validator2["default"].required;
+	      return _validator2['default'].required;
 	    }
-	    return _validator2["default"][this.getType(rule)] || false;
+	    return _validator2['default'][this.getType(rule)] || false;
 	  }
 	};
 	
@@ -1018,17 +1020,17 @@ webpackJsonp([8],{
 	  if (typeof validator !== 'function') {
 	    throw new Error('Cannot register a validator by type, validator is not a function');
 	  }
-	  _validator2["default"][type] = validator;
+	  _validator2['default'][type] = validator;
 	};
 	
 	Schema.messages = _messages2.messages;
 	
-	exports["default"] = Schema;
+	exports['default'] = Schema;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 325:
+/***/ 329:
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -1036,37 +1038,40 @@ webpackJsonp([8],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.warning = undefined;
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	var _extends2 = __webpack_require__(45);
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _extends3 = _interopRequireDefault(_extends2);
 	
-	exports.warning = warning;
+	var _typeof2 = __webpack_require__(243);
+	
+	var _typeof3 = _interopRequireDefault(_typeof2);
+	
 	exports.format = format;
 	exports.isEmptyValue = isEmptyValue;
 	exports.isEmptyObject = isEmptyObject;
 	exports.asyncMap = asyncMap;
 	exports.complementError = complementError;
 	exports.deepMerge = deepMerge;
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
 	var formatRegExp = /%[sdj%]/g;
 	
-	var warning2 = function warning2() {};
+	var warning = exports.warning = function warning() {};
 	
-	if (process.env.NODE_ENV !== 'production') {
-	  warning2 = function warning2(type, message) {
+	// don't print warning message when in production env or node runtime
+	if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined' && typeof document !== 'undefined') {
+	  exports.warning = warning = function warning(type, errors) {
 	    if (typeof console !== 'undefined' && console.warn) {
-	      console.warn(type, message);
+	      if (errors.every(function (e) {
+	        return typeof e === 'string';
+	      })) {
+	        console.warn(type, errors);
+	      }
 	    }
 	  };
-	}
-	
-	function warning(type, errors) {
-	  // only warn native warning, default type is string, confuses many people...
-	  if (errors.every(function (e) {
-	    return typeof e === 'string';
-	  })) {
-	    warning2(type, errors);
-	  }
 	}
 	
 	function format() {
@@ -1228,8 +1233,8 @@ webpackJsonp([8],{
 	    for (var s in source) {
 	      if (source.hasOwnProperty(s)) {
 	        var value = source[s];
-	        if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && _typeof(target[s]) === 'object') {
-	          target[s] = _extends({}, target[s], value);
+	        if ((typeof value === 'undefined' ? 'undefined' : (0, _typeof3['default'])(value)) === 'object' && (0, _typeof3['default'])(target[s]) === 'object') {
+	          target[s] = (0, _extends3['default'])({}, target[s], value);
 	        } else {
 	          target[s] = value;
 	        }
@@ -1242,33 +1247,7 @@ webpackJsonp([8],{
 
 /***/ }),
 
-/***/ 326:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	module.exports = {
-	  string: __webpack_require__(327),
-	  method: __webpack_require__(335),
-	  number: __webpack_require__(336),
-	  "boolean": __webpack_require__(337),
-	  regexp: __webpack_require__(338),
-	  integer: __webpack_require__(339),
-	  "float": __webpack_require__(340),
-	  array: __webpack_require__(341),
-	  object: __webpack_require__(342),
-	  "enum": __webpack_require__(343),
-	  pattern: __webpack_require__(344),
-	  email: __webpack_require__(345),
-	  url: __webpack_require__(345),
-	  date: __webpack_require__(346),
-	  hex: __webpack_require__(345),
-	  required: __webpack_require__(347)
-	};
-
-/***/ }),
-
-/***/ 327:
+/***/ 330:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1277,13 +1256,102 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _string = __webpack_require__(331);
+	
+	var _string2 = _interopRequireDefault(_string);
+	
+	var _method = __webpack_require__(339);
+	
+	var _method2 = _interopRequireDefault(_method);
+	
+	var _number = __webpack_require__(340);
+	
+	var _number2 = _interopRequireDefault(_number);
+	
+	var _boolean = __webpack_require__(341);
+	
+	var _boolean2 = _interopRequireDefault(_boolean);
+	
+	var _regexp = __webpack_require__(342);
+	
+	var _regexp2 = _interopRequireDefault(_regexp);
+	
+	var _integer = __webpack_require__(343);
+	
+	var _integer2 = _interopRequireDefault(_integer);
+	
+	var _float = __webpack_require__(344);
+	
+	var _float2 = _interopRequireDefault(_float);
+	
+	var _array = __webpack_require__(345);
+	
+	var _array2 = _interopRequireDefault(_array);
+	
+	var _object = __webpack_require__(346);
+	
+	var _object2 = _interopRequireDefault(_object);
+	
+	var _enum = __webpack_require__(347);
+	
+	var _enum2 = _interopRequireDefault(_enum);
+	
+	var _pattern = __webpack_require__(348);
+	
+	var _pattern2 = _interopRequireDefault(_pattern);
+	
+	var _date = __webpack_require__(349);
+	
+	var _date2 = _interopRequireDefault(_date);
+	
+	var _required = __webpack_require__(350);
+	
+	var _required2 = _interopRequireDefault(_required);
+	
+	var _type = __webpack_require__(351);
+	
+	var _type2 = _interopRequireDefault(_type);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	exports['default'] = {
+	  string: _string2['default'],
+	  method: _method2['default'],
+	  number: _number2['default'],
+	  boolean: _boolean2['default'],
+	  regexp: _regexp2['default'],
+	  integer: _integer2['default'],
+	  float: _float2['default'],
+	  array: _array2['default'],
+	  object: _object2['default'],
+	  'enum': _enum2['default'],
+	  pattern: _pattern2['default'],
+	  date: _date2['default'],
+	  url: _type2['default'],
+	  hex: _type2['default'],
+	  email: _type2['default'],
+	  required: _required2['default']
+	};
+	module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 331:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Performs validation for string types.
@@ -1302,25 +1370,25 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options, 'string');
+	    _rule2['default'].required(rule, value, source, errors, options, 'string');
 	    if (!(0, _util.isEmptyValue)(value, 'string')) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	      _rule2["default"].range(rule, value, source, errors, options);
-	      _rule2["default"].pattern(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2['default'].range(rule, value, source, errors, options);
+	      _rule2['default'].pattern(rule, value, source, errors, options);
 	      if (rule.whitespace === true) {
-	        _rule2["default"].whitespace(rule, value, source, errors, options);
+	        _rule2['default'].whitespace(rule, value, source, errors, options);
 	      }
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = string;
+	exports['default'] = string;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 328:
+/***/ 332:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1328,19 +1396,46 @@ webpackJsonp([8],{
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports["default"] = {
-	  required: __webpack_require__(329),
-	  whitespace: __webpack_require__(330),
-	  type: __webpack_require__(331),
-	  range: __webpack_require__(332),
-	  "enum": __webpack_require__(333),
-	  pattern: __webpack_require__(334)
+	
+	var _required = __webpack_require__(333);
+	
+	var _required2 = _interopRequireDefault(_required);
+	
+	var _whitespace = __webpack_require__(334);
+	
+	var _whitespace2 = _interopRequireDefault(_whitespace);
+	
+	var _type = __webpack_require__(335);
+	
+	var _type2 = _interopRequireDefault(_type);
+	
+	var _range = __webpack_require__(336);
+	
+	var _range2 = _interopRequireDefault(_range);
+	
+	var _enum = __webpack_require__(337);
+	
+	var _enum2 = _interopRequireDefault(_enum);
+	
+	var _pattern = __webpack_require__(338);
+	
+	var _pattern2 = _interopRequireDefault(_pattern);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	exports['default'] = {
+	  required: _required2['default'],
+	  whitespace: _whitespace2['default'],
+	  type: _type2['default'],
+	  range: _range2['default'],
+	  'enum': _enum2['default'],
+	  pattern: _pattern2['default']
 	};
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 329:
+/***/ 333:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1349,11 +1444,11 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating required fields.
@@ -1372,12 +1467,12 @@ webpackJsonp([8],{
 	  }
 	}
 	
-	exports["default"] = required;
+	exports['default'] = required;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 330:
+/***/ 334:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1386,11 +1481,11 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating whitespace.
@@ -1409,12 +1504,12 @@ webpackJsonp([8],{
 	  }
 	}
 	
-	exports["default"] = whitespace;
+	exports['default'] = whitespace;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 331:
+/***/ 335:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1423,24 +1518,27 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof2 = __webpack_require__(243);
 	
-	var _util = __webpack_require__(325);
+	var _typeof3 = _interopRequireDefault(_typeof2);
+	
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	var _required = __webpack_require__(329);
+	var _required = __webpack_require__(333);
 	
 	var _required2 = _interopRequireDefault(_required);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/* eslint max-len:0 */
 	
 	var pattern = {
-	  email: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+	  // http://emailregex.com/
+	  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	  url: new RegExp('^(?!mailto:)(?:(?:http|https|ftp)://|//)(?:\\S+(?::\\S*)?@)?(?:(?:(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[0-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]+-?)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,})))|localhost)(?::\\d{2,5})?(?:(/|\\?|#)[^\\s]*)?$', 'i'),
 	  hex: /^#?([a-f0-9]{6}|[a-f0-9]{3})$/i
 	};
@@ -1449,7 +1547,7 @@ webpackJsonp([8],{
 	  integer: function integer(value) {
 	    return types.number(value) && parseInt(value, 10) === value;
 	  },
-	  "float": function float(value) {
+	  float: function float(value) {
 	    return types.number(value) && !types.integer(value);
 	  },
 	  array: function array(value) {
@@ -1475,7 +1573,7 @@ webpackJsonp([8],{
 	    return typeof value === 'number';
 	  },
 	  object: function object(value) {
-	    return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && !types.array(value);
+	    return (typeof value === 'undefined' ? 'undefined' : (0, _typeof3['default'])(value)) === 'object' && !types.array(value);
 	  },
 	  method: function method(value) {
 	    return typeof value === 'function';
@@ -1504,7 +1602,7 @@ webpackJsonp([8],{
 	 */
 	function type(rule, value, source, errors, options) {
 	  if (rule.required && value === undefined) {
-	    (0, _required2["default"])(rule, value, source, errors, options);
+	    (0, _required2['default'])(rule, value, source, errors, options);
 	    return;
 	  }
 	  var custom = ['integer', 'float', 'array', 'regexp', 'object', 'method', 'email', 'number', 'date', 'url', 'hex'];
@@ -1514,17 +1612,17 @@ webpackJsonp([8],{
 	      errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	    }
 	    // straight typeof check
-	  } else if (ruleType && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) !== rule.type) {
+	  } else if (ruleType && (typeof value === 'undefined' ? 'undefined' : (0, _typeof3['default'])(value)) !== rule.type) {
 	    errors.push(util.format(options.messages.types[ruleType], rule.fullField, rule.type));
 	  }
 	}
 	
-	exports["default"] = type;
+	exports['default'] = type;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 332:
+/***/ 336:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1533,11 +1631,11 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating minimum and maximum allowed values.
@@ -1588,12 +1686,12 @@ webpackJsonp([8],{
 	  }
 	}
 	
-	exports["default"] = range;
+	exports['default'] = range;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 333:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1602,11 +1700,11 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	var ENUM = 'enum';
 	
@@ -1628,12 +1726,12 @@ webpackJsonp([8],{
 	  }
 	}
 	
-	exports["default"] = enumerable;
+	exports['default'] = enumerable;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 334:
+/***/ 338:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1642,11 +1740,11 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
 	var util = _interopRequireWildcard(_util);
 	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj["default"] = obj; return newObj; } }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 	
 	/**
 	 *  Rule for validating a regular expression pattern.
@@ -1660,19 +1758,26 @@ webpackJsonp([8],{
 	 *  @param options.messages The validation messages.
 	 */
 	function pattern(rule, value, source, errors, options) {
-	  if (rule.pattern instanceof RegExp) {
-	    if (!rule.pattern.test(value)) {
-	      errors.push(util.format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+	  if (rule.pattern) {
+	    if (rule.pattern instanceof RegExp) {
+	      if (!rule.pattern.test(value)) {
+	        errors.push(util.format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+	      }
+	    } else if (typeof rule.pattern === 'string') {
+	      var _pattern = new RegExp(rule.pattern);
+	      if (!_pattern.test(value)) {
+	        errors.push(util.format(options.messages.pattern.mismatch, rule.fullField, value, rule.pattern));
+	      }
 	    }
 	  }
 	}
 	
-	exports["default"] = pattern;
+	exports['default'] = pattern;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 335:
+/***/ 339:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1681,13 +1786,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a function.
@@ -1706,20 +1811,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = method;
+	exports['default'] = method;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 336:
+/***/ 340:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1728,13 +1833,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a number.
@@ -1753,21 +1858,21 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	      _rule2["default"].range(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2['default'].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = number;
+	exports['default'] = number;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 337:
+/***/ 341:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1776,13 +1881,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a boolean.
@@ -1801,20 +1906,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = boolean;
+	exports['default'] = boolean;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 338:
+/***/ 342:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1823,13 +1928,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates the regular expression type.
@@ -1848,20 +1953,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value)) {
-	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = regexp;
+	exports['default'] = regexp;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 339:
+/***/ 343:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1870,13 +1975,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a number is an integer.
@@ -1895,21 +2000,21 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	      _rule2["default"].range(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2['default'].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = integer;
+	exports['default'] = integer;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 340:
+/***/ 344:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1918,13 +2023,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a number is a floating point number.
@@ -1943,21 +2048,21 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	      _rule2["default"].range(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2['default'].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = floatFn;
+	exports['default'] = floatFn;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 341:
+/***/ 345:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1966,13 +2071,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates an array.
@@ -1991,21 +2096,21 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value, 'array') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options, 'array');
+	    _rule2['default'].required(rule, value, source, errors, options, 'array');
 	    if (!(0, _util.isEmptyValue)(value, 'array')) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	      _rule2["default"].range(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
+	      _rule2['default'].range(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = array;
+	exports['default'] = array;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 342:
+/***/ 346:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2014,13 +2119,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates an object.
@@ -2039,20 +2144,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value !== undefined) {
-	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = object;
+	exports['default'] = object;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 343:
+/***/ 347:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2061,13 +2166,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	var ENUM = 'enum';
 	
@@ -2088,20 +2193,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (value) {
-	      _rule2["default"][ENUM](rule, value, source, errors, options);
+	      _rule2['default'][ENUM](rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = enumerable;
+	exports['default'] = enumerable;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 344:
+/***/ 348:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2110,13 +2215,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	/**
 	 *  Validates a regular expression pattern.
@@ -2138,20 +2243,20 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value, 'string') && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value, 'string')) {
-	      _rule2["default"].pattern(rule, value, source, errors, options);
+	      _rule2['default'].pattern(rule, value, source, errors, options);
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = pattern;
+	exports['default'] = pattern;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 345:
+/***/ 349:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2160,51 +2265,13 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _rule = __webpack_require__(328);
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	var _util = __webpack_require__(325);
+	var _util = __webpack_require__(329);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	function type(rule, value, callback, source, options) {
-	  var ruleType = rule.type;
-	  var errors = [];
-	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
-	  if (validate) {
-	    if ((0, _util.isEmptyValue)(value, ruleType) && !rule.required) {
-	      return callback();
-	    }
-	    _rule2["default"].required(rule, value, source, errors, options, ruleType);
-	    if (!(0, _util.isEmptyValue)(value, ruleType)) {
-	      _rule2["default"].type(rule, value, source, errors, options);
-	    }
-	  }
-	  callback(errors);
-	}
-	
-	exports["default"] = type;
-	module.exports = exports['default'];
-
-/***/ }),
-
-/***/ 346:
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _rule = __webpack_require__(328);
-	
-	var _rule2 = _interopRequireDefault(_rule);
-	
-	var _util = __webpack_require__(325);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function date(rule, value, callback, source, options) {
 	  // console.log('integer rule called %j', rule);
@@ -2215,23 +2282,23 @@ webpackJsonp([8],{
 	    if ((0, _util.isEmptyValue)(value) && !rule.required) {
 	      return callback();
 	    }
-	    _rule2["default"].required(rule, value, source, errors, options);
+	    _rule2['default'].required(rule, value, source, errors, options);
 	    if (!(0, _util.isEmptyValue)(value)) {
-	      _rule2["default"].type(rule, value, source, errors, options);
+	      _rule2['default'].type(rule, value, source, errors, options);
 	      if (value) {
-	        _rule2["default"].range(rule, value.getTime(), source, errors, options);
+	        _rule2['default'].range(rule, value.getTime(), source, errors, options);
 	      }
 	    }
 	  }
 	  callback(errors);
 	}
 	
-	exports["default"] = date;
+	exports['default'] = date;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 347:
+/***/ 350:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2240,27 +2307,67 @@ webpackJsonp([8],{
 	  value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	var _typeof2 = __webpack_require__(243);
 	
-	var _rule = __webpack_require__(328);
+	var _typeof3 = _interopRequireDefault(_typeof2);
+	
+	var _rule = __webpack_require__(332);
 	
 	var _rule2 = _interopRequireDefault(_rule);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
 	function required(rule, value, callback, source, options) {
 	  var errors = [];
-	  var type = Array.isArray(value) ? 'array' : typeof value === 'undefined' ? 'undefined' : _typeof(value);
-	  _rule2["default"].required(rule, value, source, errors, options, type);
+	  var type = Array.isArray(value) ? 'array' : typeof value === 'undefined' ? 'undefined' : (0, _typeof3['default'])(value);
+	  _rule2['default'].required(rule, value, source, errors, options, type);
 	  callback(errors);
 	}
 	
-	exports["default"] = required;
+	exports['default'] = required;
 	module.exports = exports['default'];
 
 /***/ }),
 
-/***/ 348:
+/***/ 351:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _rule = __webpack_require__(332);
+	
+	var _rule2 = _interopRequireDefault(_rule);
+	
+	var _util = __webpack_require__(329);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	
+	function type(rule, value, callback, source, options) {
+	  var ruleType = rule.type;
+	  var errors = [];
+	  var validate = rule.required || !rule.required && source.hasOwnProperty(rule.field);
+	  if (validate) {
+	    if ((0, _util.isEmptyValue)(value, ruleType) && !rule.required) {
+	      return callback();
+	    }
+	    _rule2['default'].required(rule, value, source, errors, options, ruleType);
+	    if (!(0, _util.isEmptyValue)(value, ruleType)) {
+	      _rule2['default'].type(rule, value, source, errors, options);
+	    }
+	  }
+	  callback(errors);
+	}
+	
+	exports['default'] = type;
+	module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 352:
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2271,9 +2378,9 @@ webpackJsonp([8],{
 	exports.newMessages = newMessages;
 	function newMessages() {
 	  return {
-	    "default": 'Validation error on field %s',
+	    'default': 'Validation error on field %s',
 	    required: '%s is required',
-	    "enum": '%s must be one of %s',
+	    'enum': '%s must be one of %s',
 	    whitespace: '%s cannot be empty',
 	    date: {
 	      format: '%s date %s is invalid for format %s',
@@ -2287,9 +2394,9 @@ webpackJsonp([8],{
 	      object: '%s is not an %s',
 	      number: '%s is not a %s',
 	      date: '%s is not a %s',
-	      "boolean": '%s is not a %s',
+	      boolean: '%s is not a %s',
 	      integer: '%s is not an %s',
-	      "float": '%s is not a %s',
+	      float: '%s is not a %s',
 	      regexp: '%s is not a valid %s',
 	      email: '%s is not a valid %s',
 	      url: '%s is not a valid %s',
