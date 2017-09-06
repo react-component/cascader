@@ -4,6 +4,12 @@ import arrayTreeFilter from 'array-tree-filter';
 import { findDOMNode } from 'react-dom';
 
 class Menus extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.menuItems = {};
+  }
+
   componentDidMount() {
     this.scrollActiveItemToView();
   }
@@ -33,7 +39,7 @@ class Menus extends React.Component {
     }
     if (this.isActiveOption(option, menuIndex)) {
       menuItemCls += ` ${prefixCls}-menu-item-active`;
-      expandProps.ref = `activeItem${menuIndex}`;
+      expandProps.ref = this.saveMenuItem(menuIndex);
     }
     if (option.disabled) {
       menuItemCls += ` ${prefixCls}-menu-item-disabled`;
@@ -91,7 +97,7 @@ class Menus extends React.Component {
     // scroll into view
     const optionsLength = this.getShowOptions().length;
     for (let i = 0; i < optionsLength; i++) {
-      const itemComponent = this.refs[`activeItem${i}`];
+      const itemComponent = this.menuItems[i];
       if (itemComponent) {
         const target = findDOMNode(itemComponent);
         target.parentNode.scrollTop = target.offsetTop;
@@ -102,6 +108,10 @@ class Menus extends React.Component {
   isActiveOption(option, menuIndex) {
     const { activeValue = [] } = this.props;
     return activeValue[menuIndex] === option.value;
+  }
+
+  saveMenuItem = (index) => (node) => {
+    this.menuItems[index] = node;
   }
 
   render() {
