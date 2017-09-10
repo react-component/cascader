@@ -362,4 +362,41 @@ describe('Cascader', () => {
       done();
     }, 100);
   });
+
+  // https://github.com/ant-design/ant-design/issues/7480
+  it('should call onChange on click when expandTrigger=hover with changeOnSelect', (done) => {
+    instance = ReactDOM.render(
+      <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>
+    , div);
+
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    const menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    expect(menu1Items.length).to.be(3);
+    Simulate.click(menu1Items[0]);
+    expect(selectedValue[0]).to.be('fj');
+    expect(instance.state.popupVisible).not.to.be.ok();
+    done();
+  });
+
+  it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', (done) => {
+    instance = ReactDOM.render(
+      <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>
+    , div);
+
+    Simulate.click(ReactDOM.findDOMNode(instance));
+    const menus = instance.getPopupDOMNode().querySelectorAll('.rc-cascader-menu');
+    expect(menus.length).to.be(1);
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    expect(menu1Items.length).to.be(3);
+    Simulate.mouseEnter(menu1Items[0]);
+    expect(selectedValue).not.to.be.ok();
+    expect(instance.state.popupVisible).to.be.ok();
+    done();
+  });
 });

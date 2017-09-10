@@ -29,6 +29,7 @@ class Menus extends React.Component {
       expandProps = {
         onMouseEnter: this.delayOnSelect.bind(this, onSelect),
         onMouseLeave: this.delayOnSelect.bind(this),
+        onClick: onSelect,
       };
     }
     if (this.isActiveOption(option, menuIndex)) {
