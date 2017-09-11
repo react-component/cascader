@@ -121,7 +121,7 @@ class Cascader extends Component {
     if (triggerNode && triggerNode.focus) {
       triggerNode.focus();
     }
-    const { changeOnSelect, loadData } = this.props;
+    const { changeOnSelect, loadData, expandTrigger } = this.props;
     if (!targetOption || targetOption.disabled) {
       return;
     }
@@ -142,8 +142,13 @@ class Cascader extends Component {
       this.handleChange(activeOptions, { visible: false }, e);
       // set value to activeValue when select leaf option
       newState.value = activeValue;
-    } else if (changeOnSelect) {
-      this.handleChange(activeOptions, { visible: true }, e);
+      // add e.type judgement to prevent `onChange` being triggered by mouseEnter
+    } else if (changeOnSelect && (e.type === 'click' || e.type === 'keydown')) {
+      if (expandTrigger === 'hover') {
+        this.handleChange(activeOptions, { visible: false }, e);
+      } else {
+        this.handleChange(activeOptions, { visible: true }, e);
+      }
       // set value to activeValue on every select
       newState.value = activeValue;
     }
@@ -274,6 +279,7 @@ Cascader.defaultProps = {
   popupClassName: '',
   popupPlacement: 'bottomLeft',
   builtinPlacements: BUILT_IN_PLACEMENTS,
+  expandTrigger: 'click',
 };
 
 Cascader.propTypes = {
@@ -294,6 +300,7 @@ Cascader.propTypes = {
   changeOnSelect: PropTypes.bool,
   children: PropTypes.node,
   onKeyDown: PropTypes.func,
+  expandTrigger: PropTypes.string,
 };
 
 export default Cascader;
