@@ -152,7 +152,7 @@ webpackJsonp([0],[
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	  'div',
-	  { style: { textAlign: 'right', margin: '0 80px' } },
+	  { style: { position: 'absolute', right: 10, top: 150 } },
 	  _react2.default.createElement(MyCascader, null),
 	  _react2.default.createElement('br', null),
 	  _react2.default.createElement('br', null),
