@@ -104,7 +104,7 @@ const placements = {
 };
 
 ReactDOM.render(
-  <div style={{ textAlign: 'right', margin: '0 80px' }}>
+  <div style={{ position: 'absolute', right: 10, top: 150 }}>
     <MyCascader />
     <br />
     <br />
