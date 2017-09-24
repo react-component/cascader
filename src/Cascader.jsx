@@ -262,7 +262,7 @@ class Cascader extends Component {
       >
         {cloneElement(children, {
           onKeyDown: this.handleKeyDown,
-          tabIndex: 0,
+          tabIndex: disabled ? undefined : 0,
         })}
       </Trigger>
     );
