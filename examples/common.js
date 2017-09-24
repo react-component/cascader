@@ -526,7 +526,7 @@
 	      }),
 	      (0, _react.cloneElement)(children, {
 	        onKeyDown: this.handleKeyDown,
-	        tabIndex: 0
+	        tabIndex: disabled ? undefined : 0
 	      })
 	    );
 	  };
