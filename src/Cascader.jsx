@@ -77,7 +77,7 @@ class Cascader extends Component {
     }
   }
   getPopupDOMNode() {
-    return this.refs.trigger.getPopupDomNode();
+    return this.trigger.getPopupDomNode();
   }
   getCurrentLevelOptions() {
     const { options } = this.props;
@@ -117,7 +117,7 @@ class Cascader extends Component {
       e.preventDefault();
     }
     // Keep focused state for keyboard support
-    const triggerNode = this.refs.trigger.getRootDomNode();
+    const triggerNode = this.trigger.getRootDomNode();
     if (triggerNode && triggerNode.focus) {
       triggerNode.focus();
     }
@@ -223,6 +223,11 @@ class Cascader extends Component {
       this.props.onKeyDown(e);
     }
   }
+
+  saveTrigger = (node) => {
+    this.trigger = node;
+  }
+
   render() {
     const {
       prefixCls, transitionName, popupClassName, options, disabled,
@@ -246,7 +251,7 @@ class Cascader extends Component {
     }
     return (
       <Trigger
-        ref="trigger"
+        ref={this.saveTrigger}
         {...restProps}
         options={options}
         disabled={disabled}
