@@ -86,19 +86,20 @@ class Form extends Component {
   render() {
     const props = this.props;
     const { form } = props;
-    const addressFieldProps = form.getFieldProps('address', {
-      rules: [{ required: true, type: 'array' }],
-    });
     const addressFieldError = form.getFieldError('address');
     return (
       <div style={{ margin: 20 }}>
         <form onSubmit={this.onSubmit}>
           <p>
-            <CascaderInput
-              placeholder="please select address"
-              options={addressOptions}
-              {...addressFieldProps}
-            />
+            {form.getFieldDecorator('address', {
+              initialValue: [],
+              rules: [{ required: true, type: 'array' }],
+            })(
+              <CascaderInput
+                placeholder="please select address"
+                options={addressOptions}
+              />
+            )}
             <span style={{ color: '#f50' }}>
               {addressFieldError ? addressFieldError.join(' ') : null}
             </span>

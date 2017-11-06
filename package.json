@@ -60,7 +60,7 @@
     "enzyme-to-json": "^3.2.1",
     "jest": "^21.2.1",
     "pre-commit": "1.x",
-    "rc-form": "^0.5.1",
+    "rc-form": "^1.5.0",
     "rc-tools": "7.x",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
