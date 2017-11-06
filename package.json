@@ -48,8 +48,8 @@
     "pre-commit": "1.x",
     "rc-form": "^0.5.1",
     "rc-tools": "7.x",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "pre-commit": [
     "lint"
@@ -57,7 +57,7 @@
   "dependencies": {
     "array-tree-filter": "^1.0.0",
     "prop-types": "^15.5.8",
-    "rc-trigger": "1.x",
+    "rc-trigger": "^2.2.0",
     "rc-util": "^4.0.4",
     "shallow-equal": "^1.0.0"
   }
