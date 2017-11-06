@@ -6,7 +6,7 @@ React Cascader Component
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
-[![Test coverage][coveralls-image]][coveralls-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![gemnasium deps][gemnasium-image]][gemnasium-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
@@ -15,8 +15,8 @@ React Cascader Component
 [npm-url]: http://npmjs.org/package/rc-cascader
 [travis-image]: https://img.shields.io/travis/react-component/cascader.svg?style=flat-square
 [travis-url]: https://travis-ci.org/react-component/cascader
-[coveralls-image]: https://img.shields.io/coveralls/react-component/cascader.svg?style=flat-square
-[coveralls-url]: https://coveralls.io/r/react-component/cascader?branch=master
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square
+[codecov-url]: https://codecov.io/gh/react-component/cascader/branch/master
 [gemnasium-image]: http://img.shields.io/gemnasium/react-component/cascader.svg?style=flat-square
 [gemnasium-url]: https://gemnasium.com/react-component/cascader
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
