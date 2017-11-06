@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>rc-form.js - example - rc-cascader@0.11.6</title>
+  <title>rc-form.js - example - rc-cascader@0.12.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,136 +257,137 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="common.css" />
+  <link rel="stylesheet" href="../common.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.11.6</h1>
+      <h1>rc-cascader@0.12.0</h1>
 
       <p>cascade select ui component for react</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="js"><span class="hljs-comment">/* eslint-disable no-console, react/no-multi-comp */</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">'rc-cascader/assets/index.css'</span>;
-<span class="hljs-keyword">import</span> Cascader <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-cascader'</span>;
-<span class="hljs-keyword">import</span> React, { Component } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
-<span class="hljs-keyword">import</span> { createForm } <span class="hljs-keyword">from</span> <span class="hljs-string">'rc-form'</span>;
-<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
-<span class="hljs-keyword">import</span> arrayTreeFilter <span class="hljs-keyword">from</span> <span class="hljs-string">'array-tree-filter'</span>;
+    <div class="highlight"><pre><code language="undefined">/* eslint-disable no-console, react/no-multi-comp */
+import 'rc-cascader/assets/index.css';
+import Cascader from 'rc-cascader';
+import React, { Component } from 'react';
+import { createForm } from 'rc-form';
+import ReactDOM from 'react-dom';
+import arrayTreeFilter from 'array-tree-filter';
 
-<span class="hljs-keyword">const</span> addressOptions = [{
-  label: <span class="hljs-string">'福建'</span>,
-  value: <span class="hljs-string">'fj'</span>,
+const addressOptions = [{
+  label: '福建',
+  value: 'fj',
   children: [{
-    label: <span class="hljs-string">'福州'</span>,
-    value: <span class="hljs-string">'fuzhou'</span>,
+    label: '福州',
+    value: 'fuzhou',
     children: [{
-      label: <span class="hljs-string">'马尾'</span>,
-      value: <span class="hljs-string">'mawei'</span>,
+      label: '马尾',
+      value: 'mawei',
     }],
   }, {
-    label: <span class="hljs-string">'泉州'</span>,
-    value: <span class="hljs-string">'quanzhou'</span>,
+    label: '泉州',
+    value: 'quanzhou',
   }],
 }, {
-  label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
+  label: '浙江',
+  value: 'zj',
   children: [{
-    label: <span class="hljs-string">'杭州'</span>,
-    value: <span class="hljs-string">'hangzhou'</span>,
+    label: '杭州',
+    value: 'hangzhou',
     children: [{
-      label: <span class="hljs-string">'余杭'</span>,
-      value: <span class="hljs-string">'yuhang'</span>,
+      label: '余杭',
+      value: 'yuhang',
     }],
   }],
 }, {
-  label: <span class="hljs-string">'北京'</span>,
-  value: <span class="hljs-string">'bj'</span>,
+  label: '北京',
+  value: 'bj',
   children: [{
-    label: <span class="hljs-string">'朝阳区'</span>,
-    value: <span class="hljs-string">'chaoyang'</span>,
+    label: '朝阳区',
+    value: 'chaoyang',
   }, {
-    label: <span class="hljs-string">'海淀区'</span>,
-    value: <span class="hljs-string">'haidian'</span>,
+    label: '海淀区',
+    value: 'haidian',
   }],
 }];
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CascaderInput</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+class CascaderInput extends Component {
   onChange(value) {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">if</span> (props.onChange) {
+    const props = this.props;
+    if (props.onChange) {
       props.onChange(value);
     }
   }
   getLabel() {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> value = props.value || [];
-    <span class="hljs-keyword">return</span> arrayTreeFilter(props.options, (o, level) =&gt; o.value === value[level])
-      .map(o =&gt; o.label).join(<span class="hljs-string">', '</span>);
+    const props = this.props;
+    const value = props.value || [];
+    return arrayTreeFilter(props.options, (o, level) =&gt; o.value === value[level])
+      .map(o =&gt; o.label).join(', ');
   }
   render() {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> {<span class="hljs-attribute">...this.props</span>} <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange.bind(this)}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">{props.placeholder}</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.getLabel()}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
-    )</span>;
+    const props = this.props;
+    return (
+      &lt;Cascader {...this.props} onChange={this.onChange.bind(this)}&gt;
+        &lt;input placeholder={props.placeholder} value={this.getLabel()} readOnly /&gt;
+      &lt;/Cascader&gt;
+    );
   }
 }
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Form</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+class Form extends Component {
   constructor() {
-    <span class="hljs-keyword">super</span>();
-    <span class="hljs-keyword">this</span>.onSubmit = <span class="hljs-keyword">this</span>.onSubmit.bind(<span class="hljs-keyword">this</span>);
+    super();
+    this.onSubmit = this.onSubmit.bind(this);
   }
   onSubmit(e) {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> { form } = props;
+    const props = this.props;
+    const { form } = props;
     e.preventDefault();
     form.validateFields((error, values) =&gt; {
-      <span class="hljs-keyword">if</span> (!error) {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ok'</span>, values);
-      } <span class="hljs-keyword">else</span> {
-        <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'error'</span>, error, values);
+      if (!error) {
+        console.log('ok', values);
+      } else {
+        console.error('error', error, values);
       }
     });
   }
   render() {
-    <span class="hljs-keyword">const</span> props = <span class="hljs-keyword">this</span>.props;
-    <span class="hljs-keyword">const</span> { form } = props;
-    <span class="hljs-keyword">const</span> addressFieldProps = form.getFieldProps(<span class="hljs-string">'address'</span>, {
-      rules: [{ required: <span class="hljs-literal">true</span>, type: <span class="hljs-string">'array'</span> }],
-    });
-    <span class="hljs-keyword">const</span> addressFieldError = form.getFieldError(<span class="hljs-string">'address'</span>);
-    <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">margin:</span> <span class="hljs-attribute">20</span> }}&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">onSubmit</span>=<span class="hljs-value">{this.onSubmit}</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">CascaderInput</span>
-              <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span>
-              <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span>
-              {<span class="hljs-attribute">...addressFieldProps</span>}
-            /&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">span</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">color:</span> '#<span class="hljs-attribute">f50</span>' }}&gt;</span>
+    const props = this.props;
+    const { form } = props;
+    const addressFieldError = form.getFieldError('address');
+    return (
+      &lt;div style={{ margin: 20 }}&gt;
+        &lt;form onSubmit={this.onSubmit}&gt;
+          &lt;p&gt;
+            {form.getFieldDecorator('address', {
+              initialValue: [],
+              rules: [{ required: true, type: 'array' }],
+            })(
+              &lt;CascaderInput
+                placeholder="please select address"
+                options={addressOptions}
+              /&gt;
+            )}
+            &lt;span style={{ color: '#f50' }}&gt;
               {addressFieldError ? addressFieldError.join(' ') : null}
-            <span class="hljs-tag">&lt;/<span class="hljs-title">span</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">p</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-title">button</span>&gt;</span>submit<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span>
-          <span class="hljs-tag">&lt;/<span class="hljs-title">p</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-title">form</span>&gt;</span>
-      <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
-    )</span>;
+            &lt;/span&gt;
+          &lt;/p&gt;
+          &lt;p&gt;
+            &lt;button&gt;submit&lt;/button&gt;
+          &lt;/p&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    );
   }
 }
 
-<span class="hljs-keyword">const</span> NewForm = createForm()(Form);
+const NewForm = createForm()(Form);
 
-ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">NewForm</span> /&gt;</span>, document.getElementById('__react-content'));
-</span></code></pre></div>
+ReactDOM.render(&lt;NewForm /&gt;, document.getElementById('__react-content'));
+</code></pre></div>
   </div>
   <a href="https://github.com/react-component/cascader">
     <img style="position: absolute; top: 0; right: 0; border: 0;"
@@ -395,7 +396,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
          data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
   </a>
   <script>FastClick.attach(document.body);</script>
-  <script src="common.js?nowrap"></script>
+  <script src="../common.js?nowrap"></script>
   <script src="rc-form.js?nowrap"></script>
 </body>
 
