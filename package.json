@@ -27,6 +27,7 @@
   ],
   "licenses": "MIT",
   "main": "./lib/index",
+  "module": "./es/index",
   "config": {
     "port": 8000
   },
