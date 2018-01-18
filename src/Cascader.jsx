@@ -113,9 +113,6 @@ class Cascader extends Component {
     this.setPopupVisible(popupVisible);
   }
   handleMenuSelect = (targetOption, menuIndex, e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
     // Keep focused state for keyboard support
     const triggerNode = this.trigger.getRootDomNode();
     if (triggerNode && triggerNode.focus) {
@@ -184,6 +181,8 @@ class Cascader extends Component {
     // Press any keys above to reopen menu
     if (!this.state.popupVisible &&
         e.keyCode !== KeyCode.BACKSPACE &&
+        e.keyCode !== KeyCode.LEFT &&
+        e.keyCode !== KeyCode.RIGHT &&
         e.keyCode !== KeyCode.ESC) {
       this.setPopupVisible(true);
       return;
