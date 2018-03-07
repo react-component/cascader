@@ -21,7 +21,7 @@ class Menus extends React.Component {
   }
 
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger, keyValue, label } = this.props;
+    const { prefixCls, expandTrigger, valueField, labelField } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
@@ -51,26 +51,26 @@ class Menus extends React.Component {
     let title = '';
     if (option.title) {
       title = option.title;
-    } else if (typeof option[label] === 'string') {
-      title = option[label];
+    } else if (typeof option[labelField] === 'string') {
+      title = option[labelField];
     }
     return (
       <li
-        key={option[keyValue]}
+        key={option[valueField]}
         className={menuItemCls}
         title={title}
         {...expandProps}
       >
-        {option[label]}
+        {option[labelField]}
       </li>
     );
   }
 
   getActiveOptions(values) {
-    const { keyValue } = this.props;
+    const { valueField } = this.props;
     const activeValue = values || this.props.activeValue;
     const options = this.props.options;
-    return arrayTreeFilter(options, (o, level) => o[keyValue] === activeValue[level]);
+    return arrayTreeFilter(options, (o, level) => o[valueField] === activeValue[level]);
   }
 
   getShowOptions() {
@@ -108,8 +108,8 @@ class Menus extends React.Component {
   }
 
   isActiveOption(option, menuIndex) {
-    const { activeValue = [], keyValue } = this.props;
-    return activeValue[menuIndex] === option[keyValue];
+    const { activeValue = [], valueField } = this.props;
+    return activeValue[menuIndex] === option[valueField];
   }
 
   saveMenuItem = (index) => (node) => {
