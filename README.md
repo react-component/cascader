@@ -204,13 +204,13 @@ React.render(
     <tr>
       <td>labelField</td>
       <td>String</td>
-      <td></td>
+      <td>label</td>
       <td>custom field name for label</td>
     </tr>
     <tr>
       <td>valueField</td>
       <td>String</td>
-      <td></td>
+      <td>value</td>
       <td>custom field name for value</td>
     </tr>
   </tbody>
