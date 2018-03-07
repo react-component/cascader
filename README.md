@@ -201,6 +201,18 @@ React.render(
       <td></td>
       <td>style object for each cascader pop menu</td>
     </tr>
+    <tr>
+      <td>label</td>
+      <td>String</td>
+      <td></td>
+      <td>field name for label</td>
+    </tr>
+    <tr>
+      <td>keyValue</td>
+      <td>String</td>
+      <td></td>
+      <td>field name for value</td>
+    </tr>
   </tbody>
 </table>
 
