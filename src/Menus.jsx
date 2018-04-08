@@ -149,6 +149,8 @@ Menus.propTypes = {
   onSelect: PropTypes.func,
   visible: PropTypes.bool,
   dropdownMenuColumnStyle: PropTypes.object,
+  labelField: PropTypes.string,
+  valueField: PropTypes.string,
 };
 
 export default Menus;

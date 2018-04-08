@@ -288,7 +288,7 @@ Cascader.defaultProps = {
   builtinPlacements: BUILT_IN_PLACEMENTS,
   expandTrigger: 'click',
   labelField: 'label',
-  valueField: 'value'
+  valueField: 'value',
 };
 
 Cascader.propTypes = {
@@ -311,7 +311,7 @@ Cascader.propTypes = {
   onKeyDown: PropTypes.func,
   expandTrigger: PropTypes.string,
   labelField: PropTypes.string,
-  valueField: PropTypes.string
+  valueField: PropTypes.string,
 };
 
 export default Cascader;
