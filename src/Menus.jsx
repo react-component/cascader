@@ -21,13 +21,13 @@ class Menus extends React.Component {
   }
 
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger, valueField, labelField } = this.props;
+    const { prefixCls, expandTrigger, valueField, labelField, childrenField } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
     };
     let menuItemCls = `${prefixCls}-menu-item`;
-    const hasChildren = option.children && option.children.length > 0;
+    const hasChildren = option[childrenField] && option[childrenField].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
     }
@@ -67,16 +67,17 @@ class Menus extends React.Component {
   }
 
   getActiveOptions(values) {
-    const { valueField } = this.props;
+    const { valueField, childrenField } = this.props;
     const activeValue = values || this.props.activeValue;
     const options = this.props.options;
-    return arrayTreeFilter(options, (o, level) => o[valueField] === activeValue[level]);
+    return arrayTreeFilter(options, (o, level) => o[valueField] === activeValue[level],
+      { childrenKeyName: childrenField });
   }
 
   getShowOptions() {
-    const { options } = this.props;
+    const { options, childrenField } = this.props;
     const result = this.getActiveOptions()
-      .map(activeOption => activeOption.children)
+      .map(activeOption => activeOption[childrenField])
       .filter(activeOption => !!activeOption);
     result.unshift(options);
     return result;
@@ -151,6 +152,7 @@ Menus.propTypes = {
   dropdownMenuColumnStyle: PropTypes.object,
   labelField: PropTypes.string,
   valueField: PropTypes.string,
+  childrenField: PropTypes.string,
 };
 
 export default Menus;

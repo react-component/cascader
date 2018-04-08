@@ -213,6 +213,12 @@ React.render(
       <td>value</td>
       <td>custom field name for value</td>
     </tr>
+    <tr>
+      <td>childrenField</td>
+      <td>String</td>
+      <td>children</td>
+      <td>custom field name for children</td>
+    </tr>
   </tbody>
 </table>
 

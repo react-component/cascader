@@ -80,17 +80,19 @@ class Cascader extends Component {
     return this.trigger.getPopupDomNode();
   }
   getCurrentLevelOptions() {
-    const { options, valueField } = this.props;
+    const { options, valueField, childrenField } = this.props;
     const { activeValue = [] } = this.state;
-    const result = arrayTreeFilter(options, (o, level) => o[valueField] === activeValue[level]);
+    const result = arrayTreeFilter(options, (o, level) => o[valueField] === activeValue[level],
+      { childrenKeyName: childrenField });
     if (result[result.length - 2]) {
-      return result[result.length - 2].children;
+      return result[result.length - 2][childrenField];
     }
     return [...options].filter(o => !o.disabled);
   }
   getActiveOptions(activeValue) {
-    const { valueField } = this.props;
-    return arrayTreeFilter(this.props.options, (o, level) => o[valueField] === activeValue[level]);
+    const { valueField, childrenField } = this.props;
+    return arrayTreeFilter(this.props.options, (o, level) => o[valueField] === activeValue[level],
+      { childrenKeyName: childrenField });
   }
   setPopupVisible = (popupVisible) => {
     if (!('popupVisible' in this.props)) {
@@ -115,7 +117,7 @@ class Cascader extends Component {
     this.setPopupVisible(popupVisible);
   }
   handleMenuSelect = (targetOption, menuIndex, e) => {
-    const { valueField } = this.props;
+    const { valueField, childrenField } = this.props;
     // Keep focused state for keyboard support
     const triggerNode = this.trigger.getRootDomNode();
     if (triggerNode && triggerNode.focus) {
@@ -129,7 +131,7 @@ class Cascader extends Component {
     activeValue = activeValue.slice(0, menuIndex + 1);
     activeValue[menuIndex] = targetOption[valueField];
     const activeOptions = this.getActiveOptions(activeValue);
-    if (targetOption.isLeaf === false && !targetOption.children && loadData) {
+    if (targetOption.isLeaf === false && !targetOption[childrenField] && loadData) {
       if (changeOnSelect) {
         this.handleChange(activeOptions, { visible: true }, e);
       }
@@ -138,7 +140,7 @@ class Cascader extends Component {
       return;
     }
     const newState = {};
-    if (!targetOption.children || !targetOption.children.length) {
+    if (!targetOption[childrenField] || !targetOption[childrenField].length) {
       this.handleChange(activeOptions, { visible: false }, e);
       // set value to activeValue when select leaf option
       newState.value = activeValue;
@@ -161,7 +163,7 @@ class Cascader extends Component {
     this.setState(newState);
   }
   handleKeyDown = (e) => {
-    const { children, valueField } = this.props;
+    const { children, valueField, childrenField } = this.props;
     // https://github.com/ant-design/ant-design/issues/6717
     // Don't bind keyboard support when children specify the onKeyDown
     if (children && children.props.onKeyDown) {
@@ -207,8 +209,8 @@ class Cascader extends Component {
     } else if (e.keyCode === KeyCode.LEFT || e.keyCode === KeyCode.BACKSPACE) {
       activeValue.splice(activeValue.length - 1, 1);
     } else if (e.keyCode === KeyCode.RIGHT) {
-      if (currentOptions[currentIndex] && currentOptions[currentIndex].children) {
-        activeValue.push(currentOptions[currentIndex].children[0][valueField]);
+      if (currentOptions[currentIndex] && currentOptions[currentIndex][childrenField]) {
+        activeValue.push(currentOptions[currentIndex][childrenField][0][valueField]);
       }
     } else if (e.keyCode === KeyCode.ESC) {
       this.setPopupVisible(false);
@@ -289,6 +291,7 @@ Cascader.defaultProps = {
   expandTrigger: 'click',
   labelField: 'label',
   valueField: 'value',
+  childrenField: 'children',
 };
 
 Cascader.propTypes = {
@@ -312,6 +315,7 @@ Cascader.propTypes = {
   expandTrigger: PropTypes.string,
   labelField: PropTypes.string,
   valueField: PropTypes.string,
+  childrenField: PropTypes.string,
 };
 
 export default Cascader;

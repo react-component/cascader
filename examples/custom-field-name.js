@@ -7,10 +7,10 @@ import ReactDOM from 'react-dom';
 const addressOptions = [{
   name: '福建',
   code: 'fj',
-  children: [{
+  nodes: [{
     name: '福州',
     code: 'fuzhou',
-    children: [{
+    nodes: [{
       name: '马尾',
       code: 'mawei',
     }],
@@ -21,10 +21,10 @@ const addressOptions = [{
 }, {
   name: '浙江',
   code: 'zj',
-  children: [{
+  nodes: [{
     name: '杭州',
     code: 'hangzhou',
-    children: [{
+    nodes: [{
       name: '余杭',
       code: 'yuhang',
     }],
@@ -32,7 +32,7 @@ const addressOptions = [{
 }, {
   name: '北京',
   code: 'bj',
-  children: [{
+  nodes: [{
     name: '朝阳区',
     code: 'chaoyang',
   }, {
@@ -61,6 +61,7 @@ class Demo extends React.Component {
         onChange={this.onChange}
         labelField="name"
         valueField="code"
+        childrenField="nodes"
       >
         <input
           placeholder="please select address"
