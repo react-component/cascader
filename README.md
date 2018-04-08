@@ -202,22 +202,10 @@ React.render(
       <td>style object for each cascader pop menu</td>
     </tr>
     <tr>
-      <td>labelField</td>
-      <td>String</td>
-      <td>label</td>
-      <td>custom field name for label</td>
-    </tr>
-    <tr>
-      <td>valueField</td>
-      <td>String</td>
-      <td>value</td>
-      <td>custom field name for value</td>
-    </tr>
-    <tr>
-      <td>childrenField</td>
-      <td>String</td>
-      <td>children</td>
-      <td>custom field name for children</td>
+      <td>filedNames</td>
+      <td>Object</td>
+      <td>{ label: 'label', value: 'value', children: 'children' }</td>
+      <td>custom field name for label and value and children</td>
     </tr>
   </tbody>
 </table>

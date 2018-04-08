@@ -417,24 +417,22 @@ describe('Cascader', () => {
       </Cascader>
     );
     const props = wrapper.props();
-    expect(props.labelField).toBe('label');
-    expect(props.valueField).toBe('value');
-    expect(props.childrenField).toBe('children');
+    expect(props.filedNames.label).toBe('label');
+    expect(props.filedNames.value).toBe('value');
+    expect(props.filedNames.children).toBe('children');
   });
 
   it('should has custom filedName', () => {
     const wrapper = mount(
       <Cascader
-        labelField="name"
-        valueField="code"
-        childrenField="nodes"
+        filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
       >
         <input />
       </Cascader>
     );
     const props = wrapper.props();
-    expect(props.labelField).toBe('name');
-    expect(props.valueField).toBe('code');
-    expect(props.childrenField).toBe('nodes');
+    expect(props.filedNames.label).toBe('name');
+    expect(props.filedNames.value).toBe('code');
+    expect(props.filedNames.children).toBe('nodes');
   });
 });
