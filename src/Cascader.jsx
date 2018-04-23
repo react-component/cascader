@@ -96,7 +96,7 @@ class Cascader extends Component {
       this.setState({ popupVisible });
     }
     // sync activeValue with value when panel open
-    if (popupVisible && !this.state.visible) {
+    if (popupVisible && !this.state.popupVisible) {
       this.setState({
         activeValue: this.state.value,
       });
