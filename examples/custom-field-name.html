@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>defaultValue.js - example - rc-cascader@0.13.0</title>
+  <title>custom-field-name.js - example - rc-cascader@0.13.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -276,85 +276,66 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
 <span class="hljs-keyword">const</span> addressOptions = [{
-  label: <span class="hljs-string">'福建'</span>,
-  value: <span class="hljs-string">'fj'</span>,
-  children: [{
-    label: <span class="hljs-string">'福州'</span>,
-    value: <span class="hljs-string">'fuzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'马尾'</span>,
-      value: <span class="hljs-string">'mawei'</span>,
+  name: <span class="hljs-string">'福建'</span>,
+  code: <span class="hljs-string">'fj'</span>,
+  nodes: [{
+    name: <span class="hljs-string">'福州'</span>,
+    code: <span class="hljs-string">'fuzhou'</span>,
+    nodes: [{
+      name: <span class="hljs-string">'马尾'</span>,
+      code: <span class="hljs-string">'mawei'</span>,
     }],
   }, {
-    label: <span class="hljs-string">'泉州'</span>,
-    value: <span class="hljs-string">'quanzhou'</span>,
+    name: <span class="hljs-string">'泉州'</span>,
+    code: <span class="hljs-string">'quanzhou'</span>,
   }],
 }, {
-  label: <span class="hljs-string">'占位1'</span>,
-  value: <span class="hljs-string">'zw1'</span>,
-}, {
-  label: <span class="hljs-string">'占位2'</span>,
-  value: <span class="hljs-string">'zw2'</span>,
-}, {
-  label: <span class="hljs-string">'占位3'</span>,
-  value: <span class="hljs-string">'zw3'</span>,
-}, {
-  label: <span class="hljs-string">'占位4'</span>,
-  value: <span class="hljs-string">'zw4'</span>,
-}, {
-  label: <span class="hljs-string">'占位5'</span>,
-  value: <span class="hljs-string">'zw5'</span>,
-}, {
-  label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
-  children: [{
-    label: <span class="hljs-string">'杭州'</span>,
-    value: <span class="hljs-string">'hangzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'余杭'</span>,
-      value: <span class="hljs-string">'yuhang'</span>,
+  name: <span class="hljs-string">'浙江'</span>,
+  code: <span class="hljs-string">'zj'</span>,
+  nodes: [{
+    name: <span class="hljs-string">'杭州'</span>,
+    code: <span class="hljs-string">'hangzhou'</span>,
+    nodes: [{
+      name: <span class="hljs-string">'余杭'</span>,
+      code: <span class="hljs-string">'yuhang'</span>,
     }],
   }],
 }, {
-  label: <span class="hljs-string">'北京'</span>,
-  value: <span class="hljs-string">'bj'</span>,
-  children: [{
-    label: <span class="hljs-string">'朝阳区'</span>,
-    value: <span class="hljs-string">'chaoyang'</span>,
+  name: <span class="hljs-string">'北京'</span>,
+  code: <span class="hljs-string">'bj'</span>,
+  nodes: [{
+    name: <span class="hljs-string">'朝阳区'</span>,
+    code: <span class="hljs-string">'chaoyang'</span>,
   }, {
-    label: <span class="hljs-string">'海淀区'</span>,
-    value: <span class="hljs-string">'haidian'</span>,
+    name: <span class="hljs-string">'海淀区'</span>,
+    code: <span class="hljs-string">'haidian'</span>,
+    disabled: <span class="hljs-literal">true</span>,
   }],
-}];
-
-<span class="hljs-keyword">const</span> defaultOptions = [{
-  label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
-}, {
-  label: <span class="hljs-string">'杭州'</span>,
-  value: <span class="hljs-string">'hangzhou'</span>,
-}, {
-  label: <span class="hljs-string">'余杭'</span>,
-  value: <span class="hljs-string">'yuhang'</span>,
 }];
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
-    inputValue: defaultOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
+    inputValue: <span class="hljs-string">''</span>,
   }
 
   onChange = (value, selectedOptions) =&gt; {
     <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
-      inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
+      inputValue: selectedOptions.map(o =&gt; o.name).join(<span class="hljs-string">', '</span>),
     });
   }
 
   render() {
-    <span class="hljs-keyword">const</span> defaultValue = defaultOptions.map(o =&gt; o.value);
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">defaultValue</span>=<span class="hljs-value">{defaultValue}</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span>
+        <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span>
+        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+        <span class="hljs-attribute">filedNames</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">label:</span> '<span class="hljs-attribute">name</span>', <span class="hljs-attribute">value:</span> '<span class="hljs-attribute">code</span>', <span class="hljs-attribute">children:</span> '<span class="hljs-attribute">nodes</span>' }}
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
+          <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span>
+          <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span>
+        /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     )</span>;
   }
@@ -371,7 +352,7 @@ ReactDOM.render(<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-t
   </a>
   <script>FastClick.attach(document.body);</script>
   <script src="../common.js?nowrap"></script>
-  <script src="defaultValue.js?nowrap"></script>
+  <script src="custom-field-name.js?nowrap"></script>
 </body>
 
 </html>

@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		13: 0
+/******/ 		14: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -400,14 +400,13 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 4 */,
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -417,6 +416,7 @@ process.umask = function() { return 0; };
 /* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0__src___["a" /* default */]);
 
 /***/ }),
+/* 6 */,
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3024,7 +3024,7 @@ var Cascader = function (_Component) {
     _this.handleChange = function (options, setProps, e) {
       if (e.type !== 'keydown' || e.keyCode === __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].ENTER) {
         _this.props.onChange(options.map(function (o) {
-          return o.value;
+          return o[_this.getFieldName('value')];
         }), options);
         _this.setPopupVisible(setProps.visible);
       }
@@ -3051,9 +3051,9 @@ var Cascader = function (_Component) {
       var activeValue = _this.state.activeValue;
 
       activeValue = activeValue.slice(0, menuIndex + 1);
-      activeValue[menuIndex] = targetOption.value;
+      activeValue[menuIndex] = targetOption[_this.getFieldName('value')];
       var activeOptions = _this.getActiveOptions(activeValue);
-      if (targetOption.isLeaf === false && !targetOption.children && loadData) {
+      if (targetOption.isLeaf === false && !targetOption[_this.getFieldName('children')] && loadData) {
         if (changeOnSelect) {
           _this.handleChange(activeOptions, { visible: true }, e);
         }
@@ -3062,7 +3062,7 @@ var Cascader = function (_Component) {
         return;
       }
       var newState = {};
-      if (!targetOption.children || !targetOption.children.length) {
+      if (!targetOption[_this.getFieldName('children')] || !targetOption[_this.getFieldName('children')].length) {
         _this.handleChange(activeOptions, { visible: false }, e);
         // set value to activeValue when select leaf option
         newState.value = activeValue;
@@ -3097,7 +3097,7 @@ var Cascader = function (_Component) {
       var currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
       var currentOptions = _this.getCurrentLevelOptions();
       var currentIndex = currentOptions.map(function (o) {
-        return o.value;
+        return o[_this.getFieldName('value')];
       }).indexOf(activeValue[currentLevel]);
       if (e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].DOWN && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].UP && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].LEFT && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].RIGHT && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].ENTER && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].BACKSPACE && e.keyCode !== __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].ESC) {
         return;
@@ -3120,12 +3120,12 @@ var Cascader = function (_Component) {
         } else {
           nextIndex = 0;
         }
-        activeValue[currentLevel] = currentOptions[nextIndex].value;
+        activeValue[currentLevel] = currentOptions[nextIndex][_this.getFieldName('value')];
       } else if (e.keyCode === __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].LEFT || e.keyCode === __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].BACKSPACE) {
         activeValue.splice(activeValue.length - 1, 1);
       } else if (e.keyCode === __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].RIGHT) {
-        if (currentOptions[currentIndex] && currentOptions[currentIndex].children) {
-          activeValue.push(currentOptions[currentIndex].children[0].value);
+        if (currentOptions[currentIndex] && currentOptions[currentIndex][_this.getFieldName('children')]) {
+          activeValue.push(currentOptions[currentIndex][_this.getFieldName('children')][0][_this.getFieldName('value')]);
         }
       } else if (e.keyCode === __WEBPACK_IMPORTED_MODULE_4_rc_util_es_KeyCode__["a" /* default */].ESC) {
         _this.setPopupVisible(false);
@@ -3159,6 +3159,7 @@ var Cascader = function (_Component) {
       activeValue: initialValue,
       value: initialValue
     };
+    _this.defaultFiledNames = { label: 'label', value: 'value', children: 'children' };
     return _this;
   }
 
@@ -3186,16 +3187,26 @@ var Cascader = function (_Component) {
     return this.trigger.getPopupDomNode();
   };
 
+  Cascader.prototype.getFieldName = function getFieldName(name) {
+    var defaultFiledNames = this.defaultFiledNames;
+    var filedNames = this.props.filedNames;
+    // 防止只设置单个属性的名字
+
+    return filedNames[name] || defaultFiledNames[name];
+  };
+
   Cascader.prototype.getCurrentLevelOptions = function getCurrentLevelOptions() {
+    var _this2 = this;
+
     var options = this.props.options;
     var _state$activeValue = this.state.activeValue,
         activeValue = _state$activeValue === undefined ? [] : _state$activeValue;
 
     var result = __WEBPACK_IMPORTED_MODULE_5_array_tree_filter___default()(options, function (o, level) {
-      return o.value === activeValue[level];
-    });
+      return o[_this2.getFieldName('value')] === activeValue[level];
+    }, { childrenKeyName: this.getFieldName('children') });
     if (result[result.length - 2]) {
-      return result[result.length - 2].children;
+      return result[result.length - 2][this.getFieldName('children')];
     }
     return [].concat(options).filter(function (o) {
       return !o.disabled;
@@ -3203,9 +3214,11 @@ var Cascader = function (_Component) {
   };
 
   Cascader.prototype.getActiveOptions = function getActiveOptions(activeValue) {
+    var _this3 = this;
+
     return __WEBPACK_IMPORTED_MODULE_5_array_tree_filter___default()(this.props.options, function (o, level) {
-      return o.value === activeValue[level];
-    });
+      return o[_this3.getFieldName('value')] === activeValue[level];
+    }, { childrenKeyName: this.getFieldName('children') });
   };
 
   Cascader.prototype.render = function render() {
@@ -3226,6 +3239,7 @@ var Cascader = function (_Component) {
     var emptyMenuClassName = '';
     if (options && options.length > 0) {
       menus = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Menus__["a" /* default */], _extends({}, this.props, {
+        defaultFiledNames: this.defaultFiledNames,
         value: this.state.value,
         activeValue: this.state.activeValue,
         onSelect: this.handleMenuSelect,
@@ -3272,7 +3286,8 @@ Cascader.defaultProps = {
   popupClassName: '',
   popupPlacement: 'bottomLeft',
   builtinPlacements: BUILT_IN_PLACEMENTS,
-  expandTrigger: 'click'
+  expandTrigger: 'click',
+  filedNames: { label: 'label', value: 'value', children: 'children' }
 };
 
 Cascader.propTypes = {
@@ -3293,7 +3308,8 @@ Cascader.propTypes = {
   changeOnSelect: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
   children: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node,
   onKeyDown: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
-  expandTrigger: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string
+  expandTrigger: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string,
+  filedNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Cascader);
@@ -26284,17 +26300,26 @@ var Menus = function (_React$Component) {
     }
   };
 
-  Menus.prototype.getOption = function getOption(option, menuIndex) {
+  Menus.prototype.getFieldName = function getFieldName(name) {
     var _props = this.props,
-        prefixCls = _props.prefixCls,
-        expandTrigger = _props.expandTrigger;
+        filedNames = _props.filedNames,
+        defaultFiledNames = _props.defaultFiledNames;
+    // 防止只设置单个属性的名字
+
+    return filedNames[name] || defaultFiledNames[name];
+  };
+
+  Menus.prototype.getOption = function getOption(option, menuIndex) {
+    var _props2 = this.props,
+        prefixCls = _props2.prefixCls,
+        expandTrigger = _props2.expandTrigger;
 
     var onSelect = this.props.onSelect.bind(this, option, menuIndex);
     var expandProps = {
       onClick: onSelect
     };
     var menuItemCls = prefixCls + '-menu-item';
-    var hasChildren = option.children && option.children.length > 0;
+    var hasChildren = option[this.getFieldName('children')] && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ' ' + prefixCls + '-menu-item-expand';
     }
@@ -26318,33 +26343,37 @@ var Menus = function (_React$Component) {
     var title = '';
     if (option.title) {
       title = option.title;
-    } else if (typeof option.label === 'string') {
-      title = option.label;
+    } else if (typeof option[this.getFieldName('label')] === 'string') {
+      title = option[this.getFieldName('label')];
     }
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'li',
       _extends({
-        key: option.value,
+        key: option[this.getFieldName('value')],
         className: menuItemCls,
         title: title
       }, expandProps),
-      option.label
+      option[this.getFieldName('label')]
     );
   };
 
   Menus.prototype.getActiveOptions = function getActiveOptions(values) {
+    var _this2 = this;
+
     var activeValue = values || this.props.activeValue;
     var options = this.props.options;
     return __WEBPACK_IMPORTED_MODULE_2_array_tree_filter___default()(options, function (o, level) {
-      return o.value === activeValue[level];
-    });
+      return o[_this2.getFieldName('value')] === activeValue[level];
+    }, { childrenKeyName: this.getFieldName('children') });
   };
 
   Menus.prototype.getShowOptions = function getShowOptions() {
+    var _this3 = this;
+
     var options = this.props.options;
 
     var result = this.getActiveOptions().map(function (activeOption) {
-      return activeOption.children;
+      return activeOption[_this3.getFieldName('children')];
     }).filter(function (activeOption) {
       return !!activeOption;
     });
@@ -26353,7 +26382,7 @@ var Menus = function (_React$Component) {
   };
 
   Menus.prototype.delayOnSelect = function delayOnSelect(onSelect) {
-    var _this2 = this;
+    var _this4 = this;
 
     for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
@@ -26366,7 +26395,7 @@ var Menus = function (_React$Component) {
     if (typeof onSelect === 'function') {
       this.delayTimer = setTimeout(function () {
         onSelect(args);
-        _this2.delayTimer = null;
+        _this4.delayTimer = null;
       }, 150);
     }
   };
@@ -26387,15 +26416,15 @@ var Menus = function (_React$Component) {
     var _props$activeValue = this.props.activeValue,
         activeValue = _props$activeValue === undefined ? [] : _props$activeValue;
 
-    return activeValue[menuIndex] === option.value;
+    return activeValue[menuIndex] === option[this.getFieldName('value')];
   };
 
   Menus.prototype.render = function render() {
-    var _this3 = this;
+    var _this5 = this;
 
-    var _props2 = this.props,
-        prefixCls = _props2.prefixCls,
-        dropdownMenuColumnStyle = _props2.dropdownMenuColumnStyle;
+    var _props3 = this.props,
+        prefixCls = _props3.prefixCls,
+        dropdownMenuColumnStyle = _props3.dropdownMenuColumnStyle;
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -26405,7 +26434,7 @@ var Menus = function (_React$Component) {
           'ul',
           { className: prefixCls + '-menu', key: menuIndex, style: dropdownMenuColumnStyle },
           options.map(function (option) {
-            return _this3.getOption(option, menuIndex);
+            return _this5.getOption(option, menuIndex);
           })
         );
       })
@@ -26434,7 +26463,9 @@ Menus.propTypes = {
   expandTrigger: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string,
   onSelect: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.func,
   visible: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.bool,
-  dropdownMenuColumnStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
+  dropdownMenuColumnStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  defaultFiledNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
+  filedNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Menus);

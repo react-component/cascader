@@ -1,14 +1,14 @@
-webpackJsonp([4],{
+webpackJsonp([10],{
 
-/***/ 287:
+/***/ 188:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(288);
+module.exports = __webpack_require__(189);
 
 
 /***/ }),
 
-/***/ 288:
+/***/ 189:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33,39 +33,39 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 var addressOptions = [{
-  label: '福建',
-  value: 'fj',
-  children: [{
-    label: '福州',
-    value: 'fuzhou',
-    children: [{
-      label: '马尾',
-      value: 'mawei'
+  name: '福建',
+  code: 'fj',
+  nodes: [{
+    name: '福州',
+    code: 'fuzhou',
+    nodes: [{
+      name: '马尾',
+      code: 'mawei'
     }]
   }, {
-    label: '泉州',
-    value: 'quanzhou'
+    name: '泉州',
+    code: 'quanzhou'
   }]
 }, {
-  label: '浙江',
-  value: 'zj',
-  children: [{
-    label: '杭州',
-    value: 'hangzhou',
-    children: [{
-      label: '余杭',
-      value: 'yuhang'
+  name: '浙江',
+  code: 'zj',
+  nodes: [{
+    name: '杭州',
+    code: 'hangzhou',
+    nodes: [{
+      name: '余杭',
+      code: 'yuhang'
     }]
   }]
 }, {
-  label: '北京',
-  value: 'bj',
-  children: [{
-    label: '朝阳区',
-    value: 'chaoyang'
+  name: '北京',
+  code: 'bj',
+  nodes: [{
+    name: '朝阳区',
+    code: 'chaoyang'
   }, {
-    label: '海淀区',
-    value: 'haidian',
+    name: '海淀区',
+    code: 'haidian',
     disabled: true
   }]
 }];
@@ -88,7 +88,7 @@ var Demo = function (_React$Component) {
       console.log(value, selectedOptions);
       _this.setState({
         inputValue: selectedOptions.map(function (o) {
-          return o.label;
+          return o.name;
         }).join(', ')
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -97,7 +97,11 @@ var Demo = function (_React$Component) {
   Demo.prototype.render = function render() {
     return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_1_rc_cascader__["a" /* default */],
-      { options: addressOptions, onChange: this.onChange },
+      {
+        options: addressOptions,
+        onChange: this.onChange,
+        filedNames: { label: 'name', value: 'code', children: 'nodes' }
+      },
       __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', {
         placeholder: 'please select address',
         value: this.state.inputValue
@@ -112,5 +116,5 @@ __WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[287]);
-//# sourceMappingURL=simple.js.map
+},[188]);
+//# sourceMappingURL=custom-field-name.js.map
