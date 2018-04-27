@@ -201,6 +201,12 @@ React.render(
       <td></td>
       <td>style object for each cascader pop menu</td>
     </tr>
+    <tr>
+      <td>filedNames</td>
+      <td>Object</td>
+      <td>{ label: 'label', value: 'value', children: 'children' }</td>
+      <td>custom field name for label and value and children</td>
+    </tr>
   </tbody>
 </table>
 
