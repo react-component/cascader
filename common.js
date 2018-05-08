@@ -3013,7 +3013,7 @@ var Cascader = function (_Component) {
         _this.setState({ popupVisible: popupVisible });
       }
       // sync activeValue with value when panel open
-      if (popupVisible && !_this.state.visible) {
+      if (popupVisible && !_this.state.popupVisible) {
         _this.setState({
           activeValue: _this.state.value
         });
