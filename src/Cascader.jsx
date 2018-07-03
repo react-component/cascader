@@ -256,7 +256,6 @@ class Cascader extends Component {
         <Menus
           {...this.props}
           defaultFiledNames={this.defaultFiledNames}
-          value={this.state.value}
           activeValue={this.state.activeValue}
           onSelect={this.handleMenuSelect}
           visible={this.state.popupVisible}
