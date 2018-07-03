@@ -20,9 +20,9 @@ class Menus extends React.Component {
     }
   }
   getFieldName(name) {
-    const { filedNames, defaultFiledNames } = this.props;
+    const { fieldNames, defaultFieldNames } = this.props;
     // 防止只设置单个属性的名字
-    return filedNames[name] || defaultFiledNames[name];
+    return fieldNames[name] || defaultFieldNames[name];
   }
   getOption(option, menuIndex) {
     const { prefixCls, expandTrigger } = this.props;
@@ -155,8 +155,8 @@ Menus.propTypes = {
   onSelect: PropTypes.func,
   visible: PropTypes.bool,
   dropdownMenuColumnStyle: PropTypes.object,
-  defaultFiledNames: PropTypes.object,
-  filedNames: PropTypes.object,
+  defaultFieldNames: PropTypes.object,
+  fieldNames: PropTypes.object,
 };
 
 export default Menus;

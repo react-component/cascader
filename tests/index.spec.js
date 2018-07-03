@@ -1,7 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Cascader from '../';
-import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
+import {
+  addressOptions, optionsForActiveMenuItems, addressOptionsForFieldNames,
+} from './demoOptions';
 
 describe('Cascader', () => {
   let selectedValue;
@@ -409,30 +411,57 @@ describe('Cascader', () => {
     jest.useRealTimers();
   });
 
-  it('should has default fieldName' +
-    'when props not exist labelField and valueField and childrenField', () => {
+  it('should has default fieldName when props not exist labelField and valueField and childrenField', () => { // eslint-disable-line
     const wrapper = mount(
       <Cascader>
         <input />
       </Cascader>
     );
     const props = wrapper.props();
-    expect(props.filedNames.label).toBe('label');
-    expect(props.filedNames.value).toBe('value');
-    expect(props.filedNames.children).toBe('children');
+    expect(props.fieldNames.label).toBe('label');
+    expect(props.fieldNames.value).toBe('value');
+    expect(props.fieldNames.children).toBe('children');
   });
 
-  it('should has custom filedName', () => {
+  it('should support custom fieldNames', () => {
     const wrapper = mount(
       <Cascader
-        filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
+        fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
+        options={addressOptionsForFieldNames}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        popupVisible
       >
         <input />
       </Cascader>
     );
     const props = wrapper.props();
-    expect(props.filedNames.label).toBe('name');
-    expect(props.filedNames.value).toBe('code');
-    expect(props.filedNames.children).toBe('nodes');
+    expect(props.fieldNames.label).toBe('name');
+    expect(props.fieldNames.value).toBe('code');
+    expect(props.fieldNames.children).toBe('nodes');
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建');
+    expect(activeMenuItems.at(1).text()).toBe('福州');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
+  });
+
+  it('should works and show warning message when use typo prop name: filedNames', () => {
+    const spy = jest.spyOn(global.console, 'error');
+    const wrapper = mount(
+      <Cascader
+        filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
+        options={addressOptionsForFieldNames}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        popupVisible
+      >
+        <input />
+      </Cascader>
+    );
+    expect(spy).toHaveBeenCalled();
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建');
+    expect(activeMenuItems.at(1).text()).toBe('福州');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
   });
 });
