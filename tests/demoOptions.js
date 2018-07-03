@@ -59,3 +59,40 @@ export const addressOptions = [{
     value: 'haidian',
   }],
 }];
+
+export const addressOptionsForFieldNames = [{
+  name: '福建',
+  code: 'fj',
+  nodes: [{
+    name: '福州',
+    code: 'fuzhou',
+    nodes: [{
+      name: '马尾',
+      code: 'mawei',
+    }],
+  }, {
+    name: '泉州',
+    code: 'quanzhou',
+  }],
+}, {
+  name: '浙江',
+  code: 'zj',
+  nodes: [{
+    name: '杭州',
+    code: 'hangzhou',
+    nodes: [{
+      name: '余杭',
+      code: 'yuhang',
+    }],
+  }],
+}, {
+  name: '北京',
+  code: 'bj',
+  nodes: [{
+    name: '朝阳区',
+    code: 'chaoyang',
+  }, {
+    name: '海淀区',
+    code: 'haidian',
+  }],
+}];

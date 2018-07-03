@@ -74,6 +74,7 @@
     "prop-types": "^15.5.8",
     "rc-trigger": "^2.2.0",
     "rc-util": "^4.0.4",
-    "shallow-equal": "^1.0.0"
+    "shallow-equal": "^1.0.0",
+    "warning": "^4.0.1"
   }
 }

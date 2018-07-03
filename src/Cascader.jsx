@@ -1,6 +1,7 @@
 import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import Trigger from 'rc-trigger';
+import warning from 'warning';
 import Menus from './Menus';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
@@ -51,12 +52,15 @@ class Cascader extends Component {
       initialValue = props.defaultValue || [];
     }
 
+    warning(!('filedNames' in props),
+      '`filedNames` of Cascader is a typo usage and deprecated, please use `fieldNames` intead.');
+
     this.state = {
       popupVisible: props.popupVisible,
       activeValue: initialValue,
       value: initialValue,
     };
-    this.defaultFiledNames = { label: 'label', value: 'value', children: 'children' };
+    this.defaultFieldNames = { label: 'label', value: 'value', children: 'children' };
   }
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps && !shallowEqualArrays(this.props.value, nextProps.value)) {
@@ -81,10 +85,19 @@ class Cascader extends Component {
     return this.trigger.getPopupDomNode();
   }
   getFieldName(name) {
-    const { defaultFiledNames } = this;
-    const { filedNames } = this.props;
-    // 防止只设置单个属性的名字
-    return filedNames[name] || defaultFiledNames[name];
+    const { defaultFieldNames } = this;
+    const { fieldNames, filedNames } = this.props;
+    if ('filedNames' in this.props) {
+      return filedNames[name] || defaultFieldNames[name]; // For old compatibility
+    }
+    return fieldNames[name] || defaultFieldNames[name];
+  }
+  getFieldNames() {
+    const { fieldNames, filedNames } = this.props;
+    if ('filedNames' in this.props) {
+      return filedNames; // For old compatibility
+    }
+    return fieldNames;
   }
   getCurrentLevelOptions() {
     const { options } = this.props;
@@ -255,7 +268,8 @@ class Cascader extends Component {
       menus = (
         <Menus
           {...this.props}
-          defaultFiledNames={this.defaultFiledNames}
+          fieldNames={this.getFieldNames()}
+          defaultFieldNames={this.defaultFieldNames}
           activeValue={this.state.activeValue}
           onSelect={this.handleMenuSelect}
           visible={this.state.popupVisible}
@@ -300,7 +314,7 @@ Cascader.defaultProps = {
   popupPlacement: 'bottomLeft',
   builtinPlacements: BUILT_IN_PLACEMENTS,
   expandTrigger: 'click',
-  filedNames: { label: 'label', value: 'value', children: 'children' },
+  fieldNames: { label: 'label', value: 'value', children: 'children' },
 };
 
 Cascader.propTypes = {
@@ -322,7 +336,8 @@ Cascader.propTypes = {
   children: PropTypes.node,
   onKeyDown: PropTypes.func,
   expandTrigger: PropTypes.string,
-  filedNames: PropTypes.object,
+  fieldNames: PropTypes.object,
+  filedNames: PropTypes.object, // typo but for compatibility
 };
 
 export default Cascader;
