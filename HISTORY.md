@@ -2,6 +2,15 @@
 
 ---
 
+## 0.13.0 / 2018/04/27
+
+- Allow to custom the field name of options. [#23](https://github.com/react-component/cascader/pull/23)
+
+## 0.12.0
+
+- Add es build
+- support React 16
+
 ## 0.11.0 / 2017-01-17
 
 - Add Keyboard support

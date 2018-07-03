@@ -408,4 +408,31 @@ describe('Cascader', () => {
 
     jest.useRealTimers();
   });
+
+  it('should has default fieldName' +
+    'when props not exist labelField and valueField and childrenField', () => {
+    const wrapper = mount(
+      <Cascader>
+        <input />
+      </Cascader>
+    );
+    const props = wrapper.props();
+    expect(props.filedNames.label).toBe('label');
+    expect(props.filedNames.value).toBe('value');
+    expect(props.filedNames.children).toBe('children');
+  });
+
+  it('should has custom filedName', () => {
+    const wrapper = mount(
+      <Cascader
+        filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
+      >
+        <input />
+      </Cascader>
+    );
+    const props = wrapper.props();
+    expect(props.filedNames.label).toBe('name');
+    expect(props.filedNames.value).toBe('code');
+    expect(props.filedNames.children).toBe('nodes');
+  });
 });
