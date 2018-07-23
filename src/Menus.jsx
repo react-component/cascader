@@ -25,16 +25,18 @@ class Menus extends React.Component {
     return fieldNames[name] || defaultFieldNames[name];
   }
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger } = this.props;
+    const { prefixCls, expandTrigger, expandIcon } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
     };
     let menuItemCls = `${prefixCls}-menu-item`;
+    let expandIconNode = null;
     const hasChildren = option[this.getFieldName('children')]
       && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
+      expandIconNode = <span className={`${prefixCls}-menu-item-expand-icon`}>{expandIcon}</span>;
     }
     if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {
@@ -59,6 +61,7 @@ class Menus extends React.Component {
     } else if (typeof option[this.getFieldName('label')] === 'string') {
       title = option[this.getFieldName('label')];
     }
+
     return (
       <li
         key={option[this.getFieldName('value')]}
@@ -67,6 +70,7 @@ class Menus extends React.Component {
         {...expandProps}
       >
         {option[this.getFieldName('label')]}
+        {expandIconNode}
       </li>
     );
   }
@@ -144,6 +148,7 @@ Menus.defaultProps = {
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
+  expandIcon: '>',
 };
 
 Menus.propTypes = {
@@ -157,6 +162,7 @@ Menus.propTypes = {
   dropdownMenuColumnStyle: PropTypes.object,
   defaultFieldNames: PropTypes.object,
   fieldNames: PropTypes.object,
+  expandIcon: PropTypes.node,
 };
 
 export default Menus;

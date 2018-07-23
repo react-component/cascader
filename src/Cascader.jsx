@@ -338,6 +338,7 @@ Cascader.propTypes = {
   expandTrigger: PropTypes.string,
   fieldNames: PropTypes.object,
   filedNames: PropTypes.object, // typo but for compatibility
+  expandIcon: PropTypes.node,
 };
 
 export default Cascader;

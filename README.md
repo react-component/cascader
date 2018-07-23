@@ -207,6 +207,12 @@ React.render(
       <td>{ label: 'label', value: 'value', children: 'children' }</td>
       <td>custom field name for label and value and children</td>
     </tr>
+    <tr>
+      <td>expandIcon</td>
+      <td>Node</td>
+      <td>></td>
+      <td>set expand icon</td>
+    </tr>
   </tbody>
 </table>
 

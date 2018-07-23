@@ -17,7 +17,7 @@ describe('Cascader', () => {
 
   it('should toggle select panel when click it', () => {
     const wrapper = mount(
-      <Cascader options={addressOptions} onChange={onChange}>
+      <Cascader options={addressOptions} onChange={onChange} expandIcon="">
         <input readOnly />
       </Cascader>
     );
@@ -77,6 +77,7 @@ describe('Cascader', () => {
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
         onChange={onChange}
+        expandIcon=""
       >
         <input readOnly />
       </Cascader>
@@ -302,7 +303,7 @@ describe('Cascader', () => {
 
   it('should have correct active menu items', () => {
     const wrapper = mount(
-      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']}>
+      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} expandIcon="">
         <input readOnly />
       </Cascader>
     );
@@ -429,6 +430,7 @@ describe('Cascader', () => {
         fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
+        expandIcon=""
         popupVisible
       >
         <input />
@@ -452,6 +454,7 @@ describe('Cascader', () => {
         filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
+        expandIcon=""
         popupVisible
       >
         <input />
@@ -462,6 +465,27 @@ describe('Cascader', () => {
     expect(activeMenuItems.length).toBe(3);
     expect(activeMenuItems.at(0).text()).toBe('福建');
     expect(activeMenuItems.at(1).text()).toBe('福州');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
+  });
+
+  it('should support custom expand icon(text icon)', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+        expandIcon="=>"
+      >
+        <input readOnly />
+      </Cascader>
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建=>');
+    expect(activeMenuItems.at(1).text()).toBe('福州=>');
     expect(activeMenuItems.at(2).text()).toBe('马尾');
   });
 });
