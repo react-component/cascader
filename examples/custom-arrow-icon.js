@@ -67,6 +67,13 @@ class Demo extends React.Component {
       width="1em"
       height="1em"
       fill="currentColor"
+      style={{
+        fontSize: '12px',
+        color: '#999',
+        position: 'absolute',
+        right: '10px',
+        top: '10px',
+      }}
     >
       <path d={svgPath} p-id="5827"></path>
     </svg>
