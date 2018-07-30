@@ -209,7 +209,7 @@ React.render(
     </tr>
     <tr>
       <td>expandIcon</td>
-      <td>Node</td>
+      <td>ReactNode</td>
       <td>></td>
       <td>set expand icon</td>
     </tr>
