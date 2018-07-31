@@ -36,7 +36,7 @@ class Menus extends React.Component {
       && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
-      expandIconNode = expandIcon || <span className={`${prefixCls}-menu-item-expand-icon`} />;
+      expandIconNode = <span className={`${prefixCls}-menu-item-expand-icon`} >{expandIcon}</span>;
     }
     if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {
@@ -148,7 +148,6 @@ Menus.defaultProps = {
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
-  expandIcon: '>',
 };
 
 Menus.propTypes = {

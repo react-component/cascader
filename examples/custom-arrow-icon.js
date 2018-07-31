@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import 'rc-cascader/assets/index.less';
+import './custom-arrow-icon.less';
 import Cascader from 'rc-cascader';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -75,18 +76,24 @@ class Demo extends React.Component {
         top: '10px',
       }}
     >
-      <path d={svgPath} p-id="5827"></path>
+      <path d={svgPath} />
     </svg>
   );
 
   render() {
     return (
-      <Cascader options={addressOptions} onChange={this.onChange} expandIcon={this.expandIcon}>
-        <input
-          placeholder="please select address"
-          value={this.state.inputValue}
-        />
-      </Cascader>
+      <div style={{ padding: '2rem' }}>
+        <Cascader
+          options={addressOptions}
+          onChange={this.onChange}
+          expandIcon={this.expandIcon}
+        >
+          <input
+            placeholder="please select address"
+            value={this.state.inputValue}
+          />
+        </Cascader>
+      </div>
     );
   }
 }

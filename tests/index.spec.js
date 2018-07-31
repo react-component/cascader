@@ -17,7 +17,7 @@ describe('Cascader', () => {
 
   it('should toggle select panel when click it', () => {
     const wrapper = mount(
-      <Cascader options={addressOptions} onChange={onChange} expandIcon="">
+      <Cascader options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>
     );
@@ -54,10 +54,10 @@ describe('Cascader', () => {
     menu2Items.at(0).simulate('click');
     expect(
       wrapper.find('.rc-cascader-menu')
-      .at(1)
-      .find('.rc-cascader-menu-item')
-      .first()
-      .hasClass('rc-cascader-menu-item-active')
+        .at(1)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
@@ -77,7 +77,6 @@ describe('Cascader', () => {
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
         onChange={onChange}
-        expandIcon=""
       >
         <input readOnly />
       </Cascader>
@@ -112,10 +111,10 @@ describe('Cascader', () => {
     wrapper.update();
     expect(
       wrapper.find('.rc-cascader-menu')
-      .at(0)
-      .find('.rc-cascader-menu-item')
-      .first()
-      .hasClass('rc-cascader-menu-item-active')
+        .at(0)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
@@ -129,10 +128,10 @@ describe('Cascader', () => {
     wrapper.update();
     expect(
       wrapper.find('.rc-cascader-menu')
-      .at(1)
-      .find('.rc-cascader-menu-item')
-      .first()
-      .hasClass('rc-cascader-menu-item-active')
+        .at(1)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
@@ -294,8 +293,8 @@ describe('Cascader', () => {
     menu1Items.at(0).simulate('click');
     expect(
       wrapper.find('.rc-cascader-menu-item')
-      .first()
-      .hasClass('rc-cascader-menu-item-disabled')
+        .first()
+        .hasClass('rc-cascader-menu-item-disabled')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(1);
@@ -303,7 +302,7 @@ describe('Cascader', () => {
 
   it('should have correct active menu items', () => {
     const wrapper = mount(
-      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} expandIcon="">
+      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} >
         <input readOnly />
       </Cascader>
     );
@@ -430,7 +429,7 @@ describe('Cascader', () => {
         fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
-        expandIcon=""
+
         popupVisible
       >
         <input />
@@ -454,7 +453,6 @@ describe('Cascader', () => {
         filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
-        expandIcon=""
         popupVisible
       >
         <input />

@@ -14,7 +14,7 @@ describe('Cascader', () => {
 
   beforeEach(() => {
     wrapper = mount(
-      <Cascader options={addressOptions} onChange={onChange} expandIcon="">
+      <Cascader options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>
     );
