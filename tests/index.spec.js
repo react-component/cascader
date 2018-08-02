@@ -77,6 +77,7 @@ describe('Cascader', () => {
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
         onChange={onChange}
+        expandIcon=""
       >
         <input readOnly />
       </Cascader>
@@ -302,7 +303,11 @@ describe('Cascader', () => {
 
   it('should have correct active menu items', () => {
     const wrapper = mount(
-      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} >
+      <Cascader
+        options={optionsForActiveMenuItems}
+        defaultValue={['1', '2']}
+        expandIcon=""
+      >
         <input readOnly />
       </Cascader>
     );
@@ -429,7 +434,7 @@ describe('Cascader', () => {
         fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
-
+        expandIcon=""
         popupVisible
       >
         <input />
@@ -454,6 +459,7 @@ describe('Cascader', () => {
         options={addressOptionsForFieldNames}
         defaultValue={['fj', 'fuzhou', 'mawei']}
         popupVisible
+        expandIcon=""
       >
         <input />
       </Cascader>

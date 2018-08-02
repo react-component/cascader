@@ -36,7 +36,11 @@ class Menus extends React.Component {
       && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
-      expandIconNode = <span className={`${prefixCls}-menu-item-expand-icon`} >{expandIcon || '>'}</span>;
+      expandIconNode = (
+        <span className={`${prefixCls}-menu-item-expand-icon`} >
+          {expandIcon}
+        </span>
+      );
     }
     if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {

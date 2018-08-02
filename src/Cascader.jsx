@@ -315,6 +315,7 @@ Cascader.defaultProps = {
   builtinPlacements: BUILT_IN_PLACEMENTS,
   expandTrigger: 'click',
   fieldNames: { label: 'label', value: 'value', children: 'children' },
+  expandIcon: '>',
 };
 
 Cascader.propTypes = {
