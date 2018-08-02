@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import 'rc-cascader/assets/index.less';
-import './custom-arrow-icon.less';
 import Cascader from 'rc-cascader';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -62,22 +61,21 @@ class Demo extends React.Component {
   }
 
   expandIcon = (
-    <svg
-      viewBox="0 0 1024 1024"
-      style={{ verticalAlign: '-.125em' }}
-      width="1em"
-      height="1em"
-      fill="currentColor"
-      style={{
-        fontSize: '12px',
-        color: '#999',
-        position: 'absolute',
-        right: '10px',
-        top: '10px',
-      }}
-    >
-      <path d={svgPath} />
-    </svg>
+    <i>
+      <svg
+        viewBox="0 0 1024 1024"
+        style={{ verticalAlign: '-.125em' }}
+        width="1em"
+        height="1em"
+        fill="currentColor"
+        style={{
+          verticalAlign: '-.125em',
+          margin: 'auto',
+        }}
+      >
+        <path d={svgPath} />
+      </svg>
+    </i>
   );
 
   render() {
