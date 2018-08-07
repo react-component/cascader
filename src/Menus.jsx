@@ -37,7 +37,7 @@ class Menus extends React.Component {
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
       expandIconNode = (
-        <span className={`${prefixCls}-menu-item-expand-icon`} >
+        <span className={`${prefixCls}-menu-item-expand-icon`}>
           {expandIcon}
         </span>
       );
