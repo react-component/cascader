@@ -54,10 +54,10 @@ describe('Cascader', () => {
     menu2Items.at(0).simulate('click');
     expect(
       wrapper.find('.rc-cascader-menu')
-        .at(1)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active')
+      .at(1)
+      .find('.rc-cascader-menu-item')
+      .first()
+      .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
@@ -112,10 +112,10 @@ describe('Cascader', () => {
     wrapper.update();
     expect(
       wrapper.find('.rc-cascader-menu')
-        .at(0)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active')
+      .at(0)
+      .find('.rc-cascader-menu-item')
+      .first()
+      .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
@@ -129,10 +129,10 @@ describe('Cascader', () => {
     wrapper.update();
     expect(
       wrapper.find('.rc-cascader-menu')
-        .at(1)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active')
+      .at(1)
+      .find('.rc-cascader-menu-item')
+      .first()
+      .hasClass('rc-cascader-menu-item-active')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
@@ -294,8 +294,8 @@ describe('Cascader', () => {
     menu1Items.at(0).simulate('click');
     expect(
       wrapper.find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-disabled')
+      .first()
+      .hasClass('rc-cascader-menu-item-disabled')
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(1);
