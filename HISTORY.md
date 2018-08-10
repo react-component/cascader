@@ -2,6 +2,10 @@
 
 ---
 
+## 0.15.0 / 2018/08/10
+
+- Add expandIcon.
+
 ## 0.14.0 / 2018/07/03
 
 - Fix typo `filedNames` to `fieldNames`. [ant-design/ant-design#10896](https://github.com/ant-design/ant-design/issues/10896)
