@@ -99,8 +99,7 @@
 .rc-cascader-menu-item-expand {
   position: relative;
 }
-.rc-cascader-menu-item-expand:after {
-  content: '>';
+.rc-cascader-menu-item-expand-icon {
   font-size: 12px;
   color: #999;
   position: absolute;
