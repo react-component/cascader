@@ -315,6 +315,7 @@ Cascader.defaultProps = {
   builtinPlacements: BUILT_IN_PLACEMENTS,
   expandTrigger: 'click',
   fieldNames: { label: 'label', value: 'value', children: 'children' },
+  expandIcon: '>',
 };
 
 Cascader.propTypes = {
@@ -338,6 +339,7 @@ Cascader.propTypes = {
   expandTrigger: PropTypes.string,
   fieldNames: PropTypes.object,
   filedNames: PropTypes.object, // typo but for compatibility
+  expandIcon: PropTypes.node,
 };
 
 export default Cascader;
