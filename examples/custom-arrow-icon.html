@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>custom-arrow-icon.js - example - rc-cascader@0.15.0</title>
+  <title>custom-arrow-icon.js - example - rc-cascader@0.16.0</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.15.0</h1>
+      <h1>rc-cascader@0.16.0</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -317,17 +317,50 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   <span class="hljs-string">'3.9-10.5-3.9h-88.5c-7.4 0-10.8 9.2-5.2 14l350.2'</span> +
   <span class="hljs-string">' 304H152c-4.4 0-8 3.6-8 8v60c0 4.4 '</span> +
   <span class="hljs-string">'3.6 8 8 8h585.1L386.9 854c-5.6 4.9-2.2 14 5.2'</span> +
-  <span class="hljs-string">' 14h91.5c1.9 0 3.8-0.7 5.2-2L869 536.2c14.7-12.8 14.7-35.6 0-48.4z'</span>;
+  <span class="hljs-string">' 14h91.5c1.9 0 3.8-0.7 5.2-2L869 536.2c14.7-12.8'</span> +
+  <span class="hljs-string">' 14.7-35.6 0-48.4z'</span>;
+
+<span class="hljs-keyword">const</span> loadingPath = <span class="hljs-string">'M511.4 124C290.5 124.3 112 303 112'</span> +
+  <span class="hljs-string">' 523.9c0 128 60.2 242 153.8 315.2l-37.5 48c-4.1 5.3-'</span> +
+  <span class="hljs-string">'0.3 13 6.3 12.9l167-0.8c5.2 0 9-4.9 7.7-9.9L369.8 72'</span> +
+  <span class="hljs-string">'7c-1.6-6.5-10-8.3-14.1-3L315 776.1c-10.2-8-20-16.7-2'</span> +
+  <span class="hljs-string">'9.3-26-29.4-29.4-52.5-63.6-68.6-101.7C200.4 609 192 '</span> +
+  <span class="hljs-string">'567.1 192 523.9s8.4-85.1 25.1-124.5c16.1-38.1 39.2-7'</span> +
+  <span class="hljs-string">'2.3 68.6-101.7 29.4-29.4 63.6-52.5 101.7-68.6C426.9 '</span> +
+  <span class="hljs-string">'212.4 468.8 204 512 204s85.1 8.4 124.5 25.1c38.1 16.'</span> +
+  <span class="hljs-string">'1 72.3 39.2 101.7 68.6 29.4 29.4 52.5 63.6 68.6 101.'</span> +
+  <span class="hljs-string">'7 16.7 39.4 25.1 81.3 25.1 124.5s-8.4 85.1-25.1 124.'</span> +
+  <span class="hljs-string">'5c-16.1 38.1-39.2 72.3-68.6 101.7-7.5 7.5-15.3 14.5-'</span> +
+  <span class="hljs-string">'23.4 21.2-3.4 2.8-3.9 7.7-1.2 11.1l39.4 50.5c2.8 3.5'</span> +
+  <span class="hljs-string">' 7.9 4.1 11.4 1.3C854.5 760.8 912 649.1 912 523.9c0-'</span> +
+  <span class="hljs-string">'221.1-179.4-400.2-400.6-399.9z'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
     inputValue: <span class="hljs-string">''</span>,
+    dynamicInputValue: <span class="hljs-string">''</span>,
+    options: [{
+      label: <span class="hljs-string">'福建'</span>,
+      isLeaf: <span class="hljs-literal">false</span>,
+      value: <span class="hljs-string">'fj'</span>,
+    }, {
+      label: <span class="hljs-string">'浙江'</span>,
+      isLeaf: <span class="hljs-literal">false</span>,
+      value: <span class="hljs-string">'zj'</span>,
+    }],
   }
 
   onChange = (value, selectedOptions) =&gt; {
     <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
       inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
+    });
+  }
+
+  onChangeDynamic = (value, selectedOptions) =&gt; {
+    <span class="hljs-built_in">console</span>.log(value, selectedOptions);
+    <span class="hljs-keyword">this</span>.setState({
+      dynamicInputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
   }
 
@@ -349,10 +382,54 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>
   )</span>;
 
+  loadingIcon = (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">i</span>
+      <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
+        <span class="hljs-attribute">position:</span> '<span class="hljs-attribute">absolute</span>',
+        <span class="hljs-attribute">right:</span> '<span class="hljs-attribute">12px</span>',
+        <span class="hljs-attribute">color:</span> '#<span class="hljs-attribute">aaa</span>',
+      }}
+    &gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-title">svg</span>
+        <span class="hljs-attribute">viewBox</span>=<span class="hljs-value">"0 0 1024 1024"</span>
+        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">verticalAlign:</span> '<span class="hljs-attribute">-.125em</span>' }}
+        <span class="hljs-attribute">width</span>=<span class="hljs-value">"1em"</span>
+        <span class="hljs-attribute">height</span>=<span class="hljs-value">"1em"</span>
+        <span class="hljs-attribute">fill</span>=<span class="hljs-value">"currentColor"</span>
+        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span>
+          <span class="hljs-attribute">verticalAlign:</span> '<span class="hljs-attribute">-.125em</span>',
+          <span class="hljs-attribute">margin:</span> '<span class="hljs-attribute">auto</span>',
+        }}
+      &gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">path</span> <span class="hljs-attribute">d</span>=<span class="hljs-value">{loadingPath}</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-title">svg</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>
+  )</span>;
+
+  loadData = (selectedOptions) =&gt; {
+    <span class="hljs-keyword">const</span> targetOption = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
+    targetOption.loading = <span class="hljs-literal">true</span>;
+    <span class="hljs-comment">// 动态加载下级数据</span>
+    setTimeout(() =&gt; {
+      targetOption.loading = <span class="hljs-literal">false</span>;
+      targetOption.children = [{
+        label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载1`</span>,
+        value: <span class="hljs-string">'dynamic1'</span>,
+      }, {
+        label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载2`</span>,
+        value: <span class="hljs-string">'dynamic2'</span>,
+      }];
+      <span class="hljs-keyword">this</span>.setState({
+        options: [...this.state.options],
+      });
+    }, <span class="hljs-number">1500</span>);
+  }
+
   render() {
     <span class="hljs-keyword">return</span> (
       <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">padding:</span> '<span class="hljs-attribute">2rem</span>' }}&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span>
+          <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">marginBottom:</span> '<span class="hljs-attribute">2rem</span>' }}
           <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span>
           <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
           <span class="hljs-attribute">expandIcon</span>=<span class="hljs-value">{this.expandIcon}</span>
@@ -361,6 +438,16 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
             <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span>
             <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span>
           /&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span>
+          <span class="hljs-attribute">options</span>=<span class="hljs-value">{this.state.options}</span>
+          <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{this.loadData}</span>
+          <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChangeDynamic}</span>
+          <span class="hljs-attribute">expandIcon</span>=<span class="hljs-value">{this.expandIcon}</span>
+          <span class="hljs-attribute">loadingIcon</span>=<span class="hljs-value">{this.loadingIcon}</span>
+          <span class="hljs-attribute">changeOnSelect</span>
+        &gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.dynamicInputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
     )</span>;

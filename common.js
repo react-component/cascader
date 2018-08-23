@@ -3527,7 +3527,8 @@ Cascader.propTypes = {
   expandTrigger: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.string,
   fieldNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
   filedNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object, // typo but for compatibility
-  expandIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node
+  expandIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node,
+  loadingIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Cascader);
@@ -28065,7 +28066,8 @@ var Menus = function (_React$Component) {
     var _props2 = this.props,
         prefixCls = _props2.prefixCls,
         expandTrigger = _props2.expandTrigger,
-        expandIcon = _props2.expandIcon;
+        expandIcon = _props2.expandIcon,
+        loadingIcon = _props2.loadingIcon;
 
     var onSelect = this.props.onSelect.bind(this, option, menuIndex);
     var expandProps = {
@@ -28076,11 +28078,13 @@ var Menus = function (_React$Component) {
     var hasChildren = option[this.getFieldName('children')] && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ' ' + prefixCls + '-menu-item-expand';
-      expandIconNode = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'span',
-        { className: prefixCls + '-menu-item-expand-icon' },
-        expandIcon
-      );
+      if (!option.loading) {
+        expandIconNode = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'span',
+          { className: prefixCls + '-menu-item-expand-icon' },
+          expandIcon
+        );
+      }
     }
     if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {
@@ -28096,8 +28100,11 @@ var Menus = function (_React$Component) {
     if (option.disabled) {
       menuItemCls += ' ' + prefixCls + '-menu-item-disabled';
     }
+
+    var loadingIconNode = null;
     if (option.loading) {
       menuItemCls += ' ' + prefixCls + '-menu-item-loading';
+      loadingIconNode = loadingIcon || null;
     }
     var title = '';
     if (option.title) {
@@ -28114,7 +28121,8 @@ var Menus = function (_React$Component) {
         title: title
       }, expandProps),
       option[this.getFieldName('label')],
-      expandIconNode
+      expandIconNode,
+      loadingIconNode
     );
   };
 
@@ -28227,7 +28235,8 @@ Menus.propTypes = {
   dropdownMenuColumnStyle: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
   defaultFieldNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
   fieldNames: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object,
-  expandIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node
+  expandIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node,
+  loadingIcon: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.node
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Menus);
