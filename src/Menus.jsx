@@ -25,7 +25,7 @@ class Menus extends React.Component {
     return fieldNames[name] || defaultFieldNames[name];
   }
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger, expandIcon } = this.props;
+    const { prefixCls, expandTrigger, expandIcon, loadingIcon } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
@@ -36,11 +36,13 @@ class Menus extends React.Component {
       && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
-      expandIconNode = (
-        <span className={`${prefixCls}-menu-item-expand-icon`}>
-          {expandIcon}
-        </span>
-      );
+      if (!option.loading) {
+        expandIconNode = (
+          <span className={`${prefixCls}-menu-item-expand-icon`}>
+            {expandIcon}
+          </span>
+        );
+      }
     }
     if (expandTrigger === 'hover' && hasChildren) {
       expandProps = {
@@ -56,8 +58,11 @@ class Menus extends React.Component {
     if (option.disabled) {
       menuItemCls += ` ${prefixCls}-menu-item-disabled`;
     }
+
+    let loadingIconNode = null;
     if (option.loading) {
       menuItemCls += ` ${prefixCls}-menu-item-loading`;
+      loadingIconNode = loadingIcon || null;
     }
     let title = '';
     if (option.title) {
@@ -75,6 +80,7 @@ class Menus extends React.Component {
       >
         {option[this.getFieldName('label')]}
         {expandIconNode}
+        {loadingIconNode}
       </li>
     );
   }
@@ -166,6 +172,7 @@ Menus.propTypes = {
   defaultFieldNames: PropTypes.object,
   fieldNames: PropTypes.object,
   expandIcon: PropTypes.node,
+  loadingIcon: PropTypes.node,
 };
 
 export default Menus;

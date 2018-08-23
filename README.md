@@ -213,6 +213,12 @@ React.render(
       <td>></td>
       <td>specific the default expand icon</td>
     </tr>
+    <tr>
+      <td>loadingIcon</td>
+      <td>ReactNode</td>
+      <td>></td>
+      <td>specific the default loading icon</td>
+    </tr>
   </tbody>
 </table>
 

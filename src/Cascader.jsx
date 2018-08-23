@@ -340,6 +340,7 @@ Cascader.propTypes = {
   fieldNames: PropTypes.object,
   filedNames: PropTypes.object, // typo but for compatibility
   expandIcon: PropTypes.node,
+  loadingIcon: PropTypes.node,
 };
 
 export default Cascader;
