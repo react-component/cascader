@@ -42,6 +42,9 @@ describe('Cascader', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.LEFT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.QUESTION_MARK });
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.LEFT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
@@ -89,5 +92,17 @@ describe('Cascader', () => {
     expect(
       wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden')
     ).toBe(true);
+  });
+
+  it('should not handle keyDown events when children specify the onKeyDown', () => {
+    wrapper = mount(
+      <Cascader options={addressOptions} onChange={onChange} expandIcon="">
+        <input readOnly onKeyDown={ () => { } }/>
+      </Cascader>
+    );
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+    expect(menus.length).toBe(0);
   });
 });
