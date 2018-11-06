@@ -59,7 +59,7 @@ class Demo extends React.Component {
       <Cascader
         options={addressOptions}
         onChange={this.onChange}
-        filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
+        fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
       >
         <input
           placeholder="please select address"
