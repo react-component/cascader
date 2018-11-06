@@ -53,7 +53,7 @@ class Cascader extends Component {
     }
 
     warning(!('filedNames' in props),
-      '`filedNames` of Cascader is a typo usage and deprecated, please use `fieldNames` intead.');
+      '`filedNames` of Cascader is a typo usage and deprecated, please use `fieldNames` instead.');
 
     this.state = {
       popupVisible: props.popupVisible,
