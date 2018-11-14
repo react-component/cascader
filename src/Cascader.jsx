@@ -215,6 +215,7 @@ class Cascader extends Component {
       return;
     }
     if (e.keyCode === KeyCode.DOWN || e.keyCode === KeyCode.UP) {
+      e.preventDefault();
       let nextIndex = currentIndex;
       if (nextIndex !== -1) {
         if (e.keyCode === KeyCode.DOWN) {
@@ -229,8 +230,10 @@ class Cascader extends Component {
       }
       activeValue[currentLevel] = currentOptions[nextIndex][this.getFieldName('value')];
     } else if (e.keyCode === KeyCode.LEFT || e.keyCode === KeyCode.BACKSPACE) {
+      e.preventDefault();
       activeValue.splice(activeValue.length - 1, 1);
     } else if (e.keyCode === KeyCode.RIGHT) {
+      e.preventDefault();
       if (currentOptions[currentIndex]
         && currentOptions[currentIndex][this.getFieldName('children')]) {
         activeValue.push(currentOptions[currentIndex]
