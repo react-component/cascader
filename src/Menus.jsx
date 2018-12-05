@@ -141,9 +141,11 @@ class Menus extends React.Component {
     return (
       <div>
         {this.getShowOptions().map((options, menuIndex) =>
-          <ul className={`${prefixCls}-menu`} key={menuIndex} style={dropdownMenuColumnStyle}>
-            {options.map(option => this.getOption(option, menuIndex))}
-          </ul>
+          <div key={menuIndex} className={`${prefixCls}-menu-wrapper`}>
+            <ul className={`${prefixCls}-menu`} key={menuIndex} style={dropdownMenuColumnStyle}>
+              {options.map(option => this.getOption(option, menuIndex))}
+            </ul>
+          </div>
         )}
       </div>
     );
