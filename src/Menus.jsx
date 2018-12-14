@@ -27,21 +27,19 @@ class Menus extends React.Component {
   getOption(option, menuIndex) {
     const { prefixCls, expandTrigger, expandIcon, loadingIcon } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
+    const onItemDoubleClick = this.props.onItemDoubleClick.bind(this, option, menuIndex);
     let expandProps = {
       onClick: onSelect,
+      onDoubleClick: onItemDoubleClick,
     };
     let menuItemCls = `${prefixCls}-menu-item`;
     let expandIconNode = null;
-    const hasChildren = option[this.getFieldName('children')]
-      && option[this.getFieldName('children')].length > 0;
+    const hasChildren =
+      option[this.getFieldName('children')] && option[this.getFieldName('children')].length > 0;
     if (hasChildren || option.isLeaf === false) {
       menuItemCls += ` ${prefixCls}-menu-item-expand`;
       if (!option.loading) {
-        expandIconNode = (
-          <span className={`${prefixCls}-menu-item-expand-icon`}>
-            {expandIcon}
-          </span>
-        );
+        expandIconNode = <span className={`${prefixCls}-menu-item-expand-icon`}>{expandIcon}</span>;
       }
     }
     if (expandTrigger === 'hover' && hasChildren) {
@@ -88,9 +86,11 @@ class Menus extends React.Component {
   getActiveOptions(values) {
     const activeValue = values || this.props.activeValue;
     const options = this.props.options;
-    return arrayTreeFilter(options,
+    return arrayTreeFilter(
+      options,
       (o, level) => o[this.getFieldName('value')] === activeValue[level],
-      { childrenKeyName: this.getFieldName('children') });
+      { childrenKeyName: this.getFieldName('children') },
+    );
   }
 
   getShowOptions() {
@@ -132,19 +132,19 @@ class Menus extends React.Component {
     return activeValue[menuIndex] === option[this.getFieldName('value')];
   }
 
-  saveMenuItem = (index) => (node) => {
+  saveMenuItem = index => node => {
     this.menuItems[index] = node;
-  }
+  };
 
   render() {
     const { prefixCls, dropdownMenuColumnStyle } = this.props;
     return (
       <div>
-        {this.getShowOptions().map((options, menuIndex) =>
+        {this.getShowOptions().map((options, menuIndex) => (
           <ul className={`${prefixCls}-menu`} key={menuIndex} style={dropdownMenuColumnStyle}>
             {options.map(option => this.getOption(option, menuIndex))}
           </ul>
-        )}
+        ))}
       </div>
     );
   }
@@ -154,7 +154,7 @@ Menus.defaultProps = {
   options: [],
   value: [],
   activeValue: [],
-  onSelect() { },
+  onSelect() {},
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
@@ -163,7 +163,7 @@ Menus.defaultProps = {
 Menus.propTypes = {
   value: PropTypes.array,
   activeValue: PropTypes.array,
-  options: PropTypes.array.isRequired,
+  options: PropTypes.array,
   prefixCls: PropTypes.string,
   expandTrigger: PropTypes.string,
   onSelect: PropTypes.func,

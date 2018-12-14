@@ -39,6 +39,8 @@
     "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
     "test": "jest",
+    "pre-commit": "rc-tools run pre-commit",
+    "lint-staged": "lint-staged",
     "coverage": "jest --coverage"
   },
   "jest": {
@@ -60,21 +62,29 @@
     "enzyme-adapter-react-16": "^1.0.4",
     "enzyme-to-json": "^3.2.1",
     "jest": "^21.2.1",
+    "lint-staged": "^8.1.0",
     "pre-commit": "1.x",
     "rc-form": "^1.5.0",
-    "rc-tools": "7.x",
+    "rc-tools": "^8.4.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
   "pre-commit": [
-    "lint"
+    "lint-staged"
   ],
   "dependencies": {
     "array-tree-filter": "^1.0.0",
     "prop-types": "^15.5.8",
     "rc-trigger": "^2.2.0",
     "rc-util": "^4.0.4",
+    "react-lifecycles-compat": "^3.0.4",
     "shallow-equal": "^1.0.0",
     "warning": "^4.0.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,tsx}": [
+      "npm run pre-commit",
+      "git add"
+    ]
   }
 }
