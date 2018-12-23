@@ -1,14 +1,14 @@
 webpackJsonp([11],{
 
-/***/ 183:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(184);
+module.exports = __webpack_require__(182);
 
 
 /***/ }),
 
-/***/ 184:
+/***/ 182:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23,8 +23,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -125,16 +123,16 @@ var Demo = function (_React$Component) {
       null,
       __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'svg',
-        _defineProperty({
+        {
           viewBox: '0 0 1024 1024',
-          style: { verticalAlign: '-.125em' },
           width: '1em',
           height: '1em',
-          fill: 'currentColor'
-        }, 'style', {
-          verticalAlign: '-.125em',
-          margin: 'auto'
-        }),
+          fill: 'currentColor',
+          style: {
+            verticalAlign: '-.125em',
+            margin: 'auto'
+          }
+        },
         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('path', { d: svgPath })
       )
     ), _this.loadingIcon = __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
@@ -148,16 +146,16 @@ var Demo = function (_React$Component) {
       },
       __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         'svg',
-        _defineProperty({
+        {
           viewBox: '0 0 1024 1024',
-          style: { verticalAlign: '-.125em' },
           width: '1em',
           height: '1em',
-          fill: 'currentColor'
-        }, 'style', {
-          verticalAlign: '-.125em',
-          margin: 'auto'
-        }),
+          fill: 'currentColor',
+          style: {
+            verticalAlign: '-.125em',
+            margin: 'auto'
+          }
+        },
         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('path', { d: loadingPath })
       )
     ), _this.loadData = function (selectedOptions) {
@@ -194,10 +192,7 @@ var Demo = function (_React$Component) {
             onChange: this.onChange,
             expandIcon: this.expandIcon
           },
-          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', {
-            placeholder: 'please select address',
-            value: this.state.inputValue
-          })
+          __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { placeholder: 'please select address', value: this.state.inputValue })
         ),
         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_1_rc_cascader__["a" /* default */],
@@ -222,5 +217,5 @@ __WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[183]);
+},[181]);
 //# sourceMappingURL=custom-arrow-icon.js.map

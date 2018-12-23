@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>rc-form.js - example - rc-cascader@0.17.0</title>
+  <title>rc-form.js - example - rc-cascader@0.17.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.17.0</h1>
+      <h1>rc-cascader@0.17.1</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -277,60 +277,77 @@ import { createForm } from 'rc-form';
 import ReactDOM from 'react-dom';
 import arrayTreeFilter from 'array-tree-filter';
 
-const addressOptions = [{
-  label: '福建',
-  value: 'fj',
-  children: [{
-    label: '福州',
-    value: 'fuzhou',
-    children: [{
-      label: '马尾',
-      value: 'mawei',
-    }],
-  }, {
-    label: '泉州',
-    value: 'quanzhou',
-  }],
-}, {
-  label: '浙江',
-  value: 'zj',
-  children: [{
-    label: '杭州',
-    value: 'hangzhou',
-    children: [{
-      label: '余杭',
-      value: 'yuhang',
-    }],
-  }],
-}, {
-  label: '北京',
-  value: 'bj',
-  children: [{
-    label: '朝阳区',
-    value: 'chaoyang',
-  }, {
-    label: '海淀区',
-    value: 'haidian',
-  }],
-}];
+const addressOptions = [
+  {
+    label: '福建',
+    value: 'fj',
+    children: [
+      {
+        label: '福州',
+        value: 'fuzhou',
+        children: [
+          {
+            label: '马尾',
+            value: 'mawei',
+          },
+        ],
+      },
+      {
+        label: '泉州',
+        value: 'quanzhou',
+      },
+    ],
+  },
+  {
+    label: '浙江',
+    value: 'zj',
+    children: [
+      {
+        label: '杭州',
+        value: 'hangzhou',
+        children: [
+          {
+            label: '余杭',
+            value: 'yuhang',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: '北京',
+    value: 'bj',
+    children: [
+      {
+        label: '朝阳区',
+        value: 'chaoyang',
+      },
+      {
+        label: '海淀区',
+        value: 'haidian',
+      },
+    ],
+  },
+];
 
 class CascaderInput extends Component {
-  onChange(value) {
+  onChange = value =&gt; {
     const props = this.props;
     if (props.onChange) {
       props.onChange(value);
     }
-  }
+  };
   getLabel() {
     const props = this.props;
     const value = props.value || [];
     return arrayTreeFilter(props.options, (o, level) =&gt; o.value === value[level])
-      .map(o =&gt; o.label).join(', ');
+      .map(o =&gt; o.label)
+      .join(', ');
   }
   render() {
     const props = this.props;
     return (
-      &lt;Cascader {...this.props} onChange={this.onChange.bind(this)}&gt;
+      &lt;Cascader {...this.props} onChange={this.onChange}&gt;
         &lt;input placeholder={props.placeholder} value={this.getLabel()} readOnly /&gt;
       &lt;/Cascader&gt;
     );
@@ -338,11 +355,7 @@ class CascaderInput extends Component {
 }
 
 class Form extends Component {
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-  onSubmit(e) {
+  onSubmit = e =&gt; {
     const props = this.props;
     const { form } = props;
     e.preventDefault();
@@ -353,7 +366,7 @@ class Form extends Component {
         console.error('error', error, values);
       }
     });
-  }
+  };
   render() {
     const props = this.props;
     const { form } = props;
@@ -365,12 +378,7 @@ class Form extends Component {
             {form.getFieldDecorator('address', {
               initialValue: [],
               rules: [{ required: true, type: 'array' }],
-            })(
-              &lt;CascaderInput
-                placeholder="please select address"
-                options={addressOptions}
-              /&gt;
-            )}
+            })(&lt;CascaderInput placeholder="please select address" options={addressOptions} /&gt;)}
             &lt;span style={{ color: '#f50' }}&gt;
               {addressFieldError ? addressFieldError.join(' ') : null}
             &lt;/span&gt;

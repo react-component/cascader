@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>custom-arrow-icon.js - example - rc-cascader@0.17.0</title>
+  <title>custom-arrow-icon.js - example - rc-cascader@0.17.1</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.17.0</h1>
+      <h1>rc-cascader@0.17.1</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -275,52 +275,70 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">const</span> addressOptions = [{
-  label: <span class="hljs-string">'福建'</span>,
-  value: <span class="hljs-string">'fj'</span>,
-  children: [{
-    label: <span class="hljs-string">'福州'</span>,
-    value: <span class="hljs-string">'fuzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'马尾'</span>,
-      value: <span class="hljs-string">'mawei'</span>,
-    }],
-  }, {
-    label: <span class="hljs-string">'泉州'</span>,
-    value: <span class="hljs-string">'quanzhou'</span>,
-  }],
-}, {
-  label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
-  children: [{
-    label: <span class="hljs-string">'杭州'</span>,
-    value: <span class="hljs-string">'hangzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'余杭'</span>,
-      value: <span class="hljs-string">'yuhang'</span>,
-    }],
-  }],
-}, {
-  label: <span class="hljs-string">'北京'</span>,
-  value: <span class="hljs-string">'bj'</span>,
-  children: [{
-    label: <span class="hljs-string">'朝阳区'</span>,
-    value: <span class="hljs-string">'chaoyang'</span>,
-  }, {
-    label: <span class="hljs-string">'海淀区'</span>,
-    value: <span class="hljs-string">'haidian'</span>,
-    disabled: <span class="hljs-literal">true</span>,
-  }],
-}];
+<span class="hljs-keyword">const</span> addressOptions = [
+  {
+    label: <span class="hljs-string">'福建'</span>,
+    value: <span class="hljs-string">'fj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'福州'</span>,
+        value: <span class="hljs-string">'fuzhou'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'马尾'</span>,
+            value: <span class="hljs-string">'mawei'</span>,
+          },
+        ],
+      },
+      {
+        label: <span class="hljs-string">'泉州'</span>,
+        value: <span class="hljs-string">'quanzhou'</span>,
+      },
+    ],
+  },
+  {
+    label: <span class="hljs-string">'浙江'</span>,
+    value: <span class="hljs-string">'zj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'杭州'</span>,
+        value: <span class="hljs-string">'hangzhou'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'余杭'</span>,
+            value: <span class="hljs-string">'yuhang'</span>,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: <span class="hljs-string">'北京'</span>,
+    value: <span class="hljs-string">'bj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'朝阳区'</span>,
+        value: <span class="hljs-string">'chaoyang'</span>,
+      },
+      {
+        label: <span class="hljs-string">'海淀区'</span>,
+        value: <span class="hljs-string">'haidian'</span>,
+        disabled: <span class="hljs-literal">true</span>,
+      },
+    ],
+  },
+];
 
-<span class="hljs-keyword">const</span> svgPath = <span class="hljs-string">'M869 487.8L491.2 159.9c-2.9-2.5-6.6-'</span> +
+<span class="hljs-keyword">const</span> svgPath =
+  <span class="hljs-string">'M869 487.8L491.2 159.9c-2.9-2.5-6.6-'</span> +
   <span class="hljs-string">'3.9-10.5-3.9h-88.5c-7.4 0-10.8 9.2-5.2 14l350.2'</span> +
   <span class="hljs-string">' 304H152c-4.4 0-8 3.6-8 8v60c0 4.4 '</span> +
   <span class="hljs-string">'3.6 8 8 8h585.1L386.9 854c-5.6 4.9-2.2 14 5.2'</span> +
   <span class="hljs-string">' 14h91.5c1.9 0 3.8-0.7 5.2-2L869 536.2c14.7-12.8'</span> +
   <span class="hljs-string">' 14.7-35.6 0-48.4z'</span>;
 
-<span class="hljs-keyword">const</span> loadingPath = <span class="hljs-string">'M511.4 124C290.5 124.3 112 303 112'</span> +
+<span class="hljs-keyword">const</span> loadingPath =
+  <span class="hljs-string">'M511.4 124C290.5 124.3 112 303 112'</span> +
   <span class="hljs-string">' 523.9c0 128 60.2 242 153.8 315.2l-37.5 48c-4.1 5.3-'</span> +
   <span class="hljs-string">'0.3 13 6.3 12.9l167-0.8c5.2 0 9-4.9 7.7-9.9L369.8 72'</span> +
   <span class="hljs-string">'7c-1.6-6.5-10-8.3-14.1-3L315 776.1c-10.2-8-20-16.7-2'</span> +
@@ -339,36 +357,38 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   state = {
     inputValue: <span class="hljs-string">''</span>,
     dynamicInputValue: <span class="hljs-string">''</span>,
-    options: [{
-      label: <span class="hljs-string">'福建'</span>,
-      isLeaf: <span class="hljs-literal">false</span>,
-      value: <span class="hljs-string">'fj'</span>,
-    }, {
-      label: <span class="hljs-string">'浙江'</span>,
-      isLeaf: <span class="hljs-literal">false</span>,
-      value: <span class="hljs-string">'zj'</span>,
-    }],
-  }
+    options: [
+      {
+        label: <span class="hljs-string">'福建'</span>,
+        isLeaf: <span class="hljs-literal">false</span>,
+        value: <span class="hljs-string">'fj'</span>,
+      },
+      {
+        label: <span class="hljs-string">'浙江'</span>,
+        isLeaf: <span class="hljs-literal">false</span>,
+        value: <span class="hljs-string">'zj'</span>,
+      },
+    ],
+  };
 
   onChange = (value, selectedOptions) =&gt; {
     <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
       inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
-  }
+  };
 
   onChangeDynamic = (value, selectedOptions) =&gt; {
     <span class="hljs-built_in">console</span>.log(value, selectedOptions);
     <span class="hljs-keyword">this</span>.setState({
       dynamicInputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
-  }
+  };
 
   expandIcon = (
     <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">i</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">svg</span>
         <span class="hljs-attribute">viewBox</span>=<span class="hljs-value">"0 0 1024 1024"</span>
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">verticalAlign:</span> '<span class="hljs-attribute">-.125em</span>' }}
         <span class="hljs-attribute">width</span>=<span class="hljs-value">"1em"</span>
         <span class="hljs-attribute">height</span>=<span class="hljs-value">"1em"</span>
         <span class="hljs-attribute">fill</span>=<span class="hljs-value">"currentColor"</span>
@@ -392,7 +412,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     &gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-title">svg</span>
         <span class="hljs-attribute">viewBox</span>=<span class="hljs-value">"0 0 1024 1024"</span>
-        <span class="hljs-attribute">style</span>=<span class="hljs-value">{{</span> <span class="hljs-attribute">verticalAlign:</span> '<span class="hljs-attribute">-.125em</span>' }}
         <span class="hljs-attribute">width</span>=<span class="hljs-value">"1em"</span>
         <span class="hljs-attribute">height</span>=<span class="hljs-value">"1em"</span>
         <span class="hljs-attribute">fill</span>=<span class="hljs-value">"currentColor"</span>
@@ -406,24 +425,27 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-tag">&lt;/<span class="hljs-title">i</span>&gt;</span>
   )</span>;
 
-  loadData = (selectedOptions) =&gt; {
+  loadData = selectedOptions =&gt; {
     <span class="hljs-keyword">const</span> targetOption = selectedOptions[selectedOptions.length - <span class="hljs-number">1</span>];
     targetOption.loading = <span class="hljs-literal">true</span>;
     <span class="hljs-comment">// 动态加载下级数据</span>
     setTimeout(() =&gt; {
       targetOption.loading = <span class="hljs-literal">false</span>;
-      targetOption.children = [{
-        label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载1`</span>,
-        value: <span class="hljs-string">'dynamic1'</span>,
-      }, {
-        label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载2`</span>,
-        value: <span class="hljs-string">'dynamic2'</span>,
-      }];
+      targetOption.children = [
+        {
+          label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载1`</span>,
+          value: <span class="hljs-string">'dynamic1'</span>,
+        },
+        {
+          label: <span class="hljs-string">`<span class="hljs-subst">${targetOption.label}</span>动态加载2`</span>,
+          value: <span class="hljs-string">'dynamic2'</span>,
+        },
+      ];
       <span class="hljs-keyword">this</span>.setState({
         options: [...this.state.options],
       });
     }, <span class="hljs-number">1500</span>);
-  }
+  };
 
   render() {
     <span class="hljs-keyword">return</span> (
@@ -434,10 +456,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
           <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
           <span class="hljs-attribute">expandIcon</span>=<span class="hljs-value">{this.expandIcon}</span>
         &gt;</span>
-          <span class="hljs-tag">&lt;<span class="hljs-title">input</span>
-            <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span>
-            <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span>
-          /&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> /&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span>
           <span class="hljs-attribute">options</span>=<span class="hljs-value">{this.state.options}</span>
