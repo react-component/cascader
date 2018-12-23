@@ -7,8 +7,8 @@ React Cascader Component
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Test coverage][codecov-image]][codecov-url]
-[![gemnasium deps][gemnasium-image]][gemnasium-url]
-[![node version][node-image]][node-url]
+[![Dependencies](https://img.shields.io/david/react-component/cascader.svg?style=flat-square)](https://david-dm.org/react-component/cascader)
+[![DevDependencies](https://img.shields.io/david/dev/react-component/cascader.svg?style=flat-square)](https://david-dm.org/react-component/cascader?type=dev)
 [![npm download][download-image]][download-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-cascader.svg?style=flat-square
@@ -17,10 +17,6 @@ React Cascader Component
 [travis-url]: https://travis-ci.org/react-component/cascader
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/cascader/branch/master
-[gemnasium-image]: http://img.shields.io/gemnasium/react-component/cascader.svg?style=flat-square
-[gemnasium-url]: https://gemnasium.com/react-component/cascader
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.10-green.svg?style=flat-square
-[node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/rc-cascader.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-cascader
 
