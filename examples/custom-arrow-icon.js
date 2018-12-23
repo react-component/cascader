@@ -4,52 +4,70 @@ import Cascader from 'rc-cascader';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const addressOptions = [{
-  label: '福建',
-  value: 'fj',
-  children: [{
-    label: '福州',
-    value: 'fuzhou',
-    children: [{
-      label: '马尾',
-      value: 'mawei',
-    }],
-  }, {
-    label: '泉州',
-    value: 'quanzhou',
-  }],
-}, {
-  label: '浙江',
-  value: 'zj',
-  children: [{
-    label: '杭州',
-    value: 'hangzhou',
-    children: [{
-      label: '余杭',
-      value: 'yuhang',
-    }],
-  }],
-}, {
-  label: '北京',
-  value: 'bj',
-  children: [{
-    label: '朝阳区',
-    value: 'chaoyang',
-  }, {
-    label: '海淀区',
-    value: 'haidian',
-    disabled: true,
-  }],
-}];
+const addressOptions = [
+  {
+    label: '福建',
+    value: 'fj',
+    children: [
+      {
+        label: '福州',
+        value: 'fuzhou',
+        children: [
+          {
+            label: '马尾',
+            value: 'mawei',
+          },
+        ],
+      },
+      {
+        label: '泉州',
+        value: 'quanzhou',
+      },
+    ],
+  },
+  {
+    label: '浙江',
+    value: 'zj',
+    children: [
+      {
+        label: '杭州',
+        value: 'hangzhou',
+        children: [
+          {
+            label: '余杭',
+            value: 'yuhang',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: '北京',
+    value: 'bj',
+    children: [
+      {
+        label: '朝阳区',
+        value: 'chaoyang',
+      },
+      {
+        label: '海淀区',
+        value: 'haidian',
+        disabled: true,
+      },
+    ],
+  },
+];
 
-const svgPath = 'M869 487.8L491.2 159.9c-2.9-2.5-6.6-' +
+const svgPath =
+  'M869 487.8L491.2 159.9c-2.9-2.5-6.6-' +
   '3.9-10.5-3.9h-88.5c-7.4 0-10.8 9.2-5.2 14l350.2' +
   ' 304H152c-4.4 0-8 3.6-8 8v60c0 4.4 ' +
   '3.6 8 8 8h585.1L386.9 854c-5.6 4.9-2.2 14 5.2' +
   ' 14h91.5c1.9 0 3.8-0.7 5.2-2L869 536.2c14.7-12.8' +
   ' 14.7-35.6 0-48.4z';
 
-const loadingPath = 'M511.4 124C290.5 124.3 112 303 112' +
+const loadingPath =
+  'M511.4 124C290.5 124.3 112 303 112' +
   ' 523.9c0 128 60.2 242 153.8 315.2l-37.5 48c-4.1 5.3-' +
   '0.3 13 6.3 12.9l167-0.8c5.2 0 9-4.9 7.7-9.9L369.8 72' +
   '7c-1.6-6.5-10-8.3-14.1-3L315 776.1c-10.2-8-20-16.7-2' +
@@ -68,36 +86,38 @@ class Demo extends React.Component {
   state = {
     inputValue: '',
     dynamicInputValue: '',
-    options: [{
-      label: '福建',
-      isLeaf: false,
-      value: 'fj',
-    }, {
-      label: '浙江',
-      isLeaf: false,
-      value: 'zj',
-    }],
-  }
+    options: [
+      {
+        label: '福建',
+        isLeaf: false,
+        value: 'fj',
+      },
+      {
+        label: '浙江',
+        isLeaf: false,
+        value: 'zj',
+      },
+    ],
+  };
 
   onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  }
+  };
 
   onChangeDynamic = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       dynamicInputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  }
+  };
 
   expandIcon = (
     <i>
       <svg
         viewBox="0 0 1024 1024"
-        style={{ verticalAlign: '-.125em' }}
         width="1em"
         height="1em"
         fill="currentColor"
@@ -121,7 +141,6 @@ class Demo extends React.Component {
     >
       <svg
         viewBox="0 0 1024 1024"
-        style={{ verticalAlign: '-.125em' }}
         width="1em"
         height="1em"
         fill="currentColor"
@@ -135,24 +154,27 @@ class Demo extends React.Component {
     </i>
   );
 
-  loadData = (selectedOptions) => {
+  loadData = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据
     setTimeout(() => {
       targetOption.loading = false;
-      targetOption.children = [{
-        label: `${targetOption.label}动态加载1`,
-        value: 'dynamic1',
-      }, {
-        label: `${targetOption.label}动态加载2`,
-        value: 'dynamic2',
-      }];
+      targetOption.children = [
+        {
+          label: `${targetOption.label}动态加载1`,
+          value: 'dynamic1',
+        },
+        {
+          label: `${targetOption.label}动态加载2`,
+          value: 'dynamic2',
+        },
+      ];
       this.setState({
         options: [...this.state.options],
       });
     }, 1500);
-  }
+  };
 
   render() {
     return (
@@ -163,10 +185,7 @@ class Demo extends React.Component {
           onChange={this.onChange}
           expandIcon={this.expandIcon}
         >
-          <input
-            placeholder="please select address"
-            value={this.state.inputValue}
-          />
+          <input placeholder="please select address" value={this.state.inputValue} />
         </Cascader>
         <Cascader
           options={this.state.options}

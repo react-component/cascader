@@ -6,60 +6,77 @@ import { createForm } from 'rc-form';
 import ReactDOM from 'react-dom';
 import arrayTreeFilter from 'array-tree-filter';
 
-const addressOptions = [{
-  label: '福建',
-  value: 'fj',
-  children: [{
-    label: '福州',
-    value: 'fuzhou',
-    children: [{
-      label: '马尾',
-      value: 'mawei',
-    }],
-  }, {
-    label: '泉州',
-    value: 'quanzhou',
-  }],
-}, {
-  label: '浙江',
-  value: 'zj',
-  children: [{
-    label: '杭州',
-    value: 'hangzhou',
-    children: [{
-      label: '余杭',
-      value: 'yuhang',
-    }],
-  }],
-}, {
-  label: '北京',
-  value: 'bj',
-  children: [{
-    label: '朝阳区',
-    value: 'chaoyang',
-  }, {
-    label: '海淀区',
-    value: 'haidian',
-  }],
-}];
+const addressOptions = [
+  {
+    label: '福建',
+    value: 'fj',
+    children: [
+      {
+        label: '福州',
+        value: 'fuzhou',
+        children: [
+          {
+            label: '马尾',
+            value: 'mawei',
+          },
+        ],
+      },
+      {
+        label: '泉州',
+        value: 'quanzhou',
+      },
+    ],
+  },
+  {
+    label: '浙江',
+    value: 'zj',
+    children: [
+      {
+        label: '杭州',
+        value: 'hangzhou',
+        children: [
+          {
+            label: '余杭',
+            value: 'yuhang',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: '北京',
+    value: 'bj',
+    children: [
+      {
+        label: '朝阳区',
+        value: 'chaoyang',
+      },
+      {
+        label: '海淀区',
+        value: 'haidian',
+      },
+    ],
+  },
+];
 
 class CascaderInput extends Component {
-  onChange(value) {
+  onChange = value => {
     const props = this.props;
     if (props.onChange) {
       props.onChange(value);
     }
-  }
+  };
   getLabel() {
     const props = this.props;
     const value = props.value || [];
     return arrayTreeFilter(props.options, (o, level) => o.value === value[level])
-      .map(o => o.label).join(', ');
+      .map(o => o.label)
+      .join(', ');
   }
   render() {
     const props = this.props;
     return (
-      <Cascader {...this.props} onChange={this.onChange.bind(this)}>
+      <Cascader {...this.props} onChange={this.onChange}>
         <input placeholder={props.placeholder} value={this.getLabel()} readOnly />
       </Cascader>
     );
@@ -67,11 +84,7 @@ class CascaderInput extends Component {
 }
 
 class Form extends Component {
-  constructor() {
-    super();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-  onSubmit(e) {
+  onSubmit = e => {
     const props = this.props;
     const { form } = props;
     e.preventDefault();
@@ -82,7 +95,7 @@ class Form extends Component {
         console.error('error', error, values);
       }
     });
-  }
+  };
   render() {
     const props = this.props;
     const { form } = props;
@@ -94,12 +107,7 @@ class Form extends Component {
             {form.getFieldDecorator('address', {
               initialValue: [],
               rules: [{ required: true, type: 'array' }],
-            })(
-              <CascaderInput
-                placeholder="please select address"
-                options={addressOptions}
-              />
-            )}
+            })(<CascaderInput placeholder="please select address" options={addressOptions} />)}
             <span style={{ color: '#f50' }}>
               {addressFieldError ? addressFieldError.join(' ') : null}
             </span>
