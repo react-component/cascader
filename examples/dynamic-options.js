@@ -12,6 +12,10 @@ const addressOptions = [{
   label: '浙江',
   isLeaf: false,
   value: 'zj',
+}, {
+  label: '北京',
+  isLeaf: false,
+  value: 'bj',
 }];
 
 class Demo extends React.Component {
@@ -33,13 +37,18 @@ class Demo extends React.Component {
     // 动态加载下级数据
     setTimeout(() => {
       targetOption.loading = false;
-      targetOption.children = [{
-        label: `${targetOption.label}动态加载1`,
-        value: 'dynamic1',
-      }, {
-        label: `${targetOption.label}动态加载2`,
-        value: 'dynamic2',
-      }];
+
+      if (targetOption.value === 'bj') {
+        targetOption.children = [];
+      } else {
+        targetOption.children = [{
+          label: `${targetOption.label}动态加载1`,
+          value: 'dynamic1',
+        }, {
+          label: `${targetOption.label}动态加载2`,
+          value: 'dynamic2',
+        }];
+      }
       this.setState({
         options: [...this.state.options],
       });
@@ -53,6 +62,7 @@ class Demo extends React.Component {
         loadData={this.loadData}
         onChange={this.onChange}
         changeOnSelect
+        notFoundContent={'无数据'}
       >
         <input value={this.state.inputValue} readOnly />
       </Cascader>
