@@ -137,12 +137,12 @@ class Menus extends React.Component {
   }
 
   render() {
-    const { prefixCls, dropdownMenuColumnStyle, noData } = this.props;
+    const { prefixCls, dropdownMenuColumnStyle, notFoundContent } = this.props;
 
     const getItem = (options, menuIndex) => {
       if (Array.isArray(options) && options.length === 0) {
         return (
-          <li className={`${prefixCls}-menu-no-data`}>{noData}</li>
+          <li className={`${prefixCls}-menu-not-fount`}>{notFoundContent}</li>
         );
       }
       return options.map(option => this.getOption(option, menuIndex));
@@ -168,7 +168,7 @@ Menus.defaultProps = {
   prefixCls: 'rc-cascader-menus',
   visible: false,
   expandTrigger: 'click',
-  noData: '',
+  notFoundContent: '',
 };
 
 Menus.propTypes = {
@@ -184,7 +184,7 @@ Menus.propTypes = {
   fieldNames: PropTypes.object,
   expandIcon: PropTypes.node,
   loadingIcon: PropTypes.node,
-  noData: PropTypes.string,
+  notFoundContent: PropTypes.string,
 };
 
 export default Menus;

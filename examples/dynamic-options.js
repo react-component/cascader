@@ -62,7 +62,7 @@ class Demo extends React.Component {
         loadData={this.loadData}
         onChange={this.onChange}
         changeOnSelect
-        noData={'无数据'}
+        notFoundContent={'无数据'}
       >
         <input value={this.state.inputValue} readOnly />
       </Cascader>
