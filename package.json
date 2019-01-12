@@ -22,7 +22,6 @@
   },
   "files": [
     "lib",
-    "es",
     "assets/*.css"
   ],
   "licenses": "MIT",
@@ -39,7 +38,6 @@
     "pub": "rc-tools run pub",
     "lint": "rc-tools run lint",
     "test": "jest",
-    "pre-commit": "rc-tools run pre-commit",
     "prettier": "rc-tools run prettier",
     "lint-staged": "lint-staged",
     "coverage": "jest --coverage"
@@ -70,9 +68,6 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
-  "pre-commit": [
-    "lint-staged"
-  ],
   "dependencies": {
     "array-tree-filter": "^2.1.0",
     "prop-types": "^15.5.8",
