@@ -75,6 +75,24 @@ describe('Cascader', () => {
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
   });
 
+  it('should open menu when space key is pressed', () => {
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
+    expect(
+      wrapper
+        .find('.rc-cascader-menus')
+        .hostNodes()
+        .hasClass('rc-cascader-menus-hidden'),
+    ).toBe(false);
+
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
+    expect(
+      wrapper
+        .find('.rc-cascader-menus')
+        .hostNodes()
+        .hasClass('rc-cascader-menus-hidden'),
+    ).toBe(true);
+  });
+
   it('should have close menu when press some keys', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
     expect(
