@@ -79,14 +79,14 @@ describe('Cascader', () => {
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
-    ).toBe(false);
+    ).toBe(true);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
-    ).toBe(true);
+    ).toBe(false);
   });
 
   it('should have close menu when press some keys', () => {
