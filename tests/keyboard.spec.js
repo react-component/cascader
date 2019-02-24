@@ -32,9 +32,11 @@ describe('Cascader', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(0);
+    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(0);
+    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
     expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
