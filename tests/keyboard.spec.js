@@ -81,7 +81,7 @@ describe('Cascader', () => {
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+        .hasClass('rc-cascader-menus'),
     ).toBe(false);
 
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
@@ -89,9 +89,9 @@ describe('Cascader', () => {
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+        .hasClass('rc-cascader-menus'),
     ).toBe(true);
-  });
+  })
 
   it('should have close menu when press some keys', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
