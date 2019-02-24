@@ -26,14 +26,11 @@ describe('Cascader', () => {
   });
 
   it('should have keyboard support', () => {
-    menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(0);
-    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+    expect(wrapper.find('.rc-cascader-picker-arrow-expand').length).toBe(0);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
-    menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(0);
-    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+    expect(wrapper.find('.rc-cascader-picker-arrow-expand').length).toBe(1);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
+    expect(wrapper.find('.rc-cascader-picker-arrow-expand').length).toBe(0);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(0);
     expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
