@@ -73,9 +73,6 @@ describe('Cascader', () => {
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
-  });
-
-  it('should open menu when space key is pressed', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     expect(
       wrapper
@@ -83,7 +80,6 @@ describe('Cascader', () => {
         .hostNodes()
         .hasClass('rc-cascader-menus'),
     ).toBe(false);
-
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     expect(
       wrapper
@@ -91,7 +87,7 @@ describe('Cascader', () => {
         .hostNodes()
         .hasClass('rc-cascader-menus'),
     ).toBe(true);
-  })
+  });
 
   it('should have close menu when press some keys', () => {
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
