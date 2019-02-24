@@ -33,6 +33,13 @@ describe('Cascader', () => {
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
+    expect(
+      wrapper
+        .find('.rc-cascader-menus')
+        .hostNodes()
+        .hasClass('rc-cascader-menus-hidden'),
+    ).toBe(true);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
     expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
