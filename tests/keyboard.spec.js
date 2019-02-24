@@ -78,14 +78,14 @@ describe('Cascader', () => {
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
-        .hasClass('rc-cascader-menus'),
+        .hasClass('rc-cascader-menu'),
     ).toBe(false);
     wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.SPACE });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
-        .hasClass('rc-cascader-menus'),
+        .hasClass('rc-cascader-menu'),
     ).toBe(true);
   });
 
