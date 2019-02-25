@@ -141,6 +141,7 @@ class Cascader extends Component {
   };
   handleChange = (options, setProps, e) => {
     if (e.type !== 'keydown' || e.keyCode === KeyCode.ENTER || e.keyCode === KeyCode.SPACE) {
+      e.preventDefault();
       this.props.onChange(options.map(o => o[this.getFieldName('value')]), options);
       this.setPopupVisible(setProps.visible);
     }
