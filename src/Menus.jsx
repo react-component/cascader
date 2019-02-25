@@ -173,6 +173,7 @@ Menus.propTypes = {
   fieldNames: PropTypes.object,
   expandIcon: PropTypes.node,
   loadingIcon: PropTypes.node,
+  onItemDoubleClick: PropTypes.func,
 };
 
 export default Menus;
