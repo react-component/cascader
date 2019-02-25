@@ -209,15 +209,6 @@ class Cascader extends Component {
       children.props.onKeyDown(e);
       return;
     }
-    if(e.keyCode === KeyCode.SPACE) {
-      if (!this.state.popupVisible) {
-        this.setPopupVisible(true);
-        return;
-      } else if (this.state.popupVisible) {
-        this.setPopupVisible(false);
-        return;
-      }
-    }
     const activeValue = [...this.state.activeValue];
     const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
     const currentOptions = this.getCurrentLevelOptions();
@@ -230,6 +221,7 @@ class Cascader extends Component {
       e.keyCode !== KeyCode.LEFT &&
       e.keyCode !== KeyCode.RIGHT &&
       e.keyCode !== KeyCode.ENTER &&
+      e.keyCode !== KeyCode.SPACE &&
       e.keyCode !== KeyCode.BACKSPACE &&
       e.keyCode !== KeyCode.ESC
     ) {
