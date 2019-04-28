@@ -421,7 +421,7 @@ describe('Cascader', () => {
   it('should has default fieldName when props not exist labelField and valueField and childrenField', () => {
     // eslint-disable-line
     const wrapper = mount(
-      <Cascader>
+      <Cascader options={addressOptions}>
         <input />
       </Cascader>,
     );
@@ -455,7 +455,7 @@ describe('Cascader', () => {
   });
 
   it('should works and show warning message when use typo prop name: filedNames', () => {
-    const spy = jest.spyOn(global.console, 'error');
+    console.error = jest.fn();
     const wrapper = mount(
       <Cascader
         filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
@@ -467,12 +467,13 @@ describe('Cascader', () => {
         <input />
       </Cascader>,
     );
-    expect(spy).toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
     const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).toBe(3);
     expect(activeMenuItems.at(0).text()).toBe('福建');
     expect(activeMenuItems.at(1).text()).toBe('福州');
     expect(activeMenuItems.at(2).text()).toBe('马尾');
+    console.error.mockClear();
   });
 
   it('should support custom expand icon(text icon)', () => {
