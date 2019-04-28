@@ -1,14 +1,14 @@
 webpackJsonp([12],{
 
-/***/ 179:
+/***/ 181:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(180);
+module.exports = __webpack_require__(182);
 
 
 /***/ }),
 
-/***/ 180:
+/***/ 182:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -102,7 +102,15 @@ var Demo = function (_React$Component) {
     value: function render() {
       return __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_1_rc_cascader__["a" /* default */],
-        { options: addressOptions, onChange: this.onChange, changeOnSelect: true },
+        {
+          options: addressOptions,
+          onChange: this.onChange,
+          changeOnSelect: true,
+          expandTrigger: 'hover',
+          loadData: function loadData() {
+            return console.log('loadData');
+          }
+        },
         __WEBPACK_IMPORTED_MODULE_2_react___default.a.createElement('input', { placeholder: 'please select address', value: this.state.inputValue, readOnly: true })
       );
     }
@@ -115,5 +123,5 @@ __WEBPACK_IMPORTED_MODULE_3_react_dom___default.a.render(__WEBPACK_IMPORTED_MODU
 
 /***/ })
 
-},[179]);
+},[181]);
 //# sourceMappingURL=change-on-select.js.map

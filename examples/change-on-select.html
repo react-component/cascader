@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>change-on-select.js - example - rc-cascader@0.17.1</title>
+  <title>change-on-select.js - example - rc-cascader@0.17.2</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -263,7 +263,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-cascader@0.17.1</h1>
+      <h1>rc-cascader@0.17.2</h1>
 
       <p>cascade select ui component for react</p>
     </div>
@@ -275,42 +275,58 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 <span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
 <span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
 
-<span class="hljs-keyword">const</span> addressOptions = [{
-  label: <span class="hljs-string">'福建'</span>,
-  value: <span class="hljs-string">'fj'</span>,
-  children: [{
-    label: <span class="hljs-string">'福州'</span>,
-    value: <span class="hljs-string">'fuzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'马尾'</span>,
-      value: <span class="hljs-string">'mawei'</span>,
-    }],
-  }, {
-    label: <span class="hljs-string">'泉州'</span>,
-    value: <span class="hljs-string">'quanzhou'</span>,
-  }],
-}, {
-  label: <span class="hljs-string">'浙江'</span>,
-  value: <span class="hljs-string">'zj'</span>,
-  children: [{
-    label: <span class="hljs-string">'杭州'</span>,
-    value: <span class="hljs-string">'hangzhou'</span>,
-    children: [{
-      label: <span class="hljs-string">'余杭'</span>,
-      value: <span class="hljs-string">'yuhang'</span>,
-    }],
-  }],
-}, {
-  label: <span class="hljs-string">'北京'</span>,
-  value: <span class="hljs-string">'bj'</span>,
-  children: [{
-    label: <span class="hljs-string">'朝阳区'</span>,
-    value: <span class="hljs-string">'chaoyang'</span>,
-  }, {
-    label: <span class="hljs-string">'海淀区'</span>,
-    value: <span class="hljs-string">'haidian'</span>,
-  }],
-}];
+<span class="hljs-keyword">const</span> addressOptions = [
+  {
+    label: <span class="hljs-string">'福建'</span>,
+    value: <span class="hljs-string">'fj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'福州'</span>,
+        value: <span class="hljs-string">'fuzhou'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'马尾'</span>,
+            value: <span class="hljs-string">'mawei'</span>,
+          },
+        ],
+      },
+      {
+        label: <span class="hljs-string">'泉州'</span>,
+        value: <span class="hljs-string">'quanzhou'</span>,
+      },
+    ],
+  },
+  {
+    label: <span class="hljs-string">'浙江'</span>,
+    value: <span class="hljs-string">'zj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'杭州'</span>,
+        value: <span class="hljs-string">'hangzhou'</span>,
+        children: [
+          {
+            label: <span class="hljs-string">'余杭'</span>,
+            value: <span class="hljs-string">'yuhang'</span>,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: <span class="hljs-string">'北京'</span>,
+    value: <span class="hljs-string">'bj'</span>,
+    children: [
+      {
+        label: <span class="hljs-string">'朝阳区'</span>,
+        value: <span class="hljs-string">'chaoyang'</span>,
+      },
+      {
+        label: <span class="hljs-string">'海淀区'</span>,
+        value: <span class="hljs-string">'haidian'</span>,
+      },
+    ],
+  },
+];
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
   state = {
@@ -322,11 +338,17 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     <span class="hljs-keyword">this</span>.setState({
       inputValue: selectedOptions.map(o =&gt; o.label).join(<span class="hljs-string">', '</span>),
     });
-  }
+  };
 
   render() {
     <span class="hljs-keyword">return</span> (
-      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span> <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span> <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span> <span class="hljs-attribute">changeOnSelect</span>&gt;</span>
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">Cascader</span>
+        <span class="hljs-attribute">options</span>=<span class="hljs-value">{addressOptions}</span>
+        <span class="hljs-attribute">onChange</span>=<span class="hljs-value">{this.onChange}</span>
+        <span class="hljs-attribute">changeOnSelect</span>
+        <span class="hljs-attribute">expandTrigger</span>=<span class="hljs-value">"hover"</span>
+        <span class="hljs-attribute">loadData</span>=<span class="hljs-value">{()</span> =&gt;</span> console.log('loadData')}
+      &gt;
         <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">placeholder</span>=<span class="hljs-value">"please select address"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">{this.state.inputValue}</span> <span class="hljs-attribute">readOnly</span> /&gt;</span>
       <span class="hljs-tag">&lt;/<span class="hljs-title">Cascader</span>&gt;</span>
     )</span>;
