@@ -34288,7 +34288,12 @@ var Menus = function (_React$Component) {
           key: option[this.getFieldName('value')],
           className: menuItemCls,
           title: title
-        }, expandProps),
+        }, expandProps, {
+          role: 'menuitem',
+          onMouseDown: function onMouseDown(e) {
+            return e.preventDefault();
+          }
+        }),
         option[this.getFieldName('label')],
         expandIconNode,
         loadingIconNode
