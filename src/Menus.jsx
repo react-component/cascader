@@ -42,7 +42,7 @@ class Menus extends React.Component {
         expandIconNode = <span className={`${prefixCls}-menu-item-expand-icon`}>{expandIcon}</span>;
       }
     }
-    if (expandTrigger === 'hover' && hasChildren) {
+    if (expandTrigger === 'hover' && (hasChildren || option.isLeaf === false)) {
       expandProps = {
         onMouseEnter: this.delayOnSelect.bind(this, onSelect),
         onMouseLeave: this.delayOnSelect.bind(this),
