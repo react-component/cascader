@@ -75,6 +75,8 @@ class Menus extends React.Component {
         className={menuItemCls}
         title={title}
         {...expandProps}
+        role="menuitem"
+        onMouseDown={e => e.preventDefault()}
       >
         {option[this.getFieldName('label')]}
         {expandIconNode}

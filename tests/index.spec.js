@@ -455,6 +455,7 @@ describe('Cascader', () => {
   });
 
   it('should works and show warning message when use typo prop name: filedNames', () => {
+    // eslint-disable-next-line
     console.error = jest.fn();
     const wrapper = mount(
       <Cascader
@@ -540,5 +541,25 @@ describe('Cascader', () => {
     menu1Items.at(0).simulate('mouseEnter');
     jest.runAllTimers();
     expect(loadData).toHaveBeenCalled();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/9793
+  it('should not trigger onBlur and onFocus when select item', () => {
+    const onFocus = jest.fn();
+    const onBlur = jest.fn();
+    const wrapper = mount(
+      <Cascader options={addressOptions} onFocus={onFocus} onBlur={onBlur}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('focus');
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    menu1Items.at(0).simulate('mouseDown');
+    menu1Items.at(0).simulate('click');
+    jest.runAllTimers();
+    expect(onFocus).toHaveBeenCalledTimes(1);
+    expect(onBlur).toHaveBeenCalledTimes(0);
   });
 });
