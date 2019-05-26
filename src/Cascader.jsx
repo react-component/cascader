@@ -223,7 +223,8 @@ class Cascader extends Component {
       e.keyCode !== KeyCode.ENTER &&
       e.keyCode !== KeyCode.SPACE &&
       e.keyCode !== KeyCode.BACKSPACE &&
-      e.keyCode !== KeyCode.ESC
+      e.keyCode !== KeyCode.ESC &&
+      e.keyCode !== KeyCode.TAB
     ) {
       return;
     }
@@ -233,7 +234,8 @@ class Cascader extends Component {
       e.keyCode !== KeyCode.BACKSPACE &&
       e.keyCode !== KeyCode.LEFT &&
       e.keyCode !== KeyCode.RIGHT &&
-      e.keyCode !== KeyCode.ESC
+      e.keyCode !== KeyCode.ESC &&
+      e.keyCode !== KeyCode.TAB
     ) {
       this.setPopupVisible(true);
       return;
@@ -268,7 +270,7 @@ class Cascader extends Component {
           ],
         );
       }
-    } else if (e.keyCode === KeyCode.ESC) {
+    } else if (e.keyCode === KeyCode.ESC || e.keyCode === KeyCode.TAB) {
       this.setPopupVisible(false);
       return;
     }
