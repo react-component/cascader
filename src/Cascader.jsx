@@ -255,6 +255,19 @@ class Cascader extends Component {
         nextIndex = 0;
       }
       activeValue[currentLevel] = currentOptions[nextIndex][this.getFieldName('value')];
+
+      const activeItem = document.getElementsByClassName('rc-cascader-menu-item-active')[0];
+      if (activeItem) {
+        const container = activeItem.parentElement;
+        const containerHeight = container.clientHeight;
+        const activeTop = activeItem.offsetTop;
+        const itemHeight = activeItem.clientHeight;
+        if (!nextIndex) {
+          container.scrollTop = 0;
+        } else if (itemHeight * 2 + activeTop > containerHeight) {
+          container.scrollTop = nextIndex * itemHeight;
+        }
+      }
     } else if (e.keyCode === KeyCode.LEFT || e.keyCode === KeyCode.BACKSPACE) {
       e.preventDefault();
       activeValue.splice(activeValue.length - 1, 1);
