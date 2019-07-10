@@ -78,9 +78,7 @@ class Cascader extends Component {
 
       // allow activeValue diff from value
       // https://github.com/ant-design/ant-design/issues/2767
-      if (!('loadData' in nextProps)) {
-        newState.activeValue = nextProps.value || [];
-      }
+      newState.activeValue = nextProps.value || [];
     }
     if ('popupVisible' in nextProps) {
       newState.popupVisible = nextProps.popupVisible;
