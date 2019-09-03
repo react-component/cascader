@@ -25,7 +25,7 @@ class Menus extends React.Component {
     return fieldNames[name] || defaultFieldNames[name];
   }
   getOption(option, menuIndex) {
-    const { prefixCls, expandTrigger, expandIcon, loadingIcon } = this.props;
+    const { prefixCls, expandTrigger, expandIcon, loadingIcon, allowTextHighlighting } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     const onItemDoubleClick = this.props.onItemDoubleClick.bind(this, option, menuIndex);
     let expandProps = {
@@ -69,6 +69,10 @@ class Menus extends React.Component {
       title = option[this.getFieldName('label')];
     }
 
+    if (!allowTextHighlighting) {
+      expandProps.onMouseDown = e => e.preventDefault();
+    }
+
     return (
       <li
         key={option[this.getFieldName('value')]}
@@ -76,7 +80,6 @@ class Menus extends React.Component {
         title={title}
         {...expandProps}
         role="menuitem"
-        onMouseDown={e => e.preventDefault()}
       >
         {option[this.getFieldName('label')]}
         {expandIconNode}
@@ -165,6 +168,7 @@ Menus.defaultProps = {
 Menus.propTypes = {
   value: PropTypes.array,
   activeValue: PropTypes.array,
+  allowTextHighlighting: PropTypes.bool,
   options: PropTypes.array,
   prefixCls: PropTypes.string,
   expandTrigger: PropTypes.string,
