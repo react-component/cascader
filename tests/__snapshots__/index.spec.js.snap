@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cascader should not show title when title is falsy 1`] = `
+<ul
+  className="rc-cascader-menu"
+  key="0"
+>
+  <li
+    className="rc-cascader-menu-item"
+    key="1"
+    onClick={[Function]}
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    role="menuitem"
+    title=""
+  >
+    1
+  </li>
+  <li
+    className="rc-cascader-menu-item"
+    key="2"
+    onClick={[Function]}
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    role="menuitem"
+  >
+    2
+  </li>
+  <li
+    className="rc-cascader-menu-item"
+    key="3"
+    onClick={[Function]}
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    role="menuitem"
+    title="3"
+  >
+    3
+  </li>
+  <li
+    className="rc-cascader-menu-item"
+    key="4"
+    onClick={[Function]}
+    onDoubleClick={[Function]}
+    onMouseDown={[Function]}
+    role="menuitem"
+    title="title"
+  >
+    4
+  </li>
+</ul>
+`;

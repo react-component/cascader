@@ -62,8 +62,9 @@ class Menus extends React.Component {
       menuItemCls += ` ${prefixCls}-menu-item-loading`;
       loadingIconNode = loadingIcon || null;
     }
+
     let title = '';
-    if (option.title) {
+    if ('title' in option) {
       title = option.title;
     } else if (typeof option[this.getFieldName('label')] === 'string') {
       title = option[this.getFieldName('label')];

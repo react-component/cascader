@@ -562,4 +562,36 @@ describe('Cascader', () => {
     expect(onFocus).toHaveBeenCalledTimes(1);
     expect(onBlur).toHaveBeenCalledTimes(0);
   });
+
+  // https://github.com/ant-design/ant-design/issues/18713
+  it('should not show title when title is falsy', () => {
+    const options = [
+      {
+        value: '1',
+        label: '1',
+        title: '',
+      },
+      {
+        value: '2',
+        label: '2',
+        title: undefined,
+      },
+      {
+        value: '3',
+        label: '3',
+      },
+      {
+        value: '4',
+        label: '4',
+        title: 'title',
+      },
+    ];
+    const wrapper = mount(
+      <Cascader options={options} popupVisible>
+        <input readOnly />
+      </Cascader>,
+    );
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus).toMatchSnapshot();
+  });
 });
