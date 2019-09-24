@@ -22,6 +22,5 @@ node_modules
 *.css
 build
 lib
-es
 yarn.lock
 package-lock.json
