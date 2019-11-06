@@ -3,7 +3,7 @@ import Trigger, { BuildInPlacements } from 'rc-trigger';
 import warning from 'warning';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
-import shallowEqualArrays from 'shallow-equal/arrays';
+import { isEqualArrays } from './utils';
 import Menus from './Menus';
 import BUILT_IN_PLACEMENTS from './placements';
 
@@ -27,7 +27,7 @@ export interface CascaderProps {
   value?: string[];
   defaultValue?: string[];
   options?: CascaderOption[];
-  onChange?: (value: string[], selectOption: string[]) => void;
+  onChange?: (value: string[], selectOptions: CascaderOption[]) => void;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
   popupVisible?: boolean;
   disabled?: boolean;
@@ -60,7 +60,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
 
   trigger: any;
 
-  constructor(props) {
+  constructor(props: CascaderProps) {
     super(props);
     let initialValue = [];
     if ('value' in props) {
@@ -107,7 +107,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       prevProps: nextProps,
     };
 
-    if ('value' in nextProps && !shallowEqualArrays(prevProps.value, nextProps.value)) {
+    if ('value' in nextProps && !isEqualArrays(prevProps.value, nextProps.value)) {
       newState.value = nextProps.value || [];
 
       // allow activeValue diff from value
@@ -127,7 +127,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     return this.trigger.getPopupDomNode();
   }
 
-  getFieldName(name) {
+  getFieldName(name: string): string {
     const { defaultFieldNames } = this;
     const { fieldNames, filedNames } = this.props;
     if ('filedNames' in this.props) {
@@ -136,7 +136,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     return fieldNames[name] || defaultFieldNames[name];
   }
 
-  getFieldNames() {
+  getFieldNames(): CascaderFieldNames {
     const { fieldNames, filedNames } = this.props;
     if ('filedNames' in this.props) {
       return filedNames; // For old compatibility
@@ -144,7 +144,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     return fieldNames;
   }
 
-  getCurrentLevelOptions() {
+  getCurrentLevelOptions(): CascaderOption[] {
     const { options = [] } = this.props;
     const { activeValue = [] } = this.state;
     const result = arrayTreeFilter(
@@ -158,7 +158,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     return [...options].filter(o => !o.disabled);
   }
 
-  getActiveOptions(activeValue) {
+  getActiveOptions(activeValue: string[]): CascaderOption[] {
     return arrayTreeFilter(
       this.props.options || [],
       (o, level) => o[this.getFieldName('value')] === activeValue[level],
@@ -166,7 +166,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     );
   }
 
-  setPopupVisible = popupVisible => {
+  setPopupVisible = (popupVisible: boolean) => {
     if (!('popupVisible' in this.props)) {
       this.setState({ popupVisible });
     }
@@ -180,18 +180,22 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     this.props.onPopupVisibleChange(popupVisible);
   };
 
-  handleChange = (options, setProps, e) => {
+  handleChange = (options: CascaderOption[], { visible }, e: React.KeyboardEvent<HTMLElement>) => {
     if (e.type !== 'keydown' || e.keyCode === KeyCode.ENTER) {
       this.props.onChange(options.map(o => o[this.getFieldName('value')]), options);
-      this.setPopupVisible(setProps.visible);
+      this.setPopupVisible(visible);
     }
   };
 
-  handlePopupVisibleChange = popupVisible => {
+  handlePopupVisibleChange = (popupVisible: boolean) => {
     this.setPopupVisible(popupVisible);
   };
 
-  handleMenuSelect = (targetOption, menuIndex, e) => {
+  handleMenuSelect = (
+    targetOption: CascaderOption,
+    menuIndex: number,
+    e: React.KeyboardEvent<HTMLElement>,
+  ) => {
     // Keep focused state for keyboard support
     const triggerNode = this.trigger.getRootDomNode();
     if (triggerNode && triggerNode.focus) {
