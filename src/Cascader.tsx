@@ -7,10 +7,26 @@ import shallowEqualArrays from 'shallow-equal/arrays';
 import Menus from './Menus';
 import BUILT_IN_PLACEMENTS from './placements';
 
+export interface CascaderFieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
+}
+
+export interface CascaderOption {
+  value?: string;
+  label?: React.ReactNode;
+  disabled?: boolean;
+  isLeaf?: boolean;
+  loading?: boolean;
+  children?: CascaderOption[];
+  [key: string]: any;
+}
+
 export interface CascaderProps {
-  value?: any[];
-  defaultValue?: any[];
-  options?: any[];
+  value?: string[];
+  defaultValue?: string[];
+  options?: CascaderOption[];
   onChange?: (value: any[], selectOption: any[]) => void;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
   popupVisible?: boolean;
@@ -26,8 +42,8 @@ export interface CascaderProps {
   children?: React.ReactElement;
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
   expandTrigger?: string;
-  fieldNames?: object;
-  filedNames?: object; // typo but for compatibility
+  fieldNames?: CascaderFieldNames;
+  filedNames?: CascaderFieldNames; // typo but for compatibility
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
 }
@@ -353,8 +369,6 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       <Trigger
         ref={this.saveTrigger}
         {...restProps}
-        // options={options}
-        // disabled={disabled}
         popupPlacement={popupPlacement}
         builtinPlacements={builtinPlacements}
         popupTransitionName={transitionName}
