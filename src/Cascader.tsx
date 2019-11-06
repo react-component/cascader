@@ -50,8 +50,8 @@ export interface CascaderProps {
 
 interface CascaderState {
   popupVisible?: boolean;
-  activeValue?: any[];
-  value?: any[];
+  activeValue?: string[];
+  value?: string[];
   prevProps?: CascaderProps;
 }
 
@@ -167,14 +167,14 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
   }
 
   setPopupVisible = (popupVisible: boolean) => {
+    const { value } = this.state;
     if (!('popupVisible' in this.props)) {
       this.setState({ popupVisible });
     }
     // sync activeValue with value when panel open
     if (popupVisible && !this.state.popupVisible) {
       this.setState({
-        // eslint-disable-next-line react/no-access-state-in-setstate
-        activeValue: this.state.value,
+        activeValue: value,
       });
     }
     this.props.onPopupVisibleChange(popupVisible);
