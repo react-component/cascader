@@ -1,24 +1,32 @@
 import * as React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
-import { findDOMNode } from 'react-dom';
+import { CascaderOption, CascaderFieldNames } from './Cascader';
 
 interface MenusProps {
-  value?: any[];
-  activeValue?: any[];
-  options?: any[];
+  value?: string[];
+  activeValue?: string[];
+  options?: CascaderOption[];
   prefixCls?: string;
   expandTrigger?: string;
-  onSelect?: (targetOption: any[], index: number, e: React.KeyboardEvent<HTMLElement>) => void;
+  onSelect?: (targetOption: string[], index: number, e: React.KeyboardEvent<HTMLElement>) => void;
   visible?: boolean;
   dropdownMenuColumnStyle?: React.CSSProperties;
-  defaultFieldNames?: object;
-  fieldNames?: object;
+  defaultFieldNames?: CascaderFieldNames;
+  fieldNames?: CascaderFieldNames;
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
-  onItemDoubleClick?: () => void;
+  onItemDoubleClick?: (
+    targetOption: string[],
+    index: number,
+    e: React.MouseEvent<HTMLElement>,
+  ) => void;
+}
+
+interface MenuItems {
+  [index: number]: HTMLLIElement;
 }
 class Menus extends React.Component<MenusProps> {
-  menuItems: any = {};
+  menuItems: MenuItems = {};
 
   delayTimer: number;
 
@@ -36,7 +44,7 @@ class Menus extends React.Component<MenusProps> {
     this.scrollActiveItemToView();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: MenusProps) {
     if (!prevProps.visible && this.props.visible) {
       this.scrollActiveItemToView();
     }
@@ -48,7 +56,7 @@ class Menus extends React.Component<MenusProps> {
     return fieldNames[name] || defaultFieldNames[name];
   }
 
-  getOption(option, menuIndex) {
+  getOption(option: CascaderOption, menuIndex: number) {
     const { prefixCls, expandTrigger, expandIcon, loadingIcon } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     const onItemDoubleClick = this.props.onItemDoubleClick.bind(this, option, menuIndex);
@@ -111,7 +119,7 @@ class Menus extends React.Component<MenusProps> {
     );
   }
 
-  getActiveOptions(values?: any[]) {
+  getActiveOptions(values?: CascaderOption[]): CascaderOption[] {
     const { options } = this.props;
     const activeValue = values || this.props.activeValue;
     return arrayTreeFilter(
@@ -121,7 +129,7 @@ class Menus extends React.Component<MenusProps> {
     );
   }
 
-  getShowOptions() {
+  getShowOptions(): CascaderOption[][] {
     const { options } = this.props;
     const result = this.getActiveOptions()
       .map(activeOption => activeOption[this.getFieldName('children')])
@@ -149,10 +157,8 @@ class Menus extends React.Component<MenusProps> {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < optionsLength; i++) {
       const itemComponent = this.menuItems[i];
-      if (itemComponent) {
-        // eslint-disable-next-line react/no-find-dom-node
-        const target = findDOMNode(itemComponent);
-        (target.parentNode as HTMLElement).scrollTop = (target as HTMLElement).offsetTop;
+      if (itemComponent && itemComponent.parentElement) {
+        itemComponent.parentElement.scrollTop = itemComponent.offsetTop;
       }
     }
   }

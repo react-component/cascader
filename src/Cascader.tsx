@@ -27,7 +27,7 @@ export interface CascaderProps {
   value?: string[];
   defaultValue?: string[];
   options?: CascaderOption[];
-  onChange?: (value: any[], selectOption: any[]) => void;
+  onChange?: (value: string[], selectOption: string[]) => void;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
   popupVisible?: boolean;
   disabled?: boolean;
@@ -37,7 +37,7 @@ export interface CascaderProps {
   prefixCls?: string;
   dropdownMenuColumnStyle?: React.CSSProperties;
   builtinPlacements?: BuildInPlacements;
-  loadData?: (selectOption: any[]) => void;
+  loadData?: (selectOptions: CascaderOption[]) => void;
   changeOnSelect?: boolean;
   children?: React.ReactElement;
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;

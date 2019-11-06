@@ -1,4 +1,6 @@
-const BUILT_IN_PLACEMENTS = {
+import { BuildInPlacements } from 'rc-trigger';
+
+const BUILT_IN_PLACEMENTS: BuildInPlacements = {
   bottomLeft: {
     points: ['tl', 'bl'],
     offset: [0, 4],
