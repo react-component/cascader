@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-import 'rc-cascader/assets/index.less';
-import Cascader from 'rc-cascader';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import '../assets/index.less';
+import Cascader from '../src';
 
 const addressOptions = [
   {
@@ -84,4 +83,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

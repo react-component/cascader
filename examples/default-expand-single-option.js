@@ -1,37 +1,47 @@
-import 'rc-cascader/assets/index.less';
-import Cascader from 'rc-cascader';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import '../assets/index.less';
+import Cascader from '../src';
 
-const options = [{
-  value: 'zhejiang',
-  label: '浙江',
-  children: [{
-    value: 'hangzhou',
-    label: '杭州',
-    children: [{
-      value: 'xihu',
-      label: '西湖',
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: '江苏',
-  children: [{
-    value: 'nanjing',
-    label: '南京',
-    children: [{
-      value: 'zhonghuamen',
-      label: '中华门',
-    }],
-  }],
-}];
+const options = [
+  {
+    value: 'zhejiang',
+    label: '浙江',
+    children: [
+      {
+        value: 'hangzhou',
+        label: '杭州',
+        children: [
+          {
+            value: 'xihu',
+            label: '西湖',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    value: 'jiangsu',
+    label: '江苏',
+    children: [
+      {
+        value: 'nanjing',
+        label: '南京',
+        children: [
+          {
+            value: 'zhonghuamen',
+            label: '中华门',
+          },
+        ],
+      },
+    ],
+  },
+];
 
 class App extends React.Component {
   state = {
     inputValue: '',
     value: [],
-  }
+  };
 
   onChange = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
@@ -47,7 +57,7 @@ class App extends React.Component {
       inputValue: selectedOptions.map(o => o.label).join(', '),
       value,
     });
-  }
+  };
 
   render() {
     return (
@@ -58,4 +68,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('__react-content'));
+export default App;

@@ -1,14 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
 import { findDOMNode } from 'react-dom';
 
-class Menus extends React.Component {
-  constructor(props) {
-    super(props);
+interface MenusProps {
+  value?: any[];
+  activeValue?: any[];
+  options?: any[];
+  prefixCls?: string;
+  expandTrigger?: string;
+  onSelect?: (targetOption: any[], index: number, e: React.KeyboardEvent<HTMLElement>) => void;
+  visible?: boolean;
+  dropdownMenuColumnStyle?: React.CSSProperties;
+  defaultFieldNames?: object;
+  fieldNames?: object;
+  expandIcon?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
+  onItemDoubleClick?: () => void;
+}
+class Menus extends React.Component<MenusProps> {
+  menuItems: any = {};
 
-    this.menuItems = {};
-  }
+  delayTimer: number;
+
+  static defaultProps: MenusProps = {
+    options: [],
+    value: [],
+    activeValue: [],
+    onSelect() {},
+    prefixCls: 'rc-cascader-menus',
+    visible: false,
+    expandTrigger: 'click',
+  };
 
   componentDidMount() {
     this.scrollActiveItemToView();
@@ -19,16 +41,18 @@ class Menus extends React.Component {
       this.scrollActiveItemToView();
     }
   }
+
   getFieldName(name) {
     const { fieldNames, defaultFieldNames } = this.props;
     // 防止只设置单个属性的名字
     return fieldNames[name] || defaultFieldNames[name];
   }
+
   getOption(option, menuIndex) {
     const { prefixCls, expandTrigger, expandIcon, loadingIcon } = this.props;
     const onSelect = this.props.onSelect.bind(this, option, menuIndex);
     const onItemDoubleClick = this.props.onItemDoubleClick.bind(this, option, menuIndex);
-    let expandProps = {
+    let expandProps: any = {
       onClick: onSelect,
       onDoubleClick: onItemDoubleClick,
     };
@@ -65,6 +89,7 @@ class Menus extends React.Component {
 
     let title = '';
     if ('title' in option) {
+      // eslint-disable-next-line prefer-destructuring
       title = option.title;
     } else if (typeof option[this.getFieldName('label')] === 'string') {
       title = option[this.getFieldName('label')];
@@ -86,9 +111,9 @@ class Menus extends React.Component {
     );
   }
 
-  getActiveOptions(values) {
+  getActiveOptions(values?: any[]) {
+    const { options } = this.props;
     const activeValue = values || this.props.activeValue;
-    const options = this.props.options;
     return arrayTreeFilter(
       options,
       (o, level) => o[this.getFieldName('value')] === activeValue[level],
@@ -111,7 +136,7 @@ class Menus extends React.Component {
       this.delayTimer = null;
     }
     if (typeof onSelect === 'function') {
-      this.delayTimer = setTimeout(() => {
+      this.delayTimer = window.setTimeout(() => {
         onSelect(args);
         this.delayTimer = null;
       }, 150);
@@ -121,11 +146,13 @@ class Menus extends React.Component {
   scrollActiveItemToView() {
     // scroll into view
     const optionsLength = this.getShowOptions().length;
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < optionsLength; i++) {
       const itemComponent = this.menuItems[i];
       if (itemComponent) {
+        // eslint-disable-next-line react/no-find-dom-node
         const target = findDOMNode(itemComponent);
-        target.parentNode.scrollTop = target.offsetTop;
+        (target.parentNode as HTMLElement).scrollTop = (target as HTMLElement).offsetTop;
       }
     }
   }
@@ -152,31 +179,5 @@ class Menus extends React.Component {
     );
   }
 }
-
-Menus.defaultProps = {
-  options: [],
-  value: [],
-  activeValue: [],
-  onSelect() {},
-  prefixCls: 'rc-cascader-menus',
-  visible: false,
-  expandTrigger: 'click',
-};
-
-Menus.propTypes = {
-  value: PropTypes.array,
-  activeValue: PropTypes.array,
-  options: PropTypes.array,
-  prefixCls: PropTypes.string,
-  expandTrigger: PropTypes.string,
-  onSelect: PropTypes.func,
-  visible: PropTypes.bool,
-  dropdownMenuColumnStyle: PropTypes.object,
-  defaultFieldNames: PropTypes.object,
-  fieldNames: PropTypes.object,
-  expandIcon: PropTypes.node,
-  loadingIcon: PropTypes.node,
-  onItemDoubleClick: PropTypes.func,
-};
 
 export default Menus;

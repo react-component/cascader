@@ -1,50 +1,56 @@
 /* eslint-disable no-console */
-import 'rc-cascader/assets/index.less';
-import Cascader from 'rc-cascader';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import '../assets/index.less';
+import Cascader from '../src';
 
-const addressOptions = [{
-  label: '福建',
-  isLeaf: false,
-  value: 'fj',
-}, {
-  label: '浙江',
-  isLeaf: false,
-  value: 'zj',
-}];
+const addressOptions = [
+  {
+    label: '福建',
+    isLeaf: false,
+    value: 'fj',
+  },
+  {
+    label: '浙江',
+    isLeaf: false,
+    value: 'zj',
+  },
+];
 
 class Demo extends React.Component {
   state = {
     inputValue: '',
     options: addressOptions,
-  }
+  };
 
   onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
-  }
+  };
 
-  loadData = (selectedOptions) => {
+  loadData = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据
     setTimeout(() => {
       targetOption.loading = false;
-      targetOption.children = [{
-        label: `${targetOption.label}动态加载1`,
-        value: 'dynamic1',
-      }, {
-        label: `${targetOption.label}动态加载2`,
-        value: 'dynamic2',
-      }];
+      targetOption.children = [
+        {
+          label: `${targetOption.label}动态加载1`,
+          value: 'dynamic1',
+        },
+        {
+          label: `${targetOption.label}动态加载2`,
+          value: 'dynamic2',
+        },
+      ];
       this.setState({
+        // eslint-disable-next-line react/no-access-state-in-setstate
         options: [...this.state.options],
       });
     }, 1000);
-  }
+  };
 
   render() {
     return (
@@ -60,4 +66,4 @@ class Demo extends React.Component {
   }
 }
 
-ReactDOM.render(<Demo />, document.getElementById('__react-content'));
+export default Demo;

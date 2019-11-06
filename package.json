@@ -23,69 +23,54 @@
   "files": [
     "lib",
     "es",
-    "assets/*.css"
+    "assets/*.css",
+    "assets/*.less"
   ],
-  "licenses": "MIT",
+  "license": "MIT",
   "main": "./lib/index",
   "module": "./es/index",
   "config": {
     "port": 8000
   },
   "scripts": {
-    "build": "rc-tools run build",
-    "compile": "rc-tools run compile --babel-runtime",
-    "gh-pages": "rc-tools run gh-pages",
-    "start": "rc-tools run server",
-    "pub": "rc-tools run pub",
-    "lint": "rc-tools run lint",
-    "test": "jest",
-    "pre-commit": "rc-tools run pre-commit",
-    "prettier": "rc-tools run prettier",
-    "lint-staged": "lint-staged",
-    "coverage": "jest --coverage"
-  },
-  "jest": {
-    "setupFiles": [
-      "./tests/setup.js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "transform": {
-      "\\.jsx?$": "./node_modules/rc-tools/scripts/jestPreprocessor.js"
-    }
+    "start": "cross-env NODE_ENV=development father doc dev --storybook",
+    "build": "father doc build --storybook",
+    "compile": "father build",
+    "prepublishOnly": "npm run compile && np --no-cleanup --yolo",
+    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
+    "test": "father test",
+    "coverage": "father test --coverage",
+    "now-build": "npm run build"
   },
   "devDependencies": {
-    "enzyme": "^3.1.1",
-    "enzyme-adapter-react-16": "^1.0.4",
+    "@types/classnames": "^2.2.6",
+    "@types/enzyme": "^3.1.15",
+    "@types/jest": "^24.0.18",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-lifecycles-compat": "^3.0.1",
+    "@types/warning": "^3.0.0",
+    "cross-env": "^6.0.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.2.1",
+    "father": "^2.13.2",
     "jest": "^23.6.0",
-    "lint-staged": "^9.0.0",
-    "pre-commit": "1.x",
+    "np": "^5.0.3",
     "rc-form": "^2.4.0",
-    "rc-tools": "^8.4.1",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "typescript": "^3.5.2"
   },
-  "pre-commit": [
-    "lint-staged"
-  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
   "dependencies": {
     "array-tree-filter": "^2.1.0",
-    "prop-types": "^15.5.8",
-    "rc-trigger": "^2.2.0",
+    "rc-trigger": "^4.0.0-alpha.5",
     "rc-util": "^4.0.4",
-    "react-lifecycles-compat": "^3.0.4",
     "shallow-equal": "^1.0.0",
     "warning": "^4.0.1"
-  },
-  "lint-staged": {
-    "*.{js,jsx,tsx}": [
-      "npm run pre-commit",
-      "git add"
-    ]
   }
 }
