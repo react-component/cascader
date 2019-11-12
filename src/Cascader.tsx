@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Trigger, { BuildInPlacements } from 'rc-trigger';
+import Trigger, { BuildInPlacements, TriggerProps } from 'rc-trigger';
 import warning from 'warning';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
@@ -23,7 +23,7 @@ export interface CascaderOption {
   [key: string]: any;
 }
 
-export interface CascaderProps {
+export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   value?: string[];
   defaultValue?: string[];
   options?: CascaderOption[];
