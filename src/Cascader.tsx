@@ -1,50 +1,66 @@
-import React, { Component, cloneElement } from 'react';
-import PropTypes from 'prop-types';
-import Trigger from 'rc-trigger';
+import * as React from 'react';
+import Trigger, { BuildInPlacements, TriggerProps } from 'rc-trigger';
 import warning from 'warning';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
-import shallowEqualArrays from 'shallow-equal/arrays';
-import { polyfill } from 'react-lifecycles-compat';
+import { isEqualArrays } from './utils';
 import Menus from './Menus';
+import BUILT_IN_PLACEMENTS from './placements';
 
-const BUILT_IN_PLACEMENTS = {
-  bottomLeft: {
-    points: ['tl', 'bl'],
-    offset: [0, 4],
-    overflow: {
-      adjustX: 1,
-      adjustY: 1,
-    },
-  },
-  topLeft: {
-    points: ['bl', 'tl'],
-    offset: [0, -4],
-    overflow: {
-      adjustX: 1,
-      adjustY: 1,
-    },
-  },
-  bottomRight: {
-    points: ['tr', 'br'],
-    offset: [0, 4],
-    overflow: {
-      adjustX: 1,
-      adjustY: 1,
-    },
-  },
-  topRight: {
-    points: ['br', 'tr'],
-    offset: [0, -4],
-    overflow: {
-      adjustX: 1,
-      adjustY: 1,
-    },
-  },
-};
+export interface CascaderFieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
+}
 
-class Cascader extends Component {
-  constructor(props) {
+export interface CascaderOption {
+  value?: string;
+  label?: React.ReactNode;
+  disabled?: boolean;
+  isLeaf?: boolean;
+  loading?: boolean;
+  children?: CascaderOption[];
+  [key: string]: any;
+}
+
+export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
+  value?: string[];
+  defaultValue?: string[];
+  options?: CascaderOption[];
+  onChange?: (value: string[], selectOptions: CascaderOption[]) => void;
+  onPopupVisibleChange?: (popupVisible: boolean) => void;
+  popupVisible?: boolean;
+  disabled?: boolean;
+  transitionName?: string;
+  popupClassName?: string;
+  popupPlacement?: string;
+  prefixCls?: string;
+  dropdownMenuColumnStyle?: React.CSSProperties;
+  builtinPlacements?: BuildInPlacements;
+  loadData?: (selectOptions: CascaderOption[]) => void;
+  changeOnSelect?: boolean;
+  children?: React.ReactElement;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
+  expandTrigger?: string;
+  fieldNames?: CascaderFieldNames;
+  filedNames?: CascaderFieldNames; // typo but for compatibility
+  expandIcon?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
+}
+
+interface CascaderState {
+  popupVisible?: boolean;
+  activeValue?: string[];
+  value?: string[];
+  prevProps?: CascaderProps;
+}
+
+class Cascader extends React.Component<CascaderProps, CascaderState> {
+  defaultFieldNames: object;
+
+  trigger: any;
+
+  constructor(props: CascaderProps) {
     super(props);
     let initialValue = [];
     if ('value' in props) {
@@ -64,16 +80,34 @@ class Cascader extends Component {
       value: initialValue,
       prevProps: props,
     };
-    this.defaultFieldNames = { label: 'label', value: 'value', children: 'children' };
+    this.defaultFieldNames = {
+      label: 'label',
+      value: 'value',
+      children: 'children',
+    };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static defaultProps: CascaderProps = {
+    onChange: () => {},
+    onPopupVisibleChange: () => {},
+    disabled: false,
+    transitionName: '',
+    prefixCls: 'rc-cascader',
+    popupClassName: '',
+    popupPlacement: 'bottomLeft',
+    builtinPlacements: BUILT_IN_PLACEMENTS,
+    expandTrigger: 'click',
+    fieldNames: { label: 'label', value: 'value', children: 'children' },
+    expandIcon: '>',
+  };
+
+  static getDerivedStateFromProps(nextProps: CascaderProps, prevState: CascaderState) {
     const { prevProps = {} } = prevState;
-    const newState = {
+    const newState: CascaderState = {
       prevProps: nextProps,
     };
 
-    if ('value' in nextProps && !shallowEqualArrays(prevProps.value, nextProps.value)) {
+    if ('value' in nextProps && !isEqualArrays(prevProps.value, nextProps.value)) {
       newState.value = nextProps.value || [];
 
       // allow activeValue diff from value
@@ -92,7 +126,8 @@ class Cascader extends Component {
   getPopupDOMNode() {
     return this.trigger.getPopupDomNode();
   }
-  getFieldName(name) {
+
+  getFieldName(name: string): string {
     const { defaultFieldNames } = this;
     const { fieldNames, filedNames } = this.props;
     if ('filedNames' in this.props) {
@@ -100,14 +135,16 @@ class Cascader extends Component {
     }
     return fieldNames[name] || defaultFieldNames[name];
   }
-  getFieldNames() {
+
+  getFieldNames(): CascaderFieldNames {
     const { fieldNames, filedNames } = this.props;
     if ('filedNames' in this.props) {
       return filedNames; // For old compatibility
     }
     return fieldNames;
   }
-  getCurrentLevelOptions() {
+
+  getCurrentLevelOptions(): CascaderOption[] {
     const { options = [] } = this.props;
     const { activeValue = [] } = this.state;
     const result = arrayTreeFilter(
@@ -120,35 +157,45 @@ class Cascader extends Component {
     }
     return [...options].filter(o => !o.disabled);
   }
-  getActiveOptions(activeValue) {
+
+  getActiveOptions(activeValue: string[]): CascaderOption[] {
     return arrayTreeFilter(
       this.props.options || [],
       (o, level) => o[this.getFieldName('value')] === activeValue[level],
       { childrenKeyName: this.getFieldName('children') },
     );
   }
-  setPopupVisible = popupVisible => {
+
+  setPopupVisible = (popupVisible: boolean) => {
+    const { value } = this.state;
     if (!('popupVisible' in this.props)) {
       this.setState({ popupVisible });
     }
     // sync activeValue with value when panel open
     if (popupVisible && !this.state.popupVisible) {
       this.setState({
-        activeValue: this.state.value,
+        activeValue: value,
       });
     }
     this.props.onPopupVisibleChange(popupVisible);
   };
-  handleChange = (options, setProps, e) => {
+
+  handleChange = (options: CascaderOption[], { visible }, e: React.KeyboardEvent<HTMLElement>) => {
     if (e.type !== 'keydown' || e.keyCode === KeyCode.ENTER) {
       this.props.onChange(options.map(o => o[this.getFieldName('value')]), options);
-      this.setPopupVisible(setProps.visible);
+      this.setPopupVisible(visible);
     }
   };
-  handlePopupVisibleChange = popupVisible => {
+
+  handlePopupVisibleChange = (popupVisible: boolean) => {
     this.setPopupVisible(popupVisible);
   };
-  handleMenuSelect = (targetOption, menuIndex, e) => {
+
+  handleMenuSelect = (
+    targetOption: CascaderOption,
+    menuIndex: number,
+    e: React.KeyboardEvent<HTMLElement>,
+  ) => {
     // Keep focused state for keyboard support
     const triggerNode = this.trigger.getRootDomNode();
     if (triggerNode && triggerNode.focus) {
@@ -170,7 +217,7 @@ class Cascader extends Component {
       loadData(activeOptions);
       return;
     }
-    const newState = {};
+    const newState: CascaderState = {};
     if (
       !targetOption[this.getFieldName('children')] ||
       !targetOption[this.getFieldName('children')].length
@@ -195,13 +242,15 @@ class Cascader extends Component {
     }
     this.setState(newState);
   };
+
   handleItemDoubleClick = () => {
     const { changeOnSelect } = this.props;
     if (changeOnSelect) {
       this.setPopupVisible(false);
     }
   };
-  handleKeyDown = e => {
+
+  handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     const { children } = this.props;
     // https://github.com/ant-design/ant-design/issues/6717
     // Don't bind keyboard support when children specify the onKeyDown
@@ -324,8 +373,6 @@ class Cascader extends Component {
       <Trigger
         ref={this.saveTrigger}
         {...restProps}
-        options={options}
-        disabled={disabled}
         popupPlacement={popupPlacement}
         builtinPlacements={builtinPlacements}
         popupTransitionName={transitionName}
@@ -336,7 +383,7 @@ class Cascader extends Component {
         popupClassName={popupClassName + emptyMenuClassName}
         popup={menus}
       >
-        {cloneElement(children, {
+        {React.cloneElement(children, {
           onKeyDown: this.handleKeyDown,
           tabIndex: disabled ? undefined : 0,
         })}
@@ -344,46 +391,5 @@ class Cascader extends Component {
     );
   }
 }
-
-Cascader.defaultProps = {
-  onChange() {},
-  onPopupVisibleChange() {},
-  disabled: false,
-  transitionName: '',
-  prefixCls: 'rc-cascader',
-  popupClassName: '',
-  popupPlacement: 'bottomLeft',
-  builtinPlacements: BUILT_IN_PLACEMENTS,
-  expandTrigger: 'click',
-  fieldNames: { label: 'label', value: 'value', children: 'children' },
-  expandIcon: '>',
-};
-
-Cascader.propTypes = {
-  value: PropTypes.array,
-  defaultValue: PropTypes.array,
-  options: PropTypes.array.isRequired,
-  onChange: PropTypes.func,
-  onPopupVisibleChange: PropTypes.func,
-  popupVisible: PropTypes.bool,
-  disabled: PropTypes.bool,
-  transitionName: PropTypes.string,
-  popupClassName: PropTypes.string,
-  popupPlacement: PropTypes.string,
-  prefixCls: PropTypes.string,
-  dropdownMenuColumnStyle: PropTypes.object,
-  builtinPlacements: PropTypes.object,
-  loadData: PropTypes.func,
-  changeOnSelect: PropTypes.bool,
-  children: PropTypes.node,
-  onKeyDown: PropTypes.func,
-  expandTrigger: PropTypes.string,
-  fieldNames: PropTypes.object,
-  filedNames: PropTypes.object, // typo but for compatibility
-  expandIcon: PropTypes.node,
-  loadingIcon: PropTypes.node,
-};
-
-polyfill(Cascader);
 
 export default Cascader;

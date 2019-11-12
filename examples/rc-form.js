@@ -1,10 +1,9 @@
-/* eslint-disable no-console, react/no-multi-comp, react/prop-types */
-import 'rc-cascader/assets/index.less';
-import Cascader from 'rc-cascader';
+/* eslint-disable no-console, react/no-multi-comp, react/prop-types, react/button-has-type,prefer-destructuring,max-len */
 import React, { Component } from 'react';
 import { createForm } from 'rc-form';
-import ReactDOM from 'react-dom';
+import '../assets/index.less';
 import arrayTreeFilter from 'array-tree-filter';
+import Cascader from '../src';
 
 const addressOptions = [
   {
@@ -66,6 +65,7 @@ class CascaderInput extends Component {
       props.onChange(value);
     }
   };
+
   getLabel() {
     const props = this.props;
     const value = props.value || [];
@@ -73,6 +73,7 @@ class CascaderInput extends Component {
       .map(o => o.label)
       .join(', ');
   }
+
   render() {
     const props = this.props;
     return (
@@ -96,6 +97,7 @@ class Form extends Component {
       }
     });
   };
+
   render() {
     const props = this.props;
     const { form } = props;
@@ -123,4 +125,4 @@ class Form extends Component {
 
 const NewForm = createForm()(Form);
 
-ReactDOM.render(<NewForm />, document.getElementById('__react-content'));
+export default NewForm;
