@@ -51,7 +51,7 @@
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.2.1",
     "father": "^2.13.2",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "np": "^5.0.3",
     "rc-form": "^2.4.0",
     "react": "^16.0.0",
