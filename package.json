@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "array-tree-filter": "^2.1.0",
-    "rc-trigger": "^4.0.0-alpha.5",
+    "rc-trigger": "^4.0.0",
     "rc-util": "^4.0.4",
     "warning": "^4.0.1"
   }
