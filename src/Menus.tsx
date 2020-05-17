@@ -3,8 +3,8 @@ import arrayTreeFilter from 'array-tree-filter';
 import { CascaderOption, CascaderFieldNames } from './Cascader';
 
 interface MenusProps {
-  value?: string[];
-  activeValue?: string[];
+  value?: (string | number)[];
+  activeValue?: (string | number)[];
   options?: CascaderOption[];
   prefixCls?: string;
   expandTrigger?: string;
