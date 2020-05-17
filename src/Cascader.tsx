@@ -8,13 +8,15 @@ import Menus from './Menus';
 import BUILT_IN_PLACEMENTS from './placements';
 
 export interface CascaderFieldNames {
-  value?: string;
+  value?: string | number;
   label?: string;
   children?: string;
 }
 
+export type CascaderValueType = (string | number)[];
+
 export interface CascaderOption {
-  value?: string;
+  value?: string | number;
   label?: React.ReactNode;
   disabled?: boolean;
   isLeaf?: boolean;
@@ -24,10 +26,10 @@ export interface CascaderOption {
 }
 
 export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
-  value?: string[];
-  defaultValue?: string[];
+  value?: CascaderValueType;
+  defaultValue?: CascaderValueType;
   options?: CascaderOption[];
-  onChange?: (value: string[], selectOptions: CascaderOption[]) => void;
+  onChange?: (value: CascaderValueType, selectOptions: CascaderOption[]) => void;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
   popupVisible?: boolean;
   disabled?: boolean;
@@ -50,8 +52,8 @@ export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
 
 interface CascaderState {
   popupVisible?: boolean;
-  activeValue?: string[];
-  value?: string[];
+  activeValue?: CascaderValueType;
+  value?: CascaderValueType;
   prevProps?: CascaderProps;
 }
 
@@ -158,7 +160,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     return [...options].filter(o => !o.disabled);
   }
 
-  getActiveOptions(activeValue: string[]): CascaderOption[] {
+  getActiveOptions(activeValue: CascaderValueType): CascaderOption[] {
     return arrayTreeFilter(
       this.props.options || [],
       (o, level) => o[this.getFieldName('value')] === activeValue[level],
