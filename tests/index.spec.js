@@ -419,7 +419,6 @@ describe('Cascader', () => {
   });
 
   it('should has default fieldName when props not exist labelField and valueField and childrenField', () => {
-    // eslint-disable-line
     const wrapper = mount(
       <Cascader options={addressOptions}>
         <input />
@@ -455,7 +454,7 @@ describe('Cascader', () => {
   });
 
   it('should works and show warning message when use typo prop name: filedNames', () => {
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-console
     console.error = jest.fn();
     const wrapper = mount(
       <Cascader
@@ -468,14 +467,14 @@ describe('Cascader', () => {
         <input />
       </Cascader>,
     );
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalled();
     const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).toBe(3);
     expect(activeMenuItems.at(0).text()).toBe('福建');
     expect(activeMenuItems.at(1).text()).toBe('福州');
     expect(activeMenuItems.at(2).text()).toBe('马尾');
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-console
     console.error.mockClear();
   });
 
