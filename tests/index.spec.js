@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Cascader from '../';
+import Cascader from '..';
 import {
   addressOptions,
   optionsForActiveMenuItems,
@@ -594,6 +594,30 @@ describe('Cascader', () => {
       </Cascader>,
     );
     const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus).toMatchSnapshot();
+  });
+
+  it('should render custom dropdown correctly', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        popupVisible
+        dropdownRender={menus => (
+          <div className="custom-dropdown">
+            {menus}
+            <hr />
+            <span className="custom-dropdown-content">Hello, DropdownRender</span>
+          </div>
+        )}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    const customDropdown = wrapper.find('.custom-dropdown');
+    expect(customDropdown.length).toBe(1);
+    const customDropdownContent = wrapper.find('.custom-dropdown-content');
+    expect(customDropdownContent.length).toBe(1);
+    const menus = wrapper.find('.rc-cascader-menus');
     expect(menus).toMatchSnapshot();
   });
 });

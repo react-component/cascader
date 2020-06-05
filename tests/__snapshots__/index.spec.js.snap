@@ -50,3 +50,471 @@ exports[`Cascader should not show title when title is falsy 1`] = `
   </li>
 </ul>
 `;
+
+exports[`Cascader should render custom dropdown correctly 1`] = `
+Array [
+  <PopupInner
+    className="rc-cascader-menus"
+    hiddenClassName="rc-cascader-menus-hidden"
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
+    prefixCls="rc-cascader-menus"
+    style={
+      Object {
+        "opacity": 0,
+        "zIndex": undefined,
+      }
+    }
+    visible={true}
+  >
+    <div
+      className="rc-cascader-menus"
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+      style={
+        Object {
+          "opacity": 0,
+          "zIndex": undefined,
+        }
+      }
+    >
+      <div
+        className="custom-dropdown"
+      >
+        <Menus
+          activeValue={Array []}
+          builtinPlacements={
+            Object {
+              "bottomLeft": Object {
+                "offset": Array [
+                  0,
+                  4,
+                ],
+                "overflow": Object {
+                  "adjustX": 1,
+                  "adjustY": 1,
+                },
+                "points": Array [
+                  "tl",
+                  "bl",
+                ],
+              },
+              "bottomRight": Object {
+                "offset": Array [
+                  0,
+                  4,
+                ],
+                "overflow": Object {
+                  "adjustX": 1,
+                  "adjustY": 1,
+                },
+                "points": Array [
+                  "tr",
+                  "br",
+                ],
+              },
+              "topLeft": Object {
+                "offset": Array [
+                  0,
+                  -4,
+                ],
+                "overflow": Object {
+                  "adjustX": 1,
+                  "adjustY": 1,
+                },
+                "points": Array [
+                  "bl",
+                  "tl",
+                ],
+              },
+              "topRight": Object {
+                "offset": Array [
+                  0,
+                  -4,
+                ],
+                "overflow": Object {
+                  "adjustX": 1,
+                  "adjustY": 1,
+                },
+                "points": Array [
+                  "br",
+                  "tr",
+                ],
+              },
+            }
+          }
+          defaultFieldNames={
+            Object {
+              "children": "children",
+              "label": "label",
+              "value": "value",
+            }
+          }
+          disabled={false}
+          dropdownRender={[Function]}
+          expandIcon=">"
+          expandTrigger="click"
+          fieldNames={
+            Object {
+              "children": "children",
+              "label": "label",
+              "value": "value",
+            }
+          }
+          onChange={[Function]}
+          onItemDoubleClick={[Function]}
+          onPopupVisibleChange={[Function]}
+          onSelect={[Function]}
+          options={
+            Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "label": "马尾",
+                        "value": "mawei",
+                      },
+                    ],
+                    "label": "福州",
+                    "value": "fuzhou",
+                  },
+                  Object {
+                    "label": "泉州",
+                    "value": "quanzhou",
+                  },
+                ],
+                "label": "福建",
+                "value": "fj",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "label": "余杭",
+                        "value": "yuhang",
+                      },
+                    ],
+                    "label": "杭州",
+                    "value": "hangzhou",
+                  },
+                ],
+                "label": "浙江",
+                "value": "zj",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "label": "朝阳区",
+                    "value": "chaoyang",
+                  },
+                  Object {
+                    "label": "海淀区",
+                    "value": "haidian",
+                  },
+                ],
+                "label": "北京",
+                "value": "bj",
+              },
+            ]
+          }
+          popupClassName=""
+          popupPlacement="bottomLeft"
+          popupVisible={true}
+          prefixCls="rc-cascader"
+          transitionName=""
+          value={Array []}
+          visible={true}
+        >
+          <div>
+            <ul
+              className="rc-cascader-menu"
+              key="0"
+            >
+              <li
+                className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+                key="fj"
+                onClick={[Function]}
+                onDoubleClick={[Function]}
+                onMouseDown={[Function]}
+                role="menuitem"
+                title="福建"
+              >
+                福建
+                <span
+                  className="rc-cascader-menu-item-expand-icon"
+                >
+                  &gt;
+                </span>
+              </li>
+              <li
+                className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+                key="zj"
+                onClick={[Function]}
+                onDoubleClick={[Function]}
+                onMouseDown={[Function]}
+                role="menuitem"
+                title="浙江"
+              >
+                浙江
+                <span
+                  className="rc-cascader-menu-item-expand-icon"
+                >
+                  &gt;
+                </span>
+              </li>
+              <li
+                className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+                key="bj"
+                onClick={[Function]}
+                onDoubleClick={[Function]}
+                onMouseDown={[Function]}
+                role="menuitem"
+                title="北京"
+              >
+                北京
+                <span
+                  className="rc-cascader-menu-item-expand-icon"
+                >
+                  &gt;
+                </span>
+              </li>
+            </ul>
+          </div>
+        </Menus>
+        <hr />
+        <span
+          className="custom-dropdown-content"
+        >
+          Hello, DropdownRender
+        </span>
+      </div>
+    </div>
+  </PopupInner>,
+  <div
+    className="rc-cascader-menus"
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
+    style={
+      Object {
+        "opacity": 0,
+        "zIndex": undefined,
+      }
+    }
+  >
+    <div
+      className="custom-dropdown"
+    >
+      <Menus
+        activeValue={Array []}
+        builtinPlacements={
+          Object {
+            "bottomLeft": Object {
+              "offset": Array [
+                0,
+                4,
+              ],
+              "overflow": Object {
+                "adjustX": 1,
+                "adjustY": 1,
+              },
+              "points": Array [
+                "tl",
+                "bl",
+              ],
+            },
+            "bottomRight": Object {
+              "offset": Array [
+                0,
+                4,
+              ],
+              "overflow": Object {
+                "adjustX": 1,
+                "adjustY": 1,
+              },
+              "points": Array [
+                "tr",
+                "br",
+              ],
+            },
+            "topLeft": Object {
+              "offset": Array [
+                0,
+                -4,
+              ],
+              "overflow": Object {
+                "adjustX": 1,
+                "adjustY": 1,
+              },
+              "points": Array [
+                "bl",
+                "tl",
+              ],
+            },
+            "topRight": Object {
+              "offset": Array [
+                0,
+                -4,
+              ],
+              "overflow": Object {
+                "adjustX": 1,
+                "adjustY": 1,
+              },
+              "points": Array [
+                "br",
+                "tr",
+              ],
+            },
+          }
+        }
+        defaultFieldNames={
+          Object {
+            "children": "children",
+            "label": "label",
+            "value": "value",
+          }
+        }
+        disabled={false}
+        dropdownRender={[Function]}
+        expandIcon=">"
+        expandTrigger="click"
+        fieldNames={
+          Object {
+            "children": "children",
+            "label": "label",
+            "value": "value",
+          }
+        }
+        onChange={[Function]}
+        onItemDoubleClick={[Function]}
+        onPopupVisibleChange={[Function]}
+        onSelect={[Function]}
+        options={
+          Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "马尾",
+                      "value": "mawei",
+                    },
+                  ],
+                  "label": "福州",
+                  "value": "fuzhou",
+                },
+                Object {
+                  "label": "泉州",
+                  "value": "quanzhou",
+                },
+              ],
+              "label": "福建",
+              "value": "fj",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "label": "余杭",
+                      "value": "yuhang",
+                    },
+                  ],
+                  "label": "杭州",
+                  "value": "hangzhou",
+                },
+              ],
+              "label": "浙江",
+              "value": "zj",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "label": "朝阳区",
+                  "value": "chaoyang",
+                },
+                Object {
+                  "label": "海淀区",
+                  "value": "haidian",
+                },
+              ],
+              "label": "北京",
+              "value": "bj",
+            },
+          ]
+        }
+        popupClassName=""
+        popupPlacement="bottomLeft"
+        popupVisible={true}
+        prefixCls="rc-cascader"
+        transitionName=""
+        value={Array []}
+        visible={true}
+      >
+        <div>
+          <ul
+            className="rc-cascader-menu"
+            key="0"
+          >
+            <li
+              className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+              key="fj"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+              onMouseDown={[Function]}
+              role="menuitem"
+              title="福建"
+            >
+              福建
+              <span
+                className="rc-cascader-menu-item-expand-icon"
+              >
+                &gt;
+              </span>
+            </li>
+            <li
+              className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+              key="zj"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+              onMouseDown={[Function]}
+              role="menuitem"
+              title="浙江"
+            >
+              浙江
+              <span
+                className="rc-cascader-menu-item-expand-icon"
+              >
+                &gt;
+              </span>
+            </li>
+            <li
+              className="rc-cascader-menu-item rc-cascader-menu-item-expand"
+              key="bj"
+              onClick={[Function]}
+              onDoubleClick={[Function]}
+              onMouseDown={[Function]}
+              role="menuitem"
+              title="北京"
+            >
+              北京
+              <span
+                className="rc-cascader-menu-item-expand-icon"
+              >
+                &gt;
+              </span>
+            </li>
+          </ul>
+        </div>
+      </Menus>
+      <hr />
+      <span
+        className="custom-dropdown-content"
+      >
+        Hello, DropdownRender
+      </span>
+    </div>
+  </div>,
+]
+`;

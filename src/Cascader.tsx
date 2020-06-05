@@ -38,6 +38,7 @@ export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   popupPlacement?: string;
   prefixCls?: string;
   dropdownMenuColumnStyle?: React.CSSProperties;
+  dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   builtinPlacements?: BuildInPlacements;
   loadData?: (selectOptions: CascaderOption[]) => void;
   changeOnSelect?: boolean;
@@ -351,6 +352,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       builtinPlacements,
       popupPlacement,
       children,
+      dropdownRender,
       ...restProps
     } = this.props;
     // Did not show popup when there is no options
@@ -371,6 +373,10 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     } else {
       emptyMenuClassName = ` ${prefixCls}-menus-empty`;
     }
+    let popupNode = menus;
+    if (dropdownRender) {
+      popupNode = dropdownRender(menus);
+    }
     return (
       <Trigger
         ref={this.saveTrigger}
@@ -383,7 +389,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
         onPopupVisibleChange={this.handlePopupVisibleChange}
         prefixCls={`${prefixCls}-menus`}
         popupClassName={popupClassName + emptyMenuClassName}
-        popup={menus}
+        popup={popupNode}
       >
         {React.cloneElement(children, {
           onKeyDown: this.handleKeyDown,
