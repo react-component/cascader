@@ -2,6 +2,7 @@ import * as React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
 import { CascaderOption, CascaderFieldNames } from './Cascader';
 
+// Menu 是 现在 cascader 组件的 render item
 interface MenusProps {
   value?: (string | number)[];
   activeValue?: (string | number)[];
