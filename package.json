@@ -63,7 +63,6 @@
     "rc-select": "^11.1.1",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
-    "rc-virtual-list": "^1.1.2",
     "warning": "^4.0.1"
   }
 }
