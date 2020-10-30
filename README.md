@@ -5,7 +5,7 @@
 React Cascader Component
 
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][github-actions-image]][github-actions-url]
 [![Test coverage][codecov-image]][codecov-url]
 [![Dependencies](https://img.shields.io/david/react-component/cascader.svg?style=flat-square)](https://david-dm.org/react-component/cascader)
 [![DevDependencies](https://img.shields.io/david/dev/react-component/cascader.svg?style=flat-square)](https://david-dm.org/react-component/cascader?type=dev)
@@ -13,8 +13,8 @@ React Cascader Component
 
 [npm-image]: http://img.shields.io/npm/v/rc-cascader.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-cascader
-[travis-image]: https://img.shields.io/travis/react-component/cascader.svg?style=flat-square
-[travis-url]: https://travis-ci.org/react-component/cascader
+[github-actions-image]: https://github.com/react-component/cascader/workflows/CI/badge.svg
+[github-actions-url]: https://github.com/react-component/cascader/actions
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/cascader/branch/master
 [download-image]: https://img.shields.io/npm/dm/rc-cascader.svg?style=flat-square
