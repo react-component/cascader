@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Cascader from '../';
+import Cascader from '..';
 import { addressOptions } from './demoOptions';
 
 describe('Cascader', () => {
@@ -129,6 +129,23 @@ describe('Cascader', () => {
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
+  });
+
+  it('should call the Cascader onKeyDown callback in all cases', () => {
+    const onKeyDown = jest.fn();
+
+    wrapper = mount(
+      <Cascader options={addressOptions} onChange={onChange} onKeyDown={onKeyDown} expandIcon="">
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    expect(wrapper.state().popupVisible).toBeTruthy();
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ESC });
+    expect(wrapper.state().popupVisible).toBeFalsy();
+    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+
+    expect(onKeyDown).toHaveBeenCalledTimes(3);
   });
 
   it('should not handle keyDown events when children specify the onKeyDown', () => {
