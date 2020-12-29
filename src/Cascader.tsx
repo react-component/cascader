@@ -290,6 +290,9 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       e.keyCode !== KeyCode.TAB
     ) {
       this.setPopupVisible(true);
+      if (this.props.onKeyDown) {
+        this.props.onKeyDown(e);
+      }
       return;
     }
     if (e.keyCode === KeyCode.DOWN || e.keyCode === KeyCode.UP) {
@@ -324,6 +327,9 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       }
     } else if (e.keyCode === KeyCode.ESC || e.keyCode === KeyCode.TAB) {
       this.setPopupVisible(false);
+      if (this.props.onKeyDown) {
+        this.props.onKeyDown(e);
+      }
       return;
     }
     if (!activeValue || activeValue.length === 0) {
