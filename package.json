@@ -32,9 +32,10 @@
   "scripts": {
     "start": "dumi dev",
     "build": "dumi build",
+    "deploy": "UMI_ENV=gh npm run build && gh-pages -d .doc",
     "compile": "father build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.js",
+    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
     "test": "father test",
     "coverage": "father test --coverage",
     "now-build": "npm run build"
@@ -52,6 +53,7 @@
     "enzyme-adapter-react-16": "^1.0.2",
     "enzyme-to-json": "^3.2.1",
     "father": "^2.13.2",
+    "gh-pages": "^3.1.0",
     "glob": "^7.1.6",
     "jest": "^26.0.0",
     "np": "^6.0.0",

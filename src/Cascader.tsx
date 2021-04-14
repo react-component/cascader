@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Trigger, { BuildInPlacements, TriggerProps } from 'rc-trigger';
+import type { BuildInPlacements, TriggerProps } from 'rc-trigger';
+import Trigger from 'rc-trigger';
 import warning from 'warning';
 import KeyCode from 'rc-util/lib/KeyCode';
 import arrayTreeFilter from 'array-tree-filter';
@@ -59,7 +60,7 @@ interface CascaderState {
 }
 
 class Cascader extends React.Component<CascaderProps, CascaderState> {
-  defaultFieldNames: object;
+  defaultFieldNames: Record<string, unknown>;
 
   trigger: any;
 
@@ -158,7 +159,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     if (result[result.length - 2]) {
       return result[result.length - 2][this.getFieldName('children')];
     }
-    return [...options].filter(o => !o.disabled);
+    return [...options].filter((o) => !o.disabled);
   }
 
   getActiveOptions(activeValue: CascaderValueType): CascaderOption[] {
@@ -185,7 +186,10 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
 
   handleChange = (options: CascaderOption[], { visible }, e: React.KeyboardEvent<HTMLElement>) => {
     if (e.type !== 'keydown' || e.keyCode === KeyCode.ENTER) {
-      this.props.onChange(options.map(o => o[this.getFieldName('value')]), options);
+      this.props.onChange(
+        options.map((o) => o[this.getFieldName('value')]),
+        options,
+      );
       this.setPopupVisible(visible);
     }
   };
@@ -265,7 +269,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     const currentLevel = activeValue.length - 1 < 0 ? 0 : activeValue.length - 1;
     const currentOptions = this.getCurrentLevelOptions();
     const currentIndex = currentOptions
-      .map(o => o[this.getFieldName('value')])
+      .map((o) => o[this.getFieldName('value')])
       .indexOf(activeValue[currentLevel]);
     if (
       e.keyCode !== KeyCode.DOWN &&
@@ -344,7 +348,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     }
   };
 
-  saveTrigger = node => {
+  saveTrigger = (node) => {
     this.trigger = node;
   };
 

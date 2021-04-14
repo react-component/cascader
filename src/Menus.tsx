@@ -1,6 +1,6 @@
 import * as React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
-import { CascaderOption, CascaderFieldNames } from './Cascader';
+import type { CascaderOption, CascaderFieldNames } from './Cascader';
 
 interface MenusProps {
   value?: (string | number)[];
@@ -22,9 +22,8 @@ interface MenusProps {
   ) => void;
 }
 
-interface MenuItems {
-  [index: number]: HTMLLIElement;
-}
+type MenuItems = Record<number, HTMLLIElement>;
+
 class Menus extends React.Component<MenusProps> {
   menuItems: MenuItems = {};
 
@@ -110,7 +109,7 @@ class Menus extends React.Component<MenusProps> {
         title={title}
         {...expandProps}
         role="menuitem"
-        onMouseDown={e => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()}
       >
         {option[this.getFieldName('label')]}
         {expandIconNode}
@@ -132,8 +131,8 @@ class Menus extends React.Component<MenusProps> {
   getShowOptions(): CascaderOption[][] {
     const { options } = this.props;
     const result = this.getActiveOptions()
-      .map(activeOption => activeOption[this.getFieldName('children')])
-      .filter(activeOption => !!activeOption);
+      .map((activeOption) => activeOption[this.getFieldName('children')])
+      .filter((activeOption) => !!activeOption);
     result.unshift(options);
     return result;
   }
@@ -168,7 +167,7 @@ class Menus extends React.Component<MenusProps> {
     return activeValue[menuIndex] === option[this.getFieldName('value')];
   }
 
-  saveMenuItem = index => node => {
+  saveMenuItem = (index) => (node) => {
     this.menuItems[index] = node;
   };
 
@@ -178,7 +177,7 @@ class Menus extends React.Component<MenusProps> {
       <div>
         {this.getShowOptions().map((options, menuIndex) => (
           <ul className={`${prefixCls}-menu`} key={menuIndex} style={dropdownMenuColumnStyle}>
-            {options.map(option => this.getOption(option, menuIndex))}
+            {options.map((option) => this.getOption(option, menuIndex))}
           </ul>
         ))}
       </div>

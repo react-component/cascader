@@ -1,4 +1,4 @@
-/* eslint-disable no-console, react/no-multi-comp, react/prop-types, react/button-has-type,prefer-destructuring,max-len */
+/* eslint-disable no-console, react/no-multi-comp, react/prop-types, react/button-has-type,prefer-destructuring,max-len, max-classes-per-file */
 import React, { Component } from 'react';
 import { createForm } from 'rc-form';
 import '../assets/index.less';
@@ -59,7 +59,7 @@ const addressOptions = [
 ];
 
 class CascaderInput extends Component {
-  onChange = value => {
+  onChange = (value) => {
     const props = this.props;
     if (props.onChange) {
       props.onChange(value);
@@ -70,7 +70,7 @@ class CascaderInput extends Component {
     const props = this.props;
     const value = props.value || [];
     return arrayTreeFilter(props.options, (o, level) => o.value === value[level])
-      .map(o => o.label)
+      .map((o) => o.label)
       .join(', ');
   }
 
@@ -85,7 +85,7 @@ class CascaderInput extends Component {
 }
 
 class Form extends Component {
-  onSubmit = e => {
+  onSubmit = (e) => {
     const props = this.props;
     const { form } = props;
     e.preventDefault();
