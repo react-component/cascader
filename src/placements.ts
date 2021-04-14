@@ -1,4 +1,4 @@
-import { BuildInPlacements } from 'rc-trigger';
+import type { BuildInPlacements } from 'rc-trigger';
 
 const BUILT_IN_PLACEMENTS: BuildInPlacements = {
   bottomLeft: {

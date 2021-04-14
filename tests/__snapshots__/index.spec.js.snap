@@ -54,8 +54,8 @@ exports[`Cascader should not show title when title is falsy 1`] = `
 exports[`Cascader should render custom dropdown correctly 1`] = `
 <div
   className="rc-cascader-menus"
-  onMouseDown={[Function]}
-  onTouchStart={[Function]}
+  onMouseDownCapture={[Function]}
+  onTouchStartCapture={[Function]}
   style={
     Object {
       "opacity": 0,
