@@ -1,7 +1,5 @@
 # History
 
----
-
 ## 0.17.0 / 2018/12/14
 
 - should close popup on double click when changeOnSelect is set
