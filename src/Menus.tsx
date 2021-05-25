@@ -132,8 +132,7 @@ class Menus extends React.Component<MenusProps> {
     const { options } = this.props;
     const result = this.getActiveOptions()
       .map((activeOption) => activeOption[this.getFieldName('children')])
-      .filter((activeOption) => !!activeOption)
-      .filter((activeOption) => activeOption.length > 0);
+      .filter((activeOption) => !!activeOption && activeOption.length > 0);
     result.unshift(options);
     return result;
   }
