@@ -51,10 +51,7 @@ describe('Cascader', () => {
     expect(selectedValue).toBeFalsy();
     menu1Items.at(0).simulate('click');
     expect(
-      wrapper
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active'),
+      wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-active'),
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
@@ -284,6 +281,26 @@ describe('Cascader', () => {
     expect(menus.length).toBe(0);
   });
 
+  it('should not display when children is empty', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[
+          {
+            label: '福建',
+            value: 'fj',
+            children: [],
+          },
+        ]}
+        onChange={onChange}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+  });
+
   it('should be unselectable when option is disabled', () => {
     const newAddressOptions = [...addressOptions];
     newAddressOptions[0] = {
@@ -304,10 +321,7 @@ describe('Cascader', () => {
 
     menu1Items.at(0).simulate('click');
     expect(
-      wrapper
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-disabled'),
+      wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
     ).toBe(true);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(1);
@@ -357,7 +371,7 @@ describe('Cascader', () => {
           <Cascader
             options={addressOptions}
             value={this.state.value}
-            ref={node => {
+            ref={(node) => {
               this.cascader = node;
             }}
           >
@@ -509,10 +523,7 @@ describe('Cascader', () => {
     expect(wrapper.state().popupVisible).toBeFalsy();
     wrapper.find('input').simulate('click');
     expect(wrapper.state().popupVisible).toBeTruthy();
-    wrapper
-      .find('li')
-      .at(0)
-      .simulate('doubleClick');
+    wrapper.find('li').at(0).simulate('doubleClick');
     expect(wrapper.state().popupVisible).toBeFalsy();
   });
 
@@ -601,7 +612,7 @@ describe('Cascader', () => {
       <Cascader
         options={addressOptions}
         popupVisible
-        dropdownRender={menus => (
+        dropdownRender={(menus) => (
           <div className="custom-dropdown">
             {menus}
             <hr />
