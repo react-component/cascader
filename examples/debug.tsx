@@ -58,7 +58,7 @@ const addressOptions = [
 ];
 
 export default () => {
-  const [multiple, setMultiple] = React.useState(false);
+  const [multiple, setMultiple] = React.useState(true);
 
   return (
     <>
@@ -81,6 +81,7 @@ export default () => {
         onChange={(...args) => {
           console.log('值变化：', ...args);
         }}
+        open
       />
     </>
   );

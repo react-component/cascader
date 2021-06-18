@@ -54,7 +54,9 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       onClick: onPathClick,
     };
 
-    const columnNodes: React.ReactElement[] = [<Column key={0} index={0} {...columnProps} />];
+    const columnNodes: React.ReactElement[] = [
+      <Column key={0} index={0} {...columnProps} openKey={openPath[0]} />,
+    ];
 
     openPath.forEach((_, index) => {
       const mergedIndex = index + 1;
@@ -62,7 +64,13 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
 
       if (subOptions) {
         columnNodes.push(
-          <Column key={mergedIndex} index={mergedIndex} {...columnProps} options={subOptions} />,
+          <Column
+            key={mergedIndex}
+            index={mergedIndex}
+            {...columnProps}
+            options={subOptions}
+            openKey={openPath[mergedIndex]}
+          />,
         );
       }
     });
