@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import '../assets/index.less';
-import Cascader from './components/Cascader';
+import Cascader from '../src';
 
 const addressOptions = [
   {
@@ -63,11 +63,10 @@ class Demo extends React.Component {
   };
 
   onChange = (value, selectedOptions) => {
-    console.log('变化：', value, selectedOptions);
-    // console.log(value, selectedOptions);
-    // this.setState({
-    //   inputValue: selectedOptions.map((o) => o.label).join(', '),
-    // });
+    console.log(value, selectedOptions);
+    this.setState({
+      inputValue: selectedOptions.map((o) => o.label).join(', '),
+    });
   };
 
   render() {

@@ -7,6 +7,7 @@ export interface DataNode {
   value: string;
   disabled?: boolean;
   children?: DataNode[];
+  isLeaf?: boolean;
 }
 
 export interface FlattenDataNode {

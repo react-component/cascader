@@ -5,7 +5,7 @@ export interface ColumnProps {
   prefixCls: string;
   index: number;
   options: DataNode[];
-  onClick: (index: number, value: React.Key) => void;
+  onClick: (index: number, value: React.Key, isLeaf: boolean) => void;
 }
 
 export default function Column({ prefixCls, index, options, onClick }: ColumnProps) {
@@ -16,7 +16,10 @@ export default function Column({ prefixCls, index, options, onClick }: ColumnPro
           key={option.value}
           role="menuitemcheckbox"
           onClick={() => {
-            onClick(index, option.value);
+            const { isLeaf, children } = option;
+            const isMergedLeaf = isLeaf !== undefined ? isLeaf : !children?.length;
+
+            onClick(index, option.value, isMergedLeaf);
           }}
         >
           {option.label}

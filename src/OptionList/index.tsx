@@ -3,9 +3,11 @@ import type { OptionListProps, RefOptionListProps } from 'rc-select/lib/OptionLi
 import List from 'rc-virtual-list';
 import type { DataNode } from '../interface';
 import Column from './Column';
+import CascaderContext from '../context';
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
+    const { changeOnSelect } = React.useContext(CascaderContext);
     const { prefixCls, options, values, onSelect, multiple } = props;
     console.log('>>>', props);
 
@@ -21,11 +23,13 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     });
 
     // =========================== Path ===========================
-    const onPathClick = (index: number, pathValue: React.Key) => {
+    const onPathClick = (index: number, pathValue: React.Key, isLeaf: boolean) => {
       const nextOpenPath = [...openPath.slice(0, index), pathValue];
       setOpenPath(nextOpenPath);
 
-      onSelect(pathValue, { selected: true });
+      if (isLeaf || changeOnSelect) {
+        onSelect(pathValue, { selected: !values.has(pathValue) });
+      }
     };
 
     const getPathList = (pathList: React.Key[]) => {
