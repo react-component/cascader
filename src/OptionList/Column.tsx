@@ -9,57 +9,87 @@ export interface ColumnProps {
   options: DataNode[];
   /** Current Column opened item key */
   openKey?: React.Key;
-  onClick: (index: number, value: React.Key, isLeaf: boolean) => void;
+  onSelect: (value: React.Key) => void;
+  onOpen: (index: number, value: React.Key) => void;
+  changeOnSelect: boolean;
+  checkedSet: Set<React.Key>;
+  halfCheckedSet: Set<React.Key>;
 }
 
-export default function Column({ prefixCls, index, multiple, options, onClick }: ColumnProps) {
+export default function Column({
+  prefixCls,
+  index,
+  multiple,
+  options,
+  onSelect,
+  onOpen,
+  changeOnSelect,
+  checkedSet,
+  halfCheckedSet,
+}: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
-
-  const clickLockRef = React.useRef(false);
+  const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
 
   return (
     <ul className={menuPrefixCls} role="menu">
       {options.map((option) => {
-        const { isLeaf, children, disabled } = option;
+        const { isLeaf, children, disabled, value } = option;
+        const isMergedLeaf = isLeaf !== undefined ? isLeaf : !children?.length;
+
+        // >>>>> checked
+        const checked = checkedSet.has(value);
+
+        // >>>>> Open
+        const triggerOpen = () => {
+          if (!disabled && !isMergedLeaf) {
+            onOpen(index, value);
+          }
+        };
 
         // >>>>> Selection
         const triggerSelect = () => {
-          if (!disabled) {
-            const isMergedLeaf = isLeaf !== undefined ? isLeaf : !children?.length;
-
-            onClick(index, option.value, isMergedLeaf);
+          if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
+            onSelect(value);
           }
         };
 
         // >>>>> Render
         return (
           <li
-            key={option.value}
+            key={value}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             role="menuitemcheckbox"
-            onClick={!multiple ? triggerSelect : null}
+            onClick={() => {}}
           >
             {multiple && (
               <span
                 className={classNames(
-                  `${prefixCls}-checkbox`,
-                  // checked && `${prefixCls}-checkbox-checked`,
-                  // !checked && halfChecked && `${prefixCls}-checkbox-indeterminate`,
+                  checkboxPrefixCls,
+                  {
+                    [`${checkboxPrefixCls}-checked`]: checked,
+                    [`${checkboxPrefixCls}-indeterminate`]: !checked && halfCheckedSet.has(value),
+                  },
                   // (disabled || disableCheckbox) && `${prefixCls}-checkbox-disabled`,
                 )}
                 onClick={() => {
-                  clickLockRef.current = true;
                   triggerSelect();
-                  Promise.resolve().then(() => {
-                    clickLockRef.current = false;
-                  });
                 }}
               />
             )}
-            {option.label}
+            <div
+              className={`${menuItemPrefixCls}-content`}
+              onClick={() => {
+                triggerOpen();
+                if (!multiple) {
+                  triggerSelect();
+                }
+              }}
+            >
+              {option.label}
+            </div>
           </li>
         );
       })}

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { OptionListProps, RefOptionListProps } from 'rc-select/lib/OptionList';
+import { SelectContext } from 'rc-tree-select/lib/Context';
 import List from 'rc-virtual-list';
 import type { DataNode } from '../interface';
 import Column from './Column';
@@ -8,12 +9,20 @@ import CascaderContext from '../context';
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
     const { changeOnSelect } = React.useContext(CascaderContext);
-    const { prefixCls, options, values, onSelect, multiple } = props;
-    console.log('OptionList Props:', props);
+    const { prefixCls, options, onSelect, multiple } = props;
 
+    const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
+    // console.log('OptionList Props:', props, checkedKeys);
+    console.log('OptionList CheckedKeys:', checkedKeys);
+
+    // ========================== Values ==========================
+    const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
+    const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
+
+    // =========================== Open ===========================
     const [openPath, setOpenPath] = React.useState<React.Key[]>(() => {
-      if (!multiple && values.size) {
-        const firstValue = Array.from(values.values())[0];
+      if (!multiple && checkedSet.size) {
+        const firstValue = Array.from(checkedSet.values())[0];
 
         // TODO: Back of path
         return [];
@@ -23,13 +32,13 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     });
 
     // =========================== Path ===========================
-    const onPathClick = (index: number, pathValue: React.Key, isLeaf: boolean) => {
+    const onPathOpen = (index: number, pathValue: React.Key) => {
       const nextOpenPath = [...openPath.slice(0, index), pathValue];
       setOpenPath(nextOpenPath);
+    };
 
-      if (isLeaf || changeOnSelect) {
-        onSelect(pathValue, { selected: !values.has(pathValue) });
-      }
+    const onPathSelect = (pathValue: React.Key) => {
+      onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
     };
 
     const getPathList = (pathList: React.Key[]) => {
@@ -51,7 +60,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     // >>>>> Columns
     const columnProps = {
       ...props,
-      onClick: onPathClick,
+      onOpen: onPathOpen,
+      onSelect: onPathSelect,
+      checkedSet,
+      halfCheckedSet,
+      changeOnSelect,
     };
 
     const columnNodes: React.ReactElement[] = [

@@ -98,7 +98,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         optionsList.push(valueOptions);
       });
 
-      console.log('==>>>>>', pathList, optionsList);
+      // console.log('==>>>>>', pathList, optionsList);
 
       if (multiple) {
         (onChange as OnMultipleChange)(pathList, optionsList);
@@ -116,6 +116,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         {...restProps}
         dropdownMatchSelectWidth={false}
         treeData={options}
+        treeCheckable={multiple}
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
       />
