@@ -1,0 +1,40 @@
+@select-prefix: ~'rc-cascader';
+
+.@{select-prefix} {
+  &-dropdown {
+    min-height: auto;
+  }
+
+  &-holder {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  &-menu {
+    flex: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid blue;
+
+    &:first-child {
+      border-left: 0;
+    }
+
+    &-item {
+      display: flex;
+      flex-wrap: nowrap;
+
+      &-disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &-checkbox {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid blue;
+  }
+}
