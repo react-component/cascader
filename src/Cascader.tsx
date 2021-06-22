@@ -17,6 +17,7 @@ const RefCascader = generate({
 
 interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   options?: DataNode[];
+  children?: React.ReactElement;
 
   changeOnSelect?: boolean;
 
@@ -35,7 +36,6 @@ interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   // builtinPlacements?: BuildInPlacements;
   // loadData?: (selectOptions: DataNode[]) => void;
 
-  // children?: React.ReactElement;
   // onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
   // expandTrigger?: string;
   // // fieldNames?: CascaderFieldNames;
@@ -66,7 +66,7 @@ interface CascaderRef {
 }
 
 const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<CascaderRef>) => {
-  const { changeOnSelect, options, onChange, ...restProps } = props;
+  const { changeOnSelect, children, options, onChange, ...restProps } = props;
   const { multiple } = restProps;
 
   const context = React.useMemo(() => ({ changeOnSelect }), [changeOnSelect]);
@@ -120,6 +120,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         treeCheckable={multiple}
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
+        {...{
+          getRawInputElement: () => children,
+        }}
       />
     </CascaderContext.Provider>
   );
