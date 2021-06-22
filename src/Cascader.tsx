@@ -98,8 +98,6 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         optionsList.push(valueOptions);
       });
 
-      // console.log('==>>>>>', pathList, optionsList);
-
       if (multiple) {
         (onChange as OnMultipleChange)(pathList, optionsList);
       } else {

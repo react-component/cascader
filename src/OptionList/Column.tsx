@@ -21,6 +21,7 @@ export default function Column({
   index,
   multiple,
   options,
+  openKey,
   onSelect,
   onOpen,
   changeOnSelect,
@@ -59,6 +60,8 @@ export default function Column({
           <li
             key={value}
             className={classNames(menuItemPrefixCls, {
+              [`${menuItemPrefixCls}-active`]: openKey === value,
+              [`${menuItemPrefixCls}-selected`]: !multiple && checked,
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             role="menuitemcheckbox"
@@ -83,7 +86,7 @@ export default function Column({
               className={`${menuItemPrefixCls}-content`}
               onClick={() => {
                 triggerOpen();
-                if (!multiple) {
+                if (!multiple || isMergedLeaf) {
                   triggerSelect();
                 }
               }}
