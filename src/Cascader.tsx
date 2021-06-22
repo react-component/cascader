@@ -113,6 +113,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         ref={cascaderRef}
         {...restProps}
         dropdownMatchSelectWidth={false}
+        dropdownStyle={{
+          minWidth: 'auto',
+        }}
         treeData={options}
         treeCheckable={multiple}
         onChange={onInternalChange}
