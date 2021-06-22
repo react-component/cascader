@@ -82,6 +82,22 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const getEntityByValue = (value: React.Key): FlattenDataNode =>
     (cascaderRef.current as any).getEntityByValue(value);
 
+  // =========================== Value ============================
+  const labelRender = (entity: FlattenDataNode) => {
+    if (multiple) {
+      return entity.data.label;
+    }
+
+    const pathLabel: React.ReactNode[] = [];
+    let current = entity;
+    while (current) {
+      pathLabel.unshift(current.data.label);
+      current = current.parent;
+    }
+
+    return pathLabel.join('>');
+  };
+
   // =========================== Change ===========================
   const onInternalChange = (value: React.Key | React.Key[]) => {
     if (onChange) {
@@ -120,6 +136,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         treeCheckable={multiple}
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
+        labelRender={labelRender}
         {...{
           getRawInputElement: () => children,
         }}
