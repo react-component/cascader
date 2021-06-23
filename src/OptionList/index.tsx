@@ -5,11 +5,12 @@ import List from 'rc-virtual-list';
 import type { DataNode } from '../interface';
 import Column from './Column';
 import CascaderContext from '../context';
+import { restoreCompatibleValue } from '../util';
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
     const { changeOnSelect } = React.useContext(CascaderContext);
-    const { prefixCls, options, onSelect, multiple } = props;
+    const { prefixCls, options, onSelect, multiple, open, flattenOptions } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
@@ -18,16 +19,24 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
 
     // =========================== Open ===========================
-    const [openPath, setOpenPath] = React.useState<React.Key[]>(() => {
-      if (!multiple && checkedSet.size) {
-        const firstValue = Array.from(checkedSet.values())[0];
+    const [openPath, setOpenPath] = React.useState<React.Key[]>([]);
 
-        // TODO: Back of path
-        return [];
+    React.useEffect(() => {
+      if (open) {
+        let nextOpenPath: React.Key[] = [];
+
+        if (!multiple && checkedKeys.length) {
+          const entity = flattenOptions.find(
+            (flattenOption) => flattenOption.data.value === checkedKeys[0],
+          );
+
+          if (entity) {
+            nextOpenPath = restoreCompatibleValue(entity as any).path;
+          }
+        }
+        setOpenPath(nextOpenPath);
       }
-
-      return [];
-    });
+    }, [open]);
 
     // =========================== Path ===========================
     const onPathOpen = (index: number, pathValue: React.Key) => {

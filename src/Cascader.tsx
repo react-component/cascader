@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { BuildInPlacements, TriggerProps } from 'rc-trigger';
+import type { TriggerProps } from 'rc-trigger';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import type { RefSelectProps } from 'rc-select/lib/generate';
@@ -8,6 +8,15 @@ import type { CascaderValueType, DataNode } from './interface';
 import CascaderContext from './context';
 import { restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
+
+/**
+ * `rc-cascader` is much like `rc-tree-select` but API is very different.
+ * It's caused that component developer is not same person
+ * and we do not rice the API naming standard at that time.
+ *
+ * To avoid breaking change, wrap the `rc-tree-select` to compatible with `rc-cascader` API.
+ * This should be better to merge to same API like `rc-tree-select` or `rc-select` in next major version.
+ */
 
 const RefCascader = generate({
   prefixCls: 'rc-cascader',
@@ -118,14 +127,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       return entity.data.label;
     }
 
-    const pathLabel: React.ReactNode[] = [];
-    let current = entity;
-    while (current) {
-      pathLabel.unshift(current.data.label);
-      current = current.parent;
-    }
-
-    return pathLabel.join('>');
+    return restoreCompatibleValue(entity)
+      .options.map((opt) => opt.label)
+      .join('>');
   };
 
   // =========================== Change ===========================
@@ -148,8 +152,6 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       if (value === undefined) {
         setInternalValue(valueList);
       }
-
-      console.log('~~~>');
 
       if (multiple) {
         (onChange as OnMultipleChange)(pathList, optionsList);

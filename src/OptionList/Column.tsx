@@ -65,7 +65,7 @@ export default function Column({
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             role="menuitemcheckbox"
-            onClick={() => {}}
+            aria-checked={checked}
           >
             {multiple && (
               <span
