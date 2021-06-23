@@ -12,8 +12,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     const { prefixCls, options, onSelect, multiple } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-    // console.log('OptionList Props:', props, checkedKeys);
-    console.log('OptionList CheckedKeys:', checkedKeys);
 
     // ========================== Values ==========================
     const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);

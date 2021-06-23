@@ -7,6 +7,7 @@ import OptionList from './OptionList';
 import type { CascaderValueType, DataNode } from './interface';
 import CascaderContext from './context';
 import { restoreCompatibleValue } from './util';
+import useUpdateEffect from './hooks/useUpdateEffect';
 
 const RefCascader = generate({
   prefixCls: 'rc-cascader',
@@ -19,10 +20,13 @@ interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   options?: DataNode[];
   children?: React.ReactElement;
 
+  // Value
+  value?: CascaderValueType | CascaderValueType[];
+  defaultValue?: CascaderValueType | CascaderValueType[];
+
   changeOnSelect?: boolean;
 
-  // value?: CascaderValueType;
-  // defaultValue?: CascaderValueType;
+  allowClear?: boolean;
 
   // onPopupVisibleChange?: (popupVisible: boolean) => void;
   // popupVisible?: boolean;
@@ -46,6 +50,7 @@ interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
 
 type OnSingleChange = (value: CascaderValueType, selectOptions: DataNode[]) => void;
 type OnMultipleChange = (value: CascaderValueType[], selectOptions: DataNode[][]) => void;
+
 interface SingleCascaderProps extends BaseCascaderProps {
   multiple?: false;
 
@@ -66,7 +71,7 @@ interface CascaderRef {
 }
 
 const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<CascaderRef>) => {
-  const { changeOnSelect, children, options, onChange, ...restProps } = props;
+  const { changeOnSelect, children, options, onChange, value, defaultValue, ...restProps } = props;
   const { multiple } = restProps;
 
   const context = React.useMemo(() => ({ changeOnSelect }), [changeOnSelect]);
@@ -79,10 +84,35 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     blur: cascaderRef.current.blur,
   }));
 
-  const getEntityByValue = (value: React.Key): FlattenDataNode =>
-    (cascaderRef.current as any).getEntityByValue(value);
+  const getEntityByValue = (val: React.Key): FlattenDataNode =>
+    (cascaderRef.current as any).getEntityByValue(val);
 
   // =========================== Value ============================
+  /**
+   * Always pass props value to last value unit:
+   * - single: ['light', 'little'] => ['little']
+   * - multiple: [['light', 'little'], ['bamboo']] => ['little', 'bamboo']
+   */
+  const parseToInternalValue = (
+    propValue?: CascaderValueType | CascaderValueType[],
+  ): React.Key[] => {
+    let propValueList: CascaderValueType[] = [];
+    if (propValue) {
+      propValueList = (multiple ? propValue : [propValue]) as CascaderValueType[];
+    }
+
+    return propValueList.map((pathValue) => pathValue[pathValue.length - 1]);
+  };
+
+  const [internalValue, setInternalValue] = React.useState(() =>
+    parseToInternalValue(value || defaultValue),
+  );
+
+  useUpdateEffect(() => {
+    setInternalValue(parseToInternalValue(value));
+  }, [value]);
+
+  // =========================== Label ============================
   const labelRender = (entity: FlattenDataNode) => {
     if (multiple) {
       return entity.data.label;
@@ -99,9 +129,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   };
 
   // =========================== Change ===========================
-  const onInternalChange = (value: React.Key | React.Key[]) => {
+  const onInternalChange = (newValue: any /** Not care current type */) => {
     if (onChange) {
-      const valueList = (multiple ? value : [value]) as React.Key[];
+      const valueList = (multiple ? newValue : [newValue]) as React.Key[];
 
       const pathList: CascaderValueType[] = [];
       const optionsList: DataNode[][] = [];
@@ -114,10 +144,19 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         optionsList.push(valueOptions);
       });
 
+      // Fill state
+      if (value === undefined) {
+        setInternalValue(valueList);
+      }
+
+      console.log('~~~>');
+
       if (multiple) {
         (onChange as OnMultipleChange)(pathList, optionsList);
       } else {
-        (onChange as OnSingleChange)(pathList[0], optionsList[0]);
+        // TODO: This should return null as other component.
+        // But its a breaking change and we should keep the logic.
+        (onChange as OnSingleChange)(pathList[0] || [], optionsList[0] || []);
       }
     }
   };
@@ -128,6 +167,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       <RefCascader
         ref={cascaderRef}
         {...restProps}
+        value={multiple ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
         dropdownStyle={{
           minWidth: 'auto',

@@ -68,12 +68,15 @@ const addressOptions = [
   },
 ];
 
+const defaultValue = ['fj', 'fuzhou', 'mawei'];
+
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(true);
   const [inputValue, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
-    console.log('[DEBUG] onChange:', value, selectedOptions);
+    console.log('[DEBUG] onChange - value:', value);
+    console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
     setInputValue(selectedOptions.map((o) => o.label).join(', '));
   };
 
@@ -89,7 +92,13 @@ const Demo = () => {
         />
         Multiple
       </label>
-      <Cascader options={addressOptions} onChange={onChange} multiple={multiple} />
+      <Cascader
+        options={addressOptions}
+        onChange={onChange}
+        multiple={multiple}
+        allowClear
+        defaultValue={multiple ? [defaultValue] : defaultValue}
+      />
     </>
   );
 };
