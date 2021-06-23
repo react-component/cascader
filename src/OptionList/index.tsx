@@ -4,13 +4,11 @@ import { SelectContext } from 'rc-tree-select/lib/Context';
 import List from 'rc-virtual-list';
 import type { DataNode } from '../interface';
 import Column from './Column';
-import CascaderContext from '../context';
 import { restoreCompatibleValue } from '../util';
 import SearchResult from './SearchResult';
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
-    const { changeOnSelect } = React.useContext(CascaderContext);
     const {
       prefixCls,
       options,
@@ -90,7 +88,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       onSelect: onPathSelect,
       checkedSet,
       halfCheckedSet,
-      changeOnSelect,
     };
 
     // >>>>> Search

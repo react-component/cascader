@@ -38,5 +38,5 @@ export default function SearchResult(props: SearchResultProps) {
 
   const optionList = React.useMemo(() => flattenOptions(options), [options]);
 
-  return <Column {...props} index={0} options={optionList} />;
+  return <Column {...props} index={0} options={optionList} multiple={false} />;
 }

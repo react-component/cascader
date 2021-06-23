@@ -22,6 +22,7 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  * Deprecated:
  * - popupVisible
  * - onPopupVisibleChange
+ * - filedNames
  */
 
 const RefCascader = generate({
@@ -30,6 +31,29 @@ const RefCascader = generate({
 });
 
 // ====================================== Wrap ======================================
+export interface FieldNames {
+  value?: string | number;
+  label?: string;
+  children?: string;
+}
+
+export interface ShowSearchType {
+  filter?: (inputValue: string, path: CascaderValueType, names: FieldNames) => boolean;
+  render?: (
+    inputValue: string,
+    path: CascaderValueType,
+    prefixCls: string | undefined,
+    names: FieldNames,
+  ) => React.ReactNode;
+  sort?: (
+    a: CascaderValueType,
+    b: CascaderValueType,
+    inputValue: string,
+    names: FieldNames,
+  ) => number;
+  matchInputWidth?: boolean;
+  limit?: number | false;
+}
 
 interface BaseCascaderProps
   extends Pick<TriggerProps, 'getPopupContainer'>,
@@ -43,8 +67,13 @@ interface BaseCascaderProps
   changeOnSelect?: boolean;
   allowClear?: boolean;
   disabled?: boolean;
-  showSearch?: boolean;
 
+  /** @deprecated Typo. Please use `fieldNames` instead. */
+  filedNames?: FieldNames;
+  fieldNames?: FieldNames;
+
+  // Search
+  showSearch?: boolean | ShowSearchType;
   searchValue?: string;
   onSearch?: (search: string) => void;
 
@@ -57,6 +86,9 @@ interface BaseCascaderProps
   onPopupVisibleChange?: (open: boolean) => void;
   onDropdownVisibleChange?: (open: boolean) => void;
 
+  // Trigger
+  expandTrigger?: 'hover' | 'click';
+
   // transitionName?: string;
   // popupClassName?: string;
   // popupPlacement?: string;
@@ -66,10 +98,6 @@ interface BaseCascaderProps
   // builtinPlacements?: BuildInPlacements;
   // loadData?: (selectOptions: DataNode[]) => void;
 
-  // onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
-  // expandTrigger?: string;
-  // // fieldNames?: CascaderFieldNames;
-  // // filedNames?: CascaderFieldNames; // typo but for compatibility
   // expandIcon?: React.ReactNode;
   // loadingIcon?: React.ReactNode;
 }
@@ -113,11 +141,16 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     searchValue,
     onSearch,
 
+    expandTrigger,
+
     ...restProps
   } = props;
   const { multiple } = restProps;
 
-  const context = React.useMemo(() => ({ changeOnSelect }), [changeOnSelect]);
+  const context = React.useMemo(
+    () => ({ changeOnSelect, expandTrigger }),
+    [changeOnSelect, expandTrigger],
+  );
 
   // ============================ Ref =============================
   const cascaderRef = React.useRef<RefSelectProps>();
@@ -174,7 +207,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // =========================== Change ===========================
   const onInternalChange = (newValue: any /** Not care current type */) => {
-     // TODO: Need improve motion experience
+    // TODO: Need improve motion experience
     setMergedSearch('');
 
     if (onChange) {

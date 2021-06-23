@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import type { DataNode } from '../interface';
 import { isLeaf } from '../util';
+import CascaderContext from '../context';
 
 export interface ColumnProps {
   prefixCls: string;
@@ -12,7 +13,6 @@ export interface ColumnProps {
   openKey?: React.Key;
   onSelect: (value: React.Key) => void;
   onOpen: (index: number, value: React.Key) => void;
-  changeOnSelect: boolean;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
 }
@@ -25,13 +25,14 @@ export default function Column({
   openKey,
   onSelect,
   onOpen,
-  changeOnSelect,
   checkedSet,
   halfCheckedSet,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
   const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
+
+  const { changeOnSelect, expandTrigger } = React.useContext(CascaderContext);
 
   return (
     <ul className={menuPrefixCls} role="menu">
