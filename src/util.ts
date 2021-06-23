@@ -19,3 +19,8 @@ export function restoreCompatibleValue(entity: FlattenDataNode): {
 
   return { path, options };
 }
+
+export function isLeaf(option: DataNode) {
+  const { isLeaf: leaf, children } = option;
+  return leaf !== undefined ? leaf : !children?.length;
+}

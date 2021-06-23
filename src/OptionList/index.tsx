@@ -6,11 +6,21 @@ import type { DataNode } from '../interface';
 import Column from './Column';
 import CascaderContext from '../context';
 import { restoreCompatibleValue } from '../util';
+import SearchResult from './SearchResult';
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
     const { changeOnSelect } = React.useContext(CascaderContext);
-    const { prefixCls, options, onSelect, multiple, open, flattenOptions, searchValue } = props;
+    const {
+      prefixCls,
+      options,
+      onSelect,
+      multiple,
+      open,
+      flattenOptions,
+      searchValue,
+      onToggleOpen,
+    } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
@@ -46,6 +56,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
 
     const onPathSelect = (pathValue: React.Key) => {
       onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
+
+      if (!multiple) {
+        onToggleOpen(false);
+      }
     };
 
     const getPathList = (pathList: React.Key[]) => {
@@ -70,12 +84,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     }));
 
     // ========================== Render ==========================
-    // >>>>> Search
-    if (searchValue) {
-      return '233';
-    }
-
-    // >>>>> Columns
     const columnProps = {
       ...props,
       onOpen: onPathOpen,
@@ -85,6 +93,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       changeOnSelect,
     };
 
+    // >>>>> Search
+    if (searchValue) {
+      return <SearchResult {...columnProps} />;
+    }
+
+    // >>>>> Columns
     const columnNodes: React.ReactElement[] = [
       <Column key={0} index={0} {...columnProps} openKey={openPath[0]} />,
     ];

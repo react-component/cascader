@@ -174,6 +174,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // =========================== Change ===========================
   const onInternalChange = (newValue: any /** Not care current type */) => {
+     // TODO: Need improve motion experience
+    setMergedSearch('');
+
     if (onChange) {
       const valueList = (multiple ? newValue : [newValue]) as React.Key[];
 
@@ -236,6 +239,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         dropdownStyle={dropdownStyle}
         treeData={options}
         treeCheckable={multiple}
+        treeNodeFilterProp="label"
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
         open={mergedOpen}

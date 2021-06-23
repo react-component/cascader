@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import type { DataNode } from '../interface';
+import { isLeaf } from '../util';
 
 export interface ColumnProps {
   prefixCls: string;
@@ -34,9 +35,9 @@ export default function Column({
 
   return (
     <ul className={menuPrefixCls} role="menu">
-      {options.map((option) => {
-        const { isLeaf, children, disabled, value } = option;
-        const isMergedLeaf = isLeaf !== undefined ? isLeaf : !children?.length;
+      {options.map(option => {
+        const { disabled, value } = option;
+        const isMergedLeaf = isLeaf(option);
 
         // >>>>> checked
         const checked = checkedSet.has(value);
