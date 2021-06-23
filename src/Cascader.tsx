@@ -1,5 +1,7 @@
 import * as React from 'react';
 import type { TriggerProps } from 'rc-trigger';
+import warning from 'rc-util/lib/warning';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import type { RefSelectProps } from 'rc-select/lib/generate';
@@ -17,7 +19,8 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  * To avoid breaking change, wrap the `rc-tree-select` to compatible with `rc-cascader` API.
  * This should be better to merge to same API like `rc-tree-select` or `rc-select` in next major version.
  *
- * Remove:
+ * Deprecated:
+ * - popupVisible
  * - onPopupVisibleChange
  */
 
@@ -28,25 +31,32 @@ const RefCascader = generate({
 
 // ====================================== Wrap ======================================
 
-interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
+interface BaseCascaderProps
+  extends Pick<TriggerProps, 'getPopupContainer'>,
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'defaultValue' | 'onChange'> {
   options?: DataNode[];
   children?: React.ReactElement;
 
   // Value
   value?: CascaderValueType | CascaderValueType[];
   defaultValue?: CascaderValueType | CascaderValueType[];
-
   changeOnSelect?: boolean;
-
   allowClear?: boolean;
+  disabled?: boolean;
+  showSearch?: boolean;
+
+  searchValue?: string;
+  onSearch?: (search: string) => void;
+
+  // Open
+  /** @deprecated Use `open` instead */
+  popupVisible?: boolean;
+  open?: boolean;
 
   /** @deprecated Use `onDropdownVisibleChange` instead */
-  onPopupVisibleChange?: (popupVisible: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
+  onDropdownVisibleChange?: (open: boolean) => void;
 
-  onDropdownVisibleChange?: (popupVisible: boolean) => void;
-
-  // popupVisible?: boolean;
-  // disabled?: boolean;
   // transitionName?: string;
   // popupClassName?: string;
   // popupPlacement?: string;
@@ -94,8 +104,15 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     onChange,
     value,
     defaultValue,
+
+    popupVisible,
+    open,
     onDropdownVisibleChange,
     onPopupVisibleChange,
+
+    searchValue,
+    onSearch,
+
     ...restProps
   } = props;
   const { multiple } = restProps;
@@ -113,6 +130,12 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const getEntityByValue = (val: React.Key): FlattenDataNode =>
     (cascaderRef.current as any).getEntityByValue(val);
 
+  // =========================== Search ===========================
+  const [mergedSearch, setMergedSearch] = useMergedState(undefined, {
+    value: searchValue,
+    onChange: onSearch,
+  });
+
   // =========================== Value ============================
   /**
    * Always pass props value to last value unit:
@@ -127,7 +150,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       propValueList = (multiple ? propValue : [propValue]) as CascaderValueType[];
     }
 
-    return propValueList.map((pathValue) => pathValue[pathValue.length - 1]);
+    return propValueList.map(pathValue => pathValue[pathValue.length - 1]);
   };
 
   const [internalValue, setInternalValue] = React.useState(() =>
@@ -145,7 +168,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     }
 
     return restoreCompatibleValue(entity)
-      .options.map((opt) => opt.label)
+      .options.map(opt => opt.label)
       .join('>');
   };
 
@@ -157,9 +180,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       const pathList: CascaderValueType[] = [];
       const optionsList: DataNode[][] = [];
 
-      const valueEntities = valueList.map(getEntityByValue).filter((entity) => entity);
+      const valueEntities = valueList.map(getEntityByValue).filter(entity => entity);
 
-      valueEntities.forEach((entity) => {
+      valueEntities.forEach(entity => {
         const { path, options: valueOptions } = restoreCompatibleValue(entity);
         pathList.push(path);
         optionsList.push(valueOptions);
@@ -181,12 +204,28 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   };
 
   // ============================ Open ============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !onPopupVisibleChange,
+      '`onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
+    );
+    warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
+  }
+
+  const mergedOpen = open !== undefined ? open : popupVisible;
+
   const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
     onDropdownVisibleChange?.(nextVisible);
     onPopupVisibleChange?.(nextVisible);
   };
 
   // =========================== Render ===========================
+  const dropdownStyle: React.CSSProperties = mergedSearch
+    ? {}
+    : {
+        minWidth: 'auto',
+      };
+
   return (
     <CascaderContext.Provider value={context}>
       <RefCascader
@@ -194,14 +233,15 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         {...restProps}
         value={multiple ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
-        dropdownStyle={{
-          minWidth: 'auto',
-        }}
+        dropdownStyle={dropdownStyle}
         treeData={options}
         treeCheckable={multiple}
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
+        open={mergedOpen}
         onDropdownVisibleChange={onInternalDropdownVisibleChange}
+        searchValue={mergedSearch}
+        onSearch={setMergedSearch}
         labelRender={labelRender}
         {...{
           getRawInputElement: () => children,

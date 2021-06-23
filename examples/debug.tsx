@@ -77,7 +77,7 @@ const Demo = () => {
   const onChange = (value: any, selectedOptions: any) => {
     console.log('[DEBUG] onChange - value:', value);
     console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
-    setInputValue(selectedOptions.map((o) => o.label).join(', '));
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
   return (
@@ -93,11 +93,13 @@ const Demo = () => {
         Multiple
       </label>
       <Cascader
+        style={{ width: 200 }}
         options={addressOptions}
         onChange={onChange}
         multiple={multiple}
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
+        showSearch
       />
     </>
   );

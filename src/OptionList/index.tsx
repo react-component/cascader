@@ -10,7 +10,7 @@ import { restoreCompatibleValue } from '../util';
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
   (props, ref) => {
     const { changeOnSelect } = React.useContext(CascaderContext);
-    const { prefixCls, options, onSelect, multiple, open, flattenOptions } = props;
+    const { prefixCls, options, onSelect, multiple, open, flattenOptions, searchValue } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
@@ -27,7 +27,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
 
         if (!multiple && checkedKeys.length) {
           const entity = flattenOptions.find(
-            (flattenOption) => flattenOption.data.value === checkedKeys[0],
+            flattenOption => flattenOption.data.value === checkedKeys[0],
           );
 
           if (entity) {
@@ -53,7 +53,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
 
       for (let i = 0; i < pathList.length; i += 1) {
         currentOptions = (currentOptions || []).find(
-          (option) => option.value === pathList[i],
+          option => option.value === pathList[i],
         ).children;
       }
 
@@ -61,9 +61,20 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     };
 
     // ========================= Keyboard =========================
-    React.useImperativeHandle(ref, () => ({} as any));
+    React.useImperativeHandle(ref, () => ({
+      // scrollTo: treeRef.current?.scrollTo,
+      onKeyDown: event => {
+        const { which } = event;
+      },
+      onKeyUp: () => {},
+    }));
 
     // ========================== Render ==========================
+    // >>>>> Search
+    if (searchValue) {
+      return '233';
+    }
+
     // >>>>> Columns
     const columnProps = {
       ...props,
