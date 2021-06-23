@@ -16,6 +16,9 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  *
  * To avoid breaking change, wrap the `rc-tree-select` to compatible with `rc-cascader` API.
  * This should be better to merge to same API like `rc-tree-select` or `rc-select` in next major version.
+ *
+ * Remove:
+ * - onPopupVisibleChange
  */
 
 const RefCascader = generate({
@@ -37,7 +40,11 @@ interface BaseCascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
 
   allowClear?: boolean;
 
-  // onPopupVisibleChange?: (popupVisible: boolean) => void;
+  /** @deprecated Use `onDropdownVisibleChange` instead */
+  onPopupVisibleChange?: (popupVisible: boolean) => void;
+
+  onDropdownVisibleChange?: (popupVisible: boolean) => void;
+
   // popupVisible?: boolean;
   // disabled?: boolean;
   // transitionName?: string;
@@ -80,7 +87,17 @@ interface CascaderRef {
 }
 
 const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<CascaderRef>) => {
-  const { changeOnSelect, children, options, onChange, value, defaultValue, ...restProps } = props;
+  const {
+    changeOnSelect,
+    children,
+    options,
+    onChange,
+    value,
+    defaultValue,
+    onDropdownVisibleChange,
+    onPopupVisibleChange,
+    ...restProps
+  } = props;
   const { multiple } = restProps;
 
   const context = React.useMemo(() => ({ changeOnSelect }), [changeOnSelect]);
@@ -163,6 +180,12 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     }
   };
 
+  // ============================ Open ============================
+  const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
+    onDropdownVisibleChange?.(nextVisible);
+    onPopupVisibleChange?.(nextVisible);
+  };
+
   // =========================== Render ===========================
   return (
     <CascaderContext.Provider value={context}>
@@ -178,6 +201,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         treeCheckable={multiple}
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
+        onDropdownVisibleChange={onInternalDropdownVisibleChange}
         labelRender={labelRender}
         {...{
           getRawInputElement: () => children,
