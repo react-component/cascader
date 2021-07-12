@@ -50,6 +50,7 @@ export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   filedNames?: CascaderFieldNames; // typo but for compatibility
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
+  popupVisibleAfterSelect?: boolean;
 }
 
 interface CascaderState {
@@ -103,6 +104,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     expandTrigger: 'click',
     fieldNames: { label: 'label', value: 'value', children: 'children' },
     expandIcon: '>',
+    popupVisibleAfterSelect: false,
   };
 
   static getDerivedStateFromProps(nextProps: CascaderProps, prevState: CascaderState) {
@@ -190,7 +192,8 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
         options.map((o) => o[this.getFieldName('value')]),
         options,
       );
-      this.setPopupVisible(visible);
+      const { popupVisibleAfterSelect } = this.props;
+      this.setPopupVisible(visible || popupVisibleAfterSelect);
     }
   };
 

@@ -208,6 +208,12 @@ React.render(
       <td>></td>
       <td>specific the default loading icon</td>
     </tr>
+    <tr>
+      <td>popupVisibleAfterSelect</td>
+      <td>Boolean</td>
+      <td>>false</td>
+      <td>visibility of popup overlay when finishing cascader select</td>
+    </tr>
   </tbody>
 </table>
 
