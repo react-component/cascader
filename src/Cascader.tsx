@@ -50,7 +50,7 @@ export interface CascaderProps extends Pick<TriggerProps, 'getPopupContainer'> {
   filedNames?: CascaderFieldNames; // typo but for compatibility
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
-  popupVisibleAfterSelect?: boolean;
+  hidePopupOnSelect?: boolean;
 }
 
 interface CascaderState {
@@ -104,7 +104,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     expandTrigger: 'click',
     fieldNames: { label: 'label', value: 'value', children: 'children' },
     expandIcon: '>',
-    popupVisibleAfterSelect: false,
+    hidePopupOnSelect: true,
   };
 
   static getDerivedStateFromProps(nextProps: CascaderProps, prevState: CascaderState) {
@@ -192,8 +192,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
         options.map((o) => o[this.getFieldName('value')]),
         options,
       );
-      const { popupVisibleAfterSelect } = this.props;
-      this.setPopupVisible(visible || popupVisibleAfterSelect);
+      this.setPopupVisible(visible);
     }
   };
 
@@ -211,7 +210,7 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
     if (triggerNode && triggerNode.focus) {
       triggerNode.focus();
     }
-    const { changeOnSelect, loadData, expandTrigger } = this.props;
+    const { changeOnSelect, loadData, expandTrigger, hidePopupOnSelect } = this.props;
     if (!targetOption || targetOption.disabled) {
       return;
     }
@@ -232,13 +231,13 @@ class Cascader extends React.Component<CascaderProps, CascaderState> {
       !targetOption[this.getFieldName('children')] ||
       !targetOption[this.getFieldName('children')].length
     ) {
-      this.handleChange(activeOptions, { visible: false }, e);
+      this.handleChange(activeOptions, { visible: !hidePopupOnSelect }, e);
       // set value to activeValue when select leaf option
       newState.value = activeValue;
       // add e.type judgement to prevent `onChange` being triggered by mouseEnter
     } else if (changeOnSelect && (e.type === 'click' || e.type === 'keydown')) {
       if (expandTrigger === 'hover') {
-        this.handleChange(activeOptions, { visible: false }, e);
+        this.handleChange(activeOptions, { visible: !hidePopupOnSelect }, e);
       } else {
         this.handleChange(activeOptions, { visible: true }, e);
       }
