@@ -663,5 +663,20 @@ describe('Cascader', () => {
     ).toBe(true);
 
     expect(wrapper.state().popupVisible).toBeTruthy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.state().popupVisible).toBeFalsy();
+  });
+
+  it('should toggle select panel when click it, even if hidePopupOnSelect is false', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} onChange={onChange} hidePopupOnSelect={false}>
+        <input readOnly />
+      </Cascader>,
+    );
+    expect(wrapper.state().popupVisible).toBeFalsy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.state().popupVisible).toBeTruthy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.state().popupVisible).toBeFalsy();
   });
 });
