@@ -208,6 +208,12 @@ React.render(
       <td>></td>
       <td>specific the default loading icon</td>
     </tr>
+    <tr>
+      <td>hidePopupOnSelect</td>
+      <td>Boolean</td>
+      <td>>true</td>
+      <td>hide popup on select</td>
+    </tr>
   </tbody>
 </table>
 
