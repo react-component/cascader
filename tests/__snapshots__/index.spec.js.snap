@@ -147,6 +147,7 @@ exports[`Cascader should render custom dropdown correctly 1`] = `
           "value": "value",
         }
       }
+      hidePopupOnSelect={true}
       onChange={[Function]}
       onItemDoubleClick={[Function]}
       onPopupVisibleChange={[Function]}

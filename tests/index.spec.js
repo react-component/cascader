@@ -630,4 +630,38 @@ describe('Cascader', () => {
     const menus = wrapper.find('.rc-cascader-menus');
     expect(menus).toMatchSnapshot();
   });
+
+  it('should display after select, when hidePopupOnSelect is false', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} hidePopupOnSelect={false}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(3);
+    menu1Items.at(2).simulate('click');
+    expect(
+      wrapper.find('.rc-cascader-menu-item').at(2).hasClass('rc-cascader-menu-item-active'),
+    ).toBe(true);
+
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+    const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
+    expect(menu2Items.length).toBe(2);
+
+    menu2Items.at(0).simulate('click');
+    expect(
+      wrapper
+        .find('.rc-cascader-menu')
+        .at(1)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active'),
+    ).toBe(true);
+
+    expect(wrapper.state().popupVisible).toBeTruthy();
+  });
 });
