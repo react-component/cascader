@@ -9,6 +9,21 @@ import {
   addressOptionsForFieldNames,
 } from './demoOptions';
 
+export const createDocumentListenersMock = () => {
+  const listeners = {};
+  const handler = (domEl, event) => listeners?.[event]?.({ target: domEl });
+  document.addEventListener = jest.fn((event, cb) => {
+    listeners[event] = cb;
+  });
+  document.removeEventListener = jest.fn((event) => {
+    delete listeners[event];
+  });
+  return {
+    mouseDown: (domEl) => handler(domEl, 'mousedown'),
+    click: (domEl) => handler(domEl, 'click'),
+  };
+};
+
 describe('Cascader', () => {
   let selectedValue;
   const onChange = function onChange(value) {
@@ -23,6 +38,8 @@ describe('Cascader', () => {
     selectedValue = null;
     jest.useRealTimers();
   });
+
+  const fireEvent = createDocumentListenersMock();
 
   it('should toggle select panel when click it', () => {
     const wrapper = mount(
@@ -663,7 +680,7 @@ describe('Cascader', () => {
     ).toBe(true);
 
     expect(wrapper.state().popupVisible).toBeTruthy();
-    wrapper.find('input').simulate('click');
+    fireEvent.mouseDown(document.body);
     expect(wrapper.state().popupVisible).toBeFalsy();
   });
 
