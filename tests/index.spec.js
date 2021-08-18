@@ -77,6 +77,87 @@ describe('Cascader', () => {
     ).toBeTruthy();
 
     // Menu 3
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+    const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
+    expect(menu3Items.length).toBe(1);
+    expect(wrapper.isOpen()).toBeTruthy();
+    expect(selectedValue).toBeFalsy();
+
+    wrapper.clickOption(2, 0);
+    expect(wrapper.isOpen()).toBeFalsy();
+    expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
+  });
+
+  it('should has defaultValue', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+        expandIcon=""
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建');
+    expect(activeMenuItems.at(1).text()).toBe('福州');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
+  });
+
+  it('should support expand previous item when hover', () => {
+    const wrapper = mount(
+      <Cascader expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+
+    // Menu 1
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(3);
+    expect(selectedValue).toBeFalsy();
+
+    menu1Items.at(0).simulate('mouseEnter');
+    jest.runAllTimers();
+    wrapper.update();
+    expect(
+      wrapper
+        .find('.rc-cascader-menu')
+        .at(0)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active'),
+    ).toBeTruthy();
+
+    // Menu 2
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+    const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
+    expect(menu2Items.length).toBe(2);
+    expect(wrapper.isOpen()).toBeTruthy();
+    expect(selectedValue).toBeFalsy();
+
+    menu2Items.at(0).simulate('mouseEnter');
+    jest.runAllTimers();
+    wrapper.update();
+    expect(
+      wrapper
+        .find('.rc-cascader-menu')
+        .at(1)
+        .find('.rc-cascader-menu-item')
+        .first()
+        .hasClass('rc-cascader-menu-item-active'),
+    ).toBeTruthy();
+
+    // Menu 3
       menus = wrapper.find('.rc-cascader-menu');
       expect(menus.length).toBe(3);
       const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
@@ -88,81 +169,6 @@ describe('Cascader', () => {
       expect(wrapper.isOpen()).toBeFalsy();
       expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
   });
-
-  // it('should has defaultValue', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       options={addressOptions}
-  //       defaultValue={['fj', 'fuzhou', 'mawei']}
-  //       onChange={onChange}
-  //       expandIcon=""
-  //     >
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItems.length).toBe(3);
-  //   expect(activeMenuItems.at(0).text()).toBe('福建');
-  //   expect(activeMenuItems.at(1).text()).toBe('福州');
-  //   expect(activeMenuItems.at(2).text()).toBe('马尾');
-  // });
-
-  // it('should support expand previous item when hover', () => {
-  //   const wrapper = mount(
-  //     <Cascader expandTrigger="hover" options={addressOptions} onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   expect(menu1Items.length).toBe(3);
-  //   expect(selectedValue).toBeFalsy();
-
-  //   menu1Items.at(0).simulate('mouseEnter');
-  //   jest.runAllTimers();
-  //   wrapper.update();
-  //   expect(
-  //     wrapper
-  //       .find('.rc-cascader-menu')
-  //       .at(0)
-  //       .find('.rc-cascader-menu-item')
-  //       .first()
-  //       .hasClass('rc-cascader-menu-item-active'),
-  //   ).toBe(true);
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
-  //   expect(menu2Items.length).toBe(2);
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
-  //   expect(selectedValue).toBeFalsy();
-
-  //   menu2Items.at(0).simulate('mouseEnter');
-  //   jest.runAllTimers();
-  //   wrapper.update();
-  //   expect(
-  //     wrapper
-  //       .find('.rc-cascader-menu')
-  //       .at(1)
-  //       .find('.rc-cascader-menu-item')
-  //       .first()
-  //       .hasClass('rc-cascader-menu-item-active'),
-  //   ).toBe(true);
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
-  //   expect(menu3Items.length).toBe(1);
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
-  //   expect(selectedValue).toBeFalsy();
-
-  //   menu3Items.at(0).simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
-  //   expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
-  // });
 
   // it('should clear active selection when no finish select', () => {
   //   const wrapper = mount(
@@ -177,9 +183,9 @@ describe('Cascader', () => {
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(2);
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(1);
   // });
@@ -198,9 +204,9 @@ describe('Cascader', () => {
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(2);
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(3);
   // });
@@ -224,9 +230,9 @@ describe('Cascader', () => {
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(2);
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   //   menus = wrapper.find('.rc-cascader-menu');
   //   expect(menus.length).toBe(2);
   //   expect(selectedValue.length).toBe(1);
@@ -255,10 +261,10 @@ describe('Cascader', () => {
   //   const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
 
   //   menu3Items.at(0).simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
   //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   //   expect(menus.length).toBe(2);
   // });
 
@@ -268,11 +274,11 @@ describe('Cascader', () => {
   //       <input readOnly />
   //     </Cascader>,
   //   );
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   // });
 
   // it('should not display popup when there is no options', () => {
@@ -418,7 +424,7 @@ describe('Cascader', () => {
   //   expect(menu1Items.length).toBe(3);
   //   menu1Items.at(0).simulate('click');
   //   expect(selectedValue[0]).toBe('fj');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   // });
 
   // it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
@@ -437,7 +443,7 @@ describe('Cascader', () => {
   //   jest.runAllTimers();
   //   wrapper.update();
   //   expect(selectedValue).toBeFalsy();
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   // });
 
   // it('should has default fieldName when props not exist labelField and valueField and childrenField', () => {
@@ -528,11 +534,11 @@ describe('Cascader', () => {
   //     </Cascader>,
   //   );
 
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.state().popupVisible).toBeTruthy();
+  //   expect(wrapper.isOpen()).toBeTruthy();
   //   wrapper.find('li').at(0).simulate('doubleClick');
-  //   expect(wrapper.state().popupVisible).toBeFalsy();
+  //   expect(wrapper.isOpen()).toBeFalsy();
   // });
 
   // // https://github.com/ant-design/ant-design/issues/9084

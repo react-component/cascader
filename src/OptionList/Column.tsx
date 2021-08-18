@@ -68,6 +68,11 @@ export default function Column({
             })}
             role="menuitemcheckbox"
             aria-checked={checked}
+            onMouseEnter={() => {
+              if (expandTrigger) {
+                triggerOpen();
+              }
+            }}
           >
             {multiple && (
               <span
