@@ -74,7 +74,7 @@ class Demo extends React.Component {
         options={addressOptions}
         onChange={this.onChange}
         changeOnSelect
-        expandTrigger="hover"
+        // expandTrigger="hover"
         loadData={() => console.log('loadData')}
       >
         <input placeholder="please select address" value={this.state.inputValue} readOnly />

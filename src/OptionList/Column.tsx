@@ -11,7 +11,7 @@ export interface ColumnProps {
   options: DataNode[];
   /** Current Column opened item key */
   openKey?: React.Key;
-  onSelect: (value: React.Key) => void;
+  onSelect: (value: React.Key, isLeaf: boolean) => void;
   onOpen: (index: number, value: React.Key) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
@@ -53,7 +53,7 @@ export default function Column({
         // >>>>> Selection
         const triggerSelect = () => {
           if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
-            onSelect(value);
+            onSelect(value, isMergedLeaf);
           }
         };
 

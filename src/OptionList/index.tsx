@@ -52,10 +52,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       setOpenPath(nextOpenPath);
     };
 
-    const onPathSelect = (pathValue: React.Key) => {
+    const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
       onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
 
-      if (!multiple) {
+      if (!multiple && isLeaf) {
         onToggleOpen(false);
       }
     };

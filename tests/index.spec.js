@@ -158,86 +158,92 @@ describe('Cascader', () => {
     ).toBeTruthy();
 
     // Menu 3
-      menus = wrapper.find('.rc-cascader-menu');
-      expect(menus.length).toBe(3);
-      const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
-      expect(menu3Items.length).toBe(1);
-      expect(wrapper.isOpen()).toBeTruthy();
-      expect(selectedValue).toBeFalsy();
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+    const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
+    expect(menu3Items.length).toBe(1);
+    expect(wrapper.isOpen()).toBeTruthy();
+    expect(selectedValue).toBeFalsy();
 
-      wrapper.clickOption(2, 0);
-      expect(wrapper.isOpen()).toBeFalsy();
-      expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
+    wrapper.clickOption(2, 0);
+    expect(wrapper.isOpen()).toBeFalsy();
+    expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
   });
 
-  // it('should clear active selection when no finish select', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  // });
+  it('should clear active selection when no finish select', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    wrapper.clickOption(0, 0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
 
-  // it('should set back to defaultValue when no finish select', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  // });
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeFalsy();
 
-  // it('should set the value on each selection', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       options={addressOptions}
-  //       defaultValue={['fj', 'fuzhou', 'mawei']}
-  //       onChange={onChange}
-  //       changeOnSelect
-  //     >
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   expect(selectedValue.length).toBe(1);
-  //   expect(selectedValue[0]).toBe('fj');
-  // });
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeTruthy();
+
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+  });
+
+  it('should set back to defaultValue when no finish select', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+
+    wrapper.clickOption(0, 0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeFalsy();
+
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeTruthy();
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+  });
+
+  it('should set the value on each selection', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+        changeOnSelect
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+
+    wrapper.clickOption(0, 0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeFalsy();
+
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeTruthy();
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+    expect(selectedValue.length).toBe(1);
+    expect(selectedValue[0]).toBe('fj');
+  });
 
   // it('should not change value inside when it is a controlled component', () => {
   //   const wrapper = mount(
