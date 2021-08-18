@@ -245,34 +245,32 @@ describe('Cascader', () => {
     expect(selectedValue[0]).toBe('fj');
   });
 
-  // it('should not change value inside when it is a controlled component', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions} value={['fj']}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+  it('should not change value inside when it is a controlled component', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} value={['fj']}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
 
-  //   menu1Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  //   const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
+    wrapper.clickOption(0,0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
 
-  //   menu2Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
+    wrapper.clickOption(1, 0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
 
-  //   menu3Items.at(0).simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  //   expect(menus.length).toBe(2);
-  // });
+    wrapper.clickOption(2, 0);
+    expect(wrapper.isOpen()).toBeFalsy();
+
+    wrapper.find('input').simulate('click');
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(wrapper.isOpen()).toBeTruthy();
+    expect(menus.length).toBe(2);
+  });
 
   // it('should be disabled', () => {
   //   const wrapper = mount(
