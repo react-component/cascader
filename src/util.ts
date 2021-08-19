@@ -3,18 +3,22 @@ import type { CascaderValueType, DataNode, InternalDataNode, OptionDataNode } fr
 
 const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
 
+/**
+ * Convert entity back to path & options
+ * @returns
+ */
 export function restoreCompatibleValue(entity: FlattenDataNode): {
   path: CascaderValueType;
-  options: DataNode[];
+  options: InternalDataNode[];
 } {
   const path: CascaderValueType = [];
-  const options: DataNode[] = [];
+  const options: InternalDataNode[] = [];
 
   let current = entity;
 
   while (current) {
     path.unshift(current.data.node.value);
-    options.unshift(current.data.node as DataNode);
+    options.unshift(current.data.node as any as InternalDataNode);
 
     current = current.parent;
   }

@@ -14,7 +14,7 @@ export interface InternalDataNode extends DataNode {
   node: DataNode;
 }
 
-export interface OptionDataNode extends Omit<DataNode, 'label' | 'children'> {
+export interface OptionDataNode extends Omit<InternalDataNode, 'label' | 'children'> {
   title: React.ReactNode;
   children?: OptionDataNode[];
 }

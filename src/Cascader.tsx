@@ -224,9 +224,11 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       const valueEntities = valueList.map(getEntityByValue).filter(entity => entity);
 
       valueEntities.forEach(entity => {
-        const { path, options: valueOptions } = restoreCompatibleValue(entity);
-        pathList.push(path);
-        optionsList.push(valueOptions);
+        const { options: valueOptions } = restoreCompatibleValue(entity);
+        const originOptions = valueOptions.map(option => option.node);
+
+        pathList.push(originOptions.map(opt => opt.value));
+        optionsList.push(originOptions);
       });
 
       // Fill state
