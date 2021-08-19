@@ -272,18 +272,18 @@ describe('Cascader', () => {
     expect(menus.length).toBe(2);
   });
 
-  // it('should be disabled', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions} disabled onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  // });
+  it('should be disabled', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} disabled onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
+    expect(wrapper.isOpen()).toBeFalsy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeFalsy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeFalsy();
+  });
 
   // it('should not display popup when there is no options', () => {
   //   const wrapper = mount(
