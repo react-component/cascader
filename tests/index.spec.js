@@ -285,19 +285,19 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
-  // it('should not display popup when there is no options', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={[]} onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(0);
-  //   wrapper.find('input').simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(0);
-  // });
+  it('should not display popup when there is no options', () => {
+    const wrapper = mount(
+      <Cascader options={[]} onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(0);
+    wrapper.find('input').simulate('click');
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(0);
+  });
 
   // it('should not display when children is empty', () => {
   //   const wrapper = mount(
