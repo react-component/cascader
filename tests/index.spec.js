@@ -349,15 +349,15 @@ describe('Cascader', () => {
 
   it('should have correct active menu items', () => {
     // FIXME: Nest value support same key which is not same as TreeSelect design
-    // const wrapper = mount(
-    //   <Cascader 
-    //   options={optionsForActiveMenuItems} 
-    //   defaultValue={['1', '2']} 
-    //   expandIcon=""
-    //   >
-    //     <input readOnly />
-    //   </Cascader>,
-    // );
+    const wrapper = mount(
+      <Cascader
+      options={optionsForActiveMenuItems}
+      defaultValue={['1', '2']}
+      expandIcon=""
+      >
+        <input readOnly />
+      </Cascader>,
+    );
     // wrapper.find('input').simulate('click');
     // const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
     // expect(activeMenuItems.length).toBe(2);

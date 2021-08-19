@@ -8,7 +8,7 @@ import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
 import type { CascaderValueType, DataNode } from './interface';
 import CascaderContext from './context';
-import { restoreCompatibleValue } from './util';
+import { convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
 
 /**
@@ -171,7 +171,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // ========================== Options ===========================
   const mergedOptions = React.useMemo(() => {
-    return options || [];
+    return convertOptions(options);
   }, [options]);
 
   // =========================== Value ============================

@@ -20,7 +20,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
       notFoundContent,
     } = props;
 
-
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
     // ========================== Values ==========================
