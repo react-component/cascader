@@ -8,7 +8,7 @@ import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
 import type { CascaderValueType, DataNode } from './interface';
 import CascaderContext from './context';
-import { convertOptions, restoreCompatibleValue } from './util';
+import { connectValue, convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
 
 /**
@@ -177,8 +177,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   // =========================== Value ============================
   /**
    * Always pass props value to last value unit:
-   * - single: ['light', 'little'] => ['little']
-   * - multiple: [['light', 'little'], ['bamboo']] => ['little', 'bamboo']
+   * - single: ['light', 'little'] => ['light__little']
+   * - multiple: [['light', 'little'], ['bamboo']] => ['light__little', 'bamboo']
    */
   const parseToInternalValue = (
     propValue?: CascaderValueType | CascaderValueType[],
@@ -188,7 +188,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       propValueList = (multiple ? propValue : [propValue]) as CascaderValueType[];
     }
 
-    return propValueList.map(pathValue => pathValue[pathValue.length - 1]);
+    return propValueList.map(connectValue);
   };
 
   const [internalValue, setInternalValue] = React.useState(() =>

@@ -10,6 +10,10 @@ export interface DataNode {
   isLeaf?: boolean;
 }
 
+export interface InternalDataNode extends DataNode {
+  node: DataNode;
+}
+
 export interface OptionDataNode extends Omit<DataNode, 'label' | 'children'> {
   title: React.ReactNode;
   children?: OptionDataNode[];
