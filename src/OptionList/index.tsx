@@ -18,6 +18,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       flattenOptions,
       searchValue,
       onToggleOpen,
+      notFoundContent,
     } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
@@ -96,8 +97,24 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
     }
 
     // >>>>> Columns
+    const firstLevelOptions = options.length
+      ? options
+      : [
+          {
+            label: notFoundContent,
+            value: '__EMPTY__',
+            disabled: true,
+          },
+        ];
+
     const columnNodes: React.ReactElement[] = [
-      <Column key={0} index={0} {...columnProps} openKey={openPath[0]} />,
+      <Column
+        key={0}
+        index={0}
+        {...columnProps}
+        options={firstLevelOptions}
+        openKey={openPath[0]}
+      />,
     ];
 
     openPath.forEach((_, index) => {

@@ -71,7 +71,7 @@ class Demo extends React.Component {
   render() {
     return (
       <Cascader
-        options={addressOptions}
+        options={[]}
         onChange={this.onChange}
         changeOnSelect
         // expandTrigger="hover"

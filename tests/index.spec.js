@@ -285,39 +285,41 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
-  it('should not display popup when there is no options', () => {
+  it('should display not found popup when there is no options', () => {
     const wrapper = mount(
       <Cascader options={[]} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
     wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(0);
-    wrapper.find('input').simulate('click');
-    menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(0);
+    expect(wrapper.isOpen()).toBeTruthy();
+    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(1);
+    expect(wrapper.find('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(wrapper.find('.rc-cascader-menu-item').text()).toEqual('Not Found');
+
+    wrapper.setProps({ notFoundContent: 'BambooLight' });
+    expect(wrapper.find('.rc-cascader-menu-item').text()).toEqual('BambooLight');
   });
 
-  // it('should not display when children is empty', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       options={[
-  //         {
-  //           label: '福建',
-  //           value: 'fj',
-  //           children: [],
-  //         },
-  //       ]}
-  //       onChange={onChange}
-  //     >
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  // });
+  it('should not display when children is empty', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[
+          {
+            label: '福建',
+            value: 'fj',
+            children: [],
+          },
+        ]}
+        onChange={onChange}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+  });
 
   // it('should be unselectable when option is disabled', () => {
   //   const newAddressOptions = [...addressOptions];

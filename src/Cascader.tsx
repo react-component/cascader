@@ -256,7 +256,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   };
 
   // =========================== Render ===========================
-  const dropdownStyle: React.CSSProperties = mergedSearch
+  const dropdownStyle: React.CSSProperties = mergedSearch || !options.length
     ? {}
     : {
         minWidth: 'auto',
@@ -269,7 +269,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         {...restProps}
         value={multiple ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={dropdownStyle && null}
         treeData={options}
         treeCheckable={multiple}
         treeNodeFilterProp="label"
