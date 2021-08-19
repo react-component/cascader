@@ -4,22 +4,28 @@
  */
 import { isLeaf } from '../util';
 import * as React from 'react';
-import type { DataNode } from '../interface';
+import type { OptionDataNode } from '../interface';
 import Column from './Column';
 import type { ColumnProps } from './Column';
 
 export type SearchResultProps = Omit<ColumnProps, 'index'>;
 
-function flattenOptions(options: DataNode[]): DataNode[] {
-  const optionList: DataNode[] = [];
+function flattenOptions(options: OptionDataNode[]): OptionDataNode[] {
+  const optionList: OptionDataNode[] = [];
 
-  function dig(list: DataNode[], labelPath: React.ReactNode[] = []) {
+  function dig(list: OptionDataNode[], labelPath: React.ReactNode[] = []) {
     (list || []).forEach(option => {
-      const connectLabelPath = [...labelPath, option.label];
+      const connectLabelPath = [...labelPath, option.title];
 
       if (isLeaf(option)) {
         optionList.push({
-          label: connectLabelPath.join(' / '),
+          title: connectLabelPath.reduce((labelList: React.ReactNode[], currentLabel, index) => {
+            if (index !== 0) {
+              labelList.push(' / ');
+            }
+            labelList.push(currentLabel);
+            return list;
+          }, []),
           value: option.value,
         });
       } else {

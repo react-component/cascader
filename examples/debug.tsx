@@ -3,7 +3,7 @@ import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
-const addressOptions = [
+const addressOptions1 = [
   {
     label: '福建',
     value: 'fj',
@@ -68,6 +68,19 @@ const addressOptions = [
   },
 ];
 
+const addressOptions = [
+  {
+    value: '1',
+    label: '1',
+    children: [
+      {
+        value: '1',
+        label: '1',
+      },
+    ],
+  },
+];
+
 const defaultValue = ['fj', 'fuzhou', 'mawei'];
 
 const Demo = () => {
@@ -94,7 +107,7 @@ const Demo = () => {
       </label>
       <Cascader
         style={{ width: 200 }}
-        options={addressOptions}
+        options={addressOptions1}
         onChange={onChange}
         multiple={multiple}
         allowClear

@@ -1,13 +1,12 @@
 import * as React from 'react';
 import type { OptionListProps, RefOptionListProps } from 'rc-select/lib/OptionList';
 import { SelectContext } from 'rc-tree-select/lib/Context';
-import List from 'rc-virtual-list';
-import type { DataNode } from '../interface';
+import type { OptionDataNode } from '../interface';
 import Column from './Column';
 import { restoreCompatibleValue } from '../util';
 import SearchResult from './SearchResult';
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataNode[]>>(
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<OptionDataNode[]>>(
   (props, ref) => {
     const {
       prefixCls,
@@ -20,6 +19,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       onToggleOpen,
       notFoundContent,
     } = props;
+
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
 
@@ -101,7 +101,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<DataN
       ? options
       : [
           {
-            label: notFoundContent,
+            title: notFoundContent,
             value: '__EMPTY__',
             disabled: true,
           },

@@ -1,5 +1,5 @@
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
-import type { CascaderValueType, DataNode } from './interface';
+import type { CascaderValueType, DataNode, OptionDataNode } from './interface';
 
 export function restoreCompatibleValue(entity: FlattenDataNode): {
   path: CascaderValueType;
@@ -11,8 +11,8 @@ export function restoreCompatibleValue(entity: FlattenDataNode): {
   let current = entity;
 
   while (current) {
-    path.unshift(current.data.value);
-    options.unshift(current.data as DataNode);
+    path.unshift(current.data.node.value);
+    options.unshift(current.data.node as DataNode);
 
     current = current.parent;
   }
@@ -20,7 +20,7 @@ export function restoreCompatibleValue(entity: FlattenDataNode): {
   return { path, options };
 }
 
-export function isLeaf(option: DataNode) {
+export function isLeaf(option: DataNode | OptionDataNode) {
   const { isLeaf: leaf, children } = option;
   return leaf !== undefined ? leaf : !children?.length;
 }

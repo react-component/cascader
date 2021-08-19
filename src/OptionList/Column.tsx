@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import type { DataNode } from '../interface';
+import type { OptionDataNode } from '../interface';
 import { isLeaf } from '../util';
 import CascaderContext from '../context';
 
@@ -8,7 +8,7 @@ export interface ColumnProps {
   prefixCls: string;
   index: number;
   multiple?: boolean;
-  options: DataNode[];
+  options: OptionDataNode[];
   /** Current Column opened item key */
   openKey?: React.Key;
   onSelect: (value: React.Key, isLeaf: boolean) => void;
@@ -98,7 +98,7 @@ export default function Column({
                 }
               }}
             >
-              {option.label}
+              {option.title}
             </div>
           </li>
         );

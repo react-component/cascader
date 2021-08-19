@@ -255,7 +255,7 @@ describe('Cascader', () => {
     let menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.clickOption(0,0);
+    wrapper.clickOption(0, 0);
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
@@ -321,47 +321,52 @@ describe('Cascader', () => {
     expect(menus.length).toBe(1);
   });
 
-  // it('should be unselectable when option is disabled', () => {
-  //   const newAddressOptions = [...addressOptions];
-  //   newAddressOptions[0] = {
-  //     ...newAddressOptions[0],
-  //     disabled: true,
-  //   };
-  //   const wrapper = mount(
-  //     <Cascader options={newAddressOptions} onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   expect(menu1Items.length).toBe(3);
-  //   expect(selectedValue).toBeFalsy();
+  it('should be unselectable when option is disabled', () => {
+    const newAddressOptions = [...addressOptions];
+    newAddressOptions[0] = {
+      ...newAddressOptions[0],
+      disabled: true,
+    };
+    const wrapper = mount(
+      <Cascader options={newAddressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(3);
+    expect(selectedValue).toBeFalsy();
 
-  //   menu1Items.at(0).simulate('click');
-  //   expect(
-  //     wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
-  //   ).toBe(true);
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  // });
+    menu1Items.at(0).simulate('click');
+    expect(
+      wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
+    ).toBe(true);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+  });
 
-  // it('should have correct active menu items', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} expandIcon="">
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItems.length).toBe(2);
-  //   expect(activeMenuItems.at(0).text()).toBe('1');
-  //   expect(activeMenuItems.at(1).text()).toBe('2');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   const activeMenuItemsInMenu1 = menus.at(0).find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItemsInMenu1.length).toBe(1);
-  // });
+  it('should have correct active menu items', () => {
+    // FIXME: Nest value support same key which is not same as TreeSelect design
+    // const wrapper = mount(
+    //   <Cascader 
+    //   options={optionsForActiveMenuItems} 
+    //   defaultValue={['1', '2']} 
+    //   expandIcon=""
+    //   >
+    //     <input readOnly />
+    //   </Cascader>,
+    // );
+    // wrapper.find('input').simulate('click');
+    // const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    // expect(activeMenuItems.length).toBe(2);
+    // expect(activeMenuItems.at(0).text()).toBe('1');
+    // expect(activeMenuItems.at(1).text()).toBe('2');
+    // const menus = wrapper.find('.rc-cascader-menu');
+    // const activeMenuItemsInMenu1 = menus.at(0).find('.rc-cascader-menu-item-active');
+    // expect(activeMenuItemsInMenu1.length).toBe(1);
+  });
 
   // // https://github.com/ant-design/ant-design/issues/5666
   // it('should have not change active value when value is not changed', () => {

@@ -169,6 +169,11 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     onChange: onSearch,
   });
 
+  // ========================== Options ===========================
+  const mergedOptions = React.useMemo(() => {
+    return options || [];
+  }, [options]);
+
   // =========================== Value ============================
   /**
    * Always pass props value to last value unit:
@@ -197,7 +202,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   // =========================== Label ============================
   const labelRender = (entity: FlattenDataNode) => {
     if (multiple) {
-      return entity.data.label;
+      return entity.data.node.label;
     }
 
     return restoreCompatibleValue(entity)
@@ -256,11 +261,12 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   };
 
   // =========================== Render ===========================
-  const dropdownStyle: React.CSSProperties = mergedSearch || !options.length
-    ? {}
-    : {
-        minWidth: 'auto',
-      };
+  const dropdownStyle: React.CSSProperties =
+    mergedSearch || !mergedOptions.length
+      ? {}
+      : {
+          minWidth: 'auto',
+        };
 
   return (
     <CascaderContext.Provider value={context}>
@@ -269,8 +275,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         {...restProps}
         value={multiple ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
-        dropdownStyle={dropdownStyle && null}
-        treeData={options}
+        dropdownStyle={dropdownStyle}
+        treeData={mergedOptions}
         treeCheckable={multiple}
         treeNodeFilterProp="label"
         onChange={onInternalChange}

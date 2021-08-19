@@ -10,6 +10,10 @@ export interface DataNode {
   isLeaf?: boolean;
 }
 
+export interface OptionDataNode extends Omit<DataNode, 'label' | 'children'> {
+  title: React.ReactNode;
+  children?: OptionDataNode[];
+}
 export interface FlattenDataNode {
   key: React.Key;
   data: DataNode;
