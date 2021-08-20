@@ -32,7 +32,7 @@ export default function Column({
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
   const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
 
-  const { changeOnSelect, expandTrigger } = React.useContext(CascaderContext);
+  const { changeOnSelect, expandTrigger, expandIcon } = React.useContext(CascaderContext);
 
   return (
     <ul className={menuPrefixCls} role="menu">
@@ -100,6 +100,9 @@ export default function Column({
             >
               {option.title}
             </div>
+            {expandIcon && !isMergedLeaf && (
+              <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
+            )}
           </li>
         );
       })}

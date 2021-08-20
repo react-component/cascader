@@ -23,7 +23,6 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  * Deprecated:
  * - popupVisible
  * - onPopupVisibleChange
- * - filedNames
  */
 
 const RefCascader = generate({
@@ -63,8 +62,6 @@ interface BaseCascaderProps
   allowClear?: boolean;
   disabled?: boolean;
 
-  /** @deprecated Typo. Please use `fieldNames` instead. */
-  filedNames?: FieldNames;
   fieldNames?: FieldNames;
 
   // Search
@@ -93,7 +90,7 @@ interface BaseCascaderProps
   // builtinPlacements?: BuildInPlacements;
   // loadData?: (selectOptions: DataNode[]) => void;
 
-  // expandIcon?: React.ReactNode;
+  expandIcon?: React.ReactNode;
   // loadingIcon?: React.ReactNode;
 }
 
@@ -137,6 +134,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     onSearch,
 
     expandTrigger,
+    expandIcon = '>',
 
     ...restProps
   } = props;
@@ -146,8 +144,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
 
   const context = React.useMemo(
-    () => ({ changeOnSelect, expandTrigger, fieldNames: mergedFieldNames }),
-    [changeOnSelect, expandTrigger, mergedFieldNames],
+    () => ({ changeOnSelect, expandTrigger, fieldNames: mergedFieldNames, expandIcon }),
+    [changeOnSelect, expandTrigger, mergedFieldNames, expandIcon],
   );
 
   // ============================ Ref =============================

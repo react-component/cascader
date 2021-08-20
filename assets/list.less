@@ -24,6 +24,8 @@
     &-item {
       display: flex;
       flex-wrap: nowrap;
+      padding-right: 20px;
+      position: relative;
 
       &-active {
         background: rgba(0, 255, 0, 0.1);
@@ -64,6 +66,13 @@
 
       &-content {
         flex: auto;
+      }
+
+      &-expand-icon {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
       }
     }
   }

@@ -73,6 +73,7 @@ describe('Cascader.FieldNames', () => {
         options={options}
         fieldNames={fieldNames}
         defaultValue={['bamboo', 'little', 'toy']}
+        expandIcon=""
         open
       />,
     );

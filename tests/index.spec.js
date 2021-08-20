@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 
 import React from 'react';
+import { resetWarned } from 'rc-util/lib/warning';
 import { mount } from 'enzyme';
 import Cascader from '..';
 import {
@@ -349,11 +350,7 @@ describe('Cascader', () => {
 
   it('should have correct active menu items', () => {
     const wrapper = mount(
-      <Cascader
-      options={optionsForActiveMenuItems}
-      defaultValue={['1', '2']}
-      expandIcon=""
-      >
+      <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} expandIcon="">
         <input readOnly />
       </Cascader>,
     );
@@ -388,10 +385,7 @@ describe('Cascader', () => {
 
       render() {
         return (
-          <Cascader
-            options={addressOptions}
-            value={this.state.value}
-          >
+          <Cascader options={addressOptions} value={this.state.value}>
             <input readOnly />
           </Cascader>
         );
@@ -450,54 +444,21 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
+  it('warning popupVisible & onPopupVisibleChange', () => {
+    resetWarned();
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const onPopupVisibleChange = jest.fn();
+    mount(<Cascader popupVisible onPopupVisibleChange={onPopupVisibleChange} />);
 
-  it('should support custom fieldNames', () => {
-    const wrapper = mount(
-      <Cascader
-        fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
-        options={addressOptionsForFieldNames}
-        defaultValue={['fj', 'fuzhou', 'mawei']}
-        expandIcon=""
-        popupVisible
-      >
-        <input />
-      </Cascader>,
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
     );
-    const props = wrapper.props();
-    expect(props.fieldNames.label).toBe('name');
-    expect(props.fieldNames.value).toBe('code');
-    expect(props.fieldNames.children).toBe('nodes');
-    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-    expect(activeMenuItems.length).toBe(3);
-    expect(activeMenuItems.at(0).text()).toBe('福建');
-    expect(activeMenuItems.at(1).text()).toBe('福州');
-    expect(activeMenuItems.at(2).text()).toBe('马尾');
-  });
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `popupVisible` is deprecated. Please use `open` instead.',
+    );
 
-  // it('should works and show warning message when use typo prop name: filedNames', () => {
-  //   // eslint-disable-next-line no-console
-  //   console.error = jest.fn();
-  //   const wrapper = mount(
-  //     <Cascader
-  //       filedNames={{ label: 'name', value: 'code', children: 'nodes' }}
-  //       options={addressOptionsForFieldNames}
-  //       defaultValue={['fj', 'fuzhou', 'mawei']}
-  //       popupVisible
-  //       expandIcon=""
-  //     >
-  //       <input />
-  //     </Cascader>,
-  //   );
-  //   // eslint-disable-next-line no-console
-  //   expect(console.error).toHaveBeenCalled();
-  //   const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItems.length).toBe(3);
-  //   expect(activeMenuItems.at(0).text()).toBe('福建');
-  //   expect(activeMenuItems.at(1).text()).toBe('福州');
-  //   expect(activeMenuItems.at(2).text()).toBe('马尾');
-  //   // eslint-disable-next-line no-console
-  //   console.error.mockClear();
-  // });
+    errorSpy.mockRestore();
+  });
 
   // it('should support custom expand icon(text icon)', () => {
   //   const wrapper = mount(
