@@ -460,40 +460,40 @@ describe('Cascader', () => {
     errorSpy.mockRestore();
   });
 
-  // it('should support custom expand icon(text icon)', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       options={addressOptions}
-  //       defaultValue={['fj', 'fuzhou', 'mawei']}
-  //       onChange={onChange}
-  //       expandIcon="=>"
-  //     >
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(3);
-  //   const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItems.length).toBe(3);
-  //   expect(activeMenuItems.at(0).text()).toBe('福建=>');
-  //   expect(activeMenuItems.at(1).text()).toBe('福州=>');
-  //   expect(activeMenuItems.at(2).text()).toBe('马尾');
-  // });
+  it('should support custom expand icon(text icon)', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        onChange={onChange}
+        expandIcon="=>"
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(3);
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建=>');
+    expect(activeMenuItems.at(1).text()).toBe('福州=>');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
+  });
 
-  // it('should close popup on double click when changeOnSelect is set', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions} changeOnSelect>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
+  it('should close popup on double click when changeOnSelect is set', () => {
+    const wrapper = mount(
+      <Cascader options={addressOptions} changeOnSelect>
+        <input readOnly />
+      </Cascader>,
+    );
 
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  //   wrapper.find('input').simulate('click');
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  //   wrapper.find('li').at(0).simulate('doubleClick');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  // });
+    expect(wrapper.isOpen()).toBeFalsy();
+    wrapper.find('input').simulate('click');
+    expect(wrapper.isOpen()).toBeTruthy();
+    wrapper.clickOption(0, 0, 'doubleClick');
+    expect(wrapper.isOpen()).toBeFalsy();
+  });
 
   // // https://github.com/ant-design/ant-design/issues/9084
   // it('should trigger loadData when expandTrigger is hover', () => {

@@ -13,6 +13,7 @@ export interface ColumnProps {
   openKey?: React.Key;
   onSelect: (value: React.Key, isLeaf: boolean) => void;
   onOpen: (index: number, value: React.Key) => void;
+  onToggleOpen: (open: boolean) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
 }
@@ -25,6 +26,7 @@ export default function Column({
   openKey,
   onSelect,
   onOpen,
+  onToggleOpen,
   checkedSet,
   halfCheckedSet,
 }: ColumnProps) {
@@ -44,7 +46,7 @@ export default function Column({
         const checked = checkedSet.has(value);
 
         // >>>>> Open
-        const triggerOpen = () => {
+        const triggerOpenPath = () => {
           if (!disabled && !isMergedLeaf) {
             onOpen(index, value);
           }
@@ -70,7 +72,7 @@ export default function Column({
             aria-checked={checked}
             onMouseEnter={() => {
               if (expandTrigger) {
-                triggerOpen();
+                triggerOpenPath();
               }
             }}
           >
@@ -92,9 +94,14 @@ export default function Column({
             <div
               className={`${menuItemPrefixCls}-content`}
               onClick={() => {
-                triggerOpen();
+                triggerOpenPath();
                 if (!multiple || isMergedLeaf) {
                   triggerSelect();
+                }
+              }}
+              onDoubleClick={() => {
+                if (changeOnSelect) {
+                  onToggleOpen(false);
                 }
               }}
             >

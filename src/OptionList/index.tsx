@@ -88,6 +88,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
       ...props,
       onOpen: onPathOpen,
       onSelect: onPathSelect,
+      onToggleOpen,
       checkedSet,
       halfCheckedSet,
     };
