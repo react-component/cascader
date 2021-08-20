@@ -348,7 +348,6 @@ describe('Cascader', () => {
   });
 
   it('should have correct active menu items', () => {
-    // FIXME: Nest value support same key which is not same as TreeSelect design
     const wrapper = mount(
       <Cascader
       options={optionsForActiveMenuItems}
@@ -358,85 +357,79 @@ describe('Cascader', () => {
         <input readOnly />
       </Cascader>,
     );
-    // wrapper.find('input').simulate('click');
-    // const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-    // expect(activeMenuItems.length).toBe(2);
-    // expect(activeMenuItems.at(0).text()).toBe('1');
-    // expect(activeMenuItems.at(1).text()).toBe('2');
-    // const menus = wrapper.find('.rc-cascader-menu');
-    // const activeMenuItemsInMenu1 = menus.at(0).find('.rc-cascader-menu-item-active');
-    // expect(activeMenuItemsInMenu1.length).toBe(1);
+    wrapper.find('input').simulate('click');
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(2);
+    expect(activeMenuItems.at(0).text()).toBe('1');
+    expect(activeMenuItems.at(1).text()).toBe('2');
+    const menus = wrapper.find('.rc-cascader-menu');
+    const activeMenuItemsInMenu1 = menus.at(0).find('.rc-cascader-menu-item-active');
+    expect(activeMenuItemsInMenu1.length).toBe(1);
   });
 
-  // // https://github.com/ant-design/ant-design/issues/5666
-  // it('should have not change active value when value is not changed', () => {
-  //   class Demo extends React.Component {
-  //     state = {
-  //       value: [],
-  //     };
+  // https://github.com/ant-design/ant-design/issues/5666
+  it('should have not change active value when value is not changed', () => {
+    class Demo extends React.Component {
+      state = {
+        value: [],
+      };
 
-  //     componentDidMount() {
-  //       this.timeout = setTimeout(() => {
-  //         this.setState({
-  //           value: [],
-  //         });
-  //       }, 10);
-  //     }
+      componentDidMount() {
+        this.timeout = setTimeout(() => {
+          this.setState({
+            value: [],
+          });
+        }, 10);
+      }
 
-  //     componentWillUnmount() {
-  //       clearTimeout(this.timeout);
-  //     }
+      componentWillUnmount() {
+        clearTimeout(this.timeout);
+      }
 
-  //     getPopupDOMNode() {
-  //       return this.cascader.getPopupDOMNode();
-  //     }
+      render() {
+        return (
+          <Cascader
+            options={addressOptions}
+            value={this.state.value}
+          >
+            <input readOnly />
+          </Cascader>
+        );
+      }
+    }
+    const wrapper = mount(<Demo />);
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
 
-  //     render() {
-  //       return (
-  //         <Cascader
-  //           options={addressOptions}
-  //           value={this.state.value}
-  //           ref={(node) => {
-  //             this.cascader = node;
-  //           }}
-  //         >
-  //           <input readOnly />
-  //         </Cascader>
-  //       );
-  //     }
-  //   }
-  //   const wrapper = mount(<Demo />);
-  //   wrapper.find('input').simulate('click');
-  //   let menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('click');
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
+    wrapper.clickOption(0, 0);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
 
-  //   jest.runAllTimers();
-  //   wrapper.update();
-  //   menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(2);
-  // });
+    jest.runAllTimers();
+    wrapper.update();
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/7480
-  // it('should call onChange on click when expandTrigger=hover with changeOnSelect', () => {
-  //   const wrapper = mount(
-  //     <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
+  // https://github.com/ant-design/ant-design/issues/7480
+  it('should call onChange on click when expandTrigger=hover with changeOnSelect', () => {
+    const wrapper = mount(
+      <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
 
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   expect(menu1Items.length).toBe(3);
-  //   menu1Items.at(0).simulate('click');
-  //   expect(selectedValue[0]).toBe('fj');
-  //   expect(wrapper.isOpen()).toBeFalsy();
-  // });
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(3);
+
+    wrapper.clickOption(0, 0);
+    expect(selectedValue[0]).toBe('fj');
+    expect(wrapper.isOpen()).toBeFalsy();
+  });
 
   // it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
   //   const wrapper = mount(

@@ -34,6 +34,8 @@ export function isLeaf(option: DataNode | OptionDataNode) {
 /**
  * We will connect path value to a string. e.g.
  * ['little', 'bamboo'] => 'little__bamboo'
+ * 
+ * zombieJ: It's better to deprecate the same key in the nest tree. Maybe next major version.
  */
 export function connectValue(value: React.Key[]) {
   return (value || []).join(VALUE_SPLIT);

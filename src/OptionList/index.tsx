@@ -5,6 +5,7 @@ import type { OptionDataNode } from '../interface';
 import Column from './Column';
 import { restoreCompatibleValue } from '../util';
 import SearchResult from './SearchResult';
+import CascaderContext from '../context';
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<OptionDataNode[]>>(
   (props, ref) => {
@@ -21,6 +22,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
     } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
+    const { changeOnSelect, expandTrigger} = React.useContext(CascaderContext);
 
     // ========================== Values ==========================
     const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
@@ -55,7 +57,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
     const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
       onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
 
-      if (!multiple && isLeaf) {
+      if (!multiple && (isLeaf || (changeOnSelect && expandTrigger === 'hover'))) {
         onToggleOpen(false);
       }
     };
@@ -103,6 +105,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
             title: notFoundContent,
             value: '__EMPTY__',
             disabled: true,
+            node: null,
           },
         ];
 
