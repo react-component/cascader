@@ -450,17 +450,6 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
-  // it('should has default fieldName when props not exist labelField and valueField and childrenField', () => {
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions}>
-  //       <input />
-  //     </Cascader>,
-  //   );
-  //   const props = wrapper.props();
-  //   expect(props.fieldNames.label).toBe('label');
-  //   expect(props.fieldNames.value).toBe('value');
-  //   expect(props.fieldNames.children).toBe('children');
-  // });
 
   it('should support custom fieldNames', () => {
     const wrapper = mount(
