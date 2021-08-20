@@ -22,7 +22,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
     } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-    const { changeOnSelect, expandTrigger} = React.useContext(CascaderContext);
+    const { changeOnSelect, expandTrigger, fieldNames } = React.useContext(CascaderContext);
 
     // ========================== Values ==========================
     const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
@@ -41,7 +41,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
           );
 
           if (entity) {
-            nextOpenPath = restoreCompatibleValue(entity as any).path;
+            nextOpenPath = restoreCompatibleValue(entity as any, fieldNames).path;
           }
         }
         setOpenPath(nextOpenPath);

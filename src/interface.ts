@@ -1,5 +1,11 @@
 import type * as React from 'react';
 
+export interface FieldNames {
+  value?: string;
+  label?: string;
+  children?: string;
+}
+
 export type CascaderValueType = React.Key[];
 
 export interface DataNode {

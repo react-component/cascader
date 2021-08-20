@@ -112,7 +112,7 @@ const Demo = () => {
         multiple={multiple}
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
-        showSearch
+        // showSearch
       />
     </>
   );

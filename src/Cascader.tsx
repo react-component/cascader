@@ -4,9 +4,10 @@ import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
+import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
-import type { CascaderValueType, DataNode } from './interface';
+import type { CascaderValueType, DataNode, FieldNames } from './interface';
 import CascaderContext from './context';
 import { connectValue, convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
@@ -31,12 +32,6 @@ const RefCascader = generate({
 });
 
 // ====================================== Wrap ======================================
-export interface FieldNames {
-  value?: string | number;
-  label?: string;
-  children?: string;
-}
-
 export interface ShowSearchType {
   filter?: (inputValue: string, path: CascaderValueType, names: FieldNames) => boolean;
   render?: (
@@ -145,11 +140,14 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
     ...restProps
   } = props;
-  const { multiple } = restProps;
+
+  const { multiple, fieldNames } = restProps;
+
+  const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
 
   const context = React.useMemo(
-    () => ({ changeOnSelect, expandTrigger }),
-    [changeOnSelect, expandTrigger],
+    () => ({ changeOnSelect, expandTrigger, fieldNames: mergedFieldNames }),
+    [changeOnSelect, expandTrigger, mergedFieldNames],
   );
 
   // ============================ Ref =============================
@@ -171,8 +169,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // ========================== Options ===========================
   const mergedOptions = React.useMemo(() => {
-    return convertOptions(options);
-  }, [options]);
+    return convertOptions(options, mergedFieldNames);
+  }, [options, mergedFieldNames]);
 
   // =========================== Value ============================
   /**
@@ -201,12 +199,14 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // =========================== Label ============================
   const labelRender = (entity: FlattenDataNode) => {
+    const { label: fieldLabel } = mergedFieldNames;
+
     if (multiple) {
-      return entity.data.node.label;
+      return entity.data.node[fieldLabel];
     }
 
-    return restoreCompatibleValue(entity)
-      .options.map(opt => opt.label)
+    return restoreCompatibleValue(entity, mergedFieldNames)
+      .options.map(opt => opt[fieldLabel])
       .join('>');
   };
 
@@ -215,27 +215,27 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     // TODO: Need improve motion experience
     setMergedSearch('');
 
+    const valueList = (multiple ? newValue : [newValue]) as React.Key[];
+
+    const pathList: CascaderValueType[] = [];
+    const optionsList: DataNode[][] = [];
+
+    const valueEntities = valueList.map(getEntityByValue).filter(entity => entity);
+
+    valueEntities.forEach(entity => {
+      const { options: valueOptions } = restoreCompatibleValue(entity, mergedFieldNames);
+      const originOptions = valueOptions.map(option => option.node);
+
+      pathList.push(originOptions.map(opt => opt[mergedFieldNames.value]));
+      optionsList.push(originOptions);
+    });
+
+    // Fill state
+    if (value === undefined) {
+      setInternalValue(valueList);
+    }
+
     if (onChange) {
-      const valueList = (multiple ? newValue : [newValue]) as React.Key[];
-
-      const pathList: CascaderValueType[] = [];
-      const optionsList: DataNode[][] = [];
-
-      const valueEntities = valueList.map(getEntityByValue).filter(entity => entity);
-
-      valueEntities.forEach(entity => {
-        const { options: valueOptions } = restoreCompatibleValue(entity);
-        const originOptions = valueOptions.map(option => option.node);
-
-        pathList.push(originOptions.map(opt => opt.value));
-        optionsList.push(originOptions);
-      });
-
-      // Fill state
-      if (value === undefined) {
-        setInternalValue(valueList);
-      }
-
       if (multiple) {
         (onChange as OnMultipleChange)(pathList, optionsList);
       } else {

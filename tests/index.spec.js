@@ -431,24 +431,24 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
-  // it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
-  //   const wrapper = mount(
-  //     <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
+  it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
+    const wrapper = mount(
+      <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
 
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus.length).toBe(1);
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   expect(menu1Items.length).toBe(3);
-  //   menu1Items.at(0).simulate('mouseEnter');
-  //   jest.runAllTimers();
-  //   wrapper.update();
-  //   expect(selectedValue).toBeFalsy();
-  //   expect(wrapper.isOpen()).toBeTruthy();
-  // });
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(3);
+    menu1Items.at(0).simulate('mouseEnter');
+    jest.runAllTimers();
+    wrapper.update();
+    expect(selectedValue).toBeFalsy();
+    expect(wrapper.isOpen()).toBeTruthy();
+  });
 
   // it('should has default fieldName when props not exist labelField and valueField and childrenField', () => {
   //   const wrapper = mount(
@@ -462,28 +462,28 @@ describe('Cascader', () => {
   //   expect(props.fieldNames.children).toBe('children');
   // });
 
-  // it('should support custom fieldNames', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
-  //       options={addressOptionsForFieldNames}
-  //       defaultValue={['fj', 'fuzhou', 'mawei']}
-  //       expandIcon=""
-  //       popupVisible
-  //     >
-  //       <input />
-  //     </Cascader>,
-  //   );
-  //   const props = wrapper.props();
-  //   expect(props.fieldNames.label).toBe('name');
-  //   expect(props.fieldNames.value).toBe('code');
-  //   expect(props.fieldNames.children).toBe('nodes');
-  //   const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
-  //   expect(activeMenuItems.length).toBe(3);
-  //   expect(activeMenuItems.at(0).text()).toBe('福建');
-  //   expect(activeMenuItems.at(1).text()).toBe('福州');
-  //   expect(activeMenuItems.at(2).text()).toBe('马尾');
-  // });
+  it('should support custom fieldNames', () => {
+    const wrapper = mount(
+      <Cascader
+        fieldNames={{ label: 'name', value: 'code', children: 'nodes' }}
+        options={addressOptionsForFieldNames}
+        defaultValue={['fj', 'fuzhou', 'mawei']}
+        expandIcon=""
+        popupVisible
+      >
+        <input />
+      </Cascader>,
+    );
+    const props = wrapper.props();
+    expect(props.fieldNames.label).toBe('name');
+    expect(props.fieldNames.value).toBe('code');
+    expect(props.fieldNames.children).toBe('nodes');
+    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems.length).toBe(3);
+    expect(activeMenuItems.at(0).text()).toBe('福建');
+    expect(activeMenuItems.at(1).text()).toBe('福州');
+    expect(activeMenuItems.at(2).text()).toBe('马尾');
+  });
 
   // it('should works and show warning message when use typo prop name: filedNames', () => {
   //   // eslint-disable-next-line no-console
