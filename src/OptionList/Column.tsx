@@ -16,6 +16,7 @@ export interface ColumnProps {
   onToggleOpen: (open: boolean) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
+  loadingKeys: React.Key[];
 }
 
 export default function Column({
@@ -29,18 +30,22 @@ export default function Column({
   onToggleOpen,
   checkedSet,
   halfCheckedSet,
+  loadingKeys,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
   const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
 
-  const { changeOnSelect, expandTrigger, expandIcon } = React.useContext(CascaderContext);
+  const { changeOnSelect, expandTrigger, expandIcon, loadingIcon } =
+    React.useContext(CascaderContext);
 
   return (
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
         const { disabled, value } = option;
         const isMergedLeaf = isLeaf(option);
+
+        const isLoading = loadingKeys.includes(value);
 
         // >>>>> checked
         const checked = checkedSet.has(value);
@@ -107,8 +112,11 @@ export default function Column({
             >
               {option.title}
             </div>
-            {expandIcon && !isMergedLeaf && (
+            {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
+            )}
+            {isLoading && loadingIcon && (
+              <div className={`${menuItemPrefixCls}-loading`}>{loadingIcon}</div>
             )}
           </li>
         );

@@ -23,13 +23,14 @@ class Demo extends React.Component {
   };
 
   onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
+    console.log('OnChange:', value, selectedOptions);
     this.setState({
       inputValue: selectedOptions.map(o => o.label).join(', '),
     });
   };
 
   loadData = selectedOptions => {
+    console.log('onLoad:', selectedOptions);
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据
@@ -49,7 +50,7 @@ class Demo extends React.Component {
         // eslint-disable-next-line react/no-access-state-in-setstate
         options: [...this.state.options],
       });
-    }, 1000);
+    }, 3000);
   };
 
   render() {

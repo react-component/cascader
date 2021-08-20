@@ -35,8 +35,11 @@ export function restoreCompatibleValue(
   return { path, options };
 }
 
-export function isLeaf(option: DataNode | OptionDataNode) {
-  const { isLeaf: leaf, children } = option;
+export function isLeaf(option: OptionDataNode) {
+  const {
+    children,
+    node: { isLeaf: leaf },
+  } = option;
   return leaf !== undefined ? leaf : !children?.length;
 }
 
@@ -55,10 +58,15 @@ export function connectValue(value: React.Key[]) {
  * Which means we need another round to get origin node back!
  * This is slow perf on large list. We should abandon same value in nest in future.
  */
-export function convertOptions(options: DataNode[], { value: fieldValue, children: fieldChildren }: FieldNames): InternalDataNode[] {
+export function convertOptions(
+  options: DataNode[],
+  { value: fieldValue, children: fieldChildren }: FieldNames,
+): InternalDataNode[] {
   function injectValue(list: DataNode[], parentValue = ''): InternalDataNode[] {
     return (list || []).map(option => {
-      const newValue = parentValue ? connectValue([parentValue, option[fieldValue]]) : option[fieldValue];
+      const newValue = parentValue
+        ? connectValue([parentValue, option[fieldValue]])
+        : option[fieldValue];
       const cloneOption = {
         ...option,
         [fieldValue]: newValue,

@@ -1,5 +1,8 @@
 import * as React from 'react';
-import type { OptionListProps, RefOptionListProps } from 'rc-select/lib/OptionList';
+import type {
+  OptionListProps as SelectOptionListProps,
+  RefOptionListProps,
+} from 'rc-select/lib/OptionList';
 import { SelectContext } from 'rc-tree-select/lib/Context';
 import type { OptionDataNode } from '../interface';
 import Column from './Column';
@@ -7,7 +10,7 @@ import { restoreCompatibleValue } from '../util';
 import SearchResult from './SearchResult';
 import CascaderContext from '../context';
 
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<OptionDataNode[]>>(
+const RefOptionList = React.forwardRef<RefOptionListProps, SelectOptionListProps<OptionDataNode[]>>(
   (props, ref) => {
     const {
       prefixCls,
@@ -22,7 +25,27 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
     } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-    const { changeOnSelect, expandTrigger, fieldNames } = React.useContext(CascaderContext);
+    const { changeOnSelect, expandTrigger, fieldNames, loadData } =
+      React.useContext(CascaderContext);
+
+    // ========================= loadData =========================
+    const [loadingKeys, setLoadingKeys] = React.useState([]);
+
+    const internalLoadData = (pathValue: React.Key) => {
+      if (!loadData) {
+        return;
+      }
+
+      const entity = flattenOptions.find(flattenOption => flattenOption.data.value === pathValue);
+      if (entity) {
+        const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
+        const rawOptionList = optionList.map(opt => opt.node);
+
+        setLoadingKeys(keys => [...keys, optionList[optionList.length - 1].value]);
+
+        loadData(rawOptionList);
+      }
+    };
 
     // ========================== Values ==========================
     const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
@@ -52,6 +75,9 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
     const onPathOpen = (index: number, pathValue: React.Key) => {
       const nextOpenPath = [...openPath.slice(0, index), pathValue];
       setOpenPath(nextOpenPath);
+
+      // Trigger loadData
+      internalLoadData(pathValue);
     };
 
     const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
@@ -91,6 +117,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps<Optio
       onToggleOpen,
       checkedSet,
       halfCheckedSet,
+      loadingKeys,
     };
 
     // >>>>> Search

@@ -7,7 +7,7 @@ import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
-import type { CascaderValueType, DataNode, FieldNames } from './interface';
+import type { CascaderValueType, DataNode, FieldNames, InternalDataNode } from './interface';
 import CascaderContext from './context';
 import { connectValue, convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
@@ -88,10 +88,10 @@ interface BaseCascaderProps
   // dropdownMenuColumnStyle?: React.CSSProperties;
   // dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
   // builtinPlacements?: BuildInPlacements;
-  // loadData?: (selectOptions: DataNode[]) => void;
+  loadData?: (selectOptions: DataNode[]) => void;
 
   expandIcon?: React.ReactNode;
-  // loadingIcon?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
 }
 
 type OnSingleChange = (value: CascaderValueType, selectOptions: DataNode[]) => void;
@@ -135,6 +135,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
     expandTrigger,
     expandIcon = '>',
+    loadingIcon,
+
+    loadData,
 
     ...restProps
   } = props;
@@ -142,11 +145,6 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const { multiple, fieldNames } = restProps;
 
   const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
-
-  const context = React.useMemo(
-    () => ({ changeOnSelect, expandTrigger, fieldNames: mergedFieldNames, expandIcon }),
-    [changeOnSelect, expandTrigger, mergedFieldNames, expandIcon],
-  );
 
   // ============================ Ref =============================
   const cascaderRef = React.useRef<RefSelectProps>();
@@ -259,6 +257,19 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     onDropdownVisibleChange?.(nextVisible);
     onPopupVisibleChange?.(nextVisible);
   };
+
+  // ========================== Context ===========================
+  const context = React.useMemo(
+    () => ({
+      changeOnSelect,
+      expandTrigger,
+      fieldNames: mergedFieldNames,
+      expandIcon,
+      loadingIcon,
+      loadData,
+    }),
+    [changeOnSelect, expandTrigger, mergedFieldNames, expandIcon, loadingIcon, loadData],
+  );
 
   // =========================== Render ===========================
   const dropdownStyle: React.CSSProperties =

@@ -27,6 +27,7 @@ function flattenOptions(options: OptionDataNode[]): OptionDataNode[] {
             return list;
           }, []),
           value: option.value,
+          node: option.node,
         });
       } else {
         dig(option.children, connectLabelPath);
