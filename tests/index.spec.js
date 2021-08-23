@@ -495,107 +495,93 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
-  // // https://github.com/ant-design/ant-design/issues/9084
-  // it('should trigger loadData when expandTrigger is hover', () => {
-  //   const options = [
-  //     {
-  //       value: 'zhejiang',
-  //       label: 'Zhejiang',
-  //       isLeaf: false,
-  //     },
-  //     {
-  //       value: 'jiangsu',
-  //       label: 'Jiangsu',
-  //       isLeaf: false,
-  //     },
-  //   ];
-  //   const loadData = jest.fn();
-  //   const wrapper = mount(
-  //     <Cascader options={options} loadData={loadData} changeOnSelect expandTrigger="hover">
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('mouseEnter');
-  //   jest.runAllTimers();
-  //   expect(loadData).toHaveBeenCalled();
-  // });
+  // https://github.com/ant-design/ant-design/issues/9084
+  it('should trigger loadData when expandTrigger is hover', () => {
+    const options = [
+      {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        isLeaf: false,
+      },
+      {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        isLeaf: false,
+      },
+    ];
+    const loadData = jest.fn();
+    const wrapper = mount(
+      <Cascader options={options} loadData={loadData} changeOnSelect expandTrigger="hover">
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    menu1Items.at(0).simulate('mouseEnter');
+    jest.runAllTimers();
+    expect(loadData).toHaveBeenCalled();
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/9793
-  // it('should not trigger onBlur and onFocus when select item', () => {
-  //   const onFocus = jest.fn();
-  //   const onBlur = jest.fn();
-  //   const wrapper = mount(
-  //     <Cascader options={addressOptions} onFocus={onFocus} onBlur={onBlur}>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   wrapper.find('input').simulate('focus');
-  //   wrapper.find('input').simulate('click');
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-  //   menu1Items.at(0).simulate('mouseDown');
-  //   menu1Items.at(0).simulate('click');
-  //   jest.runAllTimers();
-  //   expect(onFocus).toHaveBeenCalledTimes(1);
-  //   expect(onBlur).toHaveBeenCalledTimes(0);
-  // });
+  // https://github.com/ant-design/ant-design/issues/9793
+  it('should not trigger onBlur and onFocus when select item', () => {
+    // This function is handled by `rc-select` instead
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/18713
-  // it('should not show title when title is falsy', () => {
-  //   const options = [
-  //     {
-  //       value: '1',
-  //       label: '1',
-  //       title: '',
-  //     },
-  //     {
-  //       value: '2',
-  //       label: '2',
-  //       title: undefined,
-  //     },
-  //     {
-  //       value: '3',
-  //       label: '3',
-  //     },
-  //     {
-  //       value: '4',
-  //       label: '4',
-  //       title: 'title',
-  //     },
-  //   ];
-  //   const wrapper = mount(
-  //     <Cascader options={options} popupVisible>
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   const menus = wrapper.find('.rc-cascader-menu');
-  //   expect(menus).toMatchSnapshot();
-  // });
+  // https://github.com/ant-design/ant-design/issues/18713
+  it('should not show title when title is falsy', () => {
+    const options = [
+      {
+        value: '1',
+        label: '1',
+        title: '',
+      },
+      {
+        value: '2',
+        label: '2',
+        title: undefined,
+      },
+      {
+        value: '3',
+        label: '3',
+      },
+      {
+        value: '4',
+        label: '4',
+        title: 'title',
+      },
+    ];
+    const wrapper = mount(
+      <Cascader options={options} popupVisible>
+        <input readOnly />
+      </Cascader>,
+    );
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.render()).toMatchSnapshot();
+  });
 
-  // it('should render custom dropdown correctly', () => {
-  //   const wrapper = mount(
-  //     <Cascader
-  //       options={addressOptions}
-  //       popupVisible
-  //       dropdownRender={(menus) => (
-  //         <div className="custom-dropdown">
-  //           {menus}
-  //           <hr />
-  //           <span className="custom-dropdown-content">Hello, DropdownRender</span>
-  //         </div>
-  //       )}
-  //     >
-  //       <input readOnly />
-  //     </Cascader>,
-  //   );
-  //   const customDropdown = wrapper.find('.custom-dropdown');
-  //   expect(customDropdown.length).toBe(1);
-  //   const customDropdownContent = wrapper.find('.custom-dropdown-content');
-  //   expect(customDropdownContent.length).toBe(1);
-  //   const menus = wrapper.find('.rc-cascader-menus');
-  //   expect(menus).toMatchSnapshot();
-  // });
+  it('should render custom dropdown correctly', () => {
+    const wrapper = mount(
+      <Cascader
+        options={addressOptions}
+        popupVisible
+        dropdownRender={(menus) => (
+          <div className="custom-dropdown">
+            {menus}
+            <hr />
+            <span className="custom-dropdown-content">Hello, DropdownRender</span>
+          </div>
+        )}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+
+    const customDropdown = wrapper.find('.custom-dropdown');
+    expect(customDropdown.length).toBe(1);
+    const customDropdownContent = wrapper.find('.custom-dropdown-content');
+    expect(customDropdownContent.length).toBe(1);
+    const menus = wrapper.find('.rc-cascader-dropdown');
+    expect(menus.render()).toMatchSnapshot();
+  });
 });

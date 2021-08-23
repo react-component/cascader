@@ -7,7 +7,7 @@ import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
-import type { CascaderValueType, DataNode, FieldNames, InternalDataNode } from './interface';
+import type { CascaderValueType, DataNode, FieldNames } from './interface';
 import CascaderContext from './context';
 import { connectValue, convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
@@ -19,6 +19,9 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  *
  * To avoid breaking change, wrap the `rc-tree-select` to compatible with `rc-cascader` API.
  * This should be better to merge to same API like `rc-tree-select` or `rc-select` in next major version.
+ * 
+ * Update:
+ * - dropdown class change to `rc-cascader-dropdown`
  *
  * Deprecated:
  * - popupVisible
@@ -51,7 +54,7 @@ export interface ShowSearchType {
 
 interface BaseCascaderProps
   extends Pick<TriggerProps, 'getPopupContainer'>,
-    Omit<React.HTMLAttributes<HTMLDivElement>, 'value' | 'defaultValue' | 'onChange'> {
+    Omit<React.HTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'> {
   options?: DataNode[];
   children?: React.ReactElement;
 
@@ -150,8 +153,12 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const cascaderRef = React.useRef<RefSelectProps>();
 
   React.useImperativeHandle(ref, () => ({
-    focus: cascaderRef.current.focus,
-    blur: cascaderRef.current.blur,
+    focus: () => {
+      cascaderRef.current.focus();
+    },
+    blur: () => {
+      cascaderRef.current.blur();
+    },
   }));
 
   const getEntityByValue = (val: React.Key): FlattenDataNode =>

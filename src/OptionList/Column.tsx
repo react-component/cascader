@@ -42,7 +42,7 @@ export default function Column({
   return (
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
-        const { disabled, value } = option;
+        const { disabled, value, node } = option;
         const isMergedLeaf = isLeaf(option);
 
         const isLoading = loadingKeys.includes(value);
@@ -64,6 +64,14 @@ export default function Column({
           }
         };
 
+        // >>>>> Title
+        let title: string;
+        if (typeof node?.title === 'string') {
+          title = node.title;
+        } else if (typeof option.title === 'string') {
+          title = option.title;
+        }
+
         // >>>>> Render
         return (
           <li
@@ -74,6 +82,7 @@ export default function Column({
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             role="menuitemcheckbox"
+            title={title}
             aria-checked={checked}
             onMouseEnter={() => {
               if (expandTrigger) {

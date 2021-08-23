@@ -10,6 +10,8 @@ export type CascaderValueType = React.Key[];
 
 export interface DataNode {
   label: React.ReactNode;
+  /** Customize hover title */
+  title?: string;
   value: string;
   disabled?: boolean;
   children?: DataNode[];
@@ -20,7 +22,7 @@ export interface InternalDataNode extends DataNode {
   node: DataNode;
 }
 
-export interface OptionDataNode extends Omit<InternalDataNode, 'label' | 'children'> {
+export interface OptionDataNode extends Omit<InternalDataNode, 'label' | 'children' | 'title'> {
   title: React.ReactNode;
   children?: OptionDataNode[];
 }

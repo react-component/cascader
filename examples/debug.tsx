@@ -7,6 +7,7 @@ const addressOptions1 = [
   {
     label: '福建',
     value: 'fj',
+    title: '测试标题',
     children: [
       {
         label: '福州',
@@ -111,7 +112,7 @@ const Demo = () => {
         onChange={onChange}
         multiple={multiple}
         allowClear
-        defaultValue={multiple ? [defaultValue] : defaultValue}
+        // defaultValue={multiple ? [defaultValue] : defaultValue}
         // showSearch
       />
     </>

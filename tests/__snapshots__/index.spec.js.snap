@@ -2,279 +2,136 @@
 
 exports[`Cascader should not show title when title is falsy 1`] = `
 <ul
-  className="rc-cascader-menu"
-  key="0"
+  class="rc-cascader-menu"
+  role="menu"
 >
   <li
-    className="rc-cascader-menu-item"
-    key="1"
-    onClick={[Function]}
-    onDoubleClick={[Function]}
-    onMouseDown={[Function]}
-    role="menuitem"
+    aria-checked="false"
+    class="rc-cascader-menu-item"
+    role="menuitemcheckbox"
     title=""
   >
-    1
+    <div
+      class="rc-cascader-menu-item-content"
+    >
+      1
+    </div>
   </li>
   <li
-    className="rc-cascader-menu-item"
-    key="2"
-    onClick={[Function]}
-    onDoubleClick={[Function]}
-    onMouseDown={[Function]}
-    role="menuitem"
+    aria-checked="false"
+    class="rc-cascader-menu-item"
+    role="menuitemcheckbox"
+    title="2"
   >
-    2
+    <div
+      class="rc-cascader-menu-item-content"
+    >
+      2
+    </div>
   </li>
   <li
-    className="rc-cascader-menu-item"
-    key="3"
-    onClick={[Function]}
-    onDoubleClick={[Function]}
-    onMouseDown={[Function]}
-    role="menuitem"
+    aria-checked="false"
+    class="rc-cascader-menu-item"
+    role="menuitemcheckbox"
     title="3"
   >
-    3
+    <div
+      class="rc-cascader-menu-item-content"
+    >
+      3
+    </div>
   </li>
   <li
-    className="rc-cascader-menu-item"
-    key="4"
-    onClick={[Function]}
-    onDoubleClick={[Function]}
-    onMouseDown={[Function]}
-    role="menuitem"
+    aria-checked="false"
+    class="rc-cascader-menu-item"
+    role="menuitemcheckbox"
     title="title"
   >
-    4
+    <div
+      class="rc-cascader-menu-item-content"
+    >
+      4
+    </div>
   </li>
 </ul>
 `;
 
 exports[`Cascader should render custom dropdown correctly 1`] = `
 <div
-  className="rc-cascader-menus"
-  onMouseDownCapture={[Function]}
-  onTouchStartCapture={[Function]}
-  style={
-    Object {
-      "opacity": 0,
-      "pointerEvents": "none",
-      "zIndex": undefined,
-    }
-  }
+  class="rc-cascader-dropdown"
+  style="opacity: 0; pointer-events: none; min-width: auto;"
 >
-  <div
-    className="custom-dropdown"
-  >
-    <Menus
-      activeValue={Array []}
-      builtinPlacements={
-        Object {
-          "bottomLeft": Object {
-            "offset": Array [
-              0,
-              4,
-            ],
-            "overflow": Object {
-              "adjustX": 1,
-              "adjustY": 1,
-            },
-            "points": Array [
-              "tl",
-              "bl",
-            ],
-          },
-          "bottomRight": Object {
-            "offset": Array [
-              0,
-              4,
-            ],
-            "overflow": Object {
-              "adjustX": 1,
-              "adjustY": 1,
-            },
-            "points": Array [
-              "tr",
-              "br",
-            ],
-          },
-          "topLeft": Object {
-            "offset": Array [
-              0,
-              -4,
-            ],
-            "overflow": Object {
-              "adjustX": 1,
-              "adjustY": 1,
-            },
-            "points": Array [
-              "bl",
-              "tl",
-            ],
-          },
-          "topRight": Object {
-            "offset": Array [
-              0,
-              -4,
-            ],
-            "overflow": Object {
-              "adjustX": 1,
-              "adjustY": 1,
-            },
-            "points": Array [
-              "br",
-              "tr",
-            ],
-          },
-        }
-      }
-      defaultFieldNames={
-        Object {
-          "children": "children",
-          "label": "label",
-          "value": "value",
-        }
-      }
-      disabled={false}
-      dropdownRender={[Function]}
-      expandIcon=">"
-      expandTrigger="click"
-      fieldNames={
-        Object {
-          "children": "children",
-          "label": "label",
-          "value": "value",
-        }
-      }
-      onChange={[Function]}
-      onItemDoubleClick={[Function]}
-      onPopupVisibleChange={[Function]}
-      onSelect={[Function]}
-      options={
-        Array [
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "label": "马尾",
-                    "value": "mawei",
-                  },
-                ],
-                "label": "福州",
-                "value": "fuzhou",
-              },
-              Object {
-                "label": "泉州",
-                "value": "quanzhou",
-              },
-            ],
-            "label": "福建",
-            "value": "fj",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "label": "余杭",
-                    "value": "yuhang",
-                  },
-                ],
-                "label": "杭州",
-                "value": "hangzhou",
-              },
-            ],
-            "label": "浙江",
-            "value": "zj",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "label": "朝阳区",
-                "value": "chaoyang",
-              },
-              Object {
-                "label": "海淀区",
-                "value": "haidian",
-              },
-            ],
-            "label": "北京",
-            "value": "bj",
-          },
-        ]
-      }
-      popupClassName=""
-      popupPlacement="bottomLeft"
-      popupVisible={true}
-      prefixCls="rc-cascader"
-      transitionName=""
-      value={Array []}
-      visible={true}
+  <div>
+    <div
+      class="custom-dropdown"
     >
-      <div>
+      <div
+        class="rc-cascader-holder"
+      >
         <ul
-          className="rc-cascader-menu"
-          key="0"
+          class="rc-cascader-menu"
+          role="menu"
         >
           <li
-            className="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            key="fj"
-            onClick={[Function]}
-            onDoubleClick={[Function]}
-            onMouseDown={[Function]}
-            role="menuitem"
+            aria-checked="false"
+            class="rc-cascader-menu-item"
+            role="menuitemcheckbox"
             title="福建"
           >
-            福建
-            <span
-              className="rc-cascader-menu-item-expand-icon"
+            <div
+              class="rc-cascader-menu-item-content"
+            >
+              福建
+            </div>
+            <div
+              class="rc-cascader-menu-item-expand-icon"
             >
               &gt;
-            </span>
+            </div>
           </li>
           <li
-            className="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            key="zj"
-            onClick={[Function]}
-            onDoubleClick={[Function]}
-            onMouseDown={[Function]}
-            role="menuitem"
+            aria-checked="false"
+            class="rc-cascader-menu-item"
+            role="menuitemcheckbox"
             title="浙江"
           >
-            浙江
-            <span
-              className="rc-cascader-menu-item-expand-icon"
+            <div
+              class="rc-cascader-menu-item-content"
+            >
+              浙江
+            </div>
+            <div
+              class="rc-cascader-menu-item-expand-icon"
             >
               &gt;
-            </span>
+            </div>
           </li>
           <li
-            className="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            key="bj"
-            onClick={[Function]}
-            onDoubleClick={[Function]}
-            onMouseDown={[Function]}
-            role="menuitem"
+            aria-checked="false"
+            class="rc-cascader-menu-item"
+            role="menuitemcheckbox"
             title="北京"
           >
-            北京
-            <span
-              className="rc-cascader-menu-item-expand-icon"
+            <div
+              class="rc-cascader-menu-item-content"
+            >
+              北京
+            </div>
+            <div
+              class="rc-cascader-menu-item-expand-icon"
             >
               &gt;
-            </span>
+            </div>
           </li>
         </ul>
       </div>
-    </Menus>
-    <hr />
-    <span
-      className="custom-dropdown-content"
-    >
-      Hello, DropdownRender
-    </span>
+      <hr />
+      <span
+        class="custom-dropdown-content"
+      >
+        Hello, DropdownRender
+      </span>
+    </div>
   </div>
 </div>
 `;
