@@ -47,6 +47,18 @@ const RefOptionList = React.forwardRef<RefOptionListProps, SelectOptionListProps
       }
     };
 
+    // zombieJ: This is bad. We should make this same as `rc-tree` to use Promise instead.
+    React.useEffect(() => {
+      if (loadingKeys.length) {
+        loadingKeys.forEach(loadingKey => {
+          const option = flattenOptions.find(opt => opt.value === loadingKey);
+          if (option.data.children) {
+            setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
+          }
+        });
+      }
+    }, [flattenOptions, loadingKeys]);
+
     // ========================== Values ==========================
     const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
     const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
