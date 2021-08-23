@@ -25,7 +25,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, SelectOptionListProps
     } = props;
 
     const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-    const { changeOnSelect, expandTrigger, fieldNames, loadData } =
+    const { changeOnSelect, expandTrigger, fieldNames, loadData, search } =
       React.useContext(CascaderContext);
 
     // ========================= loadData =========================
@@ -132,22 +132,33 @@ const RefOptionList = React.forwardRef<RefOptionListProps, SelectOptionListProps
       loadingKeys,
     };
 
+    // >>>>> Empty
+    const emptyList = [
+      {
+        title: notFoundContent,
+        value: '__EMPTY__',
+        disabled: true,
+        node: null,
+      },
+    ];
+
     // >>>>> Search
     if (searchValue) {
-      return <SearchResult {...columnProps} />;
+      return (
+        <SearchResult
+          {...columnProps}
+          flattenOptions={flattenOptions}
+          fieldNames={fieldNames}
+          search={searchValue}
+          searchConfig={search}
+          changeOnSelect={changeOnSelect}
+          empty={emptyList}
+        />
+      );
     }
 
     // >>>>> Columns
-    const firstLevelOptions = options.length
-      ? options
-      : [
-          {
-            title: notFoundContent,
-            value: '__EMPTY__',
-            disabled: true,
-            node: null,
-          },
-        ];
+    const firstLevelOptions = options.length ? options : emptyList;
 
     const columnNodes: React.ReactElement[] = [
       <Column

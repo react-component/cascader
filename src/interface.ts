@@ -32,3 +32,21 @@ export interface FlattenDataNode {
   path: React.Key[];
   parent?: FlattenDataNode;
 }
+
+export interface ShowSearchType {
+  filter?: (inputValue: string, options: DataNode[], fieldNames: FieldNames) => boolean;
+  render?: (
+    inputValue: string,
+    path: CascaderValueType,
+    prefixCls: string | undefined,
+    names: FieldNames,
+  ) => React.ReactNode;
+  sort?: (
+    a: CascaderValueType,
+    b: CascaderValueType,
+    inputValue: string,
+    names: FieldNames,
+  ) => number;
+  matchInputWidth?: boolean;
+  limit?: number | false;
+}

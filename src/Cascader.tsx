@@ -1,16 +1,17 @@
 import * as React from 'react';
-import type { TriggerProps } from 'rc-trigger';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import type { TreeSelectProps } from 'rc-tree-select';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
-import type { CascaderValueType, DataNode, FieldNames } from './interface';
+import type { CascaderValueType, DataNode, FieldNames, ShowSearchType } from './interface';
 import CascaderContext from './context';
 import { connectValue, convertOptions, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
+import useSearchConfig from './hooks/useSearchConfig';
 
 /**
  * `rc-cascader` is much like `rc-tree-select` but API is very different.
@@ -19,13 +20,16 @@ import useUpdateEffect from './hooks/useUpdateEffect';
  *
  * To avoid breaking change, wrap the `rc-tree-select` to compatible with `rc-cascader` API.
  * This should be better to merge to same API like `rc-tree-select` or `rc-select` in next major version.
- * 
+ *
  * Update:
  * - dropdown class change to `rc-cascader-dropdown`
  *
  * Deprecated:
  * - popupVisible
  * - onPopupVisibleChange
+ *
+ * Removed:
+ * - builtinPlacements: Handle by select
  */
 
 const RefCascader = generate({
@@ -34,27 +38,27 @@ const RefCascader = generate({
 });
 
 // ====================================== Wrap ======================================
-export interface ShowSearchType {
-  filter?: (inputValue: string, path: CascaderValueType, names: FieldNames) => boolean;
-  render?: (
-    inputValue: string,
-    path: CascaderValueType,
-    prefixCls: string | undefined,
-    names: FieldNames,
-  ) => React.ReactNode;
-  sort?: (
-    a: CascaderValueType,
-    b: CascaderValueType,
-    inputValue: string,
-    names: FieldNames,
-  ) => number;
-  matchInputWidth?: boolean;
-  limit?: number | false;
-}
-
 interface BaseCascaderProps
-  extends Pick<TriggerProps, 'getPopupContainer'>,
-    Omit<React.HTMLAttributes<HTMLInputElement>, 'value' | 'defaultValue' | 'onChange'> {
+  extends Omit<
+    TreeSelectProps,
+    | 'value'
+    | 'defaultValue'
+    | 'filterTreeNode'
+    | 'labelInValue'
+    | 'loadData'
+    | 'showCheckedStrategy'
+    | 'showSearch'
+    | 'treeCheckable'
+    | 'treeCheckStrictly'
+    | 'treeDataSimpleMode'
+    | 'treeNodeFilterProp'
+    | 'treeNodeLabelProp'
+    | 'treeDefaultExpandAll'
+    | 'treeDefaultExpandedKeys'
+    | 'treeExpandedKeys'
+    | 'treeIcon'
+    | 'onChange'
+  > {
   options?: DataNode[];
   children?: React.ReactElement;
 
@@ -75,7 +79,6 @@ interface BaseCascaderProps
   // Open
   /** @deprecated Use `open` instead */
   popupVisible?: boolean;
-  open?: boolean;
 
   /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
@@ -84,13 +87,7 @@ interface BaseCascaderProps
   // Trigger
   expandTrigger?: 'hover' | 'click';
 
-  // transitionName?: string;
-  // popupClassName?: string;
-  // popupPlacement?: string;
-  // prefixCls?: string;
-  // dropdownMenuColumnStyle?: React.CSSProperties;
-  // dropdownRender?: (menu: React.ReactElement) => React.ReactElement;
-  // builtinPlacements?: BuildInPlacements;
+  dropdownMenuColumnStyle?: React.CSSProperties;
   loadData?: (selectOptions: DataNode[]) => void;
 
   expandIcon?: React.ReactNode;
@@ -135,12 +132,14 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
     searchValue,
     onSearch,
+    showSearch,
 
     expandTrigger,
     expandIcon = '>',
     loadingIcon,
 
     loadData,
+    dropdownMenuColumnStyle,
 
     ...restProps
   } = props;
@@ -169,6 +168,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     value: searchValue,
     onChange: onSearch,
   });
+
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
 
   // ========================== Options ===========================
   const mergedOptions = React.useMemo(() => {
@@ -274,13 +275,27 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       expandIcon,
       loadingIcon,
       loadData,
+      dropdownMenuColumnStyle,
+      search: searchConfig,
     }),
-    [changeOnSelect, expandTrigger, mergedFieldNames, expandIcon, loadingIcon, loadData],
+    [
+      changeOnSelect,
+      expandTrigger,
+      mergedFieldNames,
+      expandIcon,
+      loadingIcon,
+      loadData,
+      dropdownMenuColumnStyle,
+      searchConfig,
+    ],
   );
 
   // =========================== Render ===========================
   const dropdownStyle: React.CSSProperties =
-    mergedSearch || !mergedOptions.length
+    // Search to match width
+    (mergedSearch && searchConfig.matchInputWidth) ||
+    // Empty keep the width
+    !mergedOptions.length
       ? {}
       : {
           minWidth: 'auto',
@@ -302,6 +317,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         open={mergedOpen}
         onDropdownVisibleChange={onInternalDropdownVisibleChange}
         searchValue={mergedSearch}
+        // Customize filter logic in OptionList
+        filterTreeNode={() => true}
+        showSearch={mergedShowSearch}
         onSearch={setMergedSearch}
         labelRender={labelRender}
         {...{

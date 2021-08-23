@@ -36,7 +36,7 @@ export default function Column({
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
   const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
 
-  const { changeOnSelect, expandTrigger, expandIcon, loadingIcon } =
+  const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
     React.useContext(CascaderContext);
 
   return (
@@ -81,6 +81,7 @@ export default function Column({
               [`${menuItemPrefixCls}-selected`]: !multiple && checked,
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
+            style={dropdownMenuColumnStyle}
             role="menuitemcheckbox"
             title={title}
             aria-checked={checked}

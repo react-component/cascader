@@ -54,6 +54,10 @@ const addressOptions1 = [
         value: 'haidian',
         disabled: true,
       },
+      {
+        label: 'TEST',
+        value: 'test',
+      },
     ],
   },
   {
@@ -113,7 +117,7 @@ const Demo = () => {
         multiple={multiple}
         allowClear
         // defaultValue={multiple ? [defaultValue] : defaultValue}
-        // showSearch
+        showSearch
       />
     </>
   );
