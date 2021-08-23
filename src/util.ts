@@ -36,10 +36,10 @@ export function restoreCompatibleValue(
 }
 
 export function isLeaf(option: OptionDataNode) {
-  const {
-    children,
-    node: { isLeaf: leaf },
-  } = option;
+  const { children, node } = option;
+
+  const leaf = node?.isLeaf;
+
   return leaf !== undefined ? leaf : !children?.length;
 }
 
