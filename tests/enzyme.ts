@@ -5,7 +5,7 @@ type ReplaceReturnType<T extends (...a: any) => any, TNewReturn> = (
   ...a: Parameters<T>
 ) => TNewReturn;
 
-interface ReactWrapper extends OriginReactWrapper {
+export interface ReactWrapper extends OriginReactWrapper {
   isOpen: () => boolean;
   clickOption: (menuIndex: number, itemIndex: number, type?: 'click' | 'doubleClick') => ReactWrapper;
 }

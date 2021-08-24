@@ -55,7 +55,7 @@ export default function SearchResult(props: SearchResultProps) {
     const filteredList: typeof normalizeList = [];
     for (let i = 0; i < normalizeList.length; i += 1) {
       // Perf saving if enabled
-      if (!searchConfig.sort && filteredList.length > searchConfig.limit) {
+      if (!searchConfig.sort && filteredList.length >= searchConfig.limit) {
         break;
       }
 
