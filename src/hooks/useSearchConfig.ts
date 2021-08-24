@@ -11,9 +11,6 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
 
     let searchConfig: ShowSearchType = {
       matchInputWidth: true,
-      filter: (search, options, { label }) => {
-        return options.some(opt => String(opt[label]).toLowerCase().includes(search.toLowerCase()));
-      },
     };
 
     if (showSearch && typeof showSearch === 'object') {

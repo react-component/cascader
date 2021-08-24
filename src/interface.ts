@@ -37,15 +37,15 @@ export interface ShowSearchType {
   filter?: (inputValue: string, options: DataNode[], fieldNames: FieldNames) => boolean;
   render?: (
     inputValue: string,
-    path: CascaderValueType,
+    path: DataNode[],
     prefixCls: string | undefined,
-    names: FieldNames,
+    fieldNames: FieldNames,
   ) => React.ReactNode;
   sort?: (
     a: CascaderValueType,
     b: CascaderValueType,
     inputValue: string,
-    names: FieldNames,
+    fieldNames: FieldNames,
   ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
