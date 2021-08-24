@@ -38,12 +38,12 @@ export interface ShowSearchType {
   render?: (
     inputValue: string,
     path: DataNode[],
-    prefixCls: string | undefined,
+    prefixCls: string,
     fieldNames: FieldNames,
   ) => React.ReactNode;
   sort?: (
-    a: CascaderValueType,
-    b: CascaderValueType,
+    a: DataNode[],
+    b: DataNode[],
     inputValue: string,
     fieldNames: FieldNames,
   ) => number;

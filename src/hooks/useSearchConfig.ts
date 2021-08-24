@@ -11,6 +11,7 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
 
     let searchConfig: ShowSearchType = {
       matchInputWidth: true,
+      limit: 50,
     };
 
     if (showSearch && typeof showSearch === 'object') {

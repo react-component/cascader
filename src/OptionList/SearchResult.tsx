@@ -52,12 +52,29 @@ export default function SearchResult(props: SearchResultProps) {
     }
 
     // Filter
-    const filteredList = normalizeList.filter(({ originOptionList }) => {
-      return filterOption(search, originOptionList, fieldNames);
-    });
+    const filteredList: typeof normalizeList = [];
+    for (let i = 0; i < normalizeList.length; i += 1) {
+      // Perf saving if enabled
+      if (!searchConfig.sort && filteredList.length > searchConfig.limit) {
+        break;
+      }
+
+      // Do filter
+      const optGrp = normalizeList[i];
+      if (filterOption(search, optGrp.originOptionList, fieldNames)) {
+        filteredList.push(optGrp);
+      }
+    }
+
+    // Sort: When searchConfig.sort is enabled. We have to filter all the list
+    if (searchConfig.sort) {
+      filteredList.sort((a, b) => {
+        return searchConfig.sort(a.originOptionList, b.originOptionList, search, fieldNames);
+      });
+    }
 
     return filteredList;
-  }, [flattenOptions, fieldNames, search, filterOption, changeOnSelect]);
+  }, [flattenOptions, fieldNames, search, filterOption, changeOnSelect, searchConfig]);
 
   // ======================== Generate Options ========================
   // Wrap with connected label
