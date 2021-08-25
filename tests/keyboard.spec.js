@@ -13,10 +13,9 @@ describe('Cascader.Keyboard', () => {
   };
 
   beforeEach(() => {
+    // TODO: <Cascader><input /></Cascader> should also handle keyboard
     wrapper = mount(
-      <Cascader options={addressOptions} onChange={onChange} expandIcon="">
-        <input readOnly />
-      </Cascader>,
+      <Cascader options={addressOptions} onChange={onChange} expandIcon="" />,
     );
   });
 
@@ -25,8 +24,13 @@ describe('Cascader.Keyboard', () => {
     menus = null;
   });
 
-  [['space', KeyCode.SPACE], ['enter', KeyCode.ENTER]].forEach(([name, which]) => {
-    it.only(`${name} to open`, () => {
+  [
+    // Space
+    ['space', KeyCode.SPACE],
+    // Enter
+    ['enter', KeyCode.ENTER],
+  ].forEach(([name, which]) => {
+    it(`${name} to open`, () => {
       wrapper.find('input').simulate('keyDown', { which });
       expect(wrapper.isOpen()).toBeTruthy();
 
@@ -58,76 +62,43 @@ describe('Cascader.Keyboard', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    expect(
-      wrapper
-        .find('.rc-cascader-menu-item-active')
-        .at(0)
-        .text(),
-    ).toBe(addressOptions[0].label);
+    expect(wrapper.find('.rc-cascader-menu-item-active').at(0).text()).toBe(
+      addressOptions[0].label,
+    );
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    expect(
-      wrapper
-        .find('.rc-cascader-menu-item-active')
-        .at(0)
-        .text(),
-    ).toBe(addressOptions[1].label);
+    expect(wrapper.find('.rc-cascader-menu-item-active').at(0).text()).toBe(
+      addressOptions[1].label,
+    );
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
-    expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
-    ).toBe(true);
+    expect(wrapper.isOpen()).toBeFalsy();
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
   });
 
-  it('should have close menu when press some keys', () => {
+  it.only('should have close menu when press some keys', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
-    ).toBe(false);
+    expect(wrapper.isOpen()).toBeTruthy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
-    expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
-    ).toBe(true);
+    expect(wrapper.isOpen()).toBeFalsy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
     wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
     expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
     expect(
-      wrapper
-        .find('.rc-cascader-menus')
-        .hostNodes()
-        .hasClass('rc-cascader-menus-hidden'),
+      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
   });
 

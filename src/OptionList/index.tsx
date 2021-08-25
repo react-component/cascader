@@ -1,5 +1,6 @@
 /* eslint-disable default-case */
 import * as React from 'react';
+import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type {
   OptionListProps as SelectOptionListProps,
@@ -26,7 +27,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     searchValue,
     onToggleOpen,
     notFoundContent,
+    direction,
   } = props;
+
+  const rtl = direction === 'rtl';
 
   const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
   const { changeOnSelect, expandTrigger, fieldNames, loadData, search } =
@@ -171,6 +175,18 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     return null;
   };
 
+  const prevColumn = () => {
+    setOpenPath(path => path.slice(0, -1));
+  };
+
+  const nextColumn = () => {
+    const nextColumnIndex = openPath.length;
+    const nextActiveOption = getActiveOption(nextColumnIndex, 1);
+    if (nextActiveOption) {
+      onPathOpen(nextColumnIndex, nextActiveOption.value);
+    }
+  };
+
   React.useImperativeHandle(ref, () => ({
     // scrollTo: treeRef.current?.scrollTo,
     onKeyDown: event => {
@@ -199,15 +215,19 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
         }
 
         case KeyCode.LEFT: {
-          setOpenPath(path => path.slice(0, -1));
+          if (rtl) {
+            nextColumn();
+          } else {
+            prevColumn();
+          }
           break;
         }
 
         case KeyCode.RIGHT: {
-          const nextColumnIndex = openPath.length;
-          const nextActiveOption = getActiveOption(nextColumnIndex, 1);
-          if (nextActiveOption) {
-            onPathOpen(nextColumnIndex, nextActiveOption.value);
+          if (rtl) {
+            prevColumn();
+          } else {
+            nextColumn();
           }
           break;
         }
@@ -284,7 +304,13 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   // >>>>> Render
   return (
     <>
-      <div className={`${prefixCls}-holder`}>{columnNodes}</div>
+      <div
+        className={classNames(`${prefixCls}-holder`, {
+          [`${prefixCls}-rtl`]: rtl,
+        })}
+      >
+        {columnNodes}
+      </div>
     </>
   );
 });

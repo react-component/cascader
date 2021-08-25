@@ -76,4 +76,22 @@
       }
     }
   }
+
+  // ====================== RTL ======================
+  &-rtl {
+    direction: rtl;
+
+    .@{select-prefix}-menu {
+      flex: none;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-left: none;
+      border-right: 1px solid blue;
+
+      &:first-child {
+        border-right: 0;
+      }
+    }
+  }
 }
