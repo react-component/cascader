@@ -155,21 +155,22 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const activeColumnIndex = Math.max(openPath.length - 1, 0);
   const lastActiveOptionValue = openPath[openPath.length - 1];
 
-  const getEnabledActiveIndex = (offset: number) => {
+  const getActiveOption = (offset: number) => {
     const currentOptions = optionColumns[activeColumnIndex]?.options || [];
     const activeOptionIndex = currentOptions.findIndex(opt => opt.value === lastActiveOptionValue);
 
     const len = currentOptions.length;
 
-    for (let i = 0; i < len; i += 1) {
+    for (let i = 1; i < len; i += 1) {
       const current = (activeOptionIndex + i * offset + len) % len;
+      const option = currentOptions[current];
 
-      if (!currentOptions[current].disabled) {
-        return current;
+      if (!option.disabled) {
+        return option;
       }
     }
 
-    return -1;
+    return null;
   };
 
   React.useImperativeHandle(ref, () => ({
@@ -188,8 +189,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
           }
 
           if (offset !== 0) {
-            const nextActiveIndex = getEnabledActiveIndex(offset);
-            console.log('~~~>', nextActiveIndex);
+            const nextActiveOption = getActiveOption(offset);
+            onPathOpen(activeColumnIndex, nextActiveOption.value);
           }
 
           break;
@@ -219,21 +220,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       node: null,
     },
   ];
-
-  // // >>>>> Search
-  // if (searchValue) {
-  //   return (
-  //     <SearchResult
-  //       {...columnProps}
-  //       flattenOptions={flattenOptions}
-  //       fieldNames={fieldNames}
-  //       search={searchValue}
-  //       searchConfig={search}
-  //       changeOnSelect={changeOnSelect}
-  //       empty={emptyList}
-  //     />
-  //   );
-  // }
 
   // >>>>> Columns
   const mergedOptionColumns = options.length ? optionColumns : [{ options: emptyList }];
