@@ -84,22 +84,14 @@ describe('Cascader.Keyboard', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
     expect(wrapper.isOpen()).toBeFalsy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    expect(
-      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
-    ).toBe(false);
+    expect(wrapper.isOpen()).toBeTruthy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
-    expect(
-      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
-    ).toBe(true);
+    expect(wrapper.isOpen()).toBeFalsy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    expect(
-      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
-    ).toBe(false);
+    expect(wrapper.isOpen()).toBeTruthy();
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
-    expect(
-      wrapper.find('.rc-cascader-menus').hostNodes().hasClass('rc-cascader-menus-hidden'),
-    ).toBe(true);
+    expect(wrapper.isOpen()).toBeFalsy();
   });
 
   it('should call the Cascader onKeyDown callback in all cases', () => {

@@ -23,6 +23,7 @@ import useSearchConfig from './hooks/useSearchConfig';
  *
  * Update:
  * - dropdown class change to `rc-cascader-dropdown`
+ * - direction rtl keyboard
  *
  * Deprecated:
  * - popupVisible

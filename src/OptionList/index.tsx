@@ -176,7 +176,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   };
 
   const prevColumn = () => {
-    setOpenPath(path => path.slice(0, -1));
+    if (openPath.length === 1) {
+      onToggleOpen(false);
+    }
+    setOpenPath(openPath.slice(0, -1));
   };
 
   const nextColumn = () => {

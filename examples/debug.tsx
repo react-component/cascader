@@ -118,7 +118,7 @@ const Demo = () => {
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
         showSearch
-        direction="rtl"
+        // direction="rtl"
       />
     </>
   );
