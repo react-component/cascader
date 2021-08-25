@@ -13,7 +13,6 @@ describe('Cascader.Keyboard', () => {
   };
 
   beforeEach(() => {
-    // TODO: <Cascader><input /></Cascader> should also handle keyboard
     wrapper = mount(<Cascader options={addressOptions} onChange={onChange} expandIcon="" />);
   });
 
@@ -74,6 +73,24 @@ describe('Cascader.Keyboard', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(wrapper.isOpen()).toBeFalsy();
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
+  });
+
+  it('rtl', () => {
+    wrapper = mount(<Cascader options={addressOptions} onChange={onChange} direction="rtl" />);
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.isOpen()).toBeTruthy();
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福建');
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
+    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福州');
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福建');
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    expect(wrapper.isOpen()).toBeFalsy();
   });
 
   it('should have close menu when press some keys', () => {

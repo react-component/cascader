@@ -119,7 +119,9 @@ const Demo = () => {
         defaultValue={multiple ? [defaultValue] : defaultValue}
         showSearch
         // direction="rtl"
-      />
+      >
+        {/* <input /> */}
+      </Cascader>
     </>
   );
 };
