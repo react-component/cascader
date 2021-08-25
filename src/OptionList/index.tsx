@@ -152,16 +152,14 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   }, [searchValue, searchOptions, openPath]);
 
   // ========================= Keyboard =========================
-  const activeColumnIndex = Math.max(openPath.length - 1, 0);
-  const lastActiveOptionValue = openPath[openPath.length - 1];
-
-  const getActiveOption = (offset: number) => {
+  const getActiveOption = (activeColumnIndex: number, offset: number) => {
+    const pathActiveValue = openPath[activeColumnIndex];
     const currentOptions = optionColumns[activeColumnIndex]?.options || [];
-    const activeOptionIndex = currentOptions.findIndex(opt => opt.value === lastActiveOptionValue);
+    const activeOptionIndex = currentOptions.findIndex(opt => opt.value === pathActiveValue);
 
     const len = currentOptions.length;
 
-    for (let i = 1; i < len; i += 1) {
+    for (let i = 1; i <= len; i += 1) {
       const current = (activeOptionIndex + i * offset + len) % len;
       const option = currentOptions[current];
 
@@ -189,10 +187,27 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
           }
 
           if (offset !== 0) {
-            const nextActiveOption = getActiveOption(offset);
-            onPathOpen(activeColumnIndex, nextActiveOption.value);
+            const activeColumnIndex = Math.max(openPath.length - 1, 0);
+            const nextActiveOption = getActiveOption(activeColumnIndex, offset);
+            if (nextActiveOption) {
+              onPathOpen(activeColumnIndex, nextActiveOption.value);
+            }
           }
 
+          break;
+        }
+
+        case KeyCode.LEFT: {
+          setOpenPath(path => path.slice(0, -1));
+          break;
+        }
+
+        case KeyCode.RIGHT: {
+          const nextColumnIndex = openPath.length;
+          const nextActiveOption = getActiveOption(nextColumnIndex, 1);
+          if (nextActiveOption) {
+            onPathOpen(nextColumnIndex, nextActiveOption.value);
+          }
           break;
         }
       }
