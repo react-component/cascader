@@ -8,7 +8,7 @@ import type {
 import { SelectContext } from 'rc-tree-select/lib/Context';
 import type { OptionDataNode } from '../interface';
 import Column from './Column';
-import { restoreCompatibleValue } from '../util';
+import { isLeaf, restoreCompatibleValue } from '../util';
 import CascaderContext from '../context';
 import useSearchResult from '../hooks/useSearchResult';
 
@@ -96,10 +96,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     internalLoadData(pathValue);
   };
 
-  const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
+  const onPathSelect = (pathValue: React.Key, leaf: boolean) => {
     onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
 
-    if (!multiple && (isLeaf || (changeOnSelect && expandTrigger === 'hover'))) {
+    if (!multiple && (leaf || (changeOnSelect && expandTrigger === 'hover'))) {
       onToggleOpen(false);
     }
   };
@@ -177,6 +177,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       const { which } = event;
 
       switch (which) {
+        // >>> Arrow keys
         case KeyCode.UP:
         case KeyCode.DOWN: {
           let offset = 0;
@@ -209,6 +210,30 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
             onPathOpen(nextColumnIndex, nextActiveOption.value);
           }
           break;
+        }
+
+        // >>> Select
+        case KeyCode.ENTER: {
+          const lastValue = openPath[openPath.length - 1];
+          const option = optionColumns[openPath.length - 1].options?.find(
+            opt => opt.value === lastValue,
+          );
+          onPathSelect(lastValue, isLeaf(option));
+
+          // Close for changeOnSelect
+          if (changeOnSelect) {
+            onToggleOpen(false);
+          }
+          break;
+        }
+
+        // >>> Close
+        case KeyCode.ESC: {
+          onToggleOpen(false);
+
+          if (open) {
+            event.stopPropagation();
+          }
         }
       }
     },

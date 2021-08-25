@@ -79,7 +79,7 @@ export default function Column({
             key={value}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-active`]: openKey === value,
-              [`${menuItemPrefixCls}-selected`]: !multiple && checked,
+              // [`${menuItemPrefixCls}-selected`]: !multiple && checked,
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             style={dropdownMenuColumnStyle}
