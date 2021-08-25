@@ -86,7 +86,7 @@ const addressOptions = [
   },
 ];
 
-const defaultValue = ['fj', 'fuzhou', 'mawei'];
+const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(false);
@@ -116,7 +116,7 @@ const Demo = () => {
         onChange={onChange}
         multiple={multiple}
         allowClear
-        // defaultValue={multiple ? [defaultValue] : defaultValue}
+        defaultValue={multiple ? [defaultValue] : defaultValue}
         showSearch
       />
     </>

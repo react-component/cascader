@@ -1,13 +1,7 @@
-/**
- * Search result UI is different with origin menu list.
- * We use single component to handle this.
- */
 import * as React from 'react';
+import type { FlattenOptions } from '../OptionList';
+import type { FieldNames, ShowSearchType } from '../interface';
 import { isLeaf, restoreCompatibleValue } from '../util';
-import type { OptionListProps as SelectOptionListProps } from 'rc-select/lib/OptionList';
-import type { FieldNames, OptionDataNode, ShowSearchType } from '../interface';
-import Column from './Column';
-import type { ColumnProps } from './Column';
 
 const defaultFilter: ShowSearchType['filter'] = (search, options, { label }) =>
   options.some(opt => String(opt[label]).toLowerCase().includes(search.toLowerCase()));
@@ -15,19 +9,18 @@ const defaultFilter: ShowSearchType['filter'] = (search, options, { label }) =>
 const defaultRender: ShowSearchType['render'] = (inputValue, path, prefixCls, fieldNames) =>
   path.map(opt => opt[fieldNames.label]).join(' / ');
 
-export interface SearchResultProps extends Omit<ColumnProps, 'index' | 'options'> {
+export interface SearchResultConfig {
   prefixCls: string;
-  flattenOptions: SelectOptionListProps<OptionDataNode[]>['flattenOptions'];
-  fieldNames: FieldNames;
-  search: string;
   searchConfig: ShowSearchType;
+  flattenOptions: FlattenOptions;
+  fieldNames: FieldNames;
   changeOnSelect: boolean;
-  empty: OptionDataNode[];
+  searchValue: string;
 }
 
-export default function SearchResult(props: SearchResultProps) {
-  const { flattenOptions, fieldNames, search, searchConfig, changeOnSelect, empty, prefixCls } =
-    props;
+export default function useSearchResult(resultConfig: SearchResultConfig) {
+  const { searchConfig, flattenOptions, fieldNames, changeOnSelect, searchValue, prefixCls } =
+    resultConfig;
 
   // ============================== MISC ==============================
   const filterOption = searchConfig.filter || defaultFilter;
@@ -36,6 +29,10 @@ export default function SearchResult(props: SearchResultProps) {
   // ============================= Filter =============================
   // Do filter
   const filteredEntityList = React.useMemo(() => {
+    if (!searchValue) {
+      return [];
+    }
+
     // Normalize list
     let normalizeList = flattenOptions.map(option => {
       const { options } = restoreCompatibleValue(option as any, fieldNames);
@@ -61,7 +58,7 @@ export default function SearchResult(props: SearchResultProps) {
 
       // Do filter
       const optGrp = normalizeList[i];
-      if (filterOption(search, optGrp.originOptionList, fieldNames)) {
+      if (filterOption(searchValue, optGrp.originOptionList, fieldNames)) {
         filteredList.push(optGrp);
       }
     }
@@ -69,27 +66,24 @@ export default function SearchResult(props: SearchResultProps) {
     // Sort: When searchConfig.sort is enabled. We have to filter all the list
     if (searchConfig.sort) {
       filteredList.sort((a, b) => {
-        return searchConfig.sort(a.originOptionList, b.originOptionList, search, fieldNames);
+        return searchConfig.sort(a.originOptionList, b.originOptionList, searchValue, fieldNames);
       });
     }
 
     return filteredList;
-  }, [flattenOptions, fieldNames, search, filterOption, changeOnSelect, searchConfig]);
+  }, [flattenOptions, fieldNames, searchValue, filterOption, changeOnSelect, searchConfig]);
 
   // ======================== Generate Options ========================
   // Wrap with connected label
   const options = React.useMemo(() => {
     return filteredEntityList.map(({ option, originOptionList }) => {
-      const title = renderOption(search, originOptionList, prefixCls, fieldNames);
+      const title = renderOption(searchValue, originOptionList, prefixCls, fieldNames);
       return {
         ...option.data,
         title,
       };
     });
-  }, [search, renderOption, filteredEntityList, fieldNames, prefixCls]);
+  }, [searchValue, renderOption, filteredEntityList, fieldNames, prefixCls]);
 
-  // ============================= Render =============================
-  return (
-    <Column {...props} index={0} options={options.length ? options : empty} multiple={false} />
-  );
+  return options;
 }

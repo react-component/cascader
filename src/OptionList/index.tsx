@@ -1,4 +1,6 @@
+/* eslint-disable default-case */
 import * as React from 'react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import type {
   OptionListProps as SelectOptionListProps,
   RefOptionListProps,
@@ -7,193 +9,251 @@ import { SelectContext } from 'rc-tree-select/lib/Context';
 import type { OptionDataNode } from '../interface';
 import Column from './Column';
 import { restoreCompatibleValue } from '../util';
-import SearchResult from './SearchResult';
 import CascaderContext from '../context';
+import useSearchResult from '../hooks/useSearchResult';
 
-const RefOptionList = React.forwardRef<RefOptionListProps, SelectOptionListProps<OptionDataNode[]>>(
-  (props, ref) => {
-    const {
-      prefixCls,
-      options,
-      onSelect,
-      multiple,
-      open,
-      flattenOptions,
-      searchValue,
-      onToggleOpen,
-      notFoundContent,
-    } = props;
+type OptionListProps = SelectOptionListProps<OptionDataNode[]>;
+export type FlattenOptions = OptionListProps['flattenOptions'];
 
-    const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-    const { changeOnSelect, expandTrigger, fieldNames, loadData, search } =
-      React.useContext(CascaderContext);
+const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((props, ref) => {
+  const {
+    prefixCls,
+    options,
+    onSelect,
+    multiple,
+    open,
+    flattenOptions,
+    searchValue,
+    onToggleOpen,
+    notFoundContent,
+  } = props;
 
-    // ========================= loadData =========================
-    const [loadingKeys, setLoadingKeys] = React.useState([]);
+  const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
+  const { changeOnSelect, expandTrigger, fieldNames, loadData, search } =
+    React.useContext(CascaderContext);
 
-    const internalLoadData = (pathValue: React.Key) => {
-      if (!loadData) {
-        return;
-      }
+  // ========================= loadData =========================
+  const [loadingKeys, setLoadingKeys] = React.useState([]);
 
-      const entity = flattenOptions.find(flattenOption => flattenOption.data.value === pathValue);
-      if (entity) {
-        const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
-        const rawOptionList = optionList.map(opt => opt.node);
-
-        setLoadingKeys(keys => [...keys, optionList[optionList.length - 1].value]);
-
-        loadData(rawOptionList);
-      }
-    };
-
-    // zombieJ: This is bad. We should make this same as `rc-tree` to use Promise instead.
-    React.useEffect(() => {
-      if (loadingKeys.length) {
-        loadingKeys.forEach(loadingKey => {
-          const option = flattenOptions.find(opt => opt.value === loadingKey);
-          if (option.data.children) {
-            setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
-          }
-        });
-      }
-    }, [flattenOptions, loadingKeys]);
-
-    // ========================== Values ==========================
-    const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
-    const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
-
-    // =========================== Open ===========================
-    const [openPath, setOpenPath] = React.useState<React.Key[]>([]);
-
-    React.useEffect(() => {
-      if (open) {
-        let nextOpenPath: React.Key[] = [];
-
-        if (!multiple && checkedKeys.length) {
-          const entity = flattenOptions.find(
-            flattenOption => flattenOption.data.value === checkedKeys[0],
-          );
-
-          if (entity) {
-            nextOpenPath = restoreCompatibleValue(entity as any, fieldNames).path;
-          }
-        }
-        setOpenPath(nextOpenPath);
-      }
-    }, [open]);
-
-    // =========================== Path ===========================
-    const onPathOpen = (index: number, pathValue: React.Key) => {
-      const nextOpenPath = [...openPath.slice(0, index), pathValue];
-      setOpenPath(nextOpenPath);
-
-      // Trigger loadData
-      internalLoadData(pathValue);
-    };
-
-    const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
-      onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
-
-      if (!multiple && (isLeaf || (changeOnSelect && expandTrigger === 'hover'))) {
-        onToggleOpen(false);
-      }
-    };
-
-    const getPathList = (pathList: React.Key[]) => {
-      let currentOptions = options;
-
-      for (let i = 0; i < pathList.length; i += 1) {
-        currentOptions = (currentOptions || []).find(
-          option => option.value === pathList[i],
-        ).children;
-      }
-
-      return currentOptions;
-    };
-
-    // ========================= Keyboard =========================
-    React.useImperativeHandle(ref, () => ({
-      // scrollTo: treeRef.current?.scrollTo,
-      onKeyDown: event => {
-        const { which } = event;
-      },
-      onKeyUp: () => {},
-    }));
-
-    // ========================== Render ==========================
-    const columnProps = {
-      ...props,
-      onOpen: onPathOpen,
-      onSelect: onPathSelect,
-      onToggleOpen,
-      checkedSet,
-      halfCheckedSet,
-      loadingKeys,
-    };
-
-    // >>>>> Empty
-    const emptyList = [
-      {
-        title: notFoundContent,
-        value: '__EMPTY__',
-        disabled: true,
-        node: null,
-      },
-    ];
-
-    // >>>>> Search
-    if (searchValue) {
-      return (
-        <SearchResult
-          {...columnProps}
-          flattenOptions={flattenOptions}
-          fieldNames={fieldNames}
-          search={searchValue}
-          searchConfig={search}
-          changeOnSelect={changeOnSelect}
-          empty={emptyList}
-        />
-      );
+  const internalLoadData = (pathValue: React.Key) => {
+    if (!loadData) {
+      return;
     }
 
-    // >>>>> Columns
-    const firstLevelOptions = options.length ? options : emptyList;
+    const entity = flattenOptions.find(flattenOption => flattenOption.data.value === pathValue);
+    if (entity) {
+      const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
+      const rawOptionList = optionList.map(opt => opt.node);
 
-    const columnNodes: React.ReactElement[] = [
-      <Column
-        key={0}
-        index={0}
-        {...columnProps}
-        options={firstLevelOptions}
-        openKey={openPath[0]}
-      />,
-    ];
+      setLoadingKeys(keys => [...keys, optionList[optionList.length - 1].value]);
 
-    openPath.forEach((_, index) => {
-      const mergedIndex = index + 1;
-      const subOptions = getPathList(openPath.slice(0, mergedIndex));
+      loadData(rawOptionList);
+    }
+  };
+
+  // zombieJ: This is bad. We should make this same as `rc-tree` to use Promise instead.
+  React.useEffect(() => {
+    if (loadingKeys.length) {
+      loadingKeys.forEach(loadingKey => {
+        const option = flattenOptions.find(opt => opt.value === loadingKey);
+        if (option.data.children) {
+          setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
+        }
+      });
+    }
+  }, [flattenOptions, loadingKeys]);
+
+  // ========================== Values ==========================
+  const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
+  const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
+
+  // =========================== Open ===========================
+  const [openPath, setOpenPath] = React.useState<React.Key[]>([]);
+
+  React.useEffect(() => {
+    if (open) {
+      let nextOpenPath: React.Key[] = [];
+
+      if (!multiple && checkedKeys.length) {
+        const entity = flattenOptions.find(
+          flattenOption => flattenOption.data.value === checkedKeys[0],
+        );
+
+        if (entity) {
+          nextOpenPath = restoreCompatibleValue(entity as any, fieldNames).path;
+        }
+      }
+      setOpenPath(nextOpenPath);
+    }
+  }, [open]);
+
+  // =========================== Path ===========================
+  const onPathOpen = (index: number, pathValue: React.Key) => {
+    const nextOpenPath = [...openPath.slice(0, index), pathValue];
+    setOpenPath(nextOpenPath);
+
+    // Trigger loadData
+    internalLoadData(pathValue);
+  };
+
+  const onPathSelect = (pathValue: React.Key, isLeaf: boolean) => {
+    onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
+
+    if (!multiple && (isLeaf || (changeOnSelect && expandTrigger === 'hover'))) {
+      onToggleOpen(false);
+    }
+  };
+
+  const getPathList = (pathList: React.Key[]) => {
+    let currentOptions = options;
+
+    for (let i = 0; i < pathList.length; i += 1) {
+      currentOptions = (currentOptions || []).find(option => option.value === pathList[i]).children;
+    }
+
+    return currentOptions;
+  };
+
+  // ========================== Search ==========================
+  const searchOptions = useSearchResult({
+    ...props,
+    fieldNames,
+    changeOnSelect,
+    searchConfig: search,
+  });
+
+  // ========================== Column ==========================
+  const optionColumns = React.useMemo(() => {
+    if (searchValue) {
+      return [
+        {
+          options: searchOptions,
+        },
+      ];
+    }
+
+    const rawOptionColumns: {
+      options: OptionDataNode[];
+    }[] = [];
+
+    for (let i = 0; i <= openPath.length; i += 1) {
+      const subOptions = getPathList(openPath.slice(0, i));
 
       if (subOptions) {
-        columnNodes.push(
-          <Column
-            key={mergedIndex}
-            index={mergedIndex}
-            {...columnProps}
-            options={subOptions}
-            openKey={openPath[mergedIndex]}
-          />,
-        );
+        rawOptionColumns.push({
+          options: subOptions,
+        });
+      } else {
+        break;
       }
-    });
+    }
 
-    // >>>>> Render
-    return (
-      <>
-        <div className={`${prefixCls}-holder`}>{columnNodes}</div>
-      </>
-    );
-  },
-);
+    return rawOptionColumns;
+  }, [searchValue, searchOptions, openPath]);
+
+  // ========================= Keyboard =========================
+  const activeColumnIndex = Math.max(openPath.length - 1, 0);
+  const lastActiveOptionValue = openPath[openPath.length - 1];
+
+  const getEnabledActiveIndex = (offset: number) => {
+    const currentOptions = optionColumns[activeColumnIndex]?.options || [];
+    const activeOptionIndex = currentOptions.findIndex(opt => opt.value === lastActiveOptionValue);
+
+    const len = currentOptions.length;
+
+    for (let i = 0; i < len; i += 1) {
+      const current = (activeOptionIndex + i * offset + len) % len;
+
+      if (!currentOptions[current].disabled) {
+        return current;
+      }
+    }
+
+    return -1;
+  };
+
+  React.useImperativeHandle(ref, () => ({
+    // scrollTo: treeRef.current?.scrollTo,
+    onKeyDown: event => {
+      const { which } = event;
+
+      switch (which) {
+        case KeyCode.UP:
+        case KeyCode.DOWN: {
+          let offset = 0;
+          if (which === KeyCode.UP) {
+            offset = -1;
+          } else if (which === KeyCode.DOWN) {
+            offset = 1;
+          }
+
+          if (offset !== 0) {
+            const nextActiveIndex = getEnabledActiveIndex(offset);
+            console.log('~~~>', nextActiveIndex);
+          }
+
+          break;
+        }
+      }
+    },
+    onKeyUp: () => {},
+  }));
+
+  // ========================== Render ==========================
+  const columnProps = {
+    ...props,
+    onOpen: onPathOpen,
+    onSelect: onPathSelect,
+    onToggleOpen,
+    checkedSet,
+    halfCheckedSet,
+    loadingKeys,
+  };
+
+  // >>>>> Empty
+  const emptyList: OptionDataNode[] = [
+    {
+      title: notFoundContent,
+      value: '__EMPTY__',
+      disabled: true,
+      node: null,
+    },
+  ];
+
+  // // >>>>> Search
+  // if (searchValue) {
+  //   return (
+  //     <SearchResult
+  //       {...columnProps}
+  //       flattenOptions={flattenOptions}
+  //       fieldNames={fieldNames}
+  //       search={searchValue}
+  //       searchConfig={search}
+  //       changeOnSelect={changeOnSelect}
+  //       empty={emptyList}
+  //     />
+  //   );
+  // }
+
+  // >>>>> Columns
+  const mergedOptionColumns = options.length ? optionColumns : [{ options: emptyList }];
+
+  const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => (
+    <Column
+      key={index}
+      index={index}
+      {...columnProps}
+      options={col.options}
+      openKey={openPath[index]}
+    />
+  ));
+
+  // >>>>> Render
+  return (
+    <>
+      <div className={`${prefixCls}-holder`}>{columnNodes}</div>
+    </>
+  );
+});
 
 export default RefOptionList;
