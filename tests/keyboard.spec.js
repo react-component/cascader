@@ -4,7 +4,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import Cascader from '..';
 import { addressOptions } from './demoOptions';
 
-describe('Cascader', () => {
+describe('Cascader.Keyboard', () => {
   let wrapper;
   let selectedValue;
   let menus;
@@ -25,37 +25,37 @@ describe('Cascader', () => {
     menus = null;
   });
 
-  [['space', KeyCode.SPACE], ['enter', KeyCode.ENTER]].forEach(([name, keyCode]) => {
-    it(`${name} to open`, () => {
-      wrapper.find('input').simulate('keyDown', { keyCode });
-      expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+  [['space', KeyCode.SPACE], ['enter', KeyCode.ENTER]].forEach(([name, which]) => {
+    it.only(`${name} to open`, () => {
+      wrapper.find('input').simulate('keyDown', { which });
+      expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ESC });
-      expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(1);
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
+      expect(wrapper.isOpen()).toBeFalsy();
     });
   });
 
   it('should have keyboard support', () => {
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
-    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+    expect(wrapper.isOpen()).toBeTruthy();
     expect(menus.length).toBe(1);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.RIGHT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.RIGHT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.LEFT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.QUESTION_MARK });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.QUESTION_MARK });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.LEFT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
     expect(
@@ -64,7 +64,7 @@ describe('Cascader', () => {
         .at(0)
         .text(),
     ).toBe(addressOptions[0].label);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
     expect(
@@ -73,9 +73,9 @@ describe('Cascader', () => {
         .at(0)
         .text(),
     ).toBe(addressOptions[1].label);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.RIGHT });
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.RIGHT });
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(
       wrapper
         .find('.rc-cascader-menus')
@@ -86,43 +86,43 @@ describe('Cascader', () => {
   });
 
   it('should have close menu when press some keys', () => {
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.LEFT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.BACKSPACE });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.BACKSPACE });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(true);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(
       wrapper
         .find('.rc-cascader-menus')
         .hostNodes()
         .hasClass('rc-cascader-menus-hidden'),
     ).toBe(false);
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.RIGHT });
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ESC });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
     expect(
       wrapper
         .find('.rc-cascader-menus')
@@ -139,11 +139,11 @@ describe('Cascader', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     expect(wrapper.state().popupVisible).toBeTruthy();
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ESC });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
     expect(wrapper.state().popupVisible).toBeFalsy();
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.ENTER });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(onKeyDown).toHaveBeenCalledTimes(3);
   });
@@ -154,9 +154,9 @@ describe('Cascader', () => {
         <input readOnly onKeyDown={() => {}} />
       </Cascader>,
     );
-    wrapper.find('input').simulate('keyDown', { keyCode: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     menus = wrapper.find('.rc-cascader-menu');
-    expect(wrapper.find('.rc-cascader-menus-hidden').length).toBe(0);
+    expect(wrapper.isOpen()).toBeTruthy();
     expect(menus.length).toBe(0);
   });
 });

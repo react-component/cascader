@@ -218,7 +218,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
           const option = optionColumns[openPath.length - 1].options?.find(
             opt => opt.value === lastValue,
           );
-          onPathSelect(lastValue, isLeaf(option));
+
+          const leaf = isLeaf(option);
+
+          if (multiple || changeOnSelect || leaf) {
+            onPathSelect(lastValue, leaf);
+          }
 
           // Close for changeOnSelect
           if (changeOnSelect) {
@@ -262,7 +267,9 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   ];
 
   // >>>>> Columns
-  const mergedOptionColumns = options.length ? optionColumns : [{ options: emptyList }];
+  const mergedOptionColumns = optionColumns[0]?.options?.length
+    ? optionColumns
+    : [{ options: emptyList }];
 
   const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => (
     <Column
