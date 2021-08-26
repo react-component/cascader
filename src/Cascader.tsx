@@ -27,7 +27,7 @@ import useSearchConfig from './hooks/useSearchConfig';
  *
  * Deprecated:
  * - popupVisible
- * - onPopupVisibleChange
+ * - hidePopupOnSelect
  *
  * Removed:
  * - builtinPlacements: Handle by select
