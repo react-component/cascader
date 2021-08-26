@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Cascader should not show title when title is falsy 1`] = `
+exports[`Cascader.Basic should not show title when title is falsy 1`] = `
 <ul
   class="rc-cascader-menu"
   role="menu"
@@ -56,7 +56,7 @@ exports[`Cascader should not show title when title is falsy 1`] = `
 </ul>
 `;
 
-exports[`Cascader should render custom dropdown correctly 1`] = `
+exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
 <div
   class="rc-cascader-dropdown"
   style="opacity: 0; pointer-events: none; min-width: auto;"

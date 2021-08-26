@@ -40,7 +40,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const [loadingKeys, setLoadingKeys] = React.useState([]);
 
   const internalLoadData = (pathValue: React.Key) => {
-    if (!loadData) {
+    // Do not load when search
+    if (!loadData || searchValue) {
       return;
     }
 

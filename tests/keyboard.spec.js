@@ -191,6 +191,22 @@ describe('Cascader.Keyboard', () => {
     expect(selectedValue).toEqual(['fj', 'fuzhou']);
   });
 
+  it('all disabled should not crash', () => {
+    wrapper = mount(
+      <Cascader
+        options={addressOptions.map(opt => ({ ...opt, disabled: true }))}
+        onChange={onChange}
+        changeOnSelect
+      />,
+    );
+    for (let i = 0; i < 10; i += 1) {
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    }
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content'),
+    ).toHaveLength(0);
+  });
+
   // TODO: This is strange that we need check on this
   it.skip('should not handle keyDown events when children specify the onKeyDown', () => {
     wrapper = mount(

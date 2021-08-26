@@ -4,13 +4,9 @@ import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
 import { mount } from 'enzyme';
 import Cascader from '..';
-import {
-  addressOptions,
-  optionsForActiveMenuItems,
-  addressOptionsForFieldNames,
-} from './demoOptions';
+import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
 
-describe('Cascader', () => {
+describe('Cascader.Basic', () => {
   let selectedValue;
   const onChange = function onChange(value) {
     selectedValue = value;
@@ -495,32 +491,74 @@ describe('Cascader', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
-  // https://github.com/ant-design/ant-design/issues/9084
-  it('should trigger loadData when expandTrigger is hover', () => {
-    const options = [
-      {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        isLeaf: false,
-      },
-      {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        isLeaf: false,
-      },
-    ];
-    const loadData = jest.fn();
-    const wrapper = mount(
-      <Cascader options={options} loadData={loadData} changeOnSelect expandTrigger="hover">
-        <input readOnly />
-      </Cascader>,
-    );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-    menu1Items.at(0).simulate('mouseEnter');
-    jest.runAllTimers();
-    expect(loadData).toHaveBeenCalled();
+  describe('loadData', () => {
+    it('basic load', () => {
+      const loadData = jest.fn();
+      const wrapper = mount(
+        <Cascader
+          loadingIcon={<div className="loading-icon" />}
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+              isLeaf: false,
+            },
+          ]}
+          loadData={loadData}
+          open
+        />,
+      );
+
+      wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
+      expect(wrapper.exists('.loading-icon')).toBeTruthy();
+      expect(loadData).toHaveBeenCalledWith([
+        expect.objectContaining({
+          value: 'bamboo',
+        }),
+      ]);
+
+      // Fill data
+      wrapper.setProps({
+        options: [
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+            isLeaf: false,
+            children: [],
+          },
+        ],
+      });
+      wrapper.update();
+      expect(wrapper.exists('.loading-icon')).toBeFalsy();
+    });
+
+    // https://github.com/ant-design/ant-design/issues/9084
+    it('should trigger loadData when expandTrigger is hover', () => {
+      const options = [
+        {
+          value: 'zhejiang',
+          label: 'Zhejiang',
+          isLeaf: false,
+        },
+        {
+          value: 'jiangsu',
+          label: 'Jiangsu',
+          isLeaf: false,
+        },
+      ];
+      const loadData = jest.fn();
+      const wrapper = mount(
+        <Cascader options={options} loadData={loadData} changeOnSelect expandTrigger="hover">
+          <input readOnly />
+        </Cascader>,
+      );
+      wrapper.find('input').simulate('click');
+      const menus = wrapper.find('.rc-cascader-menu');
+      const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+      menu1Items.at(0).simulate('mouseEnter');
+      jest.runAllTimers();
+      expect(loadData).toHaveBeenCalled();
+    });
   });
 
   // https://github.com/ant-design/ant-design/issues/9793
@@ -565,7 +603,7 @@ describe('Cascader', () => {
       <Cascader
         options={addressOptions}
         popupVisible
-        dropdownRender={(menus) => (
+        dropdownRender={menus => (
           <div className="custom-dropdown">
             {menus}
             <hr />
