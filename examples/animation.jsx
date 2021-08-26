@@ -70,7 +70,7 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <Cascader options={addressOptions} onChange={this.onChange} transitionName="slide-up">
+      <Cascader options={addressOptions} onChange={this.onChange} animation="slide-up">
         <input value={this.state.inputValue} readOnly />
       </Cascader>
     );
