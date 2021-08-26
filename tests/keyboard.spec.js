@@ -81,16 +81,66 @@ describe('Cascader.Keyboard', () => {
     expect(wrapper.isOpen()).toBeTruthy();
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
-    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福建');
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建');
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
-    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福州');
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福州');
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
-    expect(wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text()).toEqual('福建');
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建');
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
     expect(wrapper.isOpen()).toBeFalsy();
+  });
+
+  describe('up', () => {
+    it('Select last enabled', () => {
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.UP });
+      expect(
+        wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+      ).toEqual('北京');
+    });
+
+    it('ignore disabled item', () => {
+      wrapper = mount(
+        <Cascader
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+            },
+            {
+              label: 'Light',
+              value: 'light',
+            },
+            {
+              label: 'Little',
+              value: 'little',
+            },
+            {
+              label: 'Disabled',
+              value: 'disabled',
+              disabled: true,
+            },
+          ]}
+        />,
+      );
+
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+      wrapper.find('input').simulate('keyDown', { which: KeyCode.UP });
+      expect(
+        wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+      ).toEqual('Little');
+    });
   });
 
   it('should have close menu when press some keys', () => {
@@ -122,6 +172,23 @@ describe('Cascader.Keyboard', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
 
     expect(onKeyDown).toHaveBeenCalledTimes(3);
+  });
+
+  it('changeOnSelect', () => {
+    wrapper = mount(<Cascader options={addressOptions} onChange={onChange} changeOnSelect />);
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(wrapper.isOpen()).toBeTruthy();
+
+    // 0-0
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+
+    // 0-0-0
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+
+    // Select
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(wrapper.isOpen()).toBeFalsy();
+    expect(selectedValue).toEqual(['fj', 'fuzhou']);
   });
 
   // TODO: This is strange that we need check on this

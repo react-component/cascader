@@ -159,9 +159,14 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const getActiveOption = (activeColumnIndex: number, offset: number) => {
     const pathActiveValue = openPath[activeColumnIndex];
     const currentOptions = optionColumns[activeColumnIndex]?.options || [];
-    const activeOptionIndex = currentOptions.findIndex(opt => opt.value === pathActiveValue);
+    let activeOptionIndex = currentOptions.findIndex(opt => opt.value === pathActiveValue);
 
     const len = currentOptions.length;
+
+    // Last one is special since -1 may back 2 offset
+    if (offset === -1 && activeOptionIndex === -1) {
+      activeOptionIndex = len;
+    }
 
     for (let i = 1; i <= len; i += 1) {
       const current = (activeOptionIndex + i * offset + len) % len;
