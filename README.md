@@ -143,13 +143,13 @@ React.render(
       <td>expand current item when click or hover</td>
     </tr>
     <tr>
-      <td>popupVisible</td>
+      <td>open</td>
       <td>Boolean</td>
       <td></td>
       <td>visibility of popup overlay</td>
     </tr>
     <tr>
-      <td>onPopupVisibleChange</td>
+      <td>onDropdownVisibleChange</td>
       <td>Function(visible)</td>
       <td></td>
       <td>callback when popup overlay's visibility changed</td>
