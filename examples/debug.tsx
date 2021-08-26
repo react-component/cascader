@@ -3,7 +3,7 @@ import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
-const addressOptions1 = [
+const addressOptions = [
   {
     label: '福建',
     value: 'fj',
@@ -73,24 +73,11 @@ const addressOptions1 = [
   },
 ];
 
-const addressOptions = [
-  {
-    value: '1',
-    label: '1',
-    children: [
-      {
-        value: '1',
-        label: '1',
-      },
-    ],
-  },
-];
-
 const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState('');
+  const [multiple, setMultiple] = React.useState(true);
+  const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
     console.log('[DEBUG] onChange - value:', value);
@@ -112,16 +99,14 @@ const Demo = () => {
       </label>
       <Cascader
         style={{ width: 200 }}
-        options={addressOptions1}
+        options={addressOptions}
         onChange={onChange}
-        multiple={multiple}
+        checkable={multiple}
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
         showSearch
         // direction="rtl"
-      >
-        {/* <input /> */}
-      </Cascader>
+      />
     </>
   );
 };

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import type { OptionDataNode } from '../interface';
 import { isLeaf } from '../util';
 import CascaderContext from '../context';
+import Checkbox from './Checkbox';
 
 export interface ColumnProps {
   prefixCls: string;
@@ -34,7 +35,6 @@ export default function Column({
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
-  const checkboxPrefixCls = `${menuItemPrefixCls}-checkbox`;
 
   const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
     React.useContext(CascaderContext);
@@ -93,15 +93,11 @@ export default function Column({
             }}
           >
             {multiple && (
-              <span
-                className={classNames(
-                  checkboxPrefixCls,
-                  {
-                    [`${checkboxPrefixCls}-checked`]: checked,
-                    [`${checkboxPrefixCls}-indeterminate`]: !checked && halfCheckedSet.has(value),
-                  },
-                  // (disabled || disableCheckbox) && `${prefixCls}-checkbox-disabled`,
-                )}
+              <Checkbox
+                prefixCls={`${prefixCls}-checkbox`}
+                checked={checked}
+                halfChecked={halfCheckedSet.has(value)}
+                disabled={disabled}
                 onClick={() => {
                   triggerSelect();
                 }}

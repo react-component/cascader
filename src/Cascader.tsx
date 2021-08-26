@@ -47,6 +47,7 @@ interface BaseCascaderProps
     | 'filterTreeNode'
     | 'labelInValue'
     | 'loadData'
+    | 'multiple'
     | 'showCheckedStrategy'
     | 'showSearch'
     | 'treeCheckable'
@@ -99,13 +100,13 @@ type OnSingleChange = (value: CascaderValueType, selectOptions: DataNode[]) => v
 type OnMultipleChange = (value: CascaderValueType[], selectOptions: DataNode[][]) => void;
 
 interface SingleCascaderProps extends BaseCascaderProps {
-  multiple?: false;
+  checkable?: false;
 
   onChange?: OnSingleChange;
 }
 
 interface MultipleCascaderProps extends BaseCascaderProps {
-  multiple: true;
+  checkable: true | React.ReactNode;
 
   onChange?: OnMultipleChange;
 }
@@ -119,6 +120,8 @@ interface CascaderRef {
 
 const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<CascaderRef>) => {
   const {
+    checkable,
+
     changeOnSelect,
     children,
     options,
@@ -145,7 +148,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     ...restProps
   } = props;
 
-  const { multiple, fieldNames } = restProps;
+  const { fieldNames } = restProps;
 
   const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
 
@@ -188,7 +191,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   ): React.Key[] => {
     let propValueList: CascaderValueType[] = [];
     if (propValue) {
-      propValueList = (multiple ? propValue : [propValue]) as CascaderValueType[];
+      propValueList = (checkable ? propValue : [propValue]) as CascaderValueType[];
     }
 
     return propValueList.map(connectValue);
@@ -206,7 +209,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const labelRender = (entity: FlattenDataNode) => {
     const { label: fieldLabel } = mergedFieldNames;
 
-    if (multiple) {
+    if (checkable) {
       return entity.data.node[fieldLabel];
     }
 
@@ -220,7 +223,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     // TODO: Need improve motion experience
     setMergedSearch('');
 
-    const valueList = (multiple ? newValue : [newValue]) as React.Key[];
+    const valueList = (checkable ? newValue : [newValue]) as React.Key[];
 
     const pathList: CascaderValueType[] = [];
     const optionsList: DataNode[][] = [];
@@ -241,7 +244,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     }
 
     if (onChange) {
-      if (multiple) {
+      if (checkable) {
         (onChange as OnMultipleChange)(pathList, optionsList);
       } else {
         // TODO: This should return null as other component.
@@ -307,11 +310,11 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       <RefCascader
         ref={cascaderRef}
         {...restProps}
-        value={multiple ? internalValue : internalValue[0]}
+        value={checkable ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
         dropdownStyle={dropdownStyle}
         treeData={mergedOptions}
-        treeCheckable={multiple}
+        treeCheckable={checkable}
         treeNodeFilterProp="label"
         onChange={onInternalChange}
         showCheckedStrategy={RefCascader.SHOW_PARENT}
