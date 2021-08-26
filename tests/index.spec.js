@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount } from 'enzyme';
 import Cascader from '..';
 import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
@@ -621,5 +622,47 @@ describe('Cascader.Basic', () => {
     expect(customDropdownContent.length).toBe(1);
     const menus = wrapper.find('.rc-cascader-dropdown');
     expect(menus.render()).toMatchSnapshot();
+  });
+
+  describe('focus test', () => {
+    let domSpy;
+    let focusTimes = 0;
+    let blurTimes = 0;
+
+    beforeAll(() => {
+      domSpy = spyElementPrototypes(HTMLElement, {
+        focus: () => {
+          focusTimes += 1;
+        },
+        blur: () => {
+          blurTimes += 1;
+        },
+      });
+    });
+
+    beforeEach(() => {
+      focusTimes = 0;
+      blurTimes = 0;
+    });
+
+    afterAll(() => {
+      domSpy.mockRestore();
+    });
+
+    it('focus', () => {
+      const cascaderRef = React.createRef();
+      mount(<Cascader ref={cascaderRef} />);
+
+      cascaderRef.current.focus();
+      expect(focusTimes === 1).toBeTruthy();
+    });
+
+    it('blur', () => {
+      const cascaderRef = React.createRef();
+      mount(<Cascader ref={cascaderRef} />);
+
+      cascaderRef.current.blur();
+      expect(blurTimes === 1).toBeTruthy();
+    });
   });
 });
