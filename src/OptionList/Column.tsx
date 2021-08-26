@@ -79,13 +79,23 @@ export default function Column({
             key={value}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-active`]: openKey === value,
-              // [`${menuItemPrefixCls}-selected`]: !multiple && checked,
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}
             style={dropdownMenuColumnStyle}
             role="menuitemcheckbox"
             title={title}
             aria-checked={checked}
+            onClick={() => {
+              triggerOpenPath();
+              if (!multiple || isMergedLeaf) {
+                triggerSelect();
+              }
+            }}
+            onDoubleClick={() => {
+              if (changeOnSelect) {
+                onToggleOpen(false);
+              }
+            }}
             onMouseEnter={() => {
               if (expandTrigger) {
                 triggerOpenPath();
@@ -103,22 +113,7 @@ export default function Column({
                 }}
               />
             )}
-            <div
-              className={`${menuItemPrefixCls}-content`}
-              onClick={() => {
-                triggerOpenPath();
-                if (!multiple || isMergedLeaf) {
-                  triggerSelect();
-                }
-              }}
-              onDoubleClick={() => {
-                if (changeOnSelect) {
-                  onToggleOpen(false);
-                }
-              }}
-            >
-              {option.title}
-            </div>
+            <div className={`${menuItemPrefixCls}-content`}>{option.title}</div>
             {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
             )}
