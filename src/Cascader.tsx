@@ -97,6 +97,7 @@ interface BaseCascaderProps
   expandTrigger?: 'hover' | 'click';
 
   dropdownMenuColumnStyle?: React.CSSProperties;
+  dropdownPrefixCls?: string;
   loadData?: (selectOptions: DataNode[]) => void;
 
   expandIcon?: React.ReactNode;
@@ -153,6 +154,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
     loadData,
     dropdownMenuColumnStyle,
+    dropdownPrefixCls,
 
     ...restProps
   } = props;
@@ -292,6 +294,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       loadData,
       dropdownMenuColumnStyle,
       search: searchConfig,
+      dropdownPrefixCls,
     }),
     [
       changeOnSelect,
@@ -302,6 +305,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       loadData,
       dropdownMenuColumnStyle,
       searchConfig,
+      dropdownPrefixCls,
     ],
   );
 
