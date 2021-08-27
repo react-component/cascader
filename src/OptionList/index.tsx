@@ -48,7 +48,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     }
 
     const entity = flattenOptions.find(flattenOption => flattenOption.data.value === pathValue);
-    if (entity) {
+    if (entity && !isLeaf(entity.data.node as any)) {
       const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
       const rawOptionList = optionList.map(opt => opt.node);
 

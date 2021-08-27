@@ -535,6 +535,28 @@ describe('Cascader.Basic', () => {
       expect(wrapper.exists('.loading-icon')).toBeFalsy();
     });
 
+    it('not load leaf', () => {
+      const loadData = jest.fn();
+      const onValueChange = jest.fn();
+      const wrapper = mount(
+        <Cascader
+          open
+          loadData={loadData}
+          onChange={onValueChange}
+          options={[
+            {
+              label: 'Light',
+              value: 'light',
+            },
+          ]}
+        />,
+      );
+
+      wrapper.clickOption(0, 0);
+      expect(onValueChange).toHaveBeenCalled();
+      expect(loadData).not.toHaveBeenCalled();
+    });
+
     // https://github.com/ant-design/ant-design/issues/9084
     it('should trigger loadData when expandTrigger is hover', () => {
       const options = [

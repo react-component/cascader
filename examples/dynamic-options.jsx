@@ -50,7 +50,7 @@ class Demo extends React.Component {
         // eslint-disable-next-line react/no-access-state-in-setstate
         options: [...this.state.options],
       });
-    }, 3000);
+    }, 1000);
   };
 
   render() {
@@ -59,6 +59,7 @@ class Demo extends React.Component {
         options={this.state.options}
         loadData={this.loadData}
         onChange={this.onChange}
+        loadingIcon="💽"
         changeOnSelect
       >
         <input value={this.state.inputValue} readOnly />
