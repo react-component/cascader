@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cascader.Private dropdownPrefixCls 1`] = `
+<div
+  class="bamboo bamboo-single bamboo-show-arrow bamboo-open"
+>
+  <div
+    class="bamboo-selector"
+  >
+    <span
+      class="bamboo-selection-search"
+    >
+      <input
+        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="bamboo-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        readonly=""
+        role="combobox"
+        style="opacity: 0;"
+        type="search"
+        unselectable="on"
+        value=""
+      />
+    </span>
+    <span
+      class="bamboo-selection-item"
+      title="Light / Toy"
+    >
+      Light / Toy
+    </span>
+  </div>
+  <div>
+    <div
+      class="bamboo-dropdown"
+      style="opacity: 0; pointer-events: none; min-width: auto;"
+    >
+      <div>
+        <div
+          class="little-holder"
+        >
+          <ul
+            class="little-menu"
+            role="menu"
+          >
+            <li
+              aria-checked="false"
+              class="little-menu-item little-menu-item-active"
+              role="menuitemcheckbox"
+              title="Light"
+            >
+              <div
+                class="little-menu-item-content"
+              >
+                Light
+              </div>
+              <div
+                class="little-menu-item-expand-icon"
+              >
+                &gt;
+              </div>
+            </li>
+          </ul>
+          <ul
+            class="little-menu"
+            role="menu"
+          >
+            <li
+              aria-checked="true"
+              class="little-menu-item little-menu-item-active"
+              role="menuitemcheckbox"
+              title="Toy"
+            >
+              <div
+                class="little-menu-item-content"
+              >
+                Toy
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span
+    aria-hidden="true"
+    class="bamboo-arrow"
+    style="user-select: none;"
+    unselectable="on"
+  >
+    <span
+      class="bamboo-arrow-icon"
+    />
+  </span>
+</div>
+`;

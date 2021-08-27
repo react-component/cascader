@@ -97,6 +97,7 @@ interface BaseCascaderProps
   expandTrigger?: 'hover' | 'click';
 
   dropdownMenuColumnStyle?: React.CSSProperties;
+  /** @private Internal usage. Do not use in your production. */
   dropdownPrefixCls?: string;
   loadData?: (selectOptions: DataNode[]) => void;
 
