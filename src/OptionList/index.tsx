@@ -13,7 +13,7 @@ import { isLeaf, restoreCompatibleValue } from '../util';
 import CascaderContext from '../context';
 import useSearchResult from '../hooks/useSearchResult';
 
-type OptionListProps = SelectOptionListProps<OptionDataNode[]>;
+type OptionListProps = SelectOptionListProps<OptionDataNode[]> & { prefixCls: string };
 export type FlattenOptions = OptionListProps['flattenOptions'];
 
 const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((props, ref) => {
@@ -33,8 +33,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const rtl = direction === 'rtl';
 
   const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-  const { changeOnSelect, expandTrigger, fieldNames, loadData, search } =
+  const { changeOnSelect, expandTrigger, fieldNames, loadData, search, dropdownPrefixCls } =
     React.useContext(CascaderContext);
+
+  const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
   // ========================= loadData =========================
   const [loadingKeys, setLoadingKeys] = React.useState([]);
@@ -122,6 +124,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   // ========================== Search ==========================
   const searchOptions = useSearchResult({
     ...props,
+    prefixCls: mergedPrefixCls,
     fieldNames,
     changeOnSelect,
     searchConfig: search,
@@ -310,6 +313,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       key={index}
       index={index}
       {...columnProps}
+      prefixCls={mergedPrefixCls}
       options={col.options}
       openKey={openPath[index]}
     />
@@ -319,8 +323,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   return (
     <>
       <div
-        className={classNames(`${prefixCls}-holder`, {
-          [`${prefixCls}-rtl`]: rtl,
+        className={classNames(`${mergedPrefixCls}-menu-holder`, {
+          [`${mergedPrefixCls}-rtl`]: rtl,
         })}
       >
         {columnNodes}
