@@ -53,7 +53,7 @@ export default function Column({
 
         // >>>>> Open
         const triggerOpenPath = () => {
-          if (!disabled && !isMergedLeaf) {
+          if (!disabled) {
             onOpen(index, value);
           }
         };

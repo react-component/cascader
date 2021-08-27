@@ -17,7 +17,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     const menu = this.find('ul.rc-cascader-menu').at(menuIndex);
     const itemList = menu.find('li.rc-cascader-menu-item');
 
-    itemList.at(itemIndex).find('div').first().simulate(type);
+    itemList.at(itemIndex).simulate(type);
 
     return this;
   },

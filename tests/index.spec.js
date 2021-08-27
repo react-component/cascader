@@ -665,4 +665,32 @@ describe('Cascader.Basic', () => {
       expect(blurTimes === 1).toBeTruthy();
     });
   });
+
+  it('active className', () => {
+    const wrapper = mount(
+      <Cascader
+        open
+        expandIcon=""
+        options={[
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+            children: [
+              {
+                label: 'Little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    wrapper.clickOption(0, 0);
+    wrapper.clickOption(1, 0);
+
+    expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(2);
+    expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
+    expect(wrapper.find('li.rc-cascader-menu-item-active').last().text()).toEqual('Little');
+  });
 });

@@ -74,7 +74,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
         >
           <li
             aria-checked="false"
-            class="rc-cascader-menu-item"
+            class="rc-cascader-menu-item rc-cascader-menu-item-expand"
             role="menuitemcheckbox"
             title="福建"
           >
@@ -91,7 +91,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
           </li>
           <li
             aria-checked="false"
-            class="rc-cascader-menu-item"
+            class="rc-cascader-menu-item rc-cascader-menu-item-expand"
             role="menuitemcheckbox"
             title="浙江"
           >
@@ -108,7 +108,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
           </li>
           <li
             aria-checked="false"
-            class="rc-cascader-menu-item"
+            class="rc-cascader-menu-item rc-cascader-menu-item-expand"
             role="menuitemcheckbox"
             title="北京"
           >
