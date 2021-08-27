@@ -1,5 +1,5 @@
 import Cascader, { CascaderProps } from './Cascader';
-import type { FieldNames, DataNode, ShowSearchType } from './interface';
+import { FieldNames, DataNode, ShowSearchType } from './interface';
 
 export { CascaderProps, FieldNames, DataNode, ShowSearchType };
 

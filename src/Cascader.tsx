@@ -38,6 +38,10 @@ const RefCascader = generate({
   optionList: OptionList,
 });
 
+function defaultDisplayRender(labels: React.ReactNode[]) {
+  return labels.join(' / ');
+}
+
 // ====================================== Wrap ======================================
 interface BaseCascaderProps
   extends Omit<
@@ -72,6 +76,9 @@ interface BaseCascaderProps
   disabled?: boolean;
 
   fieldNames?: FieldNames;
+
+  // Display
+  displayRender?: (label: React.ReactNode[], selectedOptions: DataNode[]) => React.ReactNode;
 
   // Search
   showSearch?: boolean | ShowSearchType;
@@ -141,6 +148,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     expandTrigger,
     expandIcon = '>',
     loadingIcon,
+
+    displayRender = defaultDisplayRender,
 
     loadData,
     dropdownMenuColumnStyle,
@@ -213,9 +222,11 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       return entity.data.node[fieldLabel];
     }
 
-    return restoreCompatibleValue(entity, mergedFieldNames)
-      .options.map(opt => opt[fieldLabel])
-      .join('>');
+    const { options: selectedOptions } = restoreCompatibleValue(entity, mergedFieldNames);
+    const rawOptions = selectedOptions.map(opt => opt.node);
+    const labelList = rawOptions.map(opt => opt[fieldLabel]);
+
+    return displayRender(labelList, rawOptions);
   };
 
   // =========================== Change ===========================
