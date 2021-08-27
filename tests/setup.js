@@ -13,11 +13,14 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   isOpen() {
     return !!this.find('Trigger').props().popupVisible;
   },
-  clickOption(menuIndex, itemIndex, type = 'click') {
+  findOption(menuIndex, itemIndex) {
     const menu = this.find('ul.rc-cascader-menu').at(menuIndex);
     const itemList = menu.find('li.rc-cascader-menu-item');
 
-    itemList.at(itemIndex).simulate(type);
+    return itemList.at(itemIndex);
+  },
+  clickOption(menuIndex, itemIndex, type = 'click') {
+    this.findOption(menuIndex, itemIndex).simulate(type);
 
     return this;
   },

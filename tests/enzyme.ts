@@ -7,7 +7,11 @@ type ReplaceReturnType<T extends (...a: any) => any, TNewReturn> = (
 
 export interface ReactWrapper extends OriginReactWrapper {
   isOpen: () => boolean;
-  clickOption: (menuIndex: number, itemIndex: number, type?: 'click' | 'doubleClick') => ReactWrapper;
+  clickOption: (
+    menuIndex: number,
+    itemIndex: number,
+    type?: 'click' | 'doubleClick' | 'mouseEnter',
+  ) => ReactWrapper;
 }
 
 type Mount = ReplaceReturnType<typeof originMount, ReactWrapper>;

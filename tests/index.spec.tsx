@@ -3,8 +3,8 @@
 import React from 'react';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { mount } from 'enzyme';
-import Cascader from '..';
+import { mount } from './enzyme';
+import Cascader from '../src';
 import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
 
 describe('Cascader.Basic', () => {
@@ -368,6 +368,8 @@ describe('Cascader.Basic', () => {
         value: [],
       };
 
+      timeout = null;
+
       componentDidMount() {
         this.timeout = setTimeout(() => {
           this.setState({
@@ -650,7 +652,7 @@ describe('Cascader.Basic', () => {
     });
 
     it('focus', () => {
-      const cascaderRef = React.createRef();
+      const cascaderRef = React.createRef() as any;
       mount(<Cascader ref={cascaderRef} />);
 
       cascaderRef.current.focus();
@@ -658,7 +660,7 @@ describe('Cascader.Basic', () => {
     });
 
     it('blur', () => {
-      const cascaderRef = React.createRef();
+      const cascaderRef = React.createRef() as any;
       mount(<Cascader ref={cascaderRef} />);
 
       cascaderRef.current.blur();
@@ -666,31 +668,61 @@ describe('Cascader.Basic', () => {
     });
   });
 
-  it('active className', () => {
-    const wrapper = mount(
-      <Cascader
-        open
-        expandIcon=""
-        options={[
-          {
-            label: 'Bamboo',
-            value: 'bamboo',
-            children: [
-              {
-                label: 'Little',
-                value: 'little',
-              },
-            ],
-          },
-        ]}
-      />,
-    );
+  describe('active className', () => {
+    it('expandTrigger: click', () => {
+      const wrapper = mount(
+        <Cascader
+          open
+          expandIcon=""
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+              children: [
+                {
+                  label: 'Little',
+                  value: 'little',
+                },
+              ],
+            },
+          ]}
+        />,
+      );
 
-    wrapper.clickOption(0, 0);
-    wrapper.clickOption(1, 0);
+      wrapper.clickOption(0, 0);
+      wrapper.clickOption(1, 0);
 
-    expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(2);
-    expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
-    expect(wrapper.find('li.rc-cascader-menu-item-active').last().text()).toEqual('Little');
+      expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(2);
+      expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
+      expect(wrapper.find('li.rc-cascader-menu-item-active').last().text()).toEqual('Little');
+    });
+
+    it('expandTrigger: hover', () => {
+      const wrapper = mount(
+        <Cascader
+          open
+          expandIcon=""
+          expandTrigger="hover"
+          options={[
+            {
+              label: 'Bamboo',
+              value: 'bamboo',
+              children: [
+                {
+                  label: 'Little',
+                  value: 'little',
+                },
+              ],
+            },
+          ]}
+        />,
+      );
+
+      wrapper.clickOption(0, 0, 'mouseEnter');
+      wrapper.clickOption(1, 0, 'mouseEnter');
+
+      expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(1);
+      expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
+    });
   });
 });

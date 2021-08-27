@@ -36,7 +36,7 @@
     "compile": "father build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
-    "test": "father test --no-cache",
+    "test": "father test",
     "coverage": "father test --coverage",
     "now-build": "npm run build"
   },
@@ -55,7 +55,7 @@
     "father": "^2.13.2",
     "gh-pages": "^3.1.0",
     "glob": "^7.1.6",
-    "jest": "^26.0.0",
+    "jest": "^26.6.3",
     "np": "^6.0.0",
     "rc-form": "^2.4.0",
     "react": "^16.0.0",

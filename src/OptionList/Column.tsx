@@ -39,6 +39,8 @@ export default function Column({
   const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
     React.useContext(CascaderContext);
 
+  const hoverOpen = expandTrigger === 'hover';
+
   // ============================ Render ============================
   return (
     <ul className={menuPrefixCls} role="menu">
@@ -53,7 +55,7 @@ export default function Column({
 
         // >>>>> Open
         const triggerOpenPath = () => {
-          if (!disabled) {
+          if (!disabled && (!hoverOpen || !isMergedLeaf)) {
             onOpen(index, value);
           }
         };
@@ -98,7 +100,7 @@ export default function Column({
               }
             }}
             onMouseEnter={() => {
-              if (expandTrigger) {
+              if (hoverOpen) {
                 triggerOpenPath();
               }
             }}
