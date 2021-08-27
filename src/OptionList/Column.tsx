@@ -78,6 +78,7 @@ export default function Column({
           <li
             key={value}
             className={classNames(menuItemPrefixCls, {
+              [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
               [`${menuItemPrefixCls}-active`]: openKey === value,
               [`${menuItemPrefixCls}-disabled`]: disabled,
             })}

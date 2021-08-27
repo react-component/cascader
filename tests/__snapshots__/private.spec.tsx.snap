@@ -50,7 +50,7 @@ exports[`Cascader.Private dropdownPrefixCls 1`] = `
           >
             <li
               aria-checked="false"
-              class="little-menu-item little-menu-item-active"
+              class="little-menu-item little-menu-item-expand little-menu-item-active"
               role="menuitemcheckbox"
               title="Light"
             >
