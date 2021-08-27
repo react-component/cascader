@@ -78,10 +78,29 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
+    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('Bamboo / Little / Toy');
+
     expect(wrapper.find('.rc-cascader-menu')).toHaveLength(3);
     expect(wrapper.find('.rc-cascader-menu-item-active')).toHaveLength(3);
     expect(wrapper.find('.rc-cascader-menu-item-active').at(0).text()).toEqual('Bamboo');
     expect(wrapper.find('.rc-cascader-menu-item-active').at(1).text()).toEqual('Little');
     expect(wrapper.find('.rc-cascader-menu-item-active').at(2).text()).toEqual('Toy');
+  });
+
+  it('displayRender', () => {
+    const wrapper = mount(
+      <Cascader
+        options={options}
+        fieldNames={fieldNames}
+        defaultValue={['bamboo', 'little', 'toy']}
+        displayRender={(labels, selectOptions) =>
+          `${labels.join('->')} & ${selectOptions.map((opt: any) => opt.customValue).join('>>')}`
+        }
+      />,
+    );
+
+    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual(
+      'Bamboo->Little->Toy & bamboo>>little>>toy',
+    );
   });
 });
