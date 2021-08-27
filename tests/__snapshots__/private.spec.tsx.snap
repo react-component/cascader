@@ -42,7 +42,7 @@ exports[`Cascader.Private dropdownPrefixCls 1`] = `
     >
       <div>
         <div
-          class="little-menu-holder"
+          class="little-menus"
         >
           <ul
             class="little-menu"
