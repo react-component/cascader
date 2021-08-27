@@ -520,6 +520,9 @@ describe('Cascader.Basic', () => {
         }),
       ]);
 
+      expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeTruthy();
+      expect(wrapper.exists('.rc-cascader-menu-item-loading-icon')).toBeTruthy();
+
       // Fill data
       wrapper.setProps({
         options: [

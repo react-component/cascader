@@ -83,6 +83,7 @@ export default function Column({
               [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
               [`${menuItemPrefixCls}-active`]: openKey === value,
               [`${menuItemPrefixCls}-disabled`]: disabled,
+              [`${menuItemPrefixCls}-loading`]: isLoading,
             })}
             style={dropdownMenuColumnStyle}
             role="menuitemcheckbox"
@@ -121,7 +122,7 @@ export default function Column({
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
             )}
             {isLoading && loadingIcon && (
-              <div className={`${menuItemPrefixCls}-loading`}>{loadingIcon}</div>
+              <div className={`${menuItemPrefixCls}-loading-icon`}>{loadingIcon}</div>
             )}
           </li>
         );
