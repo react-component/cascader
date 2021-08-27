@@ -323,7 +323,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   return (
     <>
       <div
-        className={classNames(`${mergedPrefixCls}-holder`, {
+        className={classNames(`${mergedPrefixCls}-menu-holder`, {
           [`${mergedPrefixCls}-rtl`]: rtl,
         })}
       >
