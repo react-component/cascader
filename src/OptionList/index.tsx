@@ -257,7 +257,9 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
         }
 
         case KeyCode.BACKSPACE: {
-          prevColumn();
+          if (!searchValue) {
+            prevColumn();
+          }
           break;
         }
 
