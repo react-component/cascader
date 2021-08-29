@@ -143,11 +143,16 @@ describe('Cascader.Search', () => {
     const wrapper = mount(<Cascader options={options} onChange={onChange} showSearch />);
     doSearch(wrapper, 'toy');
 
+    // Selection empty
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(onChange).not.toHaveBeenCalled();
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(onChange).toHaveBeenCalled();
+
+    // Content empty
+    doSearch(wrapper, 'not exist');
+    expect(wrapper.exists('.rc-cascader-menu-empty')).toBeTruthy();
   });
 });

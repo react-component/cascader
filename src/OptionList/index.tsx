@@ -315,6 +315,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   };
 
   // >>>>> Empty
+  const isEmpty = !optionColumns[0]?.options?.length;
+
   const emptyList: OptionDataNode[] = [
     {
       title: notFoundContent,
@@ -325,9 +327,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   ];
 
   // >>>>> Columns
-  const mergedOptionColumns = optionColumns[0]?.options?.length
-    ? optionColumns
-    : [{ options: emptyList }];
+  const mergedOptionColumns = isEmpty ? [{ options: emptyList }] : optionColumns;
 
   const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => (
     <Column
@@ -345,6 +345,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     <>
       <div
         className={classNames(`${mergedPrefixCls}-menus`, {
+          [`${mergedPrefixCls}-menu-empty`]: isEmpty,
           [`${mergedPrefixCls}-rtl`]: rtl,
         })}
       >
