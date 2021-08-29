@@ -4,12 +4,11 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { TreeSelectProps } from 'rc-tree-select';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
-import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
 import type { CascaderValueType, DataNode, FieldNames, ShowSearchType } from './interface';
 import CascaderContext from './context';
-import { connectValue, convertOptions, restoreCompatibleValue } from './util';
+import { connectValue, convertOptions, fillFieldNames, restoreCompatibleValue } from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
 import useSearchConfig from './hooks/useSearchConfig';
 

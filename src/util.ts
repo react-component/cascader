@@ -1,4 +1,5 @@
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
+import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
 import type {
   CascaderValueType,
   DataNode,
@@ -8,6 +9,8 @@ import type {
 } from './interface';
 
 const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
+
+export { fillFieldNames };
 
 /**
  * Convert entity back to path & options
