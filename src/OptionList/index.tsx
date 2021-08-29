@@ -75,11 +75,24 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
 
   // =========================== Open ===========================
-  const [openPath, setOpenPath] = React.useState<React.Key[]>([]);
+  const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
+
+  const mergedOpenPath = React.useMemo<React.Key[]>(() => {
+    const entity = flattenOptions.find(
+      flattenOption => flattenOption.data.value === openFinalValue,
+    );
+
+    if (entity) {
+      const { path } = restoreCompatibleValue(entity as any, fieldNames);
+      return path;
+    }
+
+    return [];
+  }, [openFinalValue, flattenOptions]);
 
   React.useEffect(() => {
     if (open) {
-      let nextOpenPath: React.Key[] = [];
+      let nextOpenPath: React.Key = null;
 
       if (!multiple && checkedKeys.length) {
         const entity = flattenOptions.find(
@@ -87,17 +100,16 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
         );
 
         if (entity) {
-          nextOpenPath = restoreCompatibleValue(entity as any, fieldNames).path;
+          nextOpenPath = entity.data.value;
         }
       }
-      setOpenPath(nextOpenPath);
+      setOpenFinalValue(nextOpenPath);
     }
   }, [open]);
 
   // =========================== Path ===========================
   const onPathOpen = (index: number, pathValue: React.Key) => {
-    const nextOpenPath = [...openPath.slice(0, index), pathValue];
-    setOpenPath(nextOpenPath);
+    setOpenFinalValue(pathValue);
 
     // Trigger loadData
     internalLoadData(pathValue);
@@ -144,8 +156,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       options: OptionDataNode[];
     }[] = [];
 
-    for (let i = 0; i <= openPath.length; i += 1) {
-      const subOptions = getPathList(openPath.slice(0, i));
+    for (let i = 0; i <= mergedOpenPath.length; i += 1) {
+      const subOptions = getPathList(mergedOpenPath.slice(0, i));
 
       if (subOptions) {
         rawOptionColumns.push({
@@ -157,11 +169,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     }
 
     return rawOptionColumns;
-  }, [searchValue, searchOptions, openPath]);
+  }, [searchValue, searchOptions, mergedOpenPath]);
 
   // ========================= Keyboard =========================
   const getActiveOption = (activeColumnIndex: number, offset: number) => {
-    const pathActiveValue = openPath[activeColumnIndex];
+    const pathActiveValue = mergedOpenPath[activeColumnIndex];
     const currentOptions = optionColumns[activeColumnIndex]?.options || [];
     let activeOptionIndex = currentOptions.findIndex(opt => opt.value === pathActiveValue);
 
@@ -185,14 +197,14 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   };
 
   const prevColumn = () => {
-    if (openPath.length <= 1) {
+    if (mergedOpenPath.length <= 1) {
       onToggleOpen(false);
     }
-    setOpenPath(openPath.slice(0, -1));
+    setOpenFinalValue(mergedOpenPath[mergedOpenPath.length - 2]);
   };
 
   const nextColumn = () => {
-    const nextColumnIndex = openPath.length;
+    const nextColumnIndex = mergedOpenPath.length;
     const nextActiveOption = getActiveOption(nextColumnIndex, 1);
     if (nextActiveOption) {
       onPathOpen(nextColumnIndex, nextActiveOption.value);
@@ -216,7 +228,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
           }
 
           if (offset !== 0) {
-            const activeColumnIndex = Math.max(openPath.length - 1, 0);
+            const activeColumnIndex = Math.max(mergedOpenPath.length - 1, 0);
             const nextActiveOption = getActiveOption(activeColumnIndex, offset);
             if (nextActiveOption) {
               onPathOpen(activeColumnIndex, nextActiveOption.value);
@@ -251,8 +263,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
 
         // >>> Select
         case KeyCode.ENTER: {
-          const lastValue = openPath[openPath.length - 1];
-          const option = optionColumns[openPath.length - 1].options?.find(
+          const lastValue = mergedOpenPath[mergedOpenPath.length - 1];
+          const option = optionColumns[mergedOpenPath.length - 1].options?.find(
             opt => opt.value === lastValue,
           );
 
@@ -315,7 +327,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       {...columnProps}
       prefixCls={mergedPrefixCls}
       options={col.options}
-      openKey={openPath[index]}
+      openKey={mergedOpenPath[index]}
     />
   ));
 
