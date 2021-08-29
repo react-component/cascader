@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
 import React from 'react';
+import KeyCode from 'rc-util/lib/KeyCode';
 import { mount, ReactWrapper } from './enzyme';
 import Cascader from '../src';
 
@@ -135,5 +136,18 @@ describe('Cascader.Search', () => {
     expect(itemList).toHaveLength(2);
     expect(itemList.at(0).text()).toEqual('rc-cascader-toy-bamboo~little~fish');
     expect(itemList.at(1).text()).toEqual('rc-cascader-toy-bamboo~little~cards');
+  });
+
+  it('not crash when empty', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<Cascader options={options} onChange={onChange} showSearch />);
+    doSearch(wrapper, 'toy');
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(onChange).not.toHaveBeenCalled();
+
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(onChange).toHaveBeenCalled();
   });
 });

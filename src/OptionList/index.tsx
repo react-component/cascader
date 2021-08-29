@@ -78,6 +78,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
 
   const mergedOpenPath = React.useMemo<React.Key[]>(() => {
+    if (searchValue) {
+      return openFinalValue !== undefined && openFinalValue !== null ? [openFinalValue] : [];
+    }
+
     const entity = flattenOptions.find(
       flattenOption => flattenOption.data.value === openFinalValue,
     );
@@ -88,7 +92,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     }
 
     return [];
-  }, [openFinalValue, flattenOptions]);
+  }, [openFinalValue, flattenOptions, searchValue]);
 
   React.useEffect(() => {
     if (open) {
@@ -266,19 +270,22 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
         // >>> Select
         case KeyCode.ENTER: {
           const lastValue = mergedOpenPath[mergedOpenPath.length - 1];
-          const option = optionColumns[mergedOpenPath.length - 1].options?.find(
+          const option = optionColumns[mergedOpenPath.length - 1]?.options?.find(
             opt => opt.value === lastValue,
           );
 
-          const leaf = isLeaf(option);
+          // Skip when no select
+          if (option) {
+            const leaf = isLeaf(option);
 
-          if (multiple || changeOnSelect || leaf) {
-            onPathSelect(lastValue, leaf);
-          }
+            if (multiple || changeOnSelect || leaf) {
+              onPathSelect(lastValue, leaf);
+            }
 
-          // Close for changeOnSelect
-          if (changeOnSelect) {
-            onToggleOpen(false);
+            // Close for changeOnSelect
+            if (changeOnSelect) {
+              onToggleOpen(false);
+            }
           }
           break;
         }

@@ -76,7 +76,7 @@ const addressOptions = [
 const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(true);
+  const [multiple, setMultiple] = React.useState(false);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
