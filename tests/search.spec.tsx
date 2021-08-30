@@ -2,6 +2,7 @@
 
 import React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { resetWarned } from 'rc-util/lib/warning';
 import { mount, ReactWrapper } from './enzyme';
 import Cascader from '../src';
 
@@ -154,5 +155,18 @@ describe('Cascader.Search', () => {
     // Content empty
     doSearch(wrapper, 'not exist');
     expect(wrapper.exists('.rc-cascader-menu-empty')).toBeTruthy();
+  });
+
+  it('warning of negative limit', () => {
+    resetWarned();
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    mount(<Cascader showSearch={{ limit: 0 }} />);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Warning: 'limit' of showSearch should be positive number or false.",
+    );
+
+    errorSpy.mockRestore();
   });
 });

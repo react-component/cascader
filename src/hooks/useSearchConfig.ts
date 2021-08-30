@@ -1,4 +1,5 @@
 import * as React from 'react';
+import warning from 'rc-util/lib/warning';
 import type { ShowSearchType } from '../interface';
 import type { CascaderProps } from '../Cascader';
 
@@ -19,6 +20,10 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
         ...searchConfig,
         ...showSearch,
       };
+    }
+
+    if (process.env.NODE_ENV !== 'production' && searchConfig.limit <= 0) {
+      warning(false, "'limit' of showSearch should be positive number or false.");
     }
 
     return [true, searchConfig];
