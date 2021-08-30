@@ -750,4 +750,9 @@ describe('Cascader.Basic', () => {
       expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
     });
   });
+
+  it('defaultValue not exist', () => {
+    const wrapper = mount(<Cascader defaultValue={['not', 'exist']} />);
+    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('not / exist');
+  });
 });

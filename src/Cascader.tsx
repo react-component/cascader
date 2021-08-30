@@ -8,7 +8,13 @@ import type { RefSelectProps } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
 import type { CascaderValueType, DataNode, FieldNames, ShowSearchType } from './interface';
 import CascaderContext from './context';
-import { connectValue, convertOptions, fillFieldNames, restoreCompatibleValue } from './util';
+import {
+  connectValue,
+  convertOptions,
+  fillFieldNames,
+  restoreCompatibleValue,
+  splitValue,
+} from './util';
 import useUpdateEffect from './hooks/useUpdateEffect';
 import useSearchConfig from './hooks/useSearchConfig';
 
@@ -217,8 +223,13 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   }, [value]);
 
   // =========================== Label ============================
-  const labelRender = (entity: FlattenDataNode) => {
+  const labelRender = (entity: FlattenDataNode, val: string) => {
     const { label: fieldLabel } = mergedFieldNames;
+
+    if (!entity) {
+      const valPath = splitValue(val);
+      return displayRender(valPath, []);
+    }
 
     if (checkable) {
       return entity.data.node[fieldLabel];

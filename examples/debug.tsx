@@ -104,7 +104,9 @@ const Demo = () => {
         checkable={multiple}
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
+        // defaultValue={['not', 'exist']}
         showSearch
+        open
         // direction="rtl"
       />
     </>

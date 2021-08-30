@@ -57,6 +57,13 @@ export function connectValue(value: React.Key[]) {
 }
 
 /**
+ * Reverse of `connectValue`
+ */
+export function splitValue(str: string) {
+  return str.split(VALUE_SPLIT);
+}
+
+/**
  * Fill options with fully value by path to avoid nest entity with same value.
  * Which means we need another round to get origin node back!
  * This is slow perf on large list. We should abandon same value in nest in future.
