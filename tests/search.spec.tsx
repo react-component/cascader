@@ -161,11 +161,14 @@ describe('Cascader.Search', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    mount(<Cascader showSearch={{ limit: 0 }} />);
+    const wrapper = mount(<Cascader options={options} showSearch={{ limit: 0 }} />);
 
     expect(errorSpy).toHaveBeenCalledWith(
       "Warning: 'limit' of showSearch should be positive number or false.",
     );
+
+    doSearch(wrapper, 'toy');
+    expect(wrapper.find('div.rc-cascader-menu-item-content')).toHaveLength(2);
 
     errorSpy.mockRestore();
   });
