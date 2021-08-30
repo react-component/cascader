@@ -12,7 +12,7 @@ export interface DataNode {
   label: React.ReactNode;
   /** Customize hover title */
   title?: string;
-  value: string;
+  value: string | number;
   disabled?: boolean;
   children?: DataNode[];
   isLeaf?: boolean;
@@ -41,12 +41,7 @@ export interface ShowSearchType {
     prefixCls: string,
     fieldNames: FieldNames,
   ) => React.ReactNode;
-  sort?: (
-    a: DataNode[],
-    b: DataNode[],
-    inputValue: string,
-    fieldNames: FieldNames,
-  ) => number;
+  sort?: (a: DataNode[], b: DataNode[], inputValue: string, fieldNames: FieldNames) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
 }

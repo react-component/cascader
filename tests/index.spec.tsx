@@ -755,4 +755,14 @@ describe('Cascader.Basic', () => {
     const wrapper = mount(<Cascader defaultValue={['not', 'exist']} />);
     expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('not / exist');
   });
+
+  it('number value', () => {
+    const onValueChange = jest.fn();
+    const wrapper = mount(
+      <Cascader onChange={onValueChange} options={[{ label: 'One', value: 1 }]} open />,
+    );
+
+    wrapper.clickOption(0, 0);
+    expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
+  });
 });
