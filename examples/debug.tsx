@@ -71,12 +71,13 @@ const addressOptions = [
       },
     ],
   },
+  ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
 ];
 
 const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(false);
+  const [multiple, setMultiple] = React.useState(true);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -106,7 +107,7 @@ const Demo = () => {
         defaultValue={multiple ? [defaultValue] : defaultValue}
         // defaultValue={['not', 'exist']}
         showSearch
-        open
+        // open
         // direction="rtl"
       />
     </>

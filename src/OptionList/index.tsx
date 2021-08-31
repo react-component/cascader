@@ -30,6 +30,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     direction,
   } = props;
 
+  const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
   const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
@@ -235,6 +236,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
             const activeColumnIndex = Math.max(mergedOpenPath.length - 1, 0);
             const nextActiveOption = getActiveOption(activeColumnIndex, offset);
             if (nextActiveOption) {
+              const ele = containerRef.current?.querySelector(
+                `li[data-value="${nextActiveOption.value}"]`,
+              );
+              ele?.scrollIntoView?.({ block: 'nearest' });
+
               onPathOpen(activeColumnIndex, nextActiveOption.value);
             }
           }
@@ -348,6 +354,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
           [`${mergedPrefixCls}-menu-empty`]: isEmpty,
           [`${mergedPrefixCls}-rtl`]: rtl,
         })}
+        ref={containerRef}
       >
         {columnNodes}
       </div>

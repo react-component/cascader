@@ -89,6 +89,7 @@ export default function Column({
             role="menuitemcheckbox"
             title={title}
             aria-checked={checked}
+            data-value={value}
             onClick={() => {
               triggerOpenPath();
               if (!multiple || isMergedLeaf) {

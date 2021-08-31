@@ -51,6 +51,7 @@ exports[`Cascader.Private dropdownPrefixCls 1`] = `
             <li
               aria-checked="false"
               class="little-menu-item little-menu-item-expand little-menu-item-active"
+              data-value="light"
               role="menuitemcheckbox"
               title="Light"
             >
@@ -73,6 +74,7 @@ exports[`Cascader.Private dropdownPrefixCls 1`] = `
             <li
               aria-checked="true"
               class="little-menu-item little-menu-item-active"
+              data-value="light__RC_CASCADER_SPLIT__toy"
               role="menuitemcheckbox"
               title="Toy"
             >
