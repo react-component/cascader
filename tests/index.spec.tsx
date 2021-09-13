@@ -452,6 +452,7 @@ describe('Cascader.Basic', () => {
         popupVisible
         onPopupVisibleChange={onPopupVisibleChange}
         popupClassName="legacy-cls"
+        popupPlacement="topRight"
       />,
     );
 
@@ -464,8 +465,12 @@ describe('Cascader.Basic', () => {
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `popupClassName` is deprecated. Please use `dropdownClassName` instead.',
     );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `popupPlacement` is deprecated. Please use `placement` instead.',
+    );
 
     expect(wrapper.exists('.legacy-cls')).toBeTruthy();
+    expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
 
     errorSpy.mockRestore();
   });
