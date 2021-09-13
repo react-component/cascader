@@ -4,7 +4,7 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { TreeSelectProps } from 'rc-tree-select';
 import generate from 'rc-tree-select/lib/generate';
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
-import type { RefSelectProps } from 'rc-select/lib/generate';
+import type { RefSelectProps, Placement } from 'rc-select/lib/generate';
 import OptionList from './OptionList';
 import type { CascaderValueType, DataNode, FieldNames, ShowSearchType } from './interface';
 import CascaderContext from './context';
@@ -98,6 +98,10 @@ interface BaseCascaderProps
   popupClassName?: string;
   dropdownClassName?: string;
 
+  /** @deprecated Use `placement` instead */
+  popupPlacement?: Placement;
+  placement?: Placement;
+
   /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
   onDropdownVisibleChange?: (open: boolean) => void;
@@ -153,6 +157,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     popupClassName,
     onDropdownVisibleChange,
     onPopupVisibleChange,
+    popupPlacement,
+    placement,
 
     searchValue,
     onSearch,
@@ -295,11 +301,17 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       popupClassName === undefined,
       '`popupClassName` is deprecated. Please use `dropdownClassName` instead.',
     );
+    warning(
+      popupPlacement === undefined,
+      '`popupPlacement` is deprecated. Please use `placement` instead.',
+    );
   }
 
   const mergedOpen = open !== undefined ? open : popupVisible;
 
   const mergedDropdownClassName = dropdownClassName || popupClassName;
+
+  const mergedPlacement = placement || popupPlacement;
 
   const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
     onDropdownVisibleChange?.(nextVisible);
@@ -349,6 +361,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         ref={cascaderRef}
         {...restProps}
         value={checkable ? internalValue : internalValue[0]}
+        placement={mergedPlacement}
         dropdownMatchSelectWidth={false}
         dropdownStyle={dropdownStyle}
         dropdownClassName={mergedDropdownClassName}
