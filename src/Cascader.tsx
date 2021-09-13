@@ -94,6 +94,10 @@ interface BaseCascaderProps
   /** @deprecated Use `open` instead */
   popupVisible?: boolean;
 
+  /** @deprecated Use `dropdownClassName` instead */
+  popupClassName?: string;
+  dropdownClassName?: string;
+
   /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
   onDropdownVisibleChange?: (open: boolean) => void;
@@ -145,6 +149,8 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
     popupVisible,
     open,
+    dropdownClassName,
+    popupClassName,
     onDropdownVisibleChange,
     onPopupVisibleChange,
 
@@ -285,9 +291,15 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       '`onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
     );
     warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
+    warning(
+      popupClassName === undefined,
+      '`popupClassName` is deprecated. Please use `dropdownClassName` instead.',
+    );
   }
 
   const mergedOpen = open !== undefined ? open : popupVisible;
+
+  const mergedDropdownClassName = dropdownClassName || popupClassName;
 
   const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
     onDropdownVisibleChange?.(nextVisible);
@@ -339,6 +351,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         value={checkable ? internalValue : internalValue[0]}
         dropdownMatchSelectWidth={false}
         dropdownStyle={dropdownStyle}
+        dropdownClassName={mergedDropdownClassName}
         treeData={mergedOptions}
         treeCheckable={checkable}
         treeNodeFilterProp="label"

@@ -443,11 +443,17 @@ describe('Cascader.Basic', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
-  it('warning popupVisible & onPopupVisibleChange', () => {
+  it('warning popupVisible & onPopupVisibleChange & popupClassName', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const onPopupVisibleChange = jest.fn();
-    mount(<Cascader popupVisible onPopupVisibleChange={onPopupVisibleChange} />);
+    const wrapper = mount(
+      <Cascader
+        popupVisible
+        onPopupVisibleChange={onPopupVisibleChange}
+        popupClassName="legacy-cls"
+      />,
+    );
 
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
@@ -455,6 +461,11 @@ describe('Cascader.Basic', () => {
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `popupVisible` is deprecated. Please use `open` instead.',
     );
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `popupClassName` is deprecated. Please use `dropdownClassName` instead.',
+    );
+
+    expect(wrapper.exists('.legacy-cls')).toBeTruthy();
 
     errorSpy.mockRestore();
   });

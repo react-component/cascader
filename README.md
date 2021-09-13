@@ -167,7 +167,7 @@ React.render(
       <td>prefix className of popup overlay</td>
     </tr>
     <tr>
-      <td>popupClassName</td>
+      <td>dropdownClassName</td>
       <td>String</td>
       <td></td>
       <td>additional className of popup overlay</td>
