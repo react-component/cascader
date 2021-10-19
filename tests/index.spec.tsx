@@ -780,5 +780,6 @@ describe('Cascader.Basic', () => {
 
     wrapper.clickOption(0, 0);
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
+    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('One');
   });
 });

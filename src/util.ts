@@ -74,9 +74,14 @@ export function convertOptions(
 ): InternalDataNode[] {
   function injectValue(list: DataNode[], parentValue = ''): InternalDataNode[] {
     return (list || []).map(option => {
-      const newValue = parentValue
-        ? connectValue([parentValue, option[fieldValue]])
-        : option[fieldValue];
+      let newValue = option[fieldValue];
+      if (parentValue) {
+        newValue = connectValue([parentValue, option[fieldValue]]);
+      } else if (typeof newValue === 'number') {
+        // Since we will convert all the value to string, we need get this
+        newValue = String(newValue);
+      }
+
       const cloneOption = {
         ...option,
         [fieldValue]: newValue,
