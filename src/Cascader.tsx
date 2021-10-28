@@ -71,7 +71,7 @@ interface BaseCascaderProps
     | 'onChange'
   > {
   options?: DataNode[];
-  children?: React.ReactElement;
+  children?: React.ReactNode;
 
   // Value
   value?: CascaderValueType | CascaderValueType[];
