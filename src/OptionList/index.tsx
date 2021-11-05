@@ -64,7 +64,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     if (loadingKeys.length) {
       loadingKeys.forEach(loadingKey => {
         const option = flattenOptions.find(opt => opt.value === loadingKey);
-        if (option.data.children) {
+        if (option.data.children || option.data.isLeaf === true) {
           setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
         }
       });

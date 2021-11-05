@@ -635,6 +635,7 @@ describe('Cascader.Basic', () => {
       for (let i = 0; i < 3; i += 1) {
         await Promise.resolve();
       }
+      wrapper.update();
 
       expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeFalsy();
     });
