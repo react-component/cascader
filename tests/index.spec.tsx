@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount } from './enzyme';
@@ -602,6 +603,40 @@ describe('Cascader.Basic', () => {
       menu1Items.at(0).simulate('mouseEnter');
       jest.runAllTimers();
       expect(loadData).toHaveBeenCalled();
+    });
+
+    it('change isLeaf back to true should not loop loading', async () => {
+      const Demo = () => {
+        const [options, setOptions] = React.useState([
+          { value: 'zhejiang', label: 'Zhejiang', isLeaf: false },
+        ]);
+
+        const loadData = () => {
+          Promise.resolve().then(() => {
+            act(() => {
+              setOptions([
+                {
+                  value: 'zhejiang',
+                  label: 'Zhejiang',
+                  isLeaf: true,
+                },
+              ]);
+            });
+          });
+        };
+
+        return <Cascader options={options} loadData={loadData} open />;
+      };
+
+      const wrapper = mount(<Demo />);
+      wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
+      expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeTruthy();
+
+      for (let i = 0; i < 3; i += 1) {
+        await Promise.resolve();
+      }
+
+      expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeFalsy();
     });
   });
 
