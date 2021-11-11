@@ -279,7 +279,13 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       const { options: valueOptions } = restoreCompatibleValue(entity, mergedFieldNames);
       const originOptions = valueOptions.map(option => option.node);
 
-      pathList.push(originOptions.map(opt => opt[mergedFieldNames.value]));
+      pathList.push(
+        originOptions.map(
+          opt =>
+            // Here we should use original FieldNames value mapping
+            opt[outerFieldNames.value],
+        ),
+      );
       optionsList.push(originOptions);
     });
 
