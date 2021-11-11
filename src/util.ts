@@ -70,7 +70,7 @@ export function splitValue(str: string) {
  */
 export function convertOptions(
   options: DataNode[],
-  { value: fieldValue, children: fieldChildren }: FieldNames,
+  { value: fieldValue, children: fieldChildren, label: fieldLabel }: FieldNames,
 ): InternalDataNode[] {
   function injectValue(list: DataNode[], parentValue = ''): InternalDataNode[] {
     return (list || []).map(option => {
@@ -81,10 +81,10 @@ export function convertOptions(
         // Since we will convert all the value to string, we need get this
         newValue = String(newValue);
       }
-
+      const _fieldValue = fieldValue === fieldLabel ? 'value' : fieldValue;
       const cloneOption = {
         ...option,
-        [fieldValue]: newValue,
+        [_fieldValue]: newValue,
         node: option,
       };
 
