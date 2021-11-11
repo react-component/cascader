@@ -103,4 +103,20 @@ describe('Cascader.FieldNames', () => {
       'Bamboo->Little->Toy & bamboo>>little>>toy',
     );
   });
+
+  it('same title & value should show correct title', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[{ name: 'bamboo', children: [{ name: 'little' }] }] as any}
+        open
+        defaultValue={['bamboo', 'little']}
+        fieldNames={{
+          label: 'name',
+          value: 'name',
+        }}
+      />,
+    );
+
+    expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('little');
+  });
 });
