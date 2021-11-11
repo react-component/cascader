@@ -18,6 +18,8 @@ import {
 import useUpdateEffect from './hooks/useUpdateEffect';
 import useSearchConfig from './hooks/useSearchConfig';
 
+const INTERNAL_VALUE_FIELD = '__rc_cascader_value__';
+
 /**
  * `rc-cascader` is much like `rc-tree-select` but API is very different.
  * It's caused that component developer is not same person
@@ -179,8 +181,6 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   const { fieldNames } = restProps;
 
-  const mergedFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
-
   // ============================ Ref =============================
   const cascaderRef = React.useRef<RefSelectProps>();
 
@@ -205,9 +205,18 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
 
   // ========================== Options ===========================
+  const outerFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
+  const mergedFieldNames = React.useMemo(
+    () => ({
+      ...outerFieldNames,
+      value: INTERNAL_VALUE_FIELD,
+    }),
+    [outerFieldNames],
+  );
+
   const mergedOptions = React.useMemo(() => {
-    return convertOptions(options, mergedFieldNames);
-  }, [options, mergedFieldNames]);
+    return convertOptions(options, outerFieldNames, INTERNAL_VALUE_FIELD);
+  }, [options, outerFieldNames]);
 
   // =========================== Value ============================
   /**
@@ -270,7 +279,13 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       const { options: valueOptions } = restoreCompatibleValue(entity, mergedFieldNames);
       const originOptions = valueOptions.map(option => option.node);
 
-      pathList.push(originOptions.map(opt => opt[mergedFieldNames.value]));
+      pathList.push(
+        originOptions.map(
+          opt =>
+            // Here we should use original FieldNames value mapping
+            opt[outerFieldNames.value],
+        ),
+      );
       optionsList.push(originOptions);
     });
 
@@ -360,6 +375,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
       <RefCascader
         ref={cascaderRef}
         {...restProps}
+        fieldNames={mergedFieldNames}
         value={checkable ? internalValue : internalValue[0]}
         placement={mergedPlacement}
         dropdownMatchSelectWidth={false}
