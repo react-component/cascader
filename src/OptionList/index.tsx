@@ -53,7 +53,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
       const rawOptionList = optionList.map(opt => opt.node);
 
-      setLoadingKeys(keys => [...keys, optionList[optionList.length - 1].value]);
+      setLoadingKeys(keys => [...keys, entity.key]);
 
       loadData(rawOptionList);
     }
@@ -64,7 +64,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     if (loadingKeys.length) {
       loadingKeys.forEach(loadingKey => {
         const option = flattenOptions.find(opt => opt.value === loadingKey);
-        if (option.data.children || option.data.isLeaf === true) {
+        if (!option || option.data.children || option.data.isLeaf === true) {
           setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
         }
       });

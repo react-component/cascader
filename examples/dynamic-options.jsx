@@ -40,6 +40,7 @@ class Demo extends React.Component {
         {
           label: `${targetOption.label}动态加载1`,
           value: 'dynamic1',
+          isLeaf: false,
         },
         {
           label: `${targetOption.label}动态加载2`,
@@ -50,7 +51,7 @@ class Demo extends React.Component {
         // eslint-disable-next-line react/no-access-state-in-setstate
         options: [...this.state.options],
       });
-    }, 1000);
+    }, 500);
   };
 
   render() {
