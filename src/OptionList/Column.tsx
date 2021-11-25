@@ -113,7 +113,8 @@ export default function Column({
                 checked={checked}
                 halfChecked={halfCheckedSet.has(value)}
                 disabled={disabled}
-                onClick={() => {
+                onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                  e.stopPropagation();
                   triggerSelect();
                 }}
               />
