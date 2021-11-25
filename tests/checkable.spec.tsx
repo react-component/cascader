@@ -76,4 +76,17 @@ describe('Cascader.Checkable', () => {
       ],
     );
   });
+  it('click checkobx invoke one onChange', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<Cascader options={options} onChange={onChange} open checkable />);
+
+    expect(wrapper.exists('.rc-cascader-checkbox')).toBeTruthy();
+    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeFalsy();
+    expect(wrapper.exists('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+    // Check checkbox
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeTruthy();
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
 });
