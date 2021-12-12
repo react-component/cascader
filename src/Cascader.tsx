@@ -123,13 +123,13 @@ interface BaseCascaderProps
 type OnSingleChange = (value: CascaderValueType, selectOptions: DataNode[]) => void;
 type OnMultipleChange = (value: CascaderValueType[], selectOptions: DataNode[][]) => void;
 
-interface SingleCascaderProps extends BaseCascaderProps {
+export interface SingleCascaderProps extends BaseCascaderProps {
   checkable?: false;
 
   onChange?: OnSingleChange;
 }
 
-interface MultipleCascaderProps extends BaseCascaderProps {
+export interface MultipleCascaderProps extends BaseCascaderProps {
   checkable: true | React.ReactNode;
 
   onChange?: OnMultipleChange;
