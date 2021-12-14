@@ -110,6 +110,7 @@ interface BaseCascaderProps
 
   // Trigger
   expandTrigger?: 'hover' | 'click';
+  autoAdjustOverflow?: boolean;
 
   dropdownMenuColumnStyle?: React.CSSProperties;
   /** @private Internal usage. Do not use in your production. */
