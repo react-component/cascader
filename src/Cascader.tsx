@@ -206,13 +206,14 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
 
   // ========================== Options ===========================
   const outerFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
-  const mergedFieldNames = React.useMemo(
-    () => ({
-      ...outerFieldNames,
-      value: INTERNAL_VALUE_FIELD,
-    }),
-    [outerFieldNames],
-  );
+  const mergedFieldNames = React.useMemo(() => {
+    const { label: fieldLabel, value: fieldValue } = outerFieldNames;
+    // if label and value field name are equal, we add a unique **INTERNAL_VALUE_FIELD** field to represent the value
+    // otherwise, we still use the original fieldNames to allow override **value** field
+    return fieldLabel === fieldValue
+      ? { ...outerFieldNames, value: INTERNAL_VALUE_FIELD }
+      : outerFieldNames;
+  }, [outerFieldNames]);
 
   const mergedOptions = React.useMemo(() => {
     return convertOptions(options, outerFieldNames, INTERNAL_VALUE_FIELD);

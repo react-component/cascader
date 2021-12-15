@@ -30,7 +30,7 @@ export function restoreCompatibleValue(
 
   while (current) {
     path.unshift(current.data.node[fieldNames.value]);
-    options.unshift(current.data.node as any as InternalDataNode);
+    options.unshift((current.data.node as any) as InternalDataNode);
 
     current = current.parent;
   }
@@ -70,7 +70,7 @@ export function splitValue(str: string) {
  */
 export function convertOptions(
   options: DataNode[],
-  { value: fieldValue, children: fieldChildren }: FieldNames,
+  { label: fieldLabel, value: fieldValue, children: fieldChildren }: FieldNames,
   internalValueField: string,
 ): InternalDataNode[] {
   function injectValue(list: DataNode[], parentValue = ''): InternalDataNode[] {
@@ -85,7 +85,8 @@ export function convertOptions(
 
       const cloneOption = {
         ...option,
-        [internalValueField]: newValue,
+        // if fieldLabel === fieldValue, use internalValueField to store the value instead
+        [fieldLabel === fieldValue ? internalValueField : fieldValue]: newValue,
         node: option,
       };
 
