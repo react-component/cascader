@@ -1,20 +1,24 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import type { OptionDataNode } from '../interface';
-import { isLeaf } from '../util';
+import { isLeaf } from '../utils/commonUtil';
+import LegacyContext from '../LegacyContext';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
+import type { DefaultOptionType, SingleValueType } from '../Cascader';
 
 export interface ColumnProps {
   prefixCls: string;
   index: number;
   multiple?: boolean;
-  options: OptionDataNode[];
+  options: DefaultOptionType[];
   /** Current Column opened item key */
-  openKey?: React.Key;
-  onSelect: (value: React.Key, isLeaf: boolean) => void;
+  activeValue?: React.Key;
+  /** The value path before current column */
+  prevValuePath: React.Key[];
   onOpen: (index: number, value: React.Key) => void;
   onToggleOpen: (open: boolean) => void;
+  onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
@@ -25,10 +29,11 @@ export default function Column({
   index,
   multiple,
   options,
-  openKey,
-  onSelect,
+  activeValue,
+  prevValuePath,
   onOpen,
   onToggleOpen,
+  onSelect,
   checkedSet,
   halfCheckedSet,
   loadingKeys,
@@ -37,7 +42,9 @@ export default function Column({
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
   const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
-    React.useContext(CascaderContext);
+    React.useContext(LegacyContext);
+
+  const { fieldNames } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
 
@@ -46,7 +53,7 @@ export default function Column({
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
         const { disabled, value, node } = option;
-        const isMergedLeaf = isLeaf(option);
+        const isMergedLeaf = isLeaf(option, fieldNames);
 
         const isLoading = loadingKeys.includes(value);
 
@@ -63,7 +70,7 @@ export default function Column({
         // >>>>> Selection
         const triggerSelect = () => {
           if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
-            onSelect(value, isMergedLeaf);
+            onSelect([...prevValuePath, value], isMergedLeaf);
           }
         };
 
@@ -81,7 +88,7 @@ export default function Column({
             key={value}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
-              [`${menuItemPrefixCls}-active`]: openKey === value,
+              [`${menuItemPrefixCls}-active`]: activeValue === value,
               [`${menuItemPrefixCls}-disabled`]: disabled,
               [`${menuItemPrefixCls}-loading`]: isLoading,
             })}
@@ -119,7 +126,7 @@ export default function Column({
                 }}
               />
             )}
-            <div className={`${menuItemPrefixCls}-content`}>{option.title}</div>
+            <div className={`${menuItemPrefixCls}-content`}>{option[fieldNames.label]}</div>
             {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
             )}

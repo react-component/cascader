@@ -1,41 +1,43 @@
 /* eslint-disable default-case */
 import * as React from 'react';
 import classNames from 'classnames';
+import { useBaseProps } from 'rc-select';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type {
   OptionListProps as SelectOptionListProps,
   RefOptionListProps,
 } from 'rc-select/lib/OptionList';
-import { SelectContext } from 'rc-tree-select/lib/Context';
+// import { SelectContext } from 'rc-tree-select/lib/Context';
 import type { OptionDataNode } from '../interface';
 import Column from './Column';
-import { isLeaf, restoreCompatibleValue } from '../util';
-import CascaderContext from '../context';
+import { restoreCompatibleValue } from '../util';
+import LegacyContext from '../LegacyContext';
 import useSearchResult from '../hooks/useSearchResult';
+import CascaderContext from '../context';
+import type { SingleValueType } from '../Cascader';
+import { isLeaf } from '../utils/commonUtil';
 
-type OptionListProps = SelectOptionListProps<OptionDataNode[]> & { prefixCls: string };
-export type FlattenOptions = OptionListProps['flattenOptions'];
-
-const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((props, ref) => {
+const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const {
     prefixCls,
-    options,
-    onSelect,
+    // onSelect,
     multiple,
     open,
-    flattenOptions,
+    // flattenOptions,
     searchValue,
-    onToggleOpen,
+    toggleOpen,
     notFoundContent,
     direction,
-  } = props;
+  } = useBaseProps();
 
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
-  const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-  const { changeOnSelect, expandTrigger, fieldNames, loadData, search, dropdownPrefixCls } =
+  const { options, values, fieldNames, changeOnSelect, onSelect } =
     React.useContext(CascaderContext);
+
+  // const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
+  const { expandTrigger, loadData, search, dropdownPrefixCls } = React.useContext(LegacyContext);
 
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
@@ -60,57 +62,94 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   };
 
   // zombieJ: This is bad. We should make this same as `rc-tree` to use Promise instead.
-  React.useEffect(() => {
-    if (loadingKeys.length) {
-      loadingKeys.forEach(loadingKey => {
-        const option = flattenOptions.find(opt => opt.value === loadingKey);
-        if (!option || option.data.children || option.data.isLeaf === true) {
-          setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
-        }
-      });
-    }
-  }, [flattenOptions, loadingKeys]);
+  // React.useEffect(() => {
+  //   if (loadingKeys.length) {
+  //     loadingKeys.forEach(loadingKey => {
+  //       const option = flattenOptions.find(opt => opt.value === loadingKey);
+  //       if (!option || option.data.children || option.data.isLeaf === true) {
+  //         setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
+  //       }
+  //     });
+  //   }
+  // }, [flattenOptions, loadingKeys]);
 
   // ========================== Values ==========================
-  const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
-  const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
+  // const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
+  // const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
 
-  // =========================== Open ===========================
-  const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
-
-  const mergedOpenPath = React.useMemo<React.Key[]>(() => {
-    if (searchValue) {
-      return openFinalValue !== undefined && openFinalValue !== null ? [openFinalValue] : [];
-    }
-
-    const entity = flattenOptions.find(
-      flattenOption => flattenOption.data.value === openFinalValue,
-    );
-
-    if (entity) {
-      const { path } = restoreCompatibleValue(entity as any, fieldNames);
-      return path;
-    }
-
-    return [];
-  }, [openFinalValue, flattenOptions, searchValue]);
+  // ========================== Active ==========================
+  // Record current dropdown active options
+  // This also control the open status
+  const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
 
   React.useEffect(() => {
-    if (open) {
-      let nextOpenPath: React.Key = null;
-
-      if (!multiple && checkedKeys.length) {
-        const entity = flattenOptions.find(
-          flattenOption => flattenOption.data.value === checkedKeys[0],
-        );
-
-        if (entity) {
-          nextOpenPath = entity.data.value;
-        }
-      }
-      setOpenFinalValue(nextOpenPath);
+    if (!multiple) {
+      const firstValueCells = values[0];
+      setActiveValueCells(firstValueCells || []);
     }
-  }, [open]);
+  }, [multiple, values]);
+
+  // ====================== Active Options ======================
+  const optionColumns = React.useMemo(() => {
+    const optionList = [{ options }];
+    let currentList = options;
+
+    for (let i = 0; i < activeValueCells.length; i += 1) {
+      const activeValueCell = activeValueCells[i];
+      const currentOption = currentList.find(
+        option => option[fieldNames.value] === activeValueCell,
+      );
+
+      const subOptions = currentOption?.[fieldNames.children];
+      if (!subOptions) {
+        break;
+      }
+
+      currentList = subOptions;
+      optionList.push({ options: subOptions });
+    }
+
+    return optionList;
+  }, [options, activeValueCells, fieldNames]);
+
+  // =========================== Open ===========================
+
+  const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
+
+  const mergedOpenPath = [];
+  // const mergedOpenPath = React.useMemo<React.Key[]>(() => {
+  //   if (searchValue) {
+  //     return openFinalValue !== undefined && openFinalValue !== null ? [openFinalValue] : [];
+  //   }
+
+  //   const entity = flattenOptions.find(
+  //     flattenOption => flattenOption.data.value === openFinalValue,
+  //   );
+
+  //   if (entity) {
+  //     const { path } = restoreCompatibleValue(entity as any, fieldNames);
+  //     return path;
+  //   }
+
+  //   return [];
+  // }, [openFinalValue, searchValue]);
+
+  // React.useEffect(() => {
+  //   if (open) {
+  //     let nextOpenPath: React.Key = null;
+
+  //     if (!multiple && checkedKeys.length) {
+  //       const entity = flattenOptions.find(
+  //         flattenOption => flattenOption.data.value === checkedKeys[0],
+  //       );
+
+  //       if (entity) {
+  //         nextOpenPath = entity.data.value;
+  //       }
+  //     }
+  //     setOpenFinalValue(nextOpenPath);
+  //   }
+  // }, [open]);
 
   // =========================== Path ===========================
   const onPathOpen = (index: number, pathValue: React.Key) => {
@@ -120,11 +159,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     internalLoadData(pathValue);
   };
 
-  const onPathSelect = (pathValue: React.Key, leaf: boolean) => {
-    onSelect(pathValue, { selected: !checkedSet.has(pathValue) });
+  const onPathSelect = (valuePath: SingleValueType, leaf: boolean) => {
+    onSelect(valuePath, leaf);
 
     if (!multiple && (leaf || (changeOnSelect && expandTrigger === 'hover'))) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
   };
 
@@ -139,42 +178,43 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
   };
 
   // ========================== Search ==========================
-  const searchOptions = useSearchResult({
-    ...props,
-    prefixCls: mergedPrefixCls,
-    fieldNames,
-    changeOnSelect,
-    searchConfig: search,
-  });
+  // const searchOptions = useSearchResult({
+  //   ...props,
+  //   prefixCls: mergedPrefixCls,
+  //   fieldNames,
+  //   changeOnSelect,
+  //   searchConfig: search,
+  // });
 
   // ========================== Column ==========================
-  const optionColumns = React.useMemo(() => {
-    if (searchValue) {
-      return [
-        {
-          options: searchOptions,
-        },
-      ];
-    }
+  // const optionColumns = React.useMemo(() => {
+  //   // if (searchValue) {
+  //   //   return [
+  //   //     {
+  //   //       options: searchOptions,
+  //   //     },
+  //   //   ];
+  //   // }
 
-    const rawOptionColumns: {
-      options: OptionDataNode[];
-    }[] = [];
+  //   const rawOptionColumns: {
+  //     options: OptionDataNode[];
+  //   }[] = [];
 
-    for (let i = 0; i <= mergedOpenPath.length; i += 1) {
-      const subOptions = getPathList(mergedOpenPath.slice(0, i));
+  //   for (let i = 0; i <= mergedOpenPath.length; i += 1) {
+  //     const subOptions = getPathList(mergedOpenPath.slice(0, i));
 
-      if (subOptions) {
-        rawOptionColumns.push({
-          options: subOptions,
-        });
-      } else {
-        break;
-      }
-    }
+  //     if (subOptions) {
+  //       rawOptionColumns.push({
+  //         options: subOptions,
+  //       });
+  //     } else {
+  //       break;
+  //     }
+  //   }
 
-    return rawOptionColumns;
-  }, [searchValue, searchOptions, mergedOpenPath]);
+  //   return rawOptionColumns;
+  // }, [searchValue, mergedOpenPath]);
+  // // }, [searchValue, searchOptions, mergedOpenPath]);
 
   // ========================= Keyboard =========================
   const getActiveOption = (activeColumnIndex: number, offset: number) => {
@@ -203,7 +243,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
 
   const prevColumn = () => {
     if (mergedOpenPath.length <= 1) {
-      onToggleOpen(false);
+      toggleOpen(false);
     }
     setOpenFinalValue(mergedOpenPath[mergedOpenPath.length - 2]);
   };
@@ -282,7 +322,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
 
           // Skip when no select
           if (option) {
-            const leaf = isLeaf(option);
+            const leaf = isLeaf(option, fieldNames);
 
             if (multiple || changeOnSelect || leaf) {
               onPathSelect(lastValue, leaf);
@@ -290,7 +330,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
 
             // Close for changeOnSelect
             if (changeOnSelect) {
-              onToggleOpen(false);
+              toggleOpen(false);
             }
           }
           break;
@@ -298,7 +338,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
 
         // >>> Close
         case KeyCode.ESC: {
-          onToggleOpen(false);
+          toggleOpen(false);
 
           if (open) {
             event.stopPropagation();
@@ -314,9 +354,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
     ...props,
     onOpen: onPathOpen,
     onSelect: onPathSelect,
-    onToggleOpen,
-    checkedSet,
-    halfCheckedSet,
+    onToggleOpen: toggleOpen,
+    // TODO: handle this
+    checkedSet: new Set<any>(),
+    halfCheckedSet: new Set<any>(),
     loadingKeys,
   };
 
@@ -342,7 +383,9 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       {...columnProps}
       prefixCls={mergedPrefixCls}
       options={col.options}
-      openKey={mergedOpenPath[index]}
+      // TODO: handle search case
+      prevValuePath={activeValueCells.slice(0, index)}
+      activeValue={activeValueCells[index]}
     />
   ));
 

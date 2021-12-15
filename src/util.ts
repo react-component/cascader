@@ -1,11 +1,11 @@
 import type { FlattenDataNode } from 'rc-tree-select/lib/interface';
 import { fillFieldNames } from 'rc-tree-select/lib/utils/valueUtil';
+import type { DefaultOptionType } from './Cascader';
 import type {
   CascaderValueType,
   DataNode,
   FieldNames,
   InternalDataNode,
-  OptionDataNode,
 } from './interface';
 
 const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
@@ -38,7 +38,7 @@ export function restoreCompatibleValue(
   return { path, options };
 }
 
-export function isLeaf(option: OptionDataNode) {
+export function isLeaf2(option: DefaultOptionType) {
   const { children, node } = option;
 
   const leaf = node?.isLeaf;
