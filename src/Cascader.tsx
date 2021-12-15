@@ -394,9 +394,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         showSearch={mergedShowSearch}
         onSearch={setMergedSearch}
         labelRender={labelRender}
-        {...{
-          getRawInputElement: () => children,
-        }}
+        getRawInputElement={() => children}
       />
     </CascaderContext.Provider>
   );

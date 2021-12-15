@@ -76,6 +76,7 @@ describe('Cascader.Checkable', () => {
       ],
     );
   });
+
   it('click checkobx invoke one onChange', () => {
     const onChange = jest.fn();
     const wrapper = mount(<Cascader options={options} onChange={onChange} open checkable />);
@@ -88,5 +89,17 @@ describe('Cascader.Checkable', () => {
     wrapper.find('.rc-cascader-checkbox').first().simulate('click');
     expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeTruthy();
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/33302
+  it('should not display checkbox when children is empty', () => {
+    const wrapper = mount(
+      <Cascader checkable options={[]}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.find('.rc-cascader-checkbox').length).toBe(0);
   });
 });

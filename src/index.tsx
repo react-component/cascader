@@ -1,6 +1,5 @@
-import Cascader, { CascaderProps } from './Cascader';
-import { FieldNames, DataNode, ShowSearchType } from './interface';
+import Cascader from './Cascader';
 
-export { CascaderProps, FieldNames, DataNode, ShowSearchType };
-
+export type { CascaderProps } from './Cascader';
+export type { FieldNames, DataNode, ShowSearchType } from './interface';
 export default Cascader;

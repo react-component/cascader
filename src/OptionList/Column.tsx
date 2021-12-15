@@ -18,6 +18,7 @@ export interface ColumnProps {
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
+  isEmpty: boolean;
 }
 
 export default function Column({
@@ -32,6 +33,7 @@ export default function Column({
   checkedSet,
   halfCheckedSet,
   loadingKeys,
+  isEmpty,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -107,7 +109,7 @@ export default function Column({
               }
             }}
           >
-            {multiple && (
+            {multiple && !isEmpty && (
               <Checkbox
                 prefixCls={`${prefixCls}-checkbox`}
                 checked={checked}
