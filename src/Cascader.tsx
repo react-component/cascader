@@ -208,8 +208,9 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
   const outerFieldNames = React.useMemo(() => fillFieldNames(fieldNames), [fieldNames]);
   const mergedFieldNames = React.useMemo(
     () => ({
-      ...outerFieldNames,
+      // put value before outerFieldNames to allow override `value` field name
       value: INTERNAL_VALUE_FIELD,
+      ...outerFieldNames,
     }),
     [outerFieldNames],
   );
