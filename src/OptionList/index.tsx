@@ -340,6 +340,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps, OptionListProps>((pro
       key={index}
       index={index}
       {...columnProps}
+      isEmpty={isEmpty}
       prefixCls={mergedPrefixCls}
       options={col.options}
       openKey={mergedOpenPath[index]}
