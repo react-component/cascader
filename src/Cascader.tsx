@@ -71,10 +71,10 @@ function toRawValues(value: ValueType): SingleValueType[] {
   }
 
   if (isMultipleValue(value)) {
-    return value.length === 1 && value[0].length === 0 ? [] : value;
+    return value;
   }
 
-  return [value];
+  return value.length === 0 ? [] : [value];
 }
 
 const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
@@ -236,6 +236,18 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     }
   });
 
+  // Display Value change logic
+  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (value, info) => {
+    if (info.type === 'clear') {
+      triggerChange([]);
+    }
+
+    // Cascader do not support `add` type. Only support `remove`
+    const pathKey = info.values[0].value;
+    const valueCells = getValueByKeyPath([pathKey])[0];
+    onInternalSelect(valueCells, null);
+  };
+
   // ========================== Context ===========================
   const cascaderContext = React.useMemo(
     () => ({
@@ -273,6 +285,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
         dropdownStyle={{ minWidth: 'auto' }}
         // Value
         displayValues={displayValues}
+        onDisplayValuesChange={onDisplayValuesChange}
         mode={multiple ? 'multiple' : undefined}
         // Search
         searchValue={mergedSearchValue}
