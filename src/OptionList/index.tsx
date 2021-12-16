@@ -95,29 +95,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     /* eslint-enable react-hooks/exhaustive-deps */
   );
 
-  // ====================== Active Options ======================
-  const optionColumns = React.useMemo(() => {
-    const optionList = [{ options }];
-    let currentList = options;
-
-    for (let i = 0; i < activeValueCells.length; i += 1) {
-      const activeValueCell = activeValueCells[i];
-      const currentOption = currentList.find(
-        option => option[fieldNames.value] === activeValueCell,
-      );
-
-      const subOptions = currentOption?.[fieldNames.children];
-      if (!subOptions) {
-        break;
-      }
-
-      currentList = subOptions;
-      optionList.push({ options: subOptions });
-    }
-
-    return optionList;
-  }, [options, activeValueCells, fieldNames]);
-
   // =========================== Open ===========================
   const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
 
@@ -170,14 +147,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // };
 
   // ========================== Search ==========================
-  // const searchOptions = useSearchResult({
-  //   ...props,
-  //   prefixCls: mergedPrefixCls,
-  //   fieldNames,
-  //   changeOnSelect,
-  //   searchConfig: search,
-  // });
-
   const searchOptions = useSearchOptions(
     searchValue,
     options,
@@ -186,37 +155,37 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     searchConfig,
     changeOnSelect,
   );
-  console.log('Search Options:', searchOptions);
 
   // ========================== Column ==========================
-  // const optionColumns = React.useMemo(() => {
-  //   // if (searchValue) {
-  //   //   return [
-  //   //     {
-  //   //       options: searchOptions,
-  //   //     },
-  //   //   ];
-  //   // }
+  const optionColumns = React.useMemo(() => {
+    if (searchValue) {
+      return [
+        {
+          options: searchOptions,
+        },
+      ];
+    }
 
-  //   const rawOptionColumns: {
-  //     options: OptionDataNode[];
-  //   }[] = [];
+    const optionList = [{ options }];
+    let currentList = options;
 
-  //   for (let i = 0; i <= mergedOpenPath.length; i += 1) {
-  //     const subOptions = getPathList(mergedOpenPath.slice(0, i));
+    for (let i = 0; i < activeValueCells.length; i += 1) {
+      const activeValueCell = activeValueCells[i];
+      const currentOption = currentList.find(
+        option => option[fieldNames.value] === activeValueCell,
+      );
 
-  //     if (subOptions) {
-  //       rawOptionColumns.push({
-  //         options: subOptions,
-  //       });
-  //     } else {
-  //       break;
-  //     }
-  //   }
+      const subOptions = currentOption?.[fieldNames.children];
+      if (!subOptions) {
+        break;
+      }
 
-  //   return rawOptionColumns;
-  // }, [searchValue, mergedOpenPath]);
-  // // }, [searchValue, searchOptions, mergedOpenPath]);
+      currentList = subOptions;
+      optionList.push({ options: subOptions });
+    }
+
+    return optionList;
+  }, [searchValue, options, searchOptions, activeValueCells, fieldNames]);
 
   // ========================= Keyboard =========================
   const getActiveOption = (activeColumnIndex: number, offset: number) => {
@@ -379,17 +348,21 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // >>>>> Columns
   const mergedOptionColumns = isEmpty ? [{ options: emptyList }] : optionColumns;
 
-  const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => (
-    <Column
-      key={index}
-      {...columnProps}
-      prefixCls={mergedPrefixCls}
-      options={col.options}
-      // TODO: handle search case
-      prevValuePath={activeValueCells.slice(0, index)}
-      activeValue={activeValueCells[index]}
-    />
-  ));
+  const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => {
+    const prevValuePath = activeValueCells.slice(0, index);
+    const activeValue = activeValueCells[index];
+
+    return (
+      <Column
+        key={index}
+        {...columnProps}
+        prefixCls={mergedPrefixCls}
+        options={col.options}
+        prevValuePath={prevValuePath}
+        activeValue={activeValue}
+      />
+    );
+  });
 
   // >>>>> Render
   return (

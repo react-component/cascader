@@ -107,9 +107,10 @@ const Demo = () => {
         defaultValue={multiple ? [defaultValue] : defaultValue}
         // defaultValue={['not', 'exist']}
         showSearch
+        // showSearch={{ limit: 1 }}
         open
         // direction="rtl"
-        searchValue='福'
+        searchValue="福"
       />
     </>
   );

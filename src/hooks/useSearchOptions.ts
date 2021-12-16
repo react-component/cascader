@@ -1,6 +1,8 @@
 import type { DefaultOptionType, ShowSearchType, InternalFieldNames } from '../Cascader';
 import * as React from 'react';
 
+export const SEARCH_MARK = '__rc_cascader_search_mark__';
+
 const defaultFilter: ShowSearchType['filter'] = (search, options, { label }) =>
   options.some(opt => String(opt[label]).toLowerCase().includes(search.toLowerCase()));
 
@@ -15,7 +17,7 @@ export default (
   config: ShowSearchType,
   changeOnSelect: boolean,
 ) => {
-  const { filter = defaultFilter, render = defaultRender, limit = 50 } = config;
+  const { filter = defaultFilter, render = defaultRender, limit = 50, sort } = config;
 
   return React.useMemo(() => {
     const filteredOptions: DefaultOptionType[] = [];
@@ -25,6 +27,11 @@ export default (
 
     function dig(list: DefaultOptionType[], pathOptions: DefaultOptionType[]) {
       list.forEach(option => {
+        // Perf saving when `sort` is disabled and `limit` is provided
+        if (!sort && limit > 0 && filteredOptions.length >= limit) {
+          return;
+        }
+
         const connectedPathOptions = [...pathOptions, option];
         const children = option[fieldNames.children];
 
@@ -44,6 +51,7 @@ export default (
                 prefixCls,
                 fieldNames,
               ),
+              [SEARCH_MARK]: connectedPathOptions,
             });
           }
         }
@@ -56,6 +64,13 @@ export default (
 
     dig(options, []);
 
-    return filteredOptions;
-  }, [search, options, fieldNames, prefixCls, render, changeOnSelect, filter]);
+    // Do sort
+    if (sort) {
+      filteredOptions.sort((a, b) => {
+        return sort(a[SEARCH_MARK], b[SEARCH_MARK], search, fieldNames);
+      });
+    }
+
+    return limit > 0 ? filteredOptions.slice(0, limit as number) : filteredOptions;
+  }, [search, options, fieldNames, prefixCls, render, changeOnSelect, filter, sort, limit]);
 };

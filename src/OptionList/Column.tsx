@@ -5,6 +5,7 @@ import LegacyContext from '../LegacyContext';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
 export interface ColumnProps {
   prefixCls: string;
@@ -50,8 +51,14 @@ export default function Column({
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
         const { disabled, value, node } = option;
+        const searchOptions = option[SEARCH_MARK];
+
         const isMergedLeaf = isLeaf(option, fieldNames);
-        const fullPath = [...prevValuePath, value];
+
+        // Get real value of option. Search option is different way.
+        const fullPath = searchOptions
+          ? searchOptions.map(opt => opt[fieldNames.value])
+          : [...prevValuePath, value];
         const fullPathKey = toPathKey(fullPath);
 
         const isLoading = loadingKeys.includes(value);
@@ -84,7 +91,7 @@ export default function Column({
         // >>>>> Render
         return (
           <li
-            key={value}
+            key={fullPathKey}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
               [`${menuItemPrefixCls}-active`]: activeValue === value,
