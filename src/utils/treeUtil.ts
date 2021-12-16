@@ -1,3 +1,4 @@
+import type { SingleValueType, DefaultOptionType, InternalFieldNames } from '../Cascader';
 import type { GetEntities } from '../hooks/useEntities';
 
 export function formatStrategyValues(pathKeys: React.Key[], getKeyPathEntities: GetEntities) {
@@ -13,4 +14,30 @@ export function formatStrategyValues(pathKeys: React.Key[], getKeyPathEntities: 
     }
     return true;
   });
+}
+
+export function toPathOptions(
+  valueCells: SingleValueType,
+  options: DefaultOptionType[],
+  fieldNames: InternalFieldNames,
+) {
+  let currentList = options;
+  const valueOptions: {
+    value: SingleValueType[number];
+    option: DefaultOptionType;
+  }[] = [];
+
+  for (let i = 0; i < valueCells.length; i += 1) {
+    const valueCell = valueCells[i];
+    const foundOption = currentList?.find(option => option[fieldNames.value] === valueCell);
+
+    valueOptions.push({
+      value: valueCell,
+      option: foundOption,
+    });
+
+    currentList = foundOption?.[fieldNames.children];
+  }
+
+  return valueOptions;
 }

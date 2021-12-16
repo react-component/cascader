@@ -1,6 +1,5 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import type { OptionDataNode } from '../interface';
 import { isLeaf, toPathKey } from '../utils/commonUtil';
 import LegacyContext from '../LegacyContext';
 import CascaderContext from '../context';
@@ -9,7 +8,6 @@ import type { DefaultOptionType, SingleValueType } from '../Cascader';
 
 export interface ColumnProps {
   prefixCls: string;
-  index: number;
   multiple?: boolean;
   options: DefaultOptionType[];
   /** Current Column opened item key */
@@ -26,7 +24,6 @@ export interface ColumnProps {
 
 export default function Column({
   prefixCls,
-  index,
   multiple,
   options,
   activeValue,

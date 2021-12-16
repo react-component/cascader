@@ -1,33 +1,22 @@
+import { toPathOptions } from '@/utils/treeUtil';
 import * as React from 'react';
-import type { DefaultOptionType, SingleValueType, FieldNames, CascaderProps } from '../Cascader';
-import { VALUE_SPLIT } from '../utils/commonUtil';
+import type {
+  DefaultOptionType,
+  SingleValueType,
+  CascaderProps,
+  InternalFieldNames,
+} from '../Cascader';
+import { toPathKey } from '../utils/commonUtil';
 
 export default (
   rawValues: SingleValueType[],
   options: DefaultOptionType[],
-  fieldNames: FieldNames,
+  fieldNames: InternalFieldNames,
   displayRender: CascaderProps['displayRender'] = labels => labels.join(' / '),
 ) => {
   return React.useMemo(() => {
     return rawValues.map(valueCells => {
-      let currentList = options;
-      const valueOptions: {
-        value: SingleValueType[number];
-        option: DefaultOptionType;
-      }[] = [];
-
-      // Fill value with options
-      for (let i = 0; i < valueCells.length; i += 1) {
-        const valueCell = valueCells[i];
-        const foundOption = currentList?.find(option => option[fieldNames.value] === valueCell);
-
-        valueOptions.push({
-          value: valueCell,
-          option: foundOption,
-        });
-
-        currentList = foundOption?.[fieldNames.children];
-      }
+      const valueOptions = toPathOptions(valueCells, options, fieldNames);
 
       const label = displayRender(
         valueOptions.map(({ option, value }) => option?.[fieldNames.label] ?? value),
@@ -36,7 +25,7 @@ export default (
 
       return {
         label,
-        value: valueCells.join(VALUE_SPLIT),
+        value: toPathKey(valueCells),
       };
     });
   }, [rawValues, options, fieldNames, displayRender]);

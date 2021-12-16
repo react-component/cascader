@@ -10,7 +10,7 @@ import { fillFieldNames, toPathKey, toPathKeys, VALUE_SPLIT } from './utils/comm
 import useDisplayValues from './hooks/useDisplayValues';
 import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
-import { formatStrategyValues } from './utils/treeUtil';
+import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 
 export interface FieldNames {
   label?: string;
@@ -47,7 +47,7 @@ export interface CascaderProps<OptionType extends BaseOptionType = DefaultOption
   value?: ValueType;
   defaultValue?: ValueType;
   changeOnSelect?: boolean;
-  onChange?: (value: ValueType, selectedOptions?: OptionType[]) => void;
+  onChange?: (value: ValueType, selectedOptions?: OptionType[] | OptionType[][]) => void;
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
 
@@ -183,13 +183,26 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
 
   // =========================== Change ===========================
   const triggerChange = useRefFunc((nextValues: ValueType) => {
-    const nextRawValues = toRawValues(nextValues);
+    setRawValues(nextValues);
+
+    // Save perf if no need trigger event
+    if (onChange) {
+      const nextRawValues = toRawValues(nextValues);
+
+      const valueOptions = nextRawValues.map(valueCells =>
+        toPathOptions(valueCells, mergedOptions, mergedFieldNames).map(valueOpt => valueOpt.option),
+      );
+
+      const triggerValues = multiple ? nextRawValues : nextRawValues[0];
+      const triggerOptions = multiple ? valueOptions : valueOptions[0];
+
+      onChange(triggerValues, triggerOptions);
+    }
   });
 
   // =========================== Select ===========================
   const onInternalSelect = useRefFunc((valuePath: SingleValueType, leaf: boolean) => {
     if (!multiple) {
-      setRawValues(valuePath);
       triggerChange(valuePath);
     } else {
       // Prepare conduct required info
@@ -219,7 +232,6 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       const deDuplicatedKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
       const nextValues = getValueByKeyPath(deDuplicatedKeys);
 
-      setRawValues(nextValues);
       triggerChange(nextValues);
     }
   });

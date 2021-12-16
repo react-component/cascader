@@ -383,7 +383,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => (
     <Column
       key={index}
-      index={index}
       {...columnProps}
       prefixCls={mergedPrefixCls}
       options={col.options}
