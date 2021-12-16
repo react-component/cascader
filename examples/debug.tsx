@@ -71,7 +71,7 @@ const addressOptions = [
       },
     ],
   },
-  ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
+  // ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
 ];
 
 const defaultValue = ['fj', 'fuzhou'];

@@ -6,7 +6,7 @@ import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } fr
 import { BaseSelect } from 'rc-select';
 import OptionList from './OptionList';
 import CascaderContext from './context';
-import { fillFieldNames, VALUE_SPLIT } from './utils/commonUtil';
+import { fillFieldNames, toPathKey, toPathKeys, VALUE_SPLIT } from './utils/commonUtil';
 import useDisplayValues from './hooks/useDisplayValues';
 import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
@@ -71,14 +71,10 @@ function toRawValues(value: ValueType): SingleValueType[] {
   }
 
   if (isMultipleValue(value)) {
-    return value;
+    return value.length === 1 && value[0].length === 0 ? [] : value;
   }
 
   return [value];
-}
-
-function toKeyPath(value: SingleValueType[]) {
-  return value.map(valCells => valCells.join(VALUE_SPLIT));
 }
 
 const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
@@ -143,7 +139,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
 
   /** Convert path key back to value format */
   const getValueByKeyPath = React.useCallback(
-    (pathKeys: React.Key[]) => {
+    (pathKeys: React.Key[]): SingleValueType[] => {
       const ketPathEntities = getPathKeyEntities();
 
       return pathKeys.map(pathKey => {
@@ -157,26 +153,26 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
 
   // =========================== Values ===========================
   // Fill `rawValues` with checked conduction values
-  const fullValues = React.useMemo(() => {
-    if (!multiple) {
-      return rawValues;
+  const [checkedValues, halfCheckedValues] = React.useMemo(() => {
+    if (!multiple || !rawValues.length) {
+      return [rawValues, []];
     }
 
-    const keyPathValues = toKeyPath(rawValues);
+    const keyPathValues = toPathKeys(rawValues);
     const ketPathEntities = getPathKeyEntities();
 
-    const { checkedKeys } = conductCheck(keyPathValues, true, ketPathEntities);
+    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, ketPathEntities);
 
     // Convert key back to value cells
-    return getValueByKeyPath(checkedKeys);
+    return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys)];
   }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath]);
 
   const deDuplicatedValues = React.useMemo(() => {
-    const checkedKeys = toKeyPath(fullValues);
+    const checkedKeys = toPathKeys(checkedValues);
     const deduplicateKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
 
     return getValueByKeyPath(deduplicateKeys);
-  }, [fullValues, getPathKeyEntities, getValueByKeyPath]);
+  }, [checkedValues, getPathKeyEntities, getValueByKeyPath]);
 
   const displayValues = useDisplayValues(
     deDuplicatedValues,
@@ -196,7 +192,35 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       setRawValues(valuePath);
       triggerChange(valuePath);
     } else {
-      // TODO: handle this
+      // Prepare conduct required info
+      const pathKey = toPathKey(valuePath);
+      const checkedPathKeys = toPathKeys(checkedValues);
+      const halfCheckedPathKeys = toPathKeys(halfCheckedValues);
+
+      const nextSelected = !checkedPathKeys.includes(pathKey);
+      const nextRawCheckedKeys = nextSelected
+        ? [...checkedPathKeys, pathKey]
+        : checkedPathKeys.filter(key => key !== pathKey);
+      const pathKeyEntities = getPathKeyEntities();
+
+      // Conduction by selected or not
+      let checkedKeys: React.Key[];
+      if (nextSelected) {
+        ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
+      } else {
+        ({ checkedKeys } = conductCheck(
+          nextRawCheckedKeys,
+          { checked: false, halfCheckedKeys: halfCheckedPathKeys },
+          pathKeyEntities,
+        ));
+      }
+
+      // Roll up to parent level keys
+      const deDuplicatedKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
+      const nextValues = getValueByKeyPath(deDuplicatedKeys);
+
+      setRawValues(nextValues);
+      triggerChange(nextValues);
     }
   });
 
@@ -205,12 +229,21 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     () => ({
       options: mergedOptions,
       fieldNames: mergedFieldNames,
-      values: fullValues,
+      values: checkedValues,
+      halfValues: halfCheckedValues,
       changeOnSelect,
       onSelect: onInternalSelect,
       checkable,
     }),
-    [mergedOptions, mergedFieldNames, fullValues, changeOnSelect, onInternalSelect, checkable],
+    [
+      mergedOptions,
+      mergedFieldNames,
+      checkedValues,
+      halfCheckedValues,
+      changeOnSelect,
+      onInternalSelect,
+      checkable,
+    ],
   );
 
   // ==============================================================

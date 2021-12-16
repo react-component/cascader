@@ -15,7 +15,7 @@ import LegacyContext from '../LegacyContext';
 import useSearchResult from '../hooks/useSearchResult';
 import CascaderContext from '../context';
 import type { SingleValueType } from '../Cascader';
-import { isLeaf } from '../utils/commonUtil';
+import { isLeaf, toPathKeys } from '../utils/commonUtil';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const {
@@ -33,7 +33,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
-  const { options, values, fieldNames, changeOnSelect, onSelect } =
+  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect } =
     React.useContext(CascaderContext);
 
   // const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
@@ -74,8 +74,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // }, [flattenOptions, loadingKeys]);
 
   // ========================== Values ==========================
-  // const checkedSet = React.useMemo(() => new Set(checkedKeys), [checkedKeys]);
-  // const halfCheckedSet = React.useMemo(() => new Set(halfCheckedKeys), [halfCheckedKeys]);
+  const checkedSet = React.useMemo(() => new Set(toPathKeys(values)), [values]);
+  const halfCheckedSet = React.useMemo(() => new Set(toPathKeys(halfValues)), [halfValues]);
 
   // ========================== Active ==========================
   // Record current dropdown active options
@@ -360,8 +360,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     onActive: onPathActive,
     onToggleOpen: toggleOpen,
     // TODO: handle this
-    checkedSet: new Set<any>(),
-    halfCheckedSet: new Set<any>(),
+    checkedSet,
+    halfCheckedSet,
     loadingKeys,
   };
 

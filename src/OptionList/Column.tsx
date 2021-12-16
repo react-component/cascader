@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import type { OptionDataNode } from '../interface';
-import { isLeaf } from '../utils/commonUtil';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
 import LegacyContext from '../LegacyContext';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
@@ -41,10 +41,10 @@ export default function Column({
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
-  const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
+  const { expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
     React.useContext(LegacyContext);
 
-  const { fieldNames } = React.useContext(CascaderContext);
+  const { fieldNames, changeOnSelect } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
 
@@ -55,11 +55,12 @@ export default function Column({
         const { disabled, value, node } = option;
         const isMergedLeaf = isLeaf(option, fieldNames);
         const fullPath = [...prevValuePath, value];
+        const fullPathKey = toPathKey(fullPath);
 
         const isLoading = loadingKeys.includes(value);
 
         // >>>>> checked
-        const checked = checkedSet.has(value);
+        const checked = checkedSet.has(fullPathKey);
 
         // >>>>> Open
         const triggerOpenPath = () => {
