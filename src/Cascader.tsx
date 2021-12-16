@@ -110,6 +110,7 @@ interface BaseCascaderProps
 
   // Trigger
   expandTrigger?: 'hover' | 'click';
+  autoAdjustOverflow?: boolean;
 
   dropdownMenuColumnStyle?: React.CSSProperties;
   /** @private Internal usage. Do not use in your production. */
@@ -161,6 +162,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
     onPopupVisibleChange,
     popupPlacement,
     placement,
+    autoAdjustOverflow = true,
 
     searchValue,
     onSearch,
@@ -379,6 +381,7 @@ const Cascader = React.forwardRef((props: CascaderProps, ref: React.Ref<Cascader
         value={checkable ? internalValue : internalValue[0]}
         placement={mergedPlacement}
         dropdownMatchSelectWidth={false}
+        autoAdjustOverflow={autoAdjustOverflow}
         dropdownStyle={dropdownStyle}
         dropdownClassName={mergedDropdownClassName}
         treeData={mergedOptions}
