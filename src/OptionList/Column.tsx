@@ -39,10 +39,10 @@ export default function Column({
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
-  const { expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
-    React.useContext(LegacyContext);
+  const { dropdownMenuColumnStyle } = React.useContext(LegacyContext);
 
-  const { fieldNames, changeOnSelect } = React.useContext(CascaderContext);
+  const { fieldNames, changeOnSelect, expandTrigger, expandIcon, loadingIcon } =
+    React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
 

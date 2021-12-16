@@ -3,20 +3,12 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import KeyCode from 'rc-util/lib/KeyCode';
-import type {
-  OptionListProps as SelectOptionListProps,
-  RefOptionListProps,
-} from 'rc-select/lib/OptionList';
-// import { SelectContext } from 'rc-tree-select/lib/Context';
-import type { OptionDataNode } from '../interface';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Column from './Column';
 import { restoreCompatibleValue } from '../util';
-import LegacyContext from '../LegacyContext';
-import useSearchResult from '../hooks/useSearchResult';
 import CascaderContext from '../context';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import { isLeaf, toPathKeys } from '../utils/commonUtil';
-import useSearchOptions from '../hooks/useSearchOptions';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const {
@@ -34,11 +26,18 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
-  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect, searchOptions } =
-    React.useContext(CascaderContext);
-
-  // const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-  const { expandTrigger, loadData, dropdownPrefixCls } = React.useContext(LegacyContext);
+  const {
+    options,
+    values,
+    halfValues,
+    fieldNames,
+    changeOnSelect,
+    onSelect,
+    searchOptions,
+    dropdownPrefixCls,
+    loadData,
+    expandTrigger,
+  } = React.useContext(CascaderContext);
 
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
@@ -329,7 +328,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     onSelect: onPathSelect,
     onActive: onPathActive,
     onToggleOpen: toggleOpen,
-    // TODO: handle this
     checkedSet,
     halfCheckedSet,
     loadingKeys,

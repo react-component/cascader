@@ -2,6 +2,7 @@ import * as React from 'react';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import type { Placement } from 'rc-select/lib/BaseSelect';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import OptionList from './OptionList';
@@ -13,6 +14,7 @@ import useEntities from './hooks/useEntities';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
+import warning from 'rc-util/lib/warning';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -60,6 +62,7 @@ export interface CascaderProps<OptionType extends BaseOptionType = DefaultOption
   id?: string;
   prefixCls?: string;
   fieldNames?: FieldNames;
+  children?: React.ReactElement;
 
   // Value
   value?: ValueType;
@@ -74,8 +77,34 @@ export interface CascaderProps<OptionType extends BaseOptionType = DefaultOption
   searchValue?: string;
   onSearch?: (value: string) => void;
 
+  // Trigger
+  expandTrigger?: 'hover' | 'click';
+
   // Options
   options?: OptionType[];
+  /** @private Internal usage. Do not use in your production. */
+  dropdownPrefixCls?: string;
+  loadData?: (selectOptions: OptionType[]) => void;
+
+  // Open
+  /** @deprecated Use `open` instead */
+  popupVisible?: boolean;
+
+  /** @deprecated Use `dropdownClassName` instead */
+  popupClassName?: string;
+  dropdownClassName?: string;
+
+  /** @deprecated Use `placement` instead */
+  popupPlacement?: Placement;
+  placement?: Placement;
+
+  /** @deprecated Use `onDropdownVisibleChange` instead */
+  onPopupVisibleChange?: (open: boolean) => void;
+  onDropdownVisibleChange?: (open: boolean) => void;
+
+  // Icon
+  expandIcon?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
 }
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
@@ -116,8 +145,33 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     onSearch,
     showSearch,
 
+    // Trigger
+    expandTrigger,
+
     // Options
     options,
+    dropdownPrefixCls,
+    loadData,
+
+    // Open
+    popupVisible,
+    open,
+
+    popupClassName,
+    dropdownClassName,
+
+    popupPlacement,
+    placement,
+
+    onDropdownVisibleChange,
+    onPopupVisibleChange,
+
+    // Icon
+    expandIcon,
+    loadingIcon,
+
+    // Children
+    children,
   } = props;
 
   const mergedId = useId(id);
@@ -279,6 +333,34 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     onInternalSelect(valueCells, null);
   };
 
+  // ============================ Open ============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !onPopupVisibleChange,
+      '`onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
+    );
+    warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
+    warning(
+      popupClassName === undefined,
+      '`popupClassName` is deprecated. Please use `dropdownClassName` instead.',
+    );
+    warning(
+      popupPlacement === undefined,
+      '`popupPlacement` is deprecated. Please use `placement` instead.',
+    );
+  }
+
+  const mergedOpen = open !== undefined ? open : popupVisible;
+
+  const mergedDropdownClassName = dropdownClassName || popupClassName;
+
+  const mergedPlacement = placement || popupPlacement;
+
+  const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
+    onDropdownVisibleChange?.(nextVisible);
+    onPopupVisibleChange?.(nextVisible);
+  };
+
   // ========================== Context ===========================
   const cascaderContext = React.useMemo(
     () => ({
@@ -290,6 +372,11 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       onSelect: onInternalSelect,
       checkable,
       searchOptions,
+      dropdownPrefixCls,
+      loadData,
+      expandTrigger,
+      expandIcon,
+      loadingIcon,
     }),
     [
       mergedOptions,
@@ -300,6 +387,11 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       onInternalSelect,
       checkable,
       searchOptions,
+      dropdownPrefixCls,
+      loadData,
+      expandTrigger,
+      expandIcon,
+      loadingIcon,
     ],
   );
 
@@ -327,6 +419,13 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
         // Options
         OptionList={OptionList}
         emptyOptions={!(mergedSearchValue ? searchOptions : mergedOptions).length}
+        // Open
+        open={mergedOpen}
+        dropdownClassName={mergedDropdownClassName}
+        placement={mergedPlacement}
+        onDropdownVisibleChange={onInternalDropdownVisibleChange}
+        // Children
+        getRawInputElement={() => children}
       />
     </CascaderContext.Provider>
   );

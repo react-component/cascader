@@ -15,6 +15,11 @@ export interface CascaderContextProps {
   onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
   checkable?: boolean | React.ReactNode;
   searchOptions: DefaultOptionType[];
+  dropdownPrefixCls?: string;
+  loadData?: (selectOptions: DefaultOptionType[]) => void;
+  expandTrigger?: 'hover' | 'click';
+  expandIcon?: React.ReactNode;
+  loadingIcon?: React.ReactNode;
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>(null);
