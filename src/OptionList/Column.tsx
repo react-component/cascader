@@ -16,9 +16,9 @@ export interface ColumnProps {
   activeValue?: React.Key;
   /** The value path before current column */
   prevValuePath: React.Key[];
-  onOpen: (index: number, value: React.Key) => void;
   onToggleOpen: (open: boolean) => void;
   onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
+  onActive: (valuePath: SingleValueType) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
@@ -31,9 +31,9 @@ export default function Column({
   options,
   activeValue,
   prevValuePath,
-  onOpen,
   onToggleOpen,
   onSelect,
+  onActive,
   checkedSet,
   halfCheckedSet,
   loadingKeys,
@@ -54,6 +54,7 @@ export default function Column({
       {options.map(option => {
         const { disabled, value, node } = option;
         const isMergedLeaf = isLeaf(option, fieldNames);
+        const fullPath = [...prevValuePath, value];
 
         const isLoading = loadingKeys.includes(value);
 
@@ -63,14 +64,14 @@ export default function Column({
         // >>>>> Open
         const triggerOpenPath = () => {
           if (!disabled && (!hoverOpen || !isMergedLeaf)) {
-            onOpen(index, value);
+            onActive(fullPath);
           }
         };
 
         // >>>>> Selection
         const triggerSelect = () => {
           if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
-            onSelect([...prevValuePath, value], isMergedLeaf);
+            onSelect(fullPath, isMergedLeaf);
           }
         };
 

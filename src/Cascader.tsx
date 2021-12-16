@@ -58,6 +58,18 @@ function isMultipleValue(value: ValueType): value is SingleValueType[] {
   return Array.isArray(value) && Array.isArray(value[0]);
 }
 
+function toRawValues(value: ValueType): SingleValueType[] {
+  if (!value) {
+    return [];
+  }
+
+  if (isMultipleValue(value)) {
+    return value;
+  }
+
+  return [value];
+}
+
 const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   const {
     // MISC
@@ -86,17 +98,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   // =========================== Values ===========================
   const [rawValues, setRawValues] = useMergedState<ValueType, SingleValueType[]>(defaultValue, {
     value,
-    postState: (val): SingleValueType[] => {
-      if (!val) {
-        return [];
-      }
-
-      if (isMultipleValue(val)) {
-        return val;
-      }
-
-      return [val];
-    },
+    postState: toRawValues,
   });
 
   // ========================= FieldNames =========================
@@ -127,9 +129,19 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   // =========================== Values ===========================
   const displayValues = useDisplayValues(rawValues, mergedOptions, mergedFieldNames, displayRender);
 
+  // =========================== Change ===========================
+  const triggerChange = useRefFunc((nextValues: ValueType) => {
+    const nextRawValues = toRawValues(nextValues);
+  });
+
   // =========================== Select ===========================
   const onInternalSelect = useRefFunc((valuePath: SingleValueType, leaf: boolean) => {
-    console.log('>>>>>>>>', valuePath, leaf);
+    if (!multiple) {
+      setRawValues(valuePath);
+      triggerChange(valuePath);
+    } else {
+      // TODO: handle this
+    }
   });
 
   // ========================== Context ===========================

@@ -113,7 +113,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   }, [options, activeValueCells, fieldNames]);
 
   // =========================== Open ===========================
-
   const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
 
   const mergedOpenPath = [];
@@ -152,12 +151,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // }, [open]);
 
   // =========================== Path ===========================
-  const onPathOpen = (index: number, pathValue: React.Key) => {
-    setOpenFinalValue(pathValue);
+  // const onPathOpen = (index: number, pathValue: React.Key) => {
+  //   setOpenFinalValue(pathValue);
 
-    // Trigger loadData
-    internalLoadData(pathValue);
-  };
+  //   // Trigger loadData
+  //   internalLoadData(pathValue);
+  // };
 
   const onPathSelect = (valuePath: SingleValueType, leaf: boolean) => {
     onSelect(valuePath, leaf);
@@ -167,15 +166,19 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     }
   };
 
-  const getPathList = (pathList: React.Key[]) => {
-    let currentOptions = options;
-
-    for (let i = 0; i < pathList.length; i += 1) {
-      currentOptions = (currentOptions || []).find(option => option.value === pathList[i]).children;
-    }
-
-    return currentOptions;
+  const onPathActive = (valuePath: SingleValueType) => {
+    setActiveValueCells(valuePath);
   };
+
+  // const getPathList = (pathList: React.Key[]) => {
+  //   let currentOptions = options;
+
+  //   for (let i = 0; i < pathList.length; i += 1) {
+  //     currentOptions = (currentOptions || []).find(option => option.value === pathList[i]).children;
+  //   }
+
+  //   return currentOptions;
+  // };
 
   // ========================== Search ==========================
   // const searchOptions = useSearchResult({
@@ -352,8 +355,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // ========================== Render ==========================
   const columnProps = {
     ...props,
-    onOpen: onPathOpen,
     onSelect: onPathSelect,
+    onActive: onPathActive,
     onToggleOpen: toggleOpen,
     // TODO: handle this
     checkedSet: new Set<any>(),
