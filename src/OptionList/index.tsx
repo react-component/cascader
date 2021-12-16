@@ -16,6 +16,7 @@ import useSearchResult from '../hooks/useSearchResult';
 import CascaderContext from '../context';
 import type { SingleValueType } from '../Cascader';
 import { isLeaf, toPathKeys } from '../utils/commonUtil';
+import useSearchOptions from '../hooks/useSearchOptions';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const {
@@ -33,11 +34,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
-  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect } =
+  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect, searchConfig } =
     React.useContext(CascaderContext);
 
   // const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
-  const { expandTrigger, loadData, search, dropdownPrefixCls } = React.useContext(LegacyContext);
+  const { expandTrigger, loadData, dropdownPrefixCls } = React.useContext(LegacyContext);
 
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
@@ -138,23 +139,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   //   return [];
   // }, [openFinalValue, searchValue]);
 
-  // React.useEffect(() => {
-  //   if (open) {
-  //     let nextOpenPath: React.Key = null;
-
-  //     if (!multiple && checkedKeys.length) {
-  //       const entity = flattenOptions.find(
-  //         flattenOption => flattenOption.data.value === checkedKeys[0],
-  //       );
-
-  //       if (entity) {
-  //         nextOpenPath = entity.data.value;
-  //       }
-  //     }
-  //     setOpenFinalValue(nextOpenPath);
-  //   }
-  // }, [open]);
-
   // =========================== Path ===========================
   // const onPathOpen = (index: number, pathValue: React.Key) => {
   //   setOpenFinalValue(pathValue);
@@ -193,6 +177,16 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   //   changeOnSelect,
   //   searchConfig: search,
   // });
+
+  const searchOptions = useSearchOptions(
+    searchValue,
+    options,
+    fieldNames,
+    prefixCls,
+    searchConfig,
+    changeOnSelect,
+  );
+  console.log('Search Options:', searchOptions);
 
   // ========================== Column ==========================
   // const optionColumns = React.useMemo(() => {
