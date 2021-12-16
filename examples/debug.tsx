@@ -110,7 +110,7 @@ const Demo = () => {
         // showSearch={{ limit: 1 }}
         open
         // direction="rtl"
-        searchValue="福"
+        searchValue="福a"
       />
     </>
   );

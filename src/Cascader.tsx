@@ -12,6 +12,7 @@ import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import useSearchConfig from './hooks/useSearchConfig';
+import useSearchOptions from './hooks/useSearchOptions';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -136,22 +137,6 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     /* eslint-enable react-hooks/exhaustive-deps */
   );
 
-  // =========================== Search ===========================
-  const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue,
-    postState: search => search || '',
-  });
-
-  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
-    setSearchValue(searchText);
-
-    if (info.source !== 'blur' && onSearch) {
-      onSearch(searchText);
-    }
-  };
-
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
-
   // =========================== Option ===========================
   const mergedOptions = React.useMemo(() => options || [], [options]);
 
@@ -170,6 +155,31 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       });
     },
     [getPathKeyEntities, mergedFieldNames],
+  );
+
+  // =========================== Search ===========================
+  const [mergedSearchValue, setSearchValue] = useMergedState('', {
+    value: searchValue,
+    postState: search => search || '',
+  });
+
+  const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
+    setSearchValue(searchText);
+
+    if (info.source !== 'blur' && onSearch) {
+      onSearch(searchText);
+    }
+  };
+
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
+
+  const searchOptions = useSearchOptions(
+    searchValue,
+    mergedOptions,
+    mergedFieldNames,
+    prefixCls,
+    searchConfig,
+    changeOnSelect,
   );
 
   // =========================== Values ===========================
@@ -279,7 +289,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       changeOnSelect,
       onSelect: onInternalSelect,
       checkable,
-      searchConfig,
+      searchOptions,
     }),
     [
       mergedOptions,
@@ -289,7 +299,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       changeOnSelect,
       onInternalSelect,
       checkable,
-      searchConfig,
+      searchOptions,
     ],
   );
 
@@ -316,6 +326,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
         showSearch={mergedShowSearch}
         // Options
         OptionList={OptionList}
+        emptyOptions={!(mergedSearchValue ? searchOptions : mergedOptions).length}
       />
     </CascaderContext.Provider>
   );

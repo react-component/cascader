@@ -2,7 +2,7 @@ import * as React from 'react';
 import type {
   CascaderProps,
   InternalFieldNames,
-  ShowSearchType,
+  DefaultOptionType,
   SingleValueType,
 } from './Cascader';
 
@@ -14,7 +14,7 @@ export interface CascaderContextProps {
   changeOnSelect?: boolean;
   onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
   checkable?: boolean | React.ReactNode;
-  searchConfig: ShowSearchType;
+  searchOptions: DefaultOptionType[];
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>(null);

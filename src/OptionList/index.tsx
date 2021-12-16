@@ -14,7 +14,7 @@ import { restoreCompatibleValue } from '../util';
 import LegacyContext from '../LegacyContext';
 import useSearchResult from '../hooks/useSearchResult';
 import CascaderContext from '../context';
-import type { SingleValueType } from '../Cascader';
+import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import { isLeaf, toPathKeys } from '../utils/commonUtil';
 import useSearchOptions from '../hooks/useSearchOptions';
 
@@ -34,7 +34,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
 
-  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect, searchConfig } =
+  const { options, values, halfValues, fieldNames, changeOnSelect, onSelect, searchOptions } =
     React.useContext(CascaderContext);
 
   // const { checkedKeys, halfCheckedKeys } = React.useContext(SelectContext);
@@ -145,16 +145,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   //   return currentOptions;
   // };
-
-  // ========================== Search ==========================
-  const searchOptions = useSearchOptions(
-    searchValue,
-    options,
-    fieldNames,
-    prefixCls,
-    searchConfig,
-    changeOnSelect,
-  );
 
   // ========================== Column ==========================
   const optionColumns = React.useMemo(() => {
@@ -321,9 +311,21 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   }));
 
   // ========================== Render ==========================
+
+  // >>>>> Empty
+  const isEmpty = !optionColumns[0]?.options?.length;
+
+  const emptyList: DefaultOptionType[] = [
+    {
+      [fieldNames.label as 'label']: notFoundContent,
+      [fieldNames.value as 'value']: '__EMPTY__',
+      disabled: true,
+    },
+  ];
+
   const columnProps = {
     ...props,
-    multiple,
+    multiple: !isEmpty && multiple,
     onSelect: onPathSelect,
     onActive: onPathActive,
     onToggleOpen: toggleOpen,
@@ -332,18 +334,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     halfCheckedSet,
     loadingKeys,
   };
-
-  // >>>>> Empty
-  const isEmpty = !optionColumns[0]?.options?.length;
-
-  const emptyList: OptionDataNode[] = [
-    {
-      title: notFoundContent,
-      value: '__EMPTY__',
-      disabled: true,
-      node: null,
-    },
-  ];
 
   // >>>>> Columns
   const mergedOptionColumns = isEmpty ? [{ options: emptyList }] : optionColumns;
