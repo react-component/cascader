@@ -1,10 +1,14 @@
-import type { DefaultOptionType, FieldNames } from '../Cascader';
+import type { DefaultOptionType, FieldNames, InternalFieldNames } from '../Cascader';
 
-export function fillFieldNames(fieldNames?: FieldNames): Required<FieldNames> {
+export const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
+
+export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
   const { label, value, children } = fieldNames || {};
+  const val = value || 'value';
   return {
     label: label || 'label',
-    value: value || 'value',
+    value: val,
+    key: val,
     children: children || 'children',
   };
 }

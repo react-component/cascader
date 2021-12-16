@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type { DefaultOptionType, SingleValueType, FieldNames, CascaderProps } from '../Cascader';
-
-const SPLIT = '__RC_CASCADER_SPLIT__';
+import { VALUE_SPLIT } from '../utils/commonUtil';
 
 export default (
   rawValues: SingleValueType[],
@@ -37,7 +36,7 @@ export default (
 
       return {
         label,
-        value: valueCells.join(SPLIT),
+        value: valueCells.join(VALUE_SPLIT),
       };
     });
   }, [rawValues, options, fieldNames, displayRender]);

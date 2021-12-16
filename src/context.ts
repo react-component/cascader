@@ -7,6 +7,7 @@ export interface CascaderContextProps {
   values: SingleValueType[];
   changeOnSelect?: boolean;
   onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
+  checkable?: boolean | React.ReactNode;
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>(null);

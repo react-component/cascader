@@ -77,7 +77,7 @@ const addressOptions = [
 const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(false);
+  const [multiple, setMultiple] = React.useState(true);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -102,7 +102,7 @@ const Demo = () => {
         style={{ width: 200 }}
         options={addressOptions}
         onChange={onChange}
-        multiple={multiple}
+        checkable={multiple}
         allowClear
         defaultValue={multiple ? [defaultValue] : defaultValue}
         // defaultValue={['not', 'exist']}

@@ -355,6 +355,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // ========================== Render ==========================
   const columnProps = {
     ...props,
+    multiple,
     onSelect: onPathSelect,
     onActive: onPathActive,
     onToggleOpen: toggleOpen,
