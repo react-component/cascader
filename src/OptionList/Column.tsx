@@ -50,8 +50,10 @@ export default function Column({
   return (
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
-        const { disabled, value, node } = option;
+        const { disabled } = option;
         const searchOptions = option[SEARCH_MARK];
+        const label = option[fieldNames.label];
+        const value = option[fieldNames.value];
 
         const isMergedLeaf = isLeaf(option, fieldNames);
 
@@ -82,10 +84,10 @@ export default function Column({
 
         // >>>>> Title
         let title: string;
-        if (typeof node?.title === 'string') {
-          title = node.title;
-        } else if (typeof option.title === 'string') {
+        if (typeof option.title === 'string') {
           title = option.title;
+        } else if (typeof label=== 'string') {
+          title = label;
         }
 
         // >>>>> Render

@@ -77,7 +77,7 @@ const addressOptions = [
 const defaultValue = ['fj', 'fuzhou'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(true);
+  const [multiple, setMultiple] = React.useState(false);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -104,13 +104,13 @@ const Demo = () => {
         onChange={onChange}
         checkable={multiple}
         allowClear
-        defaultValue={multiple ? [defaultValue] : defaultValue}
-        // defaultValue={['not', 'exist']}
+        // defaultValue={multiple ? [defaultValue] : defaultValue}
+        defaultValue={['not', 'exist']}
         showSearch
         // showSearch={{ limit: 1 }}
         open
         // direction="rtl"
-        searchValue="福a"
+        // searchValue="福a"
       />
     </>
   );

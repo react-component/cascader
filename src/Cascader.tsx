@@ -15,6 +15,7 @@ import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import warning from 'rc-util/lib/warning';
+import useMissingValues from './hooks/useMissingValues';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -167,7 +168,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
     onPopupVisibleChange,
 
     // Icon
-    expandIcon,
+    expandIcon = '>',
     loadingIcon,
 
     // Children
@@ -237,6 +238,8 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   );
 
   // =========================== Values ===========================
+  const getMissingValues = useMissingValues(mergedOptions, mergedFieldNames);
+
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues] = React.useMemo(() => {
     if (!multiple || !rawValues.length) {
@@ -253,11 +256,12 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath]);
 
   const deDuplicatedValues = React.useMemo(() => {
-    const checkedKeys = toPathKeys(checkedValues);
+    const [existValues, missingValues] = getMissingValues(checkedValues);
+    const checkedKeys = toPathKeys(existValues);
     const deduplicateKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
 
-    return getValueByKeyPath(deduplicateKeys);
-  }, [checkedValues, getPathKeyEntities, getValueByKeyPath]);
+    return [...missingValues, ...getValueByKeyPath(deduplicateKeys)];
+  }, [checkedValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
 
   const displayValues = useDisplayValues(
     deDuplicatedValues,
