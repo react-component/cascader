@@ -82,12 +82,17 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // This also control the open status
   const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
 
-  React.useEffect(() => {
-    if (!multiple) {
-      const firstValueCells = values[0];
-      setActiveValueCells(firstValueCells || []);
-    }
-  }, [multiple, values]);
+  React.useEffect(
+    () => {
+      if (open && !multiple) {
+        const firstValueCells = values[0];
+        setActiveValueCells(firstValueCells || []);
+      }
+    },
+    /* eslint-disable react-hooks/exhaustive-deps */
+    [open],
+    /* eslint-enable react-hooks/exhaustive-deps */
+  );
 
   // ====================== Active Options ======================
   const optionColumns = React.useMemo(() => {
