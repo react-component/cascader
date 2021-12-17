@@ -71,10 +71,13 @@ const addressOptions = [
       },
     ],
   },
-  // ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
+  ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
 ];
 
-const defaultValue = ['fj', 'fuzhou'];
+// const defaultValue = ['fj', 'fuzhou'];
+// const defaultValue = ['fj', 'quanzhou'];
+// const defaultValue = ['fj', 'not-exist'];
+const defaultValue = ['not-exist'];
 
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(false);
@@ -104,11 +107,11 @@ const Demo = () => {
         onChange={onChange}
         checkable={multiple}
         allowClear
-        // defaultValue={multiple ? [defaultValue] : defaultValue}
-        defaultValue={['not', 'exist']}
+        defaultValue={multiple ? [defaultValue] : defaultValue}
+        // defaultValue={['not', 'exist']}
         showSearch
         // showSearch={{ limit: 1 }}
-        open
+        // open
         // direction="rtl"
         // searchValue="福a"
       />

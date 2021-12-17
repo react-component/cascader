@@ -229,7 +229,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
 
   const searchOptions = useSearchOptions(
-    searchValue,
+    mergedSearchValue,
     mergedOptions,
     mergedFieldNames,
     prefixCls,
@@ -241,27 +241,28 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   const getMissingValues = useMissingValues(mergedOptions, mergedFieldNames);
 
   // Fill `rawValues` with checked conduction values
-  const [checkedValues, halfCheckedValues] = React.useMemo(() => {
+  const [checkedValues, halfCheckedValues, missingCheckedValues] = React.useMemo(() => {
+    const [existValues, missingValues] = getMissingValues(rawValues);
+
     if (!multiple || !rawValues.length) {
-      return [rawValues, []];
+      return [existValues, [], missingValues];
     }
 
-    const keyPathValues = toPathKeys(rawValues);
+    const keyPathValues = toPathKeys(existValues);
     const ketPathEntities = getPathKeyEntities();
 
     const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, ketPathEntities);
 
     // Convert key back to value cells
-    return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys)];
-  }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath]);
+    return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];
+  }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
 
   const deDuplicatedValues = React.useMemo(() => {
-    const [existValues, missingValues] = getMissingValues(checkedValues);
-    const checkedKeys = toPathKeys(existValues);
+    const checkedKeys = toPathKeys(checkedValues);
     const deduplicateKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
 
-    return [...missingValues, ...getValueByKeyPath(deduplicateKeys)];
-  }, [checkedValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
+    return [...missingCheckedValues, ...getValueByKeyPath(deduplicateKeys)];
+  }, [checkedValues, getPathKeyEntities, getValueByKeyPath, missingCheckedValues]);
 
   const displayValues = useDisplayValues(
     deDuplicatedValues,

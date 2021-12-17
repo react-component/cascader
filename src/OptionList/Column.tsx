@@ -21,6 +21,7 @@ export interface ColumnProps {
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
+  isSelectable: (option: DefaultOptionType) => boolean;
 }
 
 export default function Column({
@@ -35,6 +36,7 @@ export default function Column({
   checkedSet,
   halfCheckedSet,
   loadingKeys,
+  isSelectable,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -77,7 +79,7 @@ export default function Column({
 
         // >>>>> Selection
         const triggerSelect = () => {
-          if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
+          if (isSelectable(option)) {
             onSelect(fullPath, isMergedLeaf);
           }
         };
@@ -86,7 +88,7 @@ export default function Column({
         let title: string;
         if (typeof option.title === 'string') {
           title = option.title;
-        } else if (typeof label=== 'string') {
+        } else if (typeof label === 'string') {
           title = label;
         }
 
@@ -104,7 +106,7 @@ export default function Column({
             role="menuitemcheckbox"
             title={title}
             aria-checked={checked}
-            data-value={value}
+            data-path-key={fullPathKey}
             onClick={() => {
               triggerOpenPath();
               if (!multiple || isMergedLeaf) {

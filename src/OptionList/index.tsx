@@ -9,14 +9,13 @@ import { restoreCompatibleValue } from '../util';
 import CascaderContext from '../context';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import { isLeaf, toPathKeys } from '../utils/commonUtil';
+import useActive from './useActive';
+import useKeyboard from './useKeyboard';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const {
     prefixCls,
-    // onSelect,
     multiple,
-    open,
-    // flattenOptions,
     searchValue,
     toggleOpen,
     notFoundContent,
@@ -77,43 +76,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const checkedSet = React.useMemo(() => new Set(toPathKeys(values)), [values]);
   const halfCheckedSet = React.useMemo(() => new Set(toPathKeys(halfValues)), [halfValues]);
 
-  // ========================== Active ==========================
-  // Record current dropdown active options
-  // This also control the open status
-  const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
-
-  React.useEffect(
-    () => {
-      if (open && !multiple) {
-        const firstValueCells = values[0];
-        setActiveValueCells(firstValueCells || []);
-      }
-    },
-    /* eslint-disable react-hooks/exhaustive-deps */
-    [open],
-    /* eslint-enable react-hooks/exhaustive-deps */
-  );
-
-  // =========================== Open ===========================
-  const [openFinalValue, setOpenFinalValue] = React.useState<React.Key>(null);
-
-  const mergedOpenPath = [];
-  // const mergedOpenPath = React.useMemo<React.Key[]>(() => {
-  //   if (searchValue) {
-  //     return openFinalValue !== undefined && openFinalValue !== null ? [openFinalValue] : [];
-  //   }
-
-  //   const entity = flattenOptions.find(
-  //     flattenOption => flattenOption.data.value === openFinalValue,
-  //   );
-
-  //   if (entity) {
-  //     const { path } = restoreCompatibleValue(entity as any, fieldNames);
-  //     return path;
-  //   }
-
-  //   return [];
-  // }, [openFinalValue, searchValue]);
+  // ====================== Accessibility =======================
+  const [activeValueCells, setActiveValueCells] = useActive();
 
   // =========================== Path ===========================
   // const onPathOpen = (index: number, pathValue: React.Key) => {
@@ -123,6 +87,13 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   //   internalLoadData(pathValue);
   // };
 
+  const isSelectable = (option: DefaultOptionType) => {
+    const { disabled } = option;
+
+    const isMergedLeaf = isLeaf(option, fieldNames);
+    return !disabled && (isMergedLeaf || changeOnSelect || multiple);
+  };
+
   const onPathSelect = (valuePath: SingleValueType, leaf: boolean) => {
     onSelect(valuePath, leaf);
 
@@ -131,32 +102,19 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     }
   };
 
-  const onPathActive = (valuePath: SingleValueType) => {
-    setActiveValueCells(valuePath);
-  };
+  // ========================== Option ==========================
+  const mergedOptions = React.useMemo(() => {
+    if (searchValue) {
+      return searchOptions;
+    }
 
-  // const getPathList = (pathList: React.Key[]) => {
-  //   let currentOptions = options;
-
-  //   for (let i = 0; i < pathList.length; i += 1) {
-  //     currentOptions = (currentOptions || []).find(option => option.value === pathList[i]).children;
-  //   }
-
-  //   return currentOptions;
-  // };
+    return options;
+  }, [searchValue, searchOptions, options]);
 
   // ========================== Column ==========================
   const optionColumns = React.useMemo(() => {
-    if (searchValue) {
-      return [
-        {
-          options: searchOptions,
-        },
-      ];
-    }
-
-    const optionList = [{ options }];
-    let currentList = options;
+    const optionList = [{ options: mergedOptions }];
+    let currentList = mergedOptions;
 
     for (let i = 0; i < activeValueCells.length; i += 1) {
       const activeValueCell = activeValueCells[i];
@@ -174,143 +132,26 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     }
 
     return optionList;
-  }, [searchValue, options, searchOptions, activeValueCells, fieldNames]);
+  }, [mergedOptions, activeValueCells, fieldNames]);
 
   // ========================= Keyboard =========================
-  const getActiveOption = (activeColumnIndex: number, offset: number) => {
-    const pathActiveValue = mergedOpenPath[activeColumnIndex];
-    const currentOptions = optionColumns[activeColumnIndex]?.options || [];
-    let activeOptionIndex = currentOptions.findIndex(opt => opt.value === pathActiveValue);
-
-    const len = currentOptions.length;
-
-    // Last one is special since -1 may back 2 offset
-    if (offset === -1 && activeOptionIndex === -1) {
-      activeOptionIndex = len;
-    }
-
-    for (let i = 1; i <= len; i += 1) {
-      const current = (activeOptionIndex + i * offset + len) % len;
-      const option = currentOptions[current];
-
-      if (!option.disabled) {
-        return option;
-      }
-    }
-
-    return null;
-  };
-
-  const prevColumn = () => {
-    if (mergedOpenPath.length <= 1) {
-      toggleOpen(false);
-    }
-    setOpenFinalValue(mergedOpenPath[mergedOpenPath.length - 2]);
-  };
-
-  const nextColumn = () => {
-    const nextColumnIndex = mergedOpenPath.length;
-    const nextActiveOption = getActiveOption(nextColumnIndex, 1);
-    if (nextActiveOption) {
-      onPathOpen(nextColumnIndex, nextActiveOption.value);
+  const onKeyboardSelect = (selectValueCells: SingleValueType, option: DefaultOptionType) => {
+    if (isSelectable(option)) {
+      onPathSelect(selectValueCells, isLeaf(option, fieldNames));
     }
   };
 
-  React.useImperativeHandle(ref, () => ({
-    // scrollTo: treeRef.current?.scrollTo,
-    onKeyDown: event => {
-      const { which } = event;
-
-      switch (which) {
-        // >>> Arrow keys
-        case KeyCode.UP:
-        case KeyCode.DOWN: {
-          let offset = 0;
-          if (which === KeyCode.UP) {
-            offset = -1;
-          } else if (which === KeyCode.DOWN) {
-            offset = 1;
-          }
-
-          if (offset !== 0) {
-            const activeColumnIndex = Math.max(mergedOpenPath.length - 1, 0);
-            const nextActiveOption = getActiveOption(activeColumnIndex, offset);
-            if (nextActiveOption) {
-              const ele = containerRef.current?.querySelector(
-                `li[data-value="${nextActiveOption.value}"]`,
-              );
-              ele?.scrollIntoView?.({ block: 'nearest' });
-
-              onPathOpen(activeColumnIndex, nextActiveOption.value);
-            }
-          }
-
-          break;
-        }
-
-        case KeyCode.LEFT: {
-          if (rtl) {
-            nextColumn();
-          } else {
-            prevColumn();
-          }
-          break;
-        }
-
-        case KeyCode.RIGHT: {
-          if (rtl) {
-            prevColumn();
-          } else {
-            nextColumn();
-          }
-          break;
-        }
-
-        case KeyCode.BACKSPACE: {
-          if (!searchValue) {
-            prevColumn();
-          }
-          break;
-        }
-
-        // >>> Select
-        case KeyCode.ENTER: {
-          const lastValue = mergedOpenPath[mergedOpenPath.length - 1];
-          const option = optionColumns[mergedOpenPath.length - 1]?.options?.find(
-            opt => opt.value === lastValue,
-          );
-
-          // Skip when no select
-          if (option) {
-            const leaf = isLeaf(option, fieldNames);
-
-            if (multiple || changeOnSelect || leaf) {
-              onPathSelect(lastValue, leaf);
-            }
-
-            // Close for changeOnSelect
-            if (changeOnSelect) {
-              toggleOpen(false);
-            }
-          }
-          break;
-        }
-
-        // >>> Close
-        case KeyCode.ESC: {
-          toggleOpen(false);
-
-          if (open) {
-            event.stopPropagation();
-          }
-        }
-      }
-    },
-    onKeyUp: () => {},
-  }));
+  useKeyboard(
+    ref,
+    mergedOptions,
+    fieldNames,
+    activeValueCells,
+    setActiveValueCells,
+    containerRef,
+    onKeyboardSelect,
+  );
 
   // ========================== Render ==========================
-
   // >>>>> Empty
   const isEmpty = !optionColumns[0]?.options?.length;
 
@@ -326,11 +167,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     ...props,
     multiple: !isEmpty && multiple,
     onSelect: onPathSelect,
-    onActive: onPathActive,
+    onActive: setActiveValueCells,
     onToggleOpen: toggleOpen,
     checkedSet,
     halfCheckedSet,
     loadingKeys,
+    isSelectable,
   };
 
   // >>>>> Columns
