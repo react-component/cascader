@@ -20,6 +20,8 @@ export function toPathOptions(
   valueCells: SingleValueType,
   options: DefaultOptionType[],
   fieldNames: InternalFieldNames,
+  // Used for loadingKeys which saved loaded keys as string
+  stringMode = false,
 ) {
   let currentList = options;
   const valueOptions: {
@@ -30,11 +32,14 @@ export function toPathOptions(
 
   for (let i = 0; i < valueCells.length; i += 1) {
     const valueCell = valueCells[i];
-    const foundIndex = currentList?.findIndex(option => option[fieldNames.value] === valueCell);
+    const foundIndex = currentList?.findIndex(option => {
+      const val = option[fieldNames.value];
+      return stringMode ? String(val) === String(valueCell) : val === valueCell;
+    });
     const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : null;
 
     valueOptions.push({
-      value: valueCell,
+      value: foundOption?.[fieldNames.value] ?? valueCell,
       index: foundIndex,
       option: foundOption,
     });

@@ -94,6 +94,7 @@ export interface CascaderProps<OptionType extends BaseOptionType = DefaultOption
   /** @deprecated Use `dropdownClassName` instead */
   popupClassName?: string;
   dropdownClassName?: string;
+  dropdownMenuColumnStyle?: React.CSSProperties;
 
   /** @deprecated Use `placement` instead */
   popupPlacement?: Placement;
@@ -160,6 +161,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
 
     popupClassName,
     dropdownClassName,
+    dropdownMenuColumnStyle,
 
     popupPlacement,
     placement,
@@ -382,6 +384,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       expandTrigger,
       expandIcon,
       loadingIcon,
+      dropdownMenuColumnStyle,
     }),
     [
       mergedOptions,
@@ -397,6 +400,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       expandTrigger,
       expandIcon,
       loadingIcon,
+      dropdownMenuColumnStyle,
     ],
   );
 

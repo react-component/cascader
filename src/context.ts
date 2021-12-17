@@ -20,6 +20,7 @@ export interface CascaderContextProps {
   expandTrigger?: 'hover' | 'click';
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
+  dropdownMenuColumnStyle?: React.CSSProperties;
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>(null);

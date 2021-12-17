@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Column from './Column';
-import { restoreCompatibleValue } from '../util';
 import CascaderContext from '../context';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
-import { isLeaf, toPathKeys } from '../utils/commonUtil';
+import { isLeaf, toPathKey, toPathKeys, toPathValueStr } from '../utils/commonUtil';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
+import { toPathOptions } from '../utils/treeUtil';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
@@ -36,34 +36,41 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // ========================= loadData =========================
   const [loadingKeys, setLoadingKeys] = React.useState([]);
 
-  const internalLoadData = (pathValue: React.Key) => {
+  const internalLoadData = (valueCells: React.Key[]) => {
     // Do not load when search
     if (!loadData || searchValue) {
       return;
     }
 
-    const entity = flattenOptions.find(flattenOption => flattenOption.data.value === pathValue);
-    if (entity && !isLeaf(entity.data.node as any)) {
-      const { options: optionList } = restoreCompatibleValue(entity as any, fieldNames);
-      const rawOptionList = optionList.map(opt => opt.node);
+    const optionList = toPathOptions(valueCells, options, fieldNames);
+    const rawOptions = optionList.map(({ option }) => option);
+    const lastOption = rawOptions[rawOptions.length - 1];
 
-      setLoadingKeys(keys => [...keys, entity.key]);
+    if (lastOption && !isLeaf(lastOption, fieldNames)) {
+      const pathKey = toPathKey(valueCells);
 
-      loadData(rawOptionList);
+      setLoadingKeys(keys => [...keys, pathKey]);
+
+      loadData(rawOptions);
     }
   };
 
   // zombieJ: This is bad. We should make this same as `rc-tree` to use Promise instead.
-  // React.useEffect(() => {
-  //   if (loadingKeys.length) {
-  //     loadingKeys.forEach(loadingKey => {
-  //       const option = flattenOptions.find(opt => opt.value === loadingKey);
-  //       if (!option || option.data.children || option.data.isLeaf === true) {
-  //         setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
-  //       }
-  //     });
-  //   }
-  // }, [flattenOptions, loadingKeys]);
+  React.useEffect(() => {
+    if (loadingKeys.length) {
+      loadingKeys.forEach(loadingKey => {
+        const valueStrCells = toPathValueStr(loadingKey);
+        const optionList = toPathOptions(valueStrCells, options, fieldNames, true).map(
+          ({ option }) => option,
+        );
+        const lastOption = optionList[optionList.length - 1];
+
+        if (!lastOption || lastOption[fieldNames.children] || isLeaf(lastOption, fieldNames)) {
+          setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
+        }
+      });
+    }
+  }, [options, loadingKeys, fieldNames]);
 
   // ========================== Values ==========================
   const checkedSet = React.useMemo(() => new Set(toPathKeys(values)), [values]);
@@ -73,12 +80,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const [activeValueCells, setActiveValueCells] = useActive();
 
   // =========================== Path ===========================
-  // const onPathOpen = (index: number, pathValue: React.Key) => {
-  //   setOpenFinalValue(pathValue);
+  const onPathOpen = (nextValueCells: React.Key[]) => {
+    setActiveValueCells(nextValueCells);
 
-  //   // Trigger loadData
-  //   internalLoadData(pathValue);
-  // };
+    // Trigger loadData
+    internalLoadData(nextValueCells);
+  };
 
   const isSelectable = (option: DefaultOptionType) => {
     const { disabled } = option;
@@ -139,7 +146,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     mergedOptions,
     fieldNames,
     activeValueCells,
-    setActiveValueCells,
+    onPathOpen,
     containerRef,
     onKeyboardSelect,
   );
@@ -160,7 +167,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     ...props,
     multiple: !isEmpty && multiple,
     onSelect: onPathSelect,
-    onActive: setActiveValueCells,
+    onActive: onPathOpen,
     onToggleOpen: toggleOpen,
     checkedSet,
     halfCheckedSet,

@@ -15,6 +15,10 @@ export function toPathKeys(value: SingleValueType[]) {
   return value.map(toPathKey);
 }
 
+export function toPathValueStr(pathKey: string) {
+  return pathKey.split(VALUE_SPLIT);
+}
+
 export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
   const { label, value, children } = fieldNames || {};
   const val = value || 'value';
@@ -27,9 +31,5 @@ export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
 }
 
 export function isLeaf(option: DefaultOptionType, fieldNames: FieldNames) {
-  if (option.isLeaf) {
-    return true;
-  }
-
-  return !option[fieldNames.children];
+  return option.isLeaf ?? !option[fieldNames.children];
 }

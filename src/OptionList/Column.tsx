@@ -1,7 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { isLeaf, toPathKey } from '../utils/commonUtil';
-import LegacyContext from '../LegacyContext';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
@@ -41,10 +40,14 @@ export default function Column({
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
-  const { dropdownMenuColumnStyle } = React.useContext(LegacyContext);
-
-  const { fieldNames, changeOnSelect, expandTrigger, expandIcon, loadingIcon } =
-    React.useContext(CascaderContext);
+  const {
+    fieldNames,
+    changeOnSelect,
+    expandTrigger,
+    expandIcon,
+    loadingIcon,
+    dropdownMenuColumnStyle,
+  } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
 
@@ -65,7 +68,7 @@ export default function Column({
           : [...prevValuePath, value];
         const fullPathKey = toPathKey(fullPath);
 
-        const isLoading = loadingKeys.includes(value);
+        const isLoading = loadingKeys.includes(fullPathKey);
 
         // >>>>> checked
         const checked = checkedSet.has(fullPathKey);
