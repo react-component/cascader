@@ -7,6 +7,7 @@ import type {
   InternalDataNode,
   OptionDataNode,
 } from './interface';
+import { toArray } from 'rc-select/lib/utils/commonUtil';
 
 const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
 
@@ -53,7 +54,7 @@ export function isLeaf(option: OptionDataNode) {
  * zombieJ: It's better to deprecate the same key in the nest tree. Maybe next major version.
  */
 export function connectValue(value: React.Key[]) {
-  return (value || []).join(VALUE_SPLIT);
+  return toArray(value).join(VALUE_SPLIT);
 }
 
 /**
