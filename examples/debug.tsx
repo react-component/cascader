@@ -77,7 +77,8 @@ const addressOptions = [
 // const defaultValue = ['fj', 'fuzhou'];
 // const defaultValue = ['fj', 'quanzhou'];
 // const defaultValue = ['fj', 'not-exist'];
-const defaultValue = ['not-exist'];
+// const defaultValue = ['not-exist'];
+const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(false);

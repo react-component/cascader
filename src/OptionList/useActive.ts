@@ -6,7 +6,7 @@ import { useBaseProps } from 'rc-select';
  * Control the active open options path.
  */
 export default (): [React.Key[], (activeValueCells: React.Key[]) => void] => {
-  const { multiple } = useBaseProps();
+  const { multiple, open } = useBaseProps();
   const { values } = React.useContext(CascaderContext);
 
   // Record current dropdown active options

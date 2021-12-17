@@ -31,7 +31,7 @@ export function toPathOptions(
   for (let i = 0; i < valueCells.length; i += 1) {
     const valueCell = valueCells[i];
     const foundIndex = currentList?.findIndex(option => option[fieldNames.value] === valueCell);
-    const foundOption = foundIndex !== -1 ? currentList[foundIndex] : null;
+    const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : null;
 
     valueOptions.push({
       value: valueCell,
