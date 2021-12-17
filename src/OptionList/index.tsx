@@ -2,7 +2,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
-import KeyCode from 'rc-util/lib/KeyCode';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import Column from './Column';
 import { restoreCompatibleValue } from '../util';
