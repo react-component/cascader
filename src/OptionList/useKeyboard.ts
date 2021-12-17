@@ -94,7 +94,10 @@ export default (
   };
 
   const nextColumn = () => {
-    const nextOption = lastActiveOptions[lastActiveIndex]?.[fieldNames.children]?.[0];
+    const nextOptions: DefaultOptionType[] =
+      lastActiveOptions[lastActiveIndex]?.[fieldNames.children] || [];
+
+    const nextOption = nextOptions.find(option => !option.disabled);
 
     if (nextOption) {
       const nextActiveCells = [...validActiveValueCells, nextOption[fieldNames.value]];
@@ -152,7 +155,9 @@ export default (
 
         // >>> Select
         case KeyCode.ENTER: {
-          onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+          if (validActiveValueCells.length) {
+            onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+          }
           break;
         }
 

@@ -34,6 +34,11 @@ const addressOptions = [
         value: 'hangzhou',
         children: [
           {
+            label: '禁用',
+            value: 'disabled',
+            disabled: true,
+          },
+          {
             label: '余杭',
             value: 'yuhang',
           },
