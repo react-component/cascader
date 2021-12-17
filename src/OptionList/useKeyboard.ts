@@ -1,8 +1,7 @@
 import * as React from 'react';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import KeyCode from 'rc-util/lib/KeyCode';
-import type { DefaultOptionType, InternalFieldNames } from '../Cascader';
-import { toPathOptions } from '../utils/treeUtil';
+import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
 import { toPathKey } from '../utils/commonUtil';
 import { useBaseProps } from 'rc-select';
 
@@ -64,8 +63,12 @@ export default (
 
   // Same options offset
   const offsetActiveOption = (offset: number) => {
-    let currentIndex = lastActiveIndex;
     const len = lastActiveOptions.length;
+
+    let currentIndex = lastActiveIndex;
+    if (currentIndex === -1 && offset < 0) {
+      currentIndex = len;
+    }
 
     for (let i = 0; i < len; i += 1) {
       currentIndex = (currentIndex + offset + len) % len;
@@ -85,6 +88,8 @@ export default (
     if (validActiveValueCells.length > 1) {
       const nextActiveCells = validActiveValueCells.slice(0, -1);
       internalSetActiveValueCells(nextActiveCells);
+    } else {
+      toggleOpen(false);
     }
   };
 
@@ -148,24 +153,6 @@ export default (
         // >>> Select
         case KeyCode.ENTER: {
           onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
-          //   const lastValue = mergedOpenPath[mergedOpenPath.length - 1];
-          //   const option = optionColumns[mergedOpenPath.length - 1]?.options?.find(
-          //     opt => opt.value === lastValue,
-          //   );
-
-          //   // Skip when no select
-          //   if (option) {
-          //     const leaf = isLeaf(option, fieldNames);
-
-          //     if (multiple || changeOnSelect || leaf) {
-          //       onPathSelect(lastValue, leaf);
-          //     }
-
-          //     // Close for changeOnSelect
-          //     if (changeOnSelect) {
-          //       toggleOpen(false);
-          //     }
-          //   }
           break;
         }
 

@@ -12,14 +12,8 @@ import useActive from './useActive';
 import useKeyboard from './useKeyboard';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
-  const {
-    prefixCls,
-    multiple,
-    searchValue,
-    toggleOpen,
-    notFoundContent,
-    direction,
-  } = useBaseProps();
+  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
+    useBaseProps();
 
   const containerRef = React.useRef<HTMLDivElement>();
   const rtl = direction === 'rtl';
@@ -93,10 +87,10 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     return !disabled && (isMergedLeaf || changeOnSelect || multiple);
   };
 
-  const onPathSelect = (valuePath: SingleValueType, leaf: boolean) => {
+  const onPathSelect = (valuePath: SingleValueType, leaf: boolean, fromKeyboard = false) => {
     onSelect(valuePath, leaf);
 
-    if (!multiple && (leaf || (changeOnSelect && expandTrigger === 'hover'))) {
+    if (!multiple && (leaf || (changeOnSelect && (expandTrigger === 'hover' || fromKeyboard)))) {
       toggleOpen(false);
     }
   };
@@ -136,7 +130,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   // ========================= Keyboard =========================
   const onKeyboardSelect = (selectValueCells: SingleValueType, option: DefaultOptionType) => {
     if (isSelectable(option)) {
-      onPathSelect(selectValueCells, isLeaf(option, fieldNames));
+      onPathSelect(selectValueCells, isLeaf(option, fieldNames), true);
     }
   };
 

@@ -115,6 +115,7 @@ const Demo = () => {
         // open
         // direction="rtl"
         // searchValue="福a"
+        // changeOnSelect
       />
     </>
   );
