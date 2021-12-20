@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable */
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
