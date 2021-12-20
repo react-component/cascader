@@ -29,6 +29,7 @@ describe('Cascader.Selector', () => {
       <Cascader checkable value={[['not'], ['exist']]} allowClear onChange={onChange} />,
     );
 
-    wrapper.find('.rc-cascader-selection-item-remove-icon').simulate('mouseDown');
+    wrapper.find('.rc-cascader-selection-item-remove-icon').first().simulate('click');
+    expect(onChange).toHaveBeenCalledWith([['exist']], expect.anything());
   });
 });
