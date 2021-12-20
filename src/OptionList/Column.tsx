@@ -1,45 +1,53 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import type { OptionDataNode } from '../interface';
-import { isLeaf } from '../util';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
+import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
 export interface ColumnProps {
   prefixCls: string;
-  index: number;
   multiple?: boolean;
-  options: OptionDataNode[];
+  options: DefaultOptionType[];
   /** Current Column opened item key */
-  openKey?: React.Key;
-  onSelect: (value: React.Key, isLeaf: boolean) => void;
-  onOpen: (index: number, value: React.Key) => void;
+  activeValue?: React.Key;
+  /** The value path before current column */
+  prevValuePath: React.Key[];
   onToggleOpen: (open: boolean) => void;
+  onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
+  onActive: (valuePath: SingleValueType) => void;
   checkedSet: Set<React.Key>;
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
-  isEmpty: boolean;
+  isSelectable: (option: DefaultOptionType) => boolean;
 }
 
 export default function Column({
   prefixCls,
-  index,
   multiple,
   options,
-  openKey,
-  onSelect,
-  onOpen,
+  activeValue,
+  prevValuePath,
   onToggleOpen,
+  onSelect,
+  onActive,
   checkedSet,
   halfCheckedSet,
   loadingKeys,
-  isEmpty,
+  isSelectable,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
-  const { changeOnSelect, expandTrigger, expandIcon, loadingIcon, dropdownMenuColumnStyle } =
-    React.useContext(CascaderContext);
+  const {
+    fieldNames,
+    changeOnSelect,
+    expandTrigger,
+    expandIcon,
+    loadingIcon,
+    dropdownMenuColumnStyle,
+  } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
 
@@ -47,43 +55,53 @@ export default function Column({
   return (
     <ul className={menuPrefixCls} role="menu">
       {options.map(option => {
-        const { disabled, value, node } = option;
-        const isMergedLeaf = isLeaf(option);
+        const { disabled } = option;
+        const searchOptions = option[SEARCH_MARK];
+        const label = option[fieldNames.label];
+        const value = option[fieldNames.value];
 
-        const isLoading = loadingKeys.includes(value);
+        const isMergedLeaf = isLeaf(option, fieldNames);
+
+        // Get real value of option. Search option is different way.
+        const fullPath = searchOptions
+          ? searchOptions.map(opt => opt[fieldNames.value])
+          : [...prevValuePath, value];
+        const fullPathKey = toPathKey(fullPath);
+
+        const isLoading = loadingKeys.includes(fullPathKey);
 
         // >>>>> checked
-        const checked = checkedSet.has(value);
+        const checked = checkedSet.has(fullPathKey);
 
         // >>>>> Open
         const triggerOpenPath = () => {
           if (!disabled && (!hoverOpen || !isMergedLeaf)) {
-            onOpen(index, value);
+            onActive(fullPath);
           }
         };
 
         // >>>>> Selection
         const triggerSelect = () => {
-          if (!disabled && (isMergedLeaf || changeOnSelect || multiple)) {
-            onSelect(value, isMergedLeaf);
+          if (isSelectable(option)) {
+            onSelect(fullPath, isMergedLeaf);
           }
         };
 
         // >>>>> Title
         let title: string;
-        if (typeof node?.title === 'string') {
-          title = node.title;
-        } else if (typeof option.title === 'string') {
+        if (typeof option.title === 'string') {
           title = option.title;
+        } else if (typeof label === 'string') {
+          title = label;
         }
 
         // >>>>> Render
         return (
           <li
-            key={value}
+            key={fullPathKey}
             className={classNames(menuItemPrefixCls, {
               [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
-              [`${menuItemPrefixCls}-active`]: openKey === value,
+              [`${menuItemPrefixCls}-active`]: activeValue === value,
               [`${menuItemPrefixCls}-disabled`]: disabled,
               [`${menuItemPrefixCls}-loading`]: isLoading,
             })}
@@ -91,7 +109,7 @@ export default function Column({
             role="menuitemcheckbox"
             title={title}
             aria-checked={checked}
-            data-value={value}
+            data-path-key={fullPathKey}
             onClick={() => {
               triggerOpenPath();
               if (!multiple || isMergedLeaf) {
@@ -109,7 +127,7 @@ export default function Column({
               }
             }}
           >
-            {multiple && !isEmpty && (
+            {multiple && (
               <Checkbox
                 prefixCls={`${prefixCls}-checkbox`}
                 checked={checked}
@@ -121,7 +139,7 @@ export default function Column({
                 }}
               />
             )}
-            <div className={`${menuItemPrefixCls}-content`}>{option.title}</div>
+            <div className={`${menuItemPrefixCls}-content`}>{option[fieldNames.label]}</div>
             {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
             )}

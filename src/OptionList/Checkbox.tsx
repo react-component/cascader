@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { SelectContext } from 'rc-tree-select/lib/Context';
+import CascaderContext from '../context';
 
 export interface CheckboxProps {
   prefixCls: string;
@@ -17,7 +17,7 @@ export default function Checkbox({
   disabled,
   onClick,
 }: CheckboxProps) {
-  const { checkable } = React.useContext(SelectContext);
+  const { checkable } = React.useContext(CascaderContext);
 
   const customCheckbox = typeof checkable !== 'boolean' ? checkable : null;
 

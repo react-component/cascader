@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable */
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -33,6 +33,11 @@ const addressOptions = [
         label: '杭州',
         value: 'hangzhou',
         children: [
+          {
+            label: '禁用',
+            value: 'disabled',
+            disabled: true,
+          },
           {
             label: '余杭',
             value: 'yuhang',
@@ -74,7 +79,11 @@ const addressOptions = [
   ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: i })),
 ];
 
-const defaultValue = ['fj', 'fuzhou'];
+// const defaultValue = ['fj', 'fuzhou'];
+// const defaultValue = ['fj', 'quanzhou'];
+// const defaultValue = ['fj', 'not-exist'];
+// const defaultValue = ['not-exist'];
+const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(true);
@@ -83,7 +92,7 @@ const Demo = () => {
   const onChange = (value: any, selectedOptions: any) => {
     console.log('[DEBUG] onChange - value:', value);
     console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
-    setInputValue(selectedOptions.map(o => o.label).join(', '));
+    // setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
   return (
@@ -104,11 +113,14 @@ const Demo = () => {
         onChange={onChange}
         checkable={multiple}
         allowClear
-        defaultValue={multiple ? [defaultValue] : defaultValue}
-        // defaultValue={['not', 'exist']}
+        // defaultValue={multiple ? [defaultValue] : defaultValue}
+        defaultValue={[['not', 'yet'], ['exist']]}
         showSearch
+        // showSearch={{ limit: 1 }}
         // open
         // direction="rtl"
+        // searchValue="福a"
+        // changeOnSelect
       />
     </>
   );

@@ -8,7 +8,7 @@ exports[`Cascader.Basic should not show title when title is falsy 1`] = `
   <li
     aria-checked="false"
     class="rc-cascader-menu-item"
-    data-value="1"
+    data-path-key="1"
     role="menuitemcheckbox"
     title=""
   >
@@ -21,7 +21,7 @@ exports[`Cascader.Basic should not show title when title is falsy 1`] = `
   <li
     aria-checked="false"
     class="rc-cascader-menu-item"
-    data-value="2"
+    data-path-key="2"
     role="menuitemcheckbox"
     title="2"
   >
@@ -34,7 +34,7 @@ exports[`Cascader.Basic should not show title when title is falsy 1`] = `
   <li
     aria-checked="false"
     class="rc-cascader-menu-item"
-    data-value="3"
+    data-path-key="3"
     role="menuitemcheckbox"
     title="3"
   >
@@ -47,7 +47,7 @@ exports[`Cascader.Basic should not show title when title is falsy 1`] = `
   <li
     aria-checked="false"
     class="rc-cascader-menu-item"
-    data-value="4"
+    data-path-key="4"
     role="menuitemcheckbox"
     title="title"
   >
@@ -79,7 +79,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
           <li
             aria-checked="false"
             class="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            data-value="fj"
+            data-path-key="fj"
             role="menuitemcheckbox"
             title="福建"
           >
@@ -97,7 +97,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
           <li
             aria-checked="false"
             class="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            data-value="zj"
+            data-path-key="zj"
             role="menuitemcheckbox"
             title="浙江"
           >
@@ -115,7 +115,7 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
           <li
             aria-checked="false"
             class="rc-cascader-menu-item rc-cascader-menu-item-expand"
-            data-value="bj"
+            data-path-key="bj"
             role="menuitemcheckbox"
             title="北京"
           >

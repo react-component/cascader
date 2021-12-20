@@ -76,8 +76,7 @@ describe('Cascader.Checkable', () => {
       ],
     );
   });
-
-  it('click checkobx invoke one onChange', () => {
+  it('click checkbox invoke one onChange', () => {
     const onChange = jest.fn();
     const wrapper = mount(<Cascader options={options} onChange={onChange} open checkable />);
 
@@ -89,6 +88,51 @@ describe('Cascader.Checkable', () => {
     wrapper.find('.rc-cascader-checkbox').first().simulate('click');
     expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeTruthy();
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('merge checked options', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <Cascader
+        checkable
+        open
+        onChange={onChange}
+        options={[
+          {
+            label: 'Parent',
+            value: 'parent',
+            children: [
+              {
+                label: 'Child 1',
+                value: 'child1',
+              },
+              {
+                label: 'Child 2',
+                value: 'child2',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    // Open parent
+    wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
+
+    // Check child1
+    wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
+    expect(onChange).toHaveBeenCalledWith([['parent', 'child1']], expect.anything());
+
+    // Check child2
+    onChange.mockReset();
+    wrapper.find('span.rc-cascader-checkbox').at(2).simulate('click');
+    expect(onChange).toHaveBeenCalledWith([['parent']], expect.anything());
+
+    // Uncheck child1
+    onChange.mockReset();
+    wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
+    expect(onChange).toHaveBeenCalledWith([['parent', 'child2']], expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/33302
