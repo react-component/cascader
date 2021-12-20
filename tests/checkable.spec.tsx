@@ -134,4 +134,16 @@ describe('Cascader.Checkable', () => {
     wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
     expect(onChange).toHaveBeenCalledWith([['parent', 'child2']], expect.anything());
   });
+
+  // https://github.com/ant-design/ant-design/issues/33302
+  it('should not display checkbox when children is empty', () => {
+    const wrapper = mount(
+      <Cascader checkable options={[]}>
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.find('.rc-cascader-checkbox').length).toBe(0);
+  });
 });
