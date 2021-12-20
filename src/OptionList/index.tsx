@@ -95,7 +95,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   };
 
   const onPathSelect = (valuePath: SingleValueType, leaf: boolean, fromKeyboard = false) => {
-    onSelect(valuePath, leaf);
+    onSelect(valuePath);
 
     if (!multiple && (leaf || (changeOnSelect && (expandTrigger === 'hover' || fromKeyboard)))) {
       toggleOpen(false);

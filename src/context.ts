@@ -12,7 +12,7 @@ export interface CascaderContextProps {
   values: SingleValueType[];
   halfValues: SingleValueType[];
   changeOnSelect?: boolean;
-  onSelect: (valuePath: SingleValueType, leaf: boolean) => void;
+  onSelect: (valuePath: SingleValueType) => void;
   checkable?: boolean | React.ReactNode;
   searchOptions: DefaultOptionType[];
   dropdownPrefixCls?: string;

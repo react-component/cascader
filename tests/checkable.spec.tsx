@@ -128,5 +128,10 @@ describe('Cascader.Checkable', () => {
     onChange.mockReset();
     wrapper.find('span.rc-cascader-checkbox').at(2).simulate('click');
     expect(onChange).toHaveBeenCalledWith([['parent']], expect.anything());
+
+    // Uncheck child1
+    onChange.mockReset();
+    wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
+    expect(onChange).toHaveBeenCalledWith([['parent', 'child2']], expect.anything());
   });
 });

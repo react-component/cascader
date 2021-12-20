@@ -293,7 +293,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   });
 
   // =========================== Select ===========================
-  const onInternalSelect = useRefFunc((valuePath: SingleValueType, leaf: boolean) => {
+  const onInternalSelect = useRefFunc((valuePath: SingleValueType) => {
     if (!multiple) {
       triggerChange(valuePath);
     } else {
@@ -346,7 +346,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   });
 
   // Display Value change logic
-  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (value, info) => {
+  const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (_, info) => {
     if (info.type === 'clear') {
       triggerChange([]);
       return;
@@ -354,7 +354,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
 
     // Cascader do not support `add` type. Only support `remove`
     const { valueCells } = info.values[0] as DisplayValueType & { valueCells: SingleValueType };
-    onInternalSelect(valueCells, null);
+    onInternalSelect(valueCells);
   };
 
   // ============================ Open ============================
@@ -457,7 +457,7 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   );
 });
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   Cascader.displayName = 'Cascader';
 }
 
