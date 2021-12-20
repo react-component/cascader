@@ -26,6 +26,7 @@ export default (
       return {
         label,
         value: toPathKey(valueCells),
+        valueCells,
       };
     });
   }, [rawValues, options, fieldNames, displayRender]);

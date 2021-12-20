@@ -2,7 +2,7 @@ import * as React from 'react';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { Placement } from 'rc-select/lib/BaseSelect';
+import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import OptionList from './OptionList';
@@ -302,29 +302,46 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       const checkedPathKeys = toPathKeys(checkedValues);
       const halfCheckedPathKeys = toPathKeys(halfCheckedValues);
 
-      const nextSelected = !checkedPathKeys.includes(pathKey);
-      const nextRawCheckedKeys = nextSelected
-        ? [...checkedPathKeys, pathKey]
-        : checkedPathKeys.filter(key => key !== pathKey);
-      const pathKeyEntities = getPathKeyEntities();
+      const existInChecked = checkedPathKeys.includes(pathKey);
+      const existInMissing = missingCheckedValues.some(
+        valueCells => toPathKey(valueCells) === pathKey,
+      );
 
-      // Conduction by selected or not
-      let checkedKeys: React.Key[];
-      if (nextSelected) {
-        ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
+      // Do update
+      let nextCheckedValues = checkedValues;
+      let nextMissingValues = missingCheckedValues;
+
+      if (existInMissing && !existInChecked) {
+        // Missing value only do filter
+        nextMissingValues = missingCheckedValues.filter(
+          valueCells => toPathKey(valueCells) !== pathKey,
+        );
       } else {
-        ({ checkedKeys } = conductCheck(
-          nextRawCheckedKeys,
-          { checked: false, halfCheckedKeys: halfCheckedPathKeys },
-          pathKeyEntities,
-        ));
+        // Update checked key first
+        const nextRawCheckedKeys = existInChecked
+          ? checkedPathKeys.filter(key => key !== pathKey)
+          : [...checkedPathKeys, pathKey];
+
+        const pathKeyEntities = getPathKeyEntities();
+
+        // Conduction by selected or not
+        let checkedKeys: React.Key[];
+        if (existInChecked) {
+          ({ checkedKeys } = conductCheck(
+            nextRawCheckedKeys,
+            { checked: false, halfCheckedKeys: halfCheckedPathKeys },
+            pathKeyEntities,
+          ));
+        } else {
+          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
+        }
+
+        // Roll up to parent level keys
+        const deDuplicatedKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
+        nextCheckedValues = getValueByKeyPath(deDuplicatedKeys);
       }
 
-      // Roll up to parent level keys
-      const deDuplicatedKeys = formatStrategyValues(checkedKeys, getPathKeyEntities);
-      const nextValues = getValueByKeyPath(deDuplicatedKeys);
-
-      triggerChange(nextValues);
+      triggerChange([...nextMissingValues, ...nextCheckedValues]);
     }
   });
 
@@ -332,11 +349,11 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
   const onDisplayValuesChange: BaseSelectProps['onDisplayValuesChange'] = (value, info) => {
     if (info.type === 'clear') {
       triggerChange([]);
+      return;
     }
 
     // Cascader do not support `add` type. Only support `remove`
-    const pathKey = info.values[0].value;
-    const valueCells = getValueByKeyPath([pathKey])[0];
+    const { valueCells } = info.values[0] as DisplayValueType & { valueCells: SingleValueType };
     onInternalSelect(valueCells, null);
   };
 

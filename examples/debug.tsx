@@ -86,13 +86,13 @@ const addressOptions = [
 const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(false);
+  const [multiple, setMultiple] = React.useState(true);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
     console.log('[DEBUG] onChange - value:', value);
     console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
-    setInputValue(selectedOptions.map(o => o.label).join(', '));
+    // setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
   return (
@@ -113,8 +113,8 @@ const Demo = () => {
         onChange={onChange}
         checkable={multiple}
         allowClear
-        defaultValue={multiple ? [defaultValue] : defaultValue}
-        // defaultValue={['not', 'exist']}
+        // defaultValue={multiple ? [defaultValue] : defaultValue}
+        defaultValue={[['not', 'yet'], ['exist']]}
         showSearch
         // showSearch={{ limit: 1 }}
         // open
