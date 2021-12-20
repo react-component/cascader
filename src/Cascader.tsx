@@ -54,7 +54,7 @@ export interface DefaultOptionType extends BaseOptionType {
   children?: DefaultOptionType[];
 }
 
-export interface CascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
@@ -109,6 +109,40 @@ export interface CascaderProps<OptionType extends BaseOptionType = DefaultOption
   loadingIcon?: React.ReactNode;
 }
 
+type OnSingleChange<OptionType> = (value: SingleValueType, selectOptions: OptionType[]) => void;
+type OnMultipleChange<OptionType> = (
+  value: SingleValueType[],
+  selectOptions: OptionType[][],
+) => void;
+
+export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends BaseCascaderProps<OptionType> {
+  checkable?: false;
+
+  onChange?: OnSingleChange<OptionType>;
+}
+
+export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+  extends BaseCascaderProps<OptionType> {
+  checkable: true | React.ReactNode;
+
+  onChange?: OnMultipleChange<OptionType>;
+}
+
+export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
+  | SingleCascaderProps<OptionType>
+  | MultipleCascaderProps<OptionType>;
+
+type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
+  SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
+  'onChange'
+> & {
+  onChange?: (
+    value: SingleValueType | SingleValueType[],
+    selectOptions: OptionType[] | OptionType[][],
+  ) => void;
+};
+
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
 
 function isMultipleValue(value: ValueType): value is SingleValueType[] {
@@ -127,7 +161,7 @@ function toRawValues(value: ValueType): SingleValueType[] {
   return value.length === 0 ? [] : [value];
 }
 
-const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
+const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
   const {
     // MISC
     id,
@@ -455,7 +489,13 @@ const Cascader = React.forwardRef<CascaderRef, CascaderProps>((props, ref) => {
       />
     </CascaderContext.Provider>
   );
-});
+}) as (<OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
+  props: React.PropsWithChildren<CascaderProps<OptionType>> & {
+    ref?: React.Ref<BaseSelectRef>;
+  },
+) => React.ReactElement) & {
+  displayName?: string;
+};
 
 if (process.env.NODE_ENV !== 'production') {
   Cascader.displayName = 'Cascader';
