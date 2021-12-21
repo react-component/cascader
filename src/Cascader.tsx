@@ -209,6 +209,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     // Children
     children,
+
+    ...restProps
   } = props;
 
   const mergedId = useId(id);
@@ -461,7 +463,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   return (
     <CascaderContext.Provider value={cascaderContext}>
       <BaseSelect
-        {...props}
+        {...restProps}
         // MISC
         ref={ref as any}
         id={mergedId}
