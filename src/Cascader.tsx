@@ -270,7 +270,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     mergedSearchValue,
     mergedOptions,
     mergedFieldNames,
-    prefixCls,
+    dropdownPrefixCls || prefixCls,
     searchConfig,
     changeOnSelect,
   );
@@ -460,6 +460,18 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ==============================================================
   // ==                          Render                          ==
   // ==============================================================
+  const emptyOptions = !(mergedSearchValue ? searchOptions : mergedOptions).length;
+
+  const dropdownStyle: React.CSSProperties =
+    // Search to match width
+    (mergedSearchValue && searchConfig.matchInputWidth) ||
+    // Empty keep the width
+    emptyOptions
+      ? {}
+      : {
+          minWidth: 'auto',
+        };
+
   return (
     <CascaderContext.Provider value={cascaderContext}>
       <BaseSelect
@@ -469,7 +481,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         id={mergedId}
         prefixCls={prefixCls}
         dropdownMatchSelectWidth={false}
-        dropdownStyle={{ minWidth: 'auto' }}
+        dropdownStyle={dropdownStyle}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
@@ -480,7 +492,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         showSearch={mergedShowSearch}
         // Options
         OptionList={OptionList}
-        emptyOptions={!(mergedSearchValue ? searchOptions : mergedOptions).length}
+        emptyOptions={emptyOptions}
         // Open
         open={mergedOpen}
         dropdownClassName={mergedDropdownClassName}

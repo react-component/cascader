@@ -109,7 +109,7 @@ const Demo = () => {
       </label>
       <Cascader
         style={{ width: 200 }}
-        options={addressOptions}
+        // options={addressOptions}
         onChange={onChange}
         checkable={multiple}
         allowClear
@@ -117,7 +117,7 @@ const Demo = () => {
         defaultValue={[['not', 'yet'], ['exist']]}
         showSearch
         // showSearch={{ limit: 1 }}
-        // open
+        open
         // direction="rtl"
         // searchValue="福a"
         // changeOnSelect
