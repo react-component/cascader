@@ -123,7 +123,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
       );
 
       const subOptions = currentOption?.[fieldNames.children];
-      if (!subOptions) {
+      if (!subOptions?.length) {
         break;
       }
 

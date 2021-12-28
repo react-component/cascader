@@ -5,6 +5,11 @@ import Cascader from '../src';
 
 const addressOptions = [
   {
+    label: '空孩子',
+    value: 'empty',
+    children: [],
+  },
+  {
     label: '福建',
     value: 'fj',
     title: '测试标题',
@@ -86,7 +91,7 @@ const addressOptions = [
 const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(true);
+  const [multiple, setMultiple] = React.useState(false);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -109,7 +114,7 @@ const Demo = () => {
       </label>
       <Cascader
         style={{ width: 200 }}
-        // options={addressOptions}
+        options={addressOptions}
         onChange={onChange}
         checkable={multiple}
         allowClear

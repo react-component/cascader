@@ -687,4 +687,27 @@ describe('Cascader.Basic', () => {
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
     expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('One');
   });
+
+  it('empty children is last children', () => {
+    const onValueChange = jest.fn();
+
+    const wrapper = mount(
+      <Cascader
+        open
+        onChange={onValueChange}
+        options={[
+          {
+            label: 'parent',
+            value: 'parent',
+            children: [],
+          },
+        ]}
+      />,
+    );
+
+    wrapper.clickOption(0, 0);
+
+    expect(onValueChange).toHaveBeenCalledWith(['parent'], expect.anything());
+    expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(1);
+  });
 });
