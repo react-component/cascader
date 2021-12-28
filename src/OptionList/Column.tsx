@@ -73,6 +73,9 @@ export default function Column({
         // >>>>> checked
         const checked = checkedSet.has(fullPathKey);
 
+        // >>>>> halfChecked
+        const halfChecked = halfCheckedSet.has(fullPathKey);
+
         // >>>>> Open
         const triggerOpenPath = () => {
           if (!disabled && (!hoverOpen || !isMergedLeaf)) {
@@ -131,7 +134,7 @@ export default function Column({
               <Checkbox
                 prefixCls={`${prefixCls}-checkbox`}
                 checked={checked}
-                halfChecked={halfCheckedSet.has(value)}
+                halfChecked={halfChecked}
                 disabled={disabled}
                 onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                   e.stopPropagation();

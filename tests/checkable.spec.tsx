@@ -56,6 +56,7 @@ describe('Cascader.Checkable', () => {
 
     // Check cards
     wrapper.clickOption(2, 1);
+    expect(wrapper.find('.rc-cascader-checkbox-indeterminate')).toHaveLength(2);
     expect(wrapper.exists('.rc-cascader-checkbox-indeterminate')).toBeTruthy();
     expect(onChange).toHaveBeenCalledWith(
       [
@@ -73,6 +74,25 @@ describe('Cascader.Checkable', () => {
           expect.objectContaining({ value: 'little' }),
           expect.objectContaining({ value: 'cards' }),
         ],
+      ],
+    );
+
+    // Check fish
+    wrapper.clickOption(2, 0);
+    expect(wrapper.find('.rc-cascader-checkbox-indeterminate')).toHaveLength(0);
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(5);
+    expect(onChange).toHaveBeenCalledWith(
+      [
+        // Light
+        ['light'],
+        // Bamboo
+        ['bamboo'],
+      ],
+      [
+        // Light
+        [expect.objectContaining({ value: 'light' })],
+        // Cards
+        [expect.objectContaining({ value: 'bamboo' })],
       ],
     );
   });
