@@ -31,5 +31,5 @@ export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
 }
 
 export function isLeaf(option: DefaultOptionType, fieldNames: FieldNames) {
-  return option.isLeaf ?? !option[fieldNames.children];
+  return option.isLeaf ?? !option[fieldNames.children]?.length;
 }
