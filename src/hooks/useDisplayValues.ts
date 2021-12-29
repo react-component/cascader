@@ -21,11 +21,15 @@ export default (
 
     // If exist non-string value, use ReactNode instead
     return labels.reduce((list, label, index) => {
+      const keyedLabel = React.isValidElement(label)
+        ? React.cloneElement(label, { key: index })
+        : label;
+
       if (index === 0) {
-        return [label];
+        return [keyedLabel];
       }
 
-      return [...list, SPLIT, label];
+      return [...list, SPLIT, keyedLabel];
     }, []);
   },
 ) => {

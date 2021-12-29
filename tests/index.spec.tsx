@@ -710,4 +710,16 @@ describe('Cascader.Basic', () => {
     expect(onValueChange).toHaveBeenCalledWith(['parent'], expect.anything());
     expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(1);
   });
+
+  it('ReactNode label should not be [object]', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[{ label: <span>Parent</span>, value: 'parent' }]}
+        value={[['parent']]}
+        checkable
+      />,
+    );
+
+    expect(wrapper.find('.rc-cascader-selection-item-content').text()).toEqual('Parent');
+  });
 });
