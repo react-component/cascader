@@ -5,7 +5,7 @@ import Cascader from '../src';
 
 const addressOptions = [
   {
-    label: '空孩子',
+    label: <span>空孩子</span>,
     value: 'empty',
     children: [],
   },
@@ -91,7 +91,7 @@ const addressOptions = [
 const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(false);
+  const [multiple, setMultiple] = React.useState(true);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -119,10 +119,15 @@ const Demo = () => {
         checkable={multiple}
         allowClear
         // defaultValue={multiple ? [defaultValue] : defaultValue}
-        defaultValue={[['not', 'yet'], ['exist']]}
+        // defaultValue={[['not', 'yet'], ['exist']]}
+        defaultValue={[['empty']]}
         showSearch
         // showSearch={{ limit: 1 }}
         open
+        // tagRender={props => {
+        //   console.log(props);
+        //   return props.label as any;
+        // }}
         // direction="rtl"
         // searchValue="福a"
         // changeOnSelect
