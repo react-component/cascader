@@ -711,34 +711,60 @@ describe('Cascader.Basic', () => {
     expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(1);
   });
 
-  it('ReactNode label should not be [object]', () => {
-    const wrapper = mount(
-      <Cascader
-        options={[
-          { label: <span>Parent</span>, value: 'parent' },
-          {
-            label: 'Normal',
-            value: 'normal',
-            children: [
-              {
-                label: <span>Child</span>,
-                value: 'child',
-              },
-              {
-                label: 'Child2',
-                value: 'child2',
-              },
-            ],
-          },
-        ]}
-        value={[['parent'], ['normal', 'child']]}
-        checkable
-      />,
-    );
+  describe('ReactNode label should not be [object]', () => {
+    it('single', () => {
+      const wrapper = mount(
+        <Cascader
+          options={[
+            {
+              label: 'Normal',
+              value: 'normal',
+              children: [
+                {
+                  label: <span>Child</span>,
+                  value: 'child',
+                },
+                {
+                  label: 'Child2',
+                  value: 'child2',
+                },
+              ],
+            },
+          ]}
+          value={['normal', 'child']}
+        />,
+      );
 
-    expect(wrapper.find('.rc-cascader-selection-item-content').first().text()).toEqual('Parent');
-    expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual(
-      'Normal / Child',
-    );
+      expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('Normal / Child');
+    });
+
+    it('multiple', () => {
+      const wrapper = mount(
+        <Cascader
+          options={[
+            { label: <span>Parent</span>, value: 'parent' },
+            {
+              label: 'Normal',
+              value: 'normal',
+              children: [
+                {
+                  label: <span>Child</span>,
+                  value: 'child',
+                },
+                {
+                  label: 'Child2',
+                  value: 'child2',
+                },
+              ],
+            },
+          ]}
+          value={[['parent'], ['normal', 'child']]}
+          checkable
+        />,
+      );
+
+      expect(wrapper.find('.rc-cascader-selection-item-content').first().text()).toEqual('Parent');
+      expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Child');
+    });
   });
 });
