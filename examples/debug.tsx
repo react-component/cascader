@@ -120,7 +120,8 @@ const Demo = () => {
         allowClear
         // defaultValue={multiple ? [defaultValue] : defaultValue}
         // defaultValue={[['not', 'yet'], ['exist']]}
-        defaultValue={[['empty']]}
+        // defaultValue={[['empty']]}
+        defaultValue={[['fj', 'fuzhou']]}
         showSearch
         // showSearch={{ limit: 1 }}
         open
