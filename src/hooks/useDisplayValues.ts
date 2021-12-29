@@ -12,7 +12,22 @@ export default (
   rawValues: SingleValueType[],
   options: DefaultOptionType[],
   fieldNames: InternalFieldNames,
-  displayRender: CascaderProps['displayRender'] = labels => labels.join(' / '),
+  displayRender: CascaderProps['displayRender'] = labels => {
+    const SPLIT = ' / ';
+
+    if (labels.every(label => ['string', 'number'].includes(typeof label))) {
+      return labels.join(SPLIT);
+    }
+
+    // If exist non-string value, use ReactNode instead
+    return labels.reduce((list, label, index) => {
+      if (index === 0) {
+        return [label];
+      }
+
+      return [...list, SPLIT, label];
+    }, []);
+  },
 ) => {
   return React.useMemo(() => {
     return rawValues.map(valueCells => {
