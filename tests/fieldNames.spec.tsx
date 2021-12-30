@@ -119,4 +119,40 @@ describe('Cascader.FieldNames', () => {
 
     expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('little');
   });
+
+  it('should be no warning when use key field as value', () => {
+    const option = [
+      {
+        title: '福建',
+        key: 'fj',
+        children: [
+          {
+            title: '福州',
+            key: 'fuzhou',
+            children: [
+              {
+                title: '马尾',
+                key: 'mawei',
+              },
+            ],
+          },
+        ],
+      },
+    ] as any;
+    let warning = false;
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      warning = true;
+    });
+    mount(
+      <Cascader
+        options={option}
+        fieldNames={{
+          label: 'title',
+          value: 'key',
+        }}
+      />,
+    );
+
+    expect(warning).toBe(false);
+  });
 });
