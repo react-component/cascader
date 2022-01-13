@@ -331,6 +331,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   // =========================== Select ===========================
   const onInternalSelect = useRefFunc((valuePath: SingleValueType) => {
+    setSearchValue('');
     if (!multiple) {
       triggerChange(valuePath);
     } else {

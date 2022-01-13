@@ -177,4 +177,15 @@ describe('Cascader.Search', () => {
 
     errorSpy.mockRestore();
   });
+
+  it('onChange should be triggered when click option with multiple', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Cascader checkable options={options} changeOnSelect onChange={onChange} showSearch />,
+    );
+    doSearch(wrapper, 'toy');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('click');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('mousedown');
+    expect(onChange).toHaveBeenCalledWith([['bamboo', 'little', 'fish']], expect.anything());
+  });
 });
