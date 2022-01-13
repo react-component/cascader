@@ -130,7 +130,7 @@ export default function Column({
               }
             }}
             onMouseDown={e => {
-              // Prevent selector from blurred
+              // Prevent selector from blurring
               e.preventDefault();
             }}
           >
