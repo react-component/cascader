@@ -129,6 +129,10 @@ export default function Column({
                 triggerOpenPath();
               }
             }}
+            onMouseDown={e => {
+              // Prevent selector from blurred
+              e.preventDefault();
+            }}
           >
             {multiple && (
               <Checkbox
