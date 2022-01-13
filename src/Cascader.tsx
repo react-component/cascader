@@ -69,7 +69,6 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   value?: ValueType;
   defaultValue?: ValueType;
   changeOnSelect?: boolean;
-  onChange?: (value: ValueType, selectedOptions?: OptionType[] | OptionType[][]) => void;
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
 
