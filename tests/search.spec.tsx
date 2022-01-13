@@ -185,6 +185,7 @@ describe('Cascader.Search', () => {
     );
     doSearch(wrapper, 'toy');
     wrapper.find('.rc-cascader-menu-item').first().simulate('click');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('mousedown');
     expect(onChange).toHaveBeenCalledWith([['bamboo', 'little', 'fish']], expect.anything());
   });
 });
