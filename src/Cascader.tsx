@@ -305,7 +305,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     deDuplicatedValues,
     mergedOptions,
     mergedFieldNames,
-    multiple,
     displayRender,
   );
 

@@ -764,7 +764,7 @@ describe('Cascader.Basic', () => {
       );
 
       expect(wrapper.find('.rc-cascader-selection-item-content').first().text()).toEqual('Parent');
-      expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Child');
+      expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Normal / Child');
     });
   });
 });
