@@ -12,6 +12,7 @@ export default (
   rawValues: SingleValueType[],
   options: DefaultOptionType[],
   fieldNames: InternalFieldNames,
+  multiple: boolean,
   displayRender: CascaderProps['displayRender'],
 ) => {
   return React.useMemo(() => {
@@ -19,14 +20,15 @@ export default (
       displayRender ||
       // Default displayRender
       (labels => {
+        const mergedLabels = multiple ? labels.slice(-1) : labels;
         const SPLIT = ' / ';
 
-        if (labels.every(label => ['string', 'number'].includes(typeof label))) {
-          return labels.join(SPLIT);
+        if (mergedLabels.every(label => ['string', 'number'].includes(typeof label))) {
+          return mergedLabels.join(SPLIT);
         }
 
         // If exist non-string value, use ReactNode instead
-        return labels.reduce((list, label, index) => {
+        return mergedLabels.reduce((list, label, index) => {
           const keyedLabel = React.isValidElement(label)
             ? React.cloneElement(label, { key: index })
             : label;
@@ -53,5 +55,5 @@ export default (
         valueCells,
       };
     });
-  }, [rawValues, options, fieldNames, displayRender]);
+  }, [rawValues, options, fieldNames, displayRender, multiple]);
 };
