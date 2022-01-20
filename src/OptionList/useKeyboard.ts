@@ -2,7 +2,6 @@ import * as React from 'react';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
-import { toPathKey } from '../utils/commonUtil';
 import { useBaseProps } from 'rc-select';
 
 export default (
@@ -11,7 +10,6 @@ export default (
   fieldNames: InternalFieldNames,
   activeValueCells: React.Key[],
   setActiveValueCells: (activeValueCells: React.Key[]) => void,
-  containerRef: React.RefObject<HTMLElement>,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
 ) => {
   const { direction, searchValue, toggleOpen, open } = useBaseProps();
@@ -56,9 +54,6 @@ export default (
   // Update active value cells and scroll to target element
   const internalSetActiveValueCells = (next: React.Key[]) => {
     setActiveValueCells(next);
-
-    const ele = containerRef.current?.querySelector(`li[data-path-key="${toPathKey(next)}"]`);
-    ele?.scrollIntoView?.({ block: 'nearest' });
   };
 
   // Same options offset
