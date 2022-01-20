@@ -141,15 +141,17 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     }
   };
 
-  useKeyboard(
-    ref,
-    mergedOptions,
-    fieldNames,
-    activeValueCells,
-    onPathOpen,
-    containerRef,
-    onKeyboardSelect,
-  );
+  useKeyboard(ref, mergedOptions, fieldNames, activeValueCells, onPathOpen, onKeyboardSelect);
+
+  // >>>>> Active Scroll
+  React.useEffect(() => {
+    for (let i = 0; i < activeValueCells.length; i += 1) {
+      const cellPath = activeValueCells.slice(0, i + 1);
+      const cellKeyPath = toPathKey(cellPath);
+      const ele = containerRef.current?.querySelector(`li[data-path-key="${cellKeyPath}"]`);
+      ele?.scrollIntoView?.({ block: 'nearest' });
+    }
+  }, [activeValueCells]);
 
   // ========================== Render ==========================
   // >>>>> Empty

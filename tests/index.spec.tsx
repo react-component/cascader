@@ -767,4 +767,43 @@ describe('Cascader.Basic', () => {
       expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Child');
     });
   });
+
+  describe('open should auto scroll to position', () => {
+    let spyScroll: ReturnType<typeof spyElementPrototypes>;
+    let scrollTimes = 0;
+
+    beforeAll(() => {
+      spyScroll = spyElementPrototypes(HTMLElement, {
+        scrollIntoView: () => {
+          scrollTimes += 1;
+        },
+      });
+    });
+
+    beforeEach(() => {
+      scrollTimes = 0;
+    });
+
+    afterAll(() => {
+      spyScroll.mockRestore();
+    });
+
+    it('work', () => {
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+
+      expect(scrollTimes).toEqual(1);
+      wrapper.unmount();
+    });
+  });
 });
