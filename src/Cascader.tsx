@@ -208,7 +208,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     // Children
     children,
-
+    dropdownMatchSelectWidth = false,
     ...restProps
   } = props;
 
@@ -481,7 +481,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
-        dropdownMatchSelectWidth={false}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         dropdownStyle={dropdownStyle}
         // Value
         displayValues={displayValues}
