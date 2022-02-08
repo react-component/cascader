@@ -10,13 +10,13 @@ const addressOptions = [
     children: [],
   },
   {
-    label: '福建',
-    value: 'fj',
+    label: '福建 "',
+    value: 'fj "',
     title: '测试标题',
     children: [
       {
-        label: '福州',
-        value: 'fuzhou',
+        label: '福州"',
+        value: 'fuzhou "',
         children: [
           {
             label: '马尾',
