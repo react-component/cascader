@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-no-bind */
 
-import React from 'react';
-import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { mount } from './enzyme';
+import { resetWarned } from 'rc-util/lib/warning';
+import React from 'react';
 import Cascader from '../src';
 import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
+import { mount } from './enzyme';
 
 describe('Cascader.Basic', () => {
   let selectedValue;
@@ -805,5 +805,27 @@ describe('Cascader.Basic', () => {
       expect(scrollTimes).toEqual(1);
       wrapper.unmount();
     });
+  });
+
+  it('should support double quote in label and value', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[
+          {
+            label: 'bamboo "',
+            value: 'bamboo "',
+            children: [
+              {
+                label: 'bamboo2 "',
+                value: 'bamboo2 "',
+              },
+            ],
+          },
+        ]}
+        open
+      />,
+    );
+
+    wrapper.find(`li[data-path-key]`).simulate('click');
   });
 });
