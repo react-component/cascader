@@ -816,8 +816,8 @@ describe('Cascader.Basic', () => {
             value: 'bamboo "',
           },
           {
-            // eslint-disable-next-line
-            label: 'bamboo "',
+            // prettier-ignore
+            label: 'bamboo \"',
             value: 'bamboo "',
           },
         ]}
