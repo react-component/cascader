@@ -816,6 +816,7 @@ describe('Cascader.Basic', () => {
             value: 'bamboo "',
           },
           {
+            // eslint-disable:current-line
             label: 'bamboo "',
             value: 'bamboo "',
           },
