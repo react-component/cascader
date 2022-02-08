@@ -151,8 +151,6 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
       const ele = containerRef.current?.querySelector(
         `li[data-path-key="${cellKeyPath.replace(/(?<!\\)"/g, '\\"')}"]`, // matches unescaped double quotes
       );
-      console.log(ele);
-
       ele?.scrollIntoView?.({ block: 'nearest' });
     }
   }, [activeValueCells]);
