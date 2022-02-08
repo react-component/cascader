@@ -818,7 +818,8 @@ describe('Cascader.Basic', () => {
           {
             // prettier-ignore
             label: 'bamboo \"',
-            value: 'bamboo "',
+            // prettier-ignore
+            value: 'bamboo \"',
           },
         ]}
         open
