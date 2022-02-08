@@ -814,18 +814,17 @@ describe('Cascader.Basic', () => {
           {
             label: 'bamboo "',
             value: 'bamboo "',
-            children: [
-              {
-                label: 'bamboo2 "',
-                value: 'bamboo2 "',
-              },
-            ],
+          },
+          {
+            label: 'bamboo "',
+            value: 'bamboo "',
           },
         ]}
         open
       />,
     );
 
-    wrapper.find(`li[data-path-key]`).simulate('click');
+    wrapper.find(`li[data-path-key]`).at(0).simulate('click');
+    wrapper.find(`li[data-path-key]`).at(1).simulate('click');
   });
 });
