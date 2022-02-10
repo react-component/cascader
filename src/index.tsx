@@ -6,5 +6,7 @@ export type {
   ShowSearchType,
   DefaultOptionType,
   BaseOptionType,
+  SingleCascaderProps,
+  MultipleCascaderProps,
 } from './Cascader';
 export default Cascader;
