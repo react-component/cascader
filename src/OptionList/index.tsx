@@ -144,16 +144,19 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   useKeyboard(ref, mergedOptions, fieldNames, activeValueCells, onPathOpen, onKeyboardSelect);
 
   // >>>>> Active Scroll
+  const containerTop = containerRef.current?.getBoundingClientRect().top || 0;
   React.useEffect(() => {
-    for (let i = 0; i < activeValueCells.length; i += 1) {
-      const cellPath = activeValueCells.slice(0, i + 1);
-      const cellKeyPath = toPathKey(cellPath);
-      const ele = containerRef.current?.querySelector(
-        `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
-      );
-      ele?.scrollIntoView?.({ block: 'nearest' });
+    if (containerTop > 0) {
+      for (let i = 0; i < activeValueCells.length; i += 1) {
+        const cellPath = activeValueCells.slice(0, i + 1);
+        const cellKeyPath = toPathKey(cellPath);
+        const ele = containerRef.current?.querySelector(
+          `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
+        );
+        ele?.scrollIntoView?.({ block: 'nearest' });
+      }
     }
-  }, [activeValueCells]);
+  }, [activeValueCells, containerTop]);
 
   // ========================== Render ==========================
   // >>>>> Empty
@@ -200,17 +203,15 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // >>>>> Render
   return (
-    <>
-      <div
-        className={classNames(`${mergedPrefixCls}-menus`, {
-          [`${mergedPrefixCls}-menu-empty`]: isEmpty,
-          [`${mergedPrefixCls}-rtl`]: rtl,
-        })}
-        ref={containerRef}
-      >
-        {columnNodes}
-      </div>
-    </>
+    <div
+      className={classNames(`${mergedPrefixCls}-menus`, {
+        [`${mergedPrefixCls}-menu-empty`]: isEmpty,
+        [`${mergedPrefixCls}-rtl`]: rtl,
+      })}
+      ref={containerRef}
+    >
+      {columnNodes}
+    </div>
   );
 });
 

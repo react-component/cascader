@@ -777,6 +777,9 @@ describe('Cascader.Basic', () => {
         scrollIntoView: () => {
           scrollTimes += 1;
         },
+        getBoundingClientRect: () => ({
+          top: 10,
+        }),
       });
     });
 
