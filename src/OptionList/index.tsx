@@ -1,16 +1,16 @@
 /* eslint-disable default-case */
-import * as React from 'react';
 import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
-import Column from './Column';
-import CascaderContext from '../context';
+import raf from 'rc-util/lib/raf';
+import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import CascaderContext from '../context';
 import { isLeaf, toPathKey, toPathKeys, toPathValueStr } from '../utils/commonUtil';
+import { toPathOptions } from '../utils/treeUtil';
+import Column from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
-import { toPathOptions } from '../utils/treeUtil';
-import raf from 'rc-util/lib/raf';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
@@ -146,6 +146,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // >>>>> Active Scroll
   React.useEffect(() => {
+    let rafId;
+
     const scrollOptionIntoView = () => {
       if (containerRef.current?.getBoundingClientRect().top > 0) {
         for (let i = 0; i < activeValueCells.length; i += 1) {
@@ -157,11 +159,11 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
           ele?.scrollIntoView?.({ block: 'nearest' });
         }
       } else {
-        raf(scrollOptionIntoView);
+        rafId = raf(scrollOptionIntoView);
       }
     };
 
-    const rafId = raf(scrollOptionIntoView);
+    rafId = raf(scrollOptionIntoView);
 
     return () => {
       raf.cancel(rafId);
