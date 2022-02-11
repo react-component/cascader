@@ -778,7 +778,9 @@ describe('Cascader.Basic', () => {
       });
     });
 
-    beforeEach(() => {});
+    afterEach(() => {
+      mockScrollTo.mockRestore();
+    });
 
     afterAll(() => {
       spyScroll.mockRestore();
@@ -839,6 +841,30 @@ describe('Cascader.Basic', () => {
         />,
       );
       expect(mockScrollTo).toBeCalledWith(undefined, { top: 100 });
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('should not scroll if no parent', () => {
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        parentElement: {
+          get: () => null,
+        },
+      });
+
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).not.toHaveBeenCalled();
       wrapper.unmount();
       spyElement.mockRestore();
     });
