@@ -2,11 +2,16 @@
 import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
-import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
-import { isLeaf, toPathKey, toPathKeys, toPathValueStr } from '../utils/commonUtil';
+import {
+  isLeaf,
+  scrollIntoParentView,
+  toPathKey,
+  toPathKeys,
+  toPathValueStr,
+} from '../utils/commonUtil';
 import { toPathOptions } from '../utils/treeUtil';
 import Column from './Column';
 import useActive from './useActive';
@@ -146,28 +151,16 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // >>>>> Active Scroll
   React.useEffect(() => {
-    let rafId;
-
-    const scrollOptionIntoView = () => {
-      if (containerRef.current?.getBoundingClientRect().top > 0) {
-        for (let i = 0; i < activeValueCells.length; i += 1) {
-          const cellPath = activeValueCells.slice(0, i + 1);
-          const cellKeyPath = toPathKey(cellPath);
-          const ele = containerRef.current?.querySelector(
-            `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
-          );
-          ele?.scrollIntoView?.({ block: 'nearest' });
-        }
-      } else {
-        rafId = raf(scrollOptionIntoView);
+    for (let i = 0; i < activeValueCells.length; i += 1) {
+      const cellPath = activeValueCells.slice(0, i + 1);
+      const cellKeyPath = toPathKey(cellPath);
+      const ele = containerRef.current?.querySelector<HTMLElement>(
+        `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
+      );
+      if (ele) {
+        scrollIntoParentView(ele);
       }
-    };
-
-    rafId = raf(scrollOptionIntoView);
-
-    return () => {
-      raf.cancel(rafId);
-    };
+    }
   }, [activeValueCells]);
 
   // ========================== Render ==========================
