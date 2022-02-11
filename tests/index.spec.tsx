@@ -770,6 +770,7 @@ describe('Cascader.Basic', () => {
 
   describe('open should auto scroll to position', () => {
     let spyScroll: ReturnType<typeof spyElementPrototypes>;
+    let spyRaf;
     let scrollTimes = 0;
 
     beforeAll(() => {
@@ -785,10 +786,15 @@ describe('Cascader.Basic', () => {
 
     beforeEach(() => {
       scrollTimes = 0;
+      spyRaf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => {
+        cb(0);
+        return 0;
+      });
     });
 
     afterAll(() => {
       spyScroll.mockRestore();
+      spyRaf.mockRestore();
     });
 
     it('work', () => {
@@ -804,7 +810,6 @@ describe('Cascader.Basic', () => {
           open
         />,
       );
-
       expect(scrollTimes).toEqual(1);
       wrapper.unmount();
     });

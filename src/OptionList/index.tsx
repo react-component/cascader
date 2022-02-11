@@ -10,6 +10,7 @@ import { isLeaf, toPathKey, toPathKeys, toPathValueStr } from '../utils/commonUt
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
 import { toPathOptions } from '../utils/treeUtil';
+import raf from 'rc-util/lib/raf';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
@@ -144,19 +145,28 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   useKeyboard(ref, mergedOptions, fieldNames, activeValueCells, onPathOpen, onKeyboardSelect);
 
   // >>>>> Active Scroll
-  const containerTop = containerRef.current?.getBoundingClientRect().top || 0;
   React.useEffect(() => {
-    if (containerTop > 0) {
-      for (let i = 0; i < activeValueCells.length; i += 1) {
-        const cellPath = activeValueCells.slice(0, i + 1);
-        const cellKeyPath = toPathKey(cellPath);
-        const ele = containerRef.current?.querySelector(
-          `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
-        );
-        ele?.scrollIntoView?.({ block: 'nearest' });
+    const scrollOptionIntoView = () => {
+      if (containerRef.current?.getBoundingClientRect().top > 0) {
+        for (let i = 0; i < activeValueCells.length; i += 1) {
+          const cellPath = activeValueCells.slice(0, i + 1);
+          const cellKeyPath = toPathKey(cellPath);
+          const ele = containerRef.current?.querySelector(
+            `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
+          );
+          ele?.scrollIntoView?.({ block: 'nearest' });
+        }
+      } else {
+        raf(scrollOptionIntoView);
       }
-    }
-  }, [activeValueCells, containerTop]);
+    };
+
+    const rafId = raf(scrollOptionIntoView);
+
+    return () => {
+      raf.cancel(rafId);
+    };
+  }, [activeValueCells]);
 
   // ========================== Render ==========================
   // >>>>> Empty
