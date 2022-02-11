@@ -770,25 +770,33 @@ describe('Cascader.Basic', () => {
 
   describe('open should auto scroll to position', () => {
     let spyScroll: ReturnType<typeof spyElementPrototypes>;
-    let scrollTimes = 0;
+    const mockScrollTo = jest.fn();
 
     beforeAll(() => {
       spyScroll = spyElementPrototypes(HTMLElement, {
-        scrollIntoView: () => {
-          scrollTimes += 1;
-        },
+        scrollTo: mockScrollTo,
       });
     });
 
-    beforeEach(() => {
-      scrollTimes = 0;
+    afterEach(() => {
+      mockScrollTo.mockRestore();
     });
 
     afterAll(() => {
       spyScroll.mockRestore();
     });
 
-    it('work', () => {
+    it('work to scroll up', () => {
+      let getOffesetTopTimes = 0;
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        offsetTop: {
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 10 : 0),
+        },
+        scrollTop: {
+          get: () => 20,
+        },
+      });
+
       const wrapper = mount(
         <Cascader
           fieldNames={{ value: 'label' }}
@@ -801,32 +809,87 @@ describe('Cascader.Basic', () => {
           open
         />,
       );
-
-      expect(scrollTimes).toEqual(1);
+      expect(mockScrollTo).toBeCalledWith(undefined, { top: 10 });
       wrapper.unmount();
+      spyElement.mockRestore();
     });
-  });
 
-  it('should support double quote in label and value', () => {
-    const wrapper = mount(
-      <Cascader
-        options={[
-          {
-            label: 'bamboo "',
-            value: 'bamboo "',
-          },
-          {
-            // prettier-ignore
-            label: 'bamboo \"',
-            // prettier-ignore
-            value: 'bamboo \"',
-          },
-        ]}
-        open
-      />,
-    );
+    it('work to scroll down', () => {
+      let getOffesetTopTimes = 0;
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        offsetTop: {
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
+        },
+        scrollTop: {
+          get: () => 0,
+        },
+        offsetHeight: {
+          get: () => 10,
+        },
+      });
 
-    wrapper.find(`li[data-path-key]`).at(0).simulate('click');
-    wrapper.find(`li[data-path-key]`).at(1).simulate('click');
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).toBeCalledWith(undefined, { top: 100 });
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('should not scroll if no parent', () => {
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        parentElement: {
+          get: () => null,
+        },
+      });
+
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).not.toHaveBeenCalled();
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('should support double quote in label and value', () => {
+      const wrapper = mount(
+        <Cascader
+          options={[
+            {
+              label: 'bamboo "',
+              value: 'bamboo "',
+            },
+            {
+              // prettier-ignore
+              label: 'bamboo \"',
+              // prettier-ignore
+              value: 'bamboo \"',
+            },
+          ]}
+          open
+        />,
+      );
+
+      wrapper.find(`li[data-path-key]`).at(0).simulate('click');
+      wrapper.find(`li[data-path-key]`).at(1).simulate('click');
+    });
   });
 });

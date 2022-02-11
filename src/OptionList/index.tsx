@@ -1,15 +1,21 @@
 /* eslint-disable default-case */
-import * as React from 'react';
 import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
-import Column from './Column';
-import CascaderContext from '../context';
+import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
-import { isLeaf, toPathKey, toPathKeys, toPathValueStr } from '../utils/commonUtil';
+import CascaderContext from '../context';
+import {
+  isLeaf,
+  scrollIntoParentView,
+  toPathKey,
+  toPathKeys,
+  toPathValueStr,
+} from '../utils/commonUtil';
+import { toPathOptions } from '../utils/treeUtil';
+import Column from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
-import { toPathOptions } from '../utils/treeUtil';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
@@ -148,10 +154,12 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     for (let i = 0; i < activeValueCells.length; i += 1) {
       const cellPath = activeValueCells.slice(0, i + 1);
       const cellKeyPath = toPathKey(cellPath);
-      const ele = containerRef.current?.querySelector(
+      const ele = containerRef.current?.querySelector<HTMLElement>(
         `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
       );
-      ele?.scrollIntoView?.({ block: 'nearest' });
+      if (ele) {
+        scrollIntoParentView(ele);
+      }
     }
   }, [activeValueCells]);
 
@@ -200,17 +208,15 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // >>>>> Render
   return (
-    <>
-      <div
-        className={classNames(`${mergedPrefixCls}-menus`, {
-          [`${mergedPrefixCls}-menu-empty`]: isEmpty,
-          [`${mergedPrefixCls}-rtl`]: rtl,
-        })}
-        ref={containerRef}
-      >
-        {columnNodes}
-      </div>
-    </>
+    <div
+      className={classNames(`${mergedPrefixCls}-menus`, {
+        [`${mergedPrefixCls}-menu-empty`]: isEmpty,
+        [`${mergedPrefixCls}-rtl`]: rtl,
+      })}
+      ref={containerRef}
+    >
+      {columnNodes}
+    </div>
   );
 });
 
