@@ -772,6 +772,7 @@ describe('Cascader.Basic', () => {
     let spyScroll: ReturnType<typeof spyElementPrototypes>;
     let spyRaf;
     let scrollTimes = 0;
+    let containerTop = 0;
 
     beforeAll(() => {
       spyScroll = spyElementPrototypes(HTMLElement, {
@@ -779,13 +780,14 @@ describe('Cascader.Basic', () => {
           scrollTimes += 1;
         },
         getBoundingClientRect: () => ({
-          top: 10,
+          top: containerTop++,
         }),
       });
     });
 
     beforeEach(() => {
       scrollTimes = 0;
+      containerTop = 0;
       spyRaf = jest.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => {
         cb(0);
         return 0;
