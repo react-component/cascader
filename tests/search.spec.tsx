@@ -31,6 +31,8 @@ describe('Cascader.Search', () => {
             {
               label: 'Toy Fish',
               value: 'fish',
+              // Leave a empty children here. But cascader should think this is a leaf node.
+              children: [],
             },
             {
               label: 'Toy Cards',
