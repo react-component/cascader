@@ -892,4 +892,8 @@ describe('Cascader.Basic', () => {
       wrapper.find(`li[data-path-key]`).at(1).simulate('click');
     });
   });
+
+  it('not crash when value type is not array', () => {
+    mount(<Cascader value={'bamboo' as any} />);
+  });
 });

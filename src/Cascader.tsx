@@ -157,7 +157,7 @@ function toRawValues(value: ValueType): SingleValueType[] {
     return value;
   }
 
-  return value.length === 0 ? [] : [value];
+  return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
 }
 
 const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
