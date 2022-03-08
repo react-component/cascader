@@ -13,7 +13,7 @@ import {
   toPathValueStr,
 } from '../utils/commonUtil';
 import { toPathOptions } from '../utils/treeUtil';
-import Column from './Column';
+import Column, { FIX_LABEL } from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
 
@@ -169,8 +169,8 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   const emptyList: DefaultOptionType[] = [
     {
-      [fieldNames.label as 'label']: notFoundContent,
       [fieldNames.value as 'value']: '__EMPTY__',
+      [FIX_LABEL as 'label']: notFoundContent,
       disabled: true,
     },
   ];
