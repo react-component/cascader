@@ -1,8 +1,9 @@
 import * as React from 'react';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from 'rc-select';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
-import { useBaseProps } from 'rc-select';
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
 export default (
   ref: React.Ref<RefOptionListProps>,
@@ -151,7 +152,18 @@ export default (
         // >>> Select
         case KeyCode.ENTER: {
           if (validActiveValueCells.length) {
-            onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+            const option = lastActiveOptions[lastActiveIndex];
+
+            // Search option should revert back of origin options
+            const originOptions: DefaultOptionType[] = option?.[SEARCH_MARK] || [];
+            if (originOptions.length) {
+              onKeyBoardSelect(
+                originOptions.map(opt => opt[fieldNames.value]),
+                originOptions[originOptions.length - 1],
+              );
+            } else {
+              onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+            }
           }
           break;
         }
