@@ -6,6 +6,8 @@ import Checkbox from './Checkbox';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
+export const FIX_LABEL = '__cascader_fix_label__';
+
 export interface ColumnProps {
   prefixCls: string;
   multiple?: boolean;
@@ -57,7 +59,7 @@ export default function Column({
       options.map(option => {
         const { disabled } = option;
         const searchOptions = option[SEARCH_MARK];
-        const label = option[fieldNames.label];
+        const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
 
         const isMergedLeaf = isLeaf(option, fieldNames);
