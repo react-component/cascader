@@ -119,4 +119,20 @@ describe('Cascader.FieldNames', () => {
 
     expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('little');
   });
+
+  it('empty should correct when label same as value', () => {
+    const wrapper = mount(
+      <Cascader
+        options={[]}
+        open
+        searchValue="not-exist"
+        fieldNames={{
+          label: 'same',
+          value: 'same',
+        }}
+      />,
+    );
+
+    expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('Not Found');
+  });
 });

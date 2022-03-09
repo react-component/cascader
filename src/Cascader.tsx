@@ -157,7 +157,7 @@ function toRawValues(value: ValueType): SingleValueType[] {
     return value;
   }
 
-  return value.length === 0 ? [] : [value];
+  return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
 }
 
 const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
@@ -238,10 +238,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   /** Convert path key back to value format */
   const getValueByKeyPath = React.useCallback(
     (pathKeys: React.Key[]): SingleValueType[] => {
-      const ketPathEntities = getPathKeyEntities();
+      const keyPathEntities = getPathKeyEntities();
 
       return pathKeys.map(pathKey => {
-        const { nodes } = ketPathEntities[pathKey];
+        const { nodes } = keyPathEntities[pathKey];
 
         return nodes.map(node => node[mergedFieldNames.value]);
       });
@@ -286,9 +286,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     }
 
     const keyPathValues = toPathKeys(existValues);
-    const ketPathEntities = getPathKeyEntities();
+    const keyPathEntities = getPathKeyEntities();
 
-    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, ketPathEntities);
+    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities);
 
     // Convert key back to value cells
     return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];

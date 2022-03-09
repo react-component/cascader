@@ -7,9 +7,11 @@ import { addressOptions } from './demoOptions';
 describe('Cascader.Keyboard', () => {
   let wrapper;
   let selectedValue;
+  let selectedOptions;
   let menus;
-  const onChange = value => {
+  const onChange = (value, options) => {
     selectedValue = value;
+    selectedOptions = options;
   };
 
   beforeEach(() => {
@@ -18,6 +20,7 @@ describe('Cascader.Keyboard', () => {
 
   afterEach(() => {
     selectedValue = null;
+    selectedOptions = null;
     menus = null;
   });
 
@@ -73,6 +76,24 @@ describe('Cascader.Keyboard', () => {
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
     expect(wrapper.isOpen()).toBeFalsy();
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
+    expect(selectedOptions).toEqual([
+      addressOptions[1],
+      addressOptions[1].children[0],
+      addressOptions[1].children[0].children[0],
+    ]);
+  });
+
+  it('enter on search', () => {
+    wrapper.find('input').simulate('change', { target: { value: '余杭' } });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+
+    expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
+    expect(selectedOptions).toEqual([
+      addressOptions[1],
+      addressOptions[1].children[0],
+      addressOptions[1].children[0].children[0],
+    ]);
   });
 
   it('rtl', () => {

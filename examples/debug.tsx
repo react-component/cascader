@@ -4,6 +4,7 @@ import '../assets/index.less';
 import Cascader from '../src';
 
 const addressOptions = [
+  ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: `99${i}` })),
   {
     label: <span>空孩子</span>,
     value: 'empty',
@@ -91,7 +92,7 @@ const addressOptions = [
 const defaultValue = ['not', 'exist'];
 
 const Demo = () => {
-  const [multiple, setMultiple] = React.useState(true);
+  const [multiple, setMultiple] = React.useState(false);
   const [, setInputValue] = React.useState('');
 
   const onChange = (value: any, selectedOptions: any) => {
@@ -121,10 +122,10 @@ const Demo = () => {
         // defaultValue={multiple ? [defaultValue] : defaultValue}
         // defaultValue={[['not', 'yet'], ['exist']]}
         // defaultValue={[['empty']]}
-        defaultValue={[['fj', 'fuzhou']]}
+        defaultValue={['fj', 'fuzhou']}
         showSearch
         // showSearch={{ limit: 1 }}
-        open
+        // open
         // tagRender={props => {
         //   console.log(props);
         //   return props.label as any;

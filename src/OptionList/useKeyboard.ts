@@ -1,9 +1,9 @@
 import * as React from 'react';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from 'rc-select';
 import KeyCode from 'rc-util/lib/KeyCode';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
-import { toPathKey } from '../utils/commonUtil';
-import { useBaseProps } from 'rc-select';
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
 export default (
   ref: React.Ref<RefOptionListProps>,
@@ -11,7 +11,6 @@ export default (
   fieldNames: InternalFieldNames,
   activeValueCells: React.Key[],
   setActiveValueCells: (activeValueCells: React.Key[]) => void,
-  containerRef: React.RefObject<HTMLElement>,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
 ) => {
   const { direction, searchValue, toggleOpen, open } = useBaseProps();
@@ -56,9 +55,6 @@ export default (
   // Update active value cells and scroll to target element
   const internalSetActiveValueCells = (next: React.Key[]) => {
     setActiveValueCells(next);
-
-    const ele = containerRef.current?.querySelector(`li[data-path-key="${toPathKey(next)}"]`);
-    ele?.scrollIntoView?.({ block: 'nearest' });
   };
 
   // Same options offset
@@ -156,7 +152,18 @@ export default (
         // >>> Select
         case KeyCode.ENTER: {
           if (validActiveValueCells.length) {
-            onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+            const option = lastActiveOptions[lastActiveIndex];
+
+            // Search option should revert back of origin options
+            const originOptions: DefaultOptionType[] = option?.[SEARCH_MARK] || [];
+            if (originOptions.length) {
+              onKeyBoardSelect(
+                originOptions.map(opt => opt[fieldNames.value]),
+                originOptions[originOptions.length - 1],
+              );
+            } else {
+              onKeyBoardSelect(validActiveValueCells, lastActiveOptions[lastActiveIndex]);
+            }
           }
           break;
         }

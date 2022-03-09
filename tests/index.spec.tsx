@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-no-bind */
 
-import React from 'react';
-import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { mount } from './enzyme';
+import { resetWarned } from 'rc-util/lib/warning';
+import React from 'react';
 import Cascader from '../src';
 import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
+import { mount } from './enzyme';
 
 describe('Cascader.Basic', () => {
   let selectedValue;
@@ -766,5 +766,134 @@ describe('Cascader.Basic', () => {
       expect(wrapper.find('.rc-cascader-selection-item-content').first().text()).toEqual('Parent');
       expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Child');
     });
+  });
+
+  describe('open should auto scroll to position', () => {
+    let spyScroll: ReturnType<typeof spyElementPrototypes>;
+    const mockScrollTo = jest.fn();
+
+    beforeAll(() => {
+      spyScroll = spyElementPrototypes(HTMLElement, {
+        scrollTo: mockScrollTo,
+      });
+    });
+
+    afterEach(() => {
+      mockScrollTo.mockRestore();
+    });
+
+    afterAll(() => {
+      spyScroll.mockRestore();
+    });
+
+    it('work to scroll up', () => {
+      let getOffesetTopTimes = 0;
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        offsetTop: {
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 10 : 0),
+        },
+        scrollTop: {
+          get: () => 20,
+        },
+      });
+
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).toBeCalledWith(undefined, { top: 10 });
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('work to scroll down', () => {
+      let getOffesetTopTimes = 0;
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        offsetTop: {
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
+        },
+        scrollTop: {
+          get: () => 0,
+        },
+        offsetHeight: {
+          get: () => 10,
+        },
+      });
+
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).toBeCalledWith(undefined, { top: 100 });
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('should not scroll if no parent', () => {
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        parentElement: {
+          get: () => null,
+        },
+      });
+
+      const wrapper = mount(
+        <Cascader
+          fieldNames={{ value: 'label' }}
+          options={[
+            {
+              label: 'bamboo',
+            },
+          ]}
+          defaultValue={['bamboo']}
+          open
+        />,
+      );
+      expect(mockScrollTo).not.toHaveBeenCalled();
+      wrapper.unmount();
+      spyElement.mockRestore();
+    });
+
+    it('should support double quote in label and value', () => {
+      const wrapper = mount(
+        <Cascader
+          options={[
+            {
+              label: 'bamboo "',
+              value: 'bamboo "',
+            },
+            {
+              // prettier-ignore
+              label: 'bamboo \"',
+              // prettier-ignore
+              value: 'bamboo \"',
+            },
+          ]}
+          open
+        />,
+      );
+
+      wrapper.find(`li[data-path-key]`).at(0).simulate('click');
+      wrapper.find(`li[data-path-key]`).at(1).simulate('click');
+    });
+  });
+
+  it('not crash when value type is not array', () => {
+    mount(<Cascader value={'bamboo' as any} />);
   });
 });
