@@ -5,6 +5,7 @@ import type {
   ShowCheckedStrategy,
 } from '../Cascader';
 import type { GetEntities } from '../hooks/useEntities';
+import { SHOW_CHILD } from './commonUtil';
 
 export function formatStrategyValues(
   pathKeys: React.Key[],
@@ -14,25 +15,14 @@ export function formatStrategyValues(
   const valueSet = new Set(pathKeys);
   const keyPathEntities = getKeyPathEntities();
 
-  if (showCheckedStrategy === 'child') {
-    return pathKeys.filter(key => {
-      const entity = keyPathEntities[key];
-      const children = entity ? entity.children : null;
-      if (children && children.find(child => child.key && valueSet.has(child.key))) {
-        return false;
-      }
-      return true;
-    });
-  }
-
   return pathKeys.filter(key => {
     const entity = keyPathEntities[key];
     const parent = entity ? entity.parent : null;
+    const children = entity ? entity.children : null;
 
-    if (parent && !parent.node.disabled && valueSet.has(parent.key)) {
-      return false;
-    }
-    return true;
+    return showCheckedStrategy === SHOW_CHILD
+      ? !(children && children.some(child => child.key && valueSet.has(child.key)))
+      : !(parent && !parent.node.disabled && valueSet.has(parent.key));
   });
 }
 

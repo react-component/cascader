@@ -7,7 +7,8 @@ import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } fr
 import { BaseSelect } from 'rc-select';
 import OptionList from './OptionList';
 import CascaderContext from './context';
-import { fillFieldNames, toPathKey, toPathKeys } from './utils/commonUtil';
+import type { SHOW_CHILD } from './utils/commonUtil';
+import { fillFieldNames, toPathKey, toPathKeys, SHOW_PARENT } from './utils/commonUtil';
 import useDisplayValues from './hooks/useDisplayValues';
 import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
@@ -43,7 +44,7 @@ export interface InternalFieldNames extends Required<FieldNames> {
 export type SingleValueType = (string | number)[];
 
 export type ValueType = SingleValueType | SingleValueType[];
-export type ShowCheckedStrategy = 'parent' | 'child';
+export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
 export interface BaseOptionType {
   disabled?: boolean;
@@ -211,7 +212,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     // Children
     children,
     dropdownMatchSelectWidth = false,
-    showCheckedStrategy = 'parent',
+    showCheckedStrategy = SHOW_PARENT,
     ...restProps
   } = props;
 

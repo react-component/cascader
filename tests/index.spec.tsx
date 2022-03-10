@@ -94,7 +94,7 @@ describe('Cascader.Basic', () => {
         changeOnSelect
         options={addressOptions}
         onChange={onChange}
-        showCheckedStrategy={'parent'}
+        showCheckedStrategy={'SHOW_PARENT'}
       >
         <input readOnly />
       </Cascader>,
@@ -117,7 +117,7 @@ describe('Cascader.Basic', () => {
         changeOnSelect
         options={addressOptions}
         onChange={onChange}
-        showCheckedStrategy={'child'}
+        showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
       </Cascader>,
@@ -132,6 +132,8 @@ describe('Cascader.Basic', () => {
     expect(menus.length).toBe(2);
     wrapper.clickOption(1, 0);
     wrapper.clickOption(1, 1);
+    expect(selectedValue[0].join(',')).toBe('bj,chaoyang');
+    expect(selectedValue[1].join(',')).toBe('bj,haidian');
     expect(selectedValue.join(',')).toBe('bj,chaoyang,bj,haidian');
   });
 
