@@ -6,6 +6,8 @@ import type {
 } from '../Cascader';
 
 export const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
+export const SHOW_PARENT = 'SHOW_PARENT';
+export const SHOW_CHILD = 'SHOW_CHILD';
 
 export function toPathKey(value: SingleValueType) {
   return value.join(VALUE_SPLIT);

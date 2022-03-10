@@ -1,18 +1,28 @@
-import type { SingleValueType, DefaultOptionType, InternalFieldNames } from '../Cascader';
+import type {
+  SingleValueType,
+  DefaultOptionType,
+  InternalFieldNames,
+  ShowCheckedStrategy,
+} from '../Cascader';
 import type { GetEntities } from '../hooks/useEntities';
+import { SHOW_CHILD } from './commonUtil';
 
-export function formatStrategyValues(pathKeys: React.Key[], getKeyPathEntities: GetEntities) {
+export function formatStrategyValues(
+  pathKeys: React.Key[],
+  getKeyPathEntities: GetEntities,
+  showCheckedStrategy: ShowCheckedStrategy,
+) {
   const valueSet = new Set(pathKeys);
   const keyPathEntities = getKeyPathEntities();
 
   return pathKeys.filter(key => {
     const entity = keyPathEntities[key];
     const parent = entity ? entity.parent : null;
+    const children = entity ? entity.children : null;
 
-    if (parent && !parent.node.disabled && valueSet.has(parent.key)) {
-      return false;
-    }
-    return true;
+    return showCheckedStrategy === SHOW_CHILD
+      ? !(children && children.some(child => child.key && valueSet.has(child.key)))
+      : !(parent && !parent.node.disabled && valueSet.has(parent.key));
   });
 }
 

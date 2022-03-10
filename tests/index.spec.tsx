@@ -87,6 +87,56 @@ describe('Cascader.Basic', () => {
     expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
   });
 
+  it('should support showCheckedStrategy parent', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable
+        changeOnSelect
+        options={addressOptions}
+        onChange={onChange}
+        showCheckedStrategy={'SHOW_PARENT'}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    wrapper.clickOption(0, 2);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+    wrapper.clickOption(1, 0);
+    wrapper.clickOption(1, 1);
+    expect(selectedValue.join(',')).toBe('bj');
+  });
+
+  it('should support showCheckedStrategy child', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable
+        changeOnSelect
+        options={addressOptions}
+        onChange={onChange}
+        showCheckedStrategy={'SHOW_CHILD'}
+      >
+        <input readOnly />
+      </Cascader>,
+    );
+    wrapper.find('input').simulate('click');
+
+    // Menu 1
+    let menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    wrapper.clickOption(0, 2);
+    menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(2);
+    wrapper.clickOption(1, 0);
+    wrapper.clickOption(1, 1);
+    expect(selectedValue[0].join(',')).toBe('bj,chaoyang');
+    expect(selectedValue[1].join(',')).toBe('bj,haidian');
+    expect(selectedValue.join(',')).toBe('bj,chaoyang,bj,haidian');
+  });
+
   it('should has defaultValue', () => {
     const wrapper = mount(
       <Cascader
