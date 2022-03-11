@@ -7,8 +7,7 @@ import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } fr
 import { BaseSelect } from 'rc-select';
 import OptionList from './OptionList';
 import CascaderContext from './context';
-import type { SHOW_CHILD } from './utils/commonUtil';
-import { fillFieldNames, toPathKey, toPathKeys, SHOW_PARENT } from './utils/commonUtil';
+import { fillFieldNames, toPathKey, toPathKeys, SHOW_PARENT, SHOW_CHILD } from './utils/commonUtil';
 import useDisplayValues from './hooks/useDisplayValues';
 import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
@@ -522,16 +521,20 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       />
     </CascaderContext.Provider>
   );
-}) as (<OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
+}) as unknown as (<OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
   props: React.PropsWithChildren<CascaderProps<OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
   },
 ) => React.ReactElement) & {
   displayName?: string;
+  SHOW_PARENT: typeof SHOW_PARENT;
+  SHOW_CHILD: typeof SHOW_CHILD;
 };
 
 if (process.env.NODE_ENV !== 'production') {
   Cascader.displayName = 'Cascader';
 }
 
+Cascader.SHOW_PARENT = SHOW_PARENT;
+Cascader.SHOW_CHILD = SHOW_CHILD;
 export default Cascader;

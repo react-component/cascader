@@ -2,6 +2,7 @@
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
+const { SHOW_CHILD } = Cascader;
 
 const optionLists = [
   {
@@ -46,7 +47,14 @@ const Demo = () => {
 
   // 直接选中一级选项，但是此时二级选项没有全部选中
   return (
-    <Cascader checkable options={options} loadData={loadData} onChange={onChange} changeOnSelect />
+    <Cascader
+      checkable
+      options={options}
+      showCheckedStrategy={SHOW_CHILD}
+      loadData={loadData}
+      onChange={onChange}
+      changeOnSelect
+    />
   );
 };
 
