@@ -5,6 +5,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
 import { mount, ReactWrapper } from './enzyme';
 import Cascader from '../src';
+import { optionsForActiveMenuItems } from './demoOptions';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {
@@ -189,5 +190,13 @@ describe('Cascader.Search', () => {
     wrapper.find('.rc-cascader-menu-item').first().simulate('click');
     wrapper.find('.rc-cascader-menu-item').first().simulate('mousedown');
     expect(onChange).toHaveBeenCalledWith([['bamboo', 'little', 'fish']], expect.anything());
+  });
+
+  it('should not crash when exist options with same value on different levels', () => {
+    const wrapper = mount(<Cascader options={optionsForActiveMenuItems} />);
+
+    doSearch(wrapper, '1');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('click');
+    doSearch(wrapper, '1');
   });
 });
