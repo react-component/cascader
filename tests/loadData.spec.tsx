@@ -182,4 +182,57 @@ describe('Cascader.LoadData', () => {
 
     expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(3);
   });
+  it('when selected modify options', async () => {
+    const Demo = ({ updateNum = 0 }) => {
+      const [options, setOptions] = React.useState([{ label: 'top', value: 'top', isLeaf: false }]);
+      const [value, setValue] = React.useState([]);
+
+      React.useEffect(() => {
+        if (updateNum > 0) {
+          setValue([]);
+          setOptions([{ label: 'top', value: 'top', isLeaf: false }]);
+        }
+      }, [updateNum]);
+
+      const loadData = selectedOptions => {
+        Promise.resolve().then(() => {
+          act(() => {
+            selectedOptions[selectedOptions.length - 1].children = [
+              {
+                label: 'child',
+                value: 'child',
+                isLeaf: false,
+              },
+            ];
+            setOptions(list => [...list]);
+            setValue(['child']);
+          });
+        });
+      };
+
+      return <Cascader value={value} options={options} loadData={loadData} open />;
+    };
+
+    const wrapper = mount(<Demo />);
+
+    // First column click
+    wrapper.find('.rc-cascader-menu-item-content').last().simulate('click');
+    for (let i = 0; i < 3; i += 1) {
+      await Promise.resolve();
+    }
+    wrapper.update();
+
+    // Second column click
+    wrapper.find('.rc-cascader-menu-item-content').last().simulate('click');
+    for (let i = 0; i < 3; i += 1) {
+      await Promise.resolve();
+    }
+    wrapper.update();
+
+    wrapper.setProps({
+      updateNum: 1,
+    });
+
+    wrapper.update();
+  });
 });
