@@ -183,16 +183,15 @@ describe('Cascader.LoadData', () => {
     expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(3);
   });
   it('when selected modify options', async () => {
-    const Demo = ({ updateNum = 0 }) => {
+    const Demo = props => {
       const [options, setOptions] = React.useState([{ label: 'top', value: 'top', isLeaf: false }]);
       const [value, setValue] = React.useState([]);
 
       React.useEffect(() => {
-        if (updateNum > 0) {
-          setValue([]);
-          setOptions([{ label: 'top', value: 'top', isLeaf: false }]);
+        if (props.optionList) {
+          setOptions(props.optionList);
         }
-      }, [updateNum]);
+      }, [props.optionList]);
 
       const loadData = selectedOptions => {
         Promise.resolve().then(() => {
@@ -230,7 +229,7 @@ describe('Cascader.LoadData', () => {
     wrapper.update();
 
     wrapper.setProps({
-      updateNum: 1,
+      optionList: [{ label: 'top', value: 'top', isLeaf: false }],
     });
 
     wrapper.update();
