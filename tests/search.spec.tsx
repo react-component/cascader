@@ -199,4 +199,38 @@ describe('Cascader.Search', () => {
     wrapper.find('.rc-cascader-menu-item').first().simulate('click');
     doSearch(wrapper, '1');
   });
+
+  it('should correct render Cascader with same field name of label and value', () => {
+    const customOptions = [
+      {
+        name: 'Zhejiang',
+        children: [
+          {
+            name: 'Hangzhou',
+            children: [
+              {
+                name: 'West Lake',
+              },
+              {
+                name: 'Xia Sha',
+                disabled: true,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    function customFilter(inputValue, path) {
+      return path.some(option => option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    }
+    const wrapper = mount(
+      <Cascader
+        options={customOptions}
+        fieldNames={{ label: 'name', value: 'name' }}
+        showSearch={{ filter: customFilter }}
+      />,
+    );
+    wrapper.find('input').simulate('change', { target: { value: 'z' } });
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });

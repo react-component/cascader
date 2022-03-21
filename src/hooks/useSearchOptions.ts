@@ -1,6 +1,5 @@
 import type { DefaultOptionType, ShowSearchType, InternalFieldNames } from '../Cascader';
 import * as React from 'react';
-import { VALUE_SPLIT } from '../utils/commonUtil';
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
@@ -53,9 +52,6 @@ export default (
                 prefixCls,
                 fieldNames,
               ),
-              [fieldNames.value as 'value']: connectedPathOptions
-                .map(pathOption => pathOption[fieldNames.value])
-                .join(VALUE_SPLIT),
               [SEARCH_MARK]: connectedPathOptions,
             });
           }
