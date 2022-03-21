@@ -26,7 +26,7 @@ export default (
     const len = activeValueCells.length;
 
     // Fill validate active value cells and index
-    for (let i = 0; i < len; i += 1) {
+    for (let i = 0; i < len && currentOptions; i += 1) {
       // Mark the active index for current options
       const nextActiveIndex = currentOptions.findIndex(
         option => option[fieldNames.value] === activeValueCells[i],
