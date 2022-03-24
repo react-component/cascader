@@ -51,7 +51,7 @@ export default (
 
       return {
         label,
-        value: toPathKey(valueCells),
+        key: toPathKey(valueCells),
         valueCells,
       };
     });
