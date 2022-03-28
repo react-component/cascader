@@ -49,9 +49,12 @@ export default (
         valueOptions.map(({ option }) => option),
       );
 
+      const value = toPathKey(valueCells);
+
       return {
         label,
-        value: toPathKey(valueCells),
+        value,
+        key: value,
         valueCells,
       };
     });
