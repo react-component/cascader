@@ -214,6 +214,12 @@ React.render(
       <td>>true</td>
       <td>hide popup on select</td>
     </tr>
+    <tr>
+      <td>autoClearSearchValue</td>
+      <td>Boolean</td>
+      <td>>true</td>
+      <td>after onSelect clear searchValue</td>
+    </tr>
   </tbody>
 </table>
 
