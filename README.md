@@ -217,7 +217,7 @@ React.render(
     <tr>
       <td>autoClearSearchValue</td>
       <td>Boolean</td>
-      <td>>true</td>
+      <td>>false</td>
       <td>after onSelect clear searchValue</td>
     </tr>
   </tbody>

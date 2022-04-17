@@ -58,7 +58,7 @@ const addressOptions = [
 
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(false);
-  const [autoClearSearchValue,setAutoClearSearchValue] = React.useState(true);
+  const [autoClearSearchValue,setAutoClearSearchValue] = React.useState(false);
   const onChange = (value, selectedOptions) => {
     console.log(value,selectedOptions)
   };
