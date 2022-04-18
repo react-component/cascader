@@ -179,7 +179,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
-    autoClearSearchValue=false,
+    autoClearSearchValue = false,
     searchValue,
     onSearch,
     showSearch,
