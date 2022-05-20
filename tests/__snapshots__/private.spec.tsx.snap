@@ -37,7 +37,7 @@ exports[`Cascader.Private dropdownPrefixCls 1`] = `
   <div>
     <div
       class="bamboo-dropdown"
-      style="opacity: 0; pointer-events: none; min-width: auto;"
+      style="opacity: 0; min-width: auto;"
     >
       <div>
         <div

@@ -32,7 +32,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
   <div>
     <div
       class="rc-cascader-dropdown"
-      style="opacity: 0; pointer-events: none; min-width: 0;"
+      style="opacity: 0; min-width: 0;"
     >
       <div>
         <div
