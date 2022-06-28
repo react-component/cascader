@@ -946,4 +946,35 @@ describe('Cascader.Basic', () => {
   it('not crash when value type is not array', () => {
     mount(<Cascader value={'bamboo' as any} />);
   });
+
+  it('`null` is a value in Cascader options should throw a warning', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    mount(
+      <Cascader
+        options={[
+          {
+            label: '四川',
+            value: 'sc',
+            children: [
+              {
+                label: '成都',
+                value: 'cd',
+                children: [
+                  {
+                    label: '天府新区',
+                    value: null,
+                  },
+                ],
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `value` in Cascader options should not be `null`.',
+    );
+    errorSpy.mockReset();
+  });
 });

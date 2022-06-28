@@ -234,9 +234,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   // =========================== Option ===========================
   const mergedOptions = React.useMemo(() => options || [], [options]);
-  console.log('=========');
-  console.log('mergedOptions', mergedOptions);
-  console.log('mergedFieldNames', mergedFieldNames);
 
   // Only used in multiple mode, this fn will not call in single mode
   const getPathKeyEntities = useEntities(mergedOptions, mergedFieldNames);

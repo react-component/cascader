@@ -135,4 +135,36 @@ describe('Cascader.FieldNames', () => {
 
     expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('Not Found');
   });
+
+  it('`null` is a value in fieldNames options should throw a warning', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    mount(
+      <Cascader
+        fieldNames={fieldNames}
+        options={[
+          {
+            customTitle: '四川',
+            customValue: 'sc',
+            customChildren: [
+              {
+                customTitle: '成都',
+                customValue: 'cd',
+                customChildren: [
+                  {
+                    customTitle: '天府新区',
+                    customValue: null,
+                  },
+                ],
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `value` in Cascader options should not be `null`.',
+    );
+    errorSpy.mockReset();
+  });
 });
