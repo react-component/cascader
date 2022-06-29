@@ -1,21 +1,21 @@
-import * as React from 'react';
+import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
+import { BaseSelect } from 'rc-select';
+import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
-import type { BaseSelectRef, BaseSelectPropsWithoutPrivate, BaseSelectProps } from 'rc-select';
-import { BaseSelect } from 'rc-select';
-import OptionList from './OptionList';
+import * as React from 'react';
 import CascaderContext from './context';
-import { fillFieldNames, toPathKey, toPathKeys, SHOW_PARENT, SHOW_CHILD } from './utils/commonUtil';
 import useDisplayValues from './hooks/useDisplayValues';
-import useRefFunc from './hooks/useRefFunc';
 import useEntities from './hooks/useEntities';
-import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
+import useMissingValues from './hooks/useMissingValues';
+import useRefFunc from './hooks/useRefFunc';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
-import warning from 'rc-util/lib/warning';
-import useMissingValues from './hooks/useMissingValues';
+import OptionList from './OptionList';
+import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
+import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
+import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -134,7 +134,7 @@ export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   | SingleCascaderProps<OptionType>
   | MultipleCascaderProps<OptionType>;
 
-type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
+export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
   SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
   'onChange'
 > & {
@@ -412,22 +412,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   };
 
   // ============================ Open ============================
-  if (process.env.NODE_ENV !== 'production') {
-    warning(
-      !onPopupVisibleChange,
-      '`onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
-    );
-    warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
-    warning(
-      popupClassName === undefined,
-      '`popupClassName` is deprecated. Please use `dropdownClassName` instead.',
-    );
-    warning(
-      popupPlacement === undefined,
-      '`popupPlacement` is deprecated. Please use `placement` instead.',
-    );
-  }
-
   const mergedOpen = open !== undefined ? open : popupVisible;
 
   const mergedDropdownClassName = dropdownClassName || popupClassName;
@@ -438,6 +422,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onDropdownVisibleChange?.(nextVisible);
     onPopupVisibleChange?.(nextVisible);
   };
+
+  // ========================== Warning ===========================
+  if (process.env.NODE_ENV !== 'production') {
+    warningProps(props);
+    warningNullOptions(mergedOptions, mergedFieldNames);
+  }
 
   // ========================== Context ===========================
   const cascaderContext = React.useMemo(
