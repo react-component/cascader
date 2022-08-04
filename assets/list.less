@@ -12,23 +12,23 @@
 
   &-menu {
     flex: none;
+    min-width: 100px;
+    height: 180px;
     margin: 0;
     padding: 0;
+    overflow: auto;
     list-style: none;
     border-left: 1px solid blue;
-    height: 180px;
-    min-width: 100px;
-    overflow: auto;
 
     &:first-child {
       border-left: 0;
     }
 
     &-item {
+      position: relative;
       display: flex;
       flex-wrap: nowrap;
       padding-right: 20px;
-      position: relative;
 
       &-selected {
         background: rgba(0, 0, 255, 0.05);
@@ -50,8 +50,8 @@
 
       &-expand-icon {
         position: absolute;
-        right: 4px;
         top: 50%;
+        right: 4px;
         transform: translateY(-50%);
       }
     }
@@ -91,8 +91,8 @@
       margin: 0;
       padding: 0;
       list-style: none;
-      border-left: none;
       border-right: 1px solid blue;
+      border-left: none;
 
       &:first-child {
         border-right: 0;
