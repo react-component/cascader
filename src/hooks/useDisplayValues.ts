@@ -56,6 +56,7 @@ export default (
         value,
         key: value,
         valueCells,
+        disabled: valueOptions[valueOptions.length - 1]?.option?.disabled,
       };
     });
   }, [rawValues, options, fieldNames, displayRender, multiple]);
