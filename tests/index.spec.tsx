@@ -369,30 +369,56 @@ describe('Cascader.Basic', () => {
     expect(menus.length).toBe(1);
   });
 
-  it('should be unselectable when option is disabled', () => {
-    const newAddressOptions = [...addressOptions];
-    newAddressOptions[0] = {
-      ...newAddressOptions[0],
-      disabled: true,
-    };
-    const wrapper = mount(
-      <Cascader options={newAddressOptions} onChange={onChange}>
-        <input readOnly />
-      </Cascader>,
-    );
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-    expect(menu1Items.length).toBe(3);
-    expect(selectedValue).toBeFalsy();
+  describe('option disabled', () => {
+    it('should be unselectable when option is disabled', () => {
+      const newAddressOptions = [...addressOptions];
+      newAddressOptions[0] = {
+        ...newAddressOptions[0],
+        disabled: true,
+      };
+      const wrapper = mount(
+        <Cascader options={newAddressOptions} onChange={onChange}>
+          <input readOnly />
+        </Cascader>,
+      );
+      wrapper.find('input').simulate('click');
+      let menus = wrapper.find('.rc-cascader-menu');
+      expect(menus.length).toBe(1);
+      const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+      expect(menu1Items.length).toBe(3);
+      expect(selectedValue).toBeFalsy();
 
-    menu1Items.at(0).simulate('click');
-    expect(
-      wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
-    ).toBe(true);
-    menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.length).toBe(1);
+      menu1Items.at(0).simulate('click');
+      expect(
+        wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
+      ).toBe(true);
+      menus = wrapper.find('.rc-cascader-menu');
+      expect(menus.length).toBe(1);
+    });
+
+    it('can not clear selector when disabled', () => {
+      const newAddressOptions = JSON.parse(JSON.stringify(addressOptions));
+      newAddressOptions[0].children[0].disabled = true;
+
+      const wrapper = mount(
+        <Cascader
+          options={newAddressOptions}
+          value={[
+            ['fj', 'fuzhou'],
+            ['bj', 'chaoyang'],
+          ]}
+          checkable
+        />,
+      );
+
+      expect(wrapper.find('.rc-cascader-selection-item-disabled').text()).toEqual('福州');
+      expect(
+        wrapper
+          .find('.rc-cascader-selection-item:not(.rc-cascader-selection-item-disabled)')
+          .find('.rc-cascader-selection-item-content')
+          .text(),
+      ).toEqual('朝阳区');
+    });
   });
 
   it('should have correct active menu items', () => {
