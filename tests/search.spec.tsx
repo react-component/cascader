@@ -233,4 +233,111 @@ describe('Cascader.Search', () => {
     wrapper.find('input').simulate('change', { target: { value: 'z' } });
     expect(wrapper.render()).toMatchSnapshot();
   });
+
+  describe('disabled option', () => {
+    const onSearch = jest.fn();
+    const onChange = jest.fn();
+
+    it('should disable leaves option', () => {
+      const customOptions = [
+        {
+          label: 'Label Light',
+          value: 'light',
+        },
+        {
+          label: 'Label Bamboo',
+          value: 'bamboo',
+          disabled: true,
+          children: [
+            {
+              label: 'Label Little',
+              value: 'little',
+              children: [
+                {
+                  label: 'Toy Fish',
+                  value: 'fish',
+                  children: [],
+                },
+                {
+                  label: 'Toy Cards',
+                  value: 'cards',
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      const wrapper = mount(
+        <Cascader
+          options={customOptions}
+          onChange={onChange}
+          onSearch={onSearch}
+          open
+          showSearch
+        />,
+      );
+
+      doSearch(wrapper, 'toy');
+      let itemList = wrapper.find('.rc-cascader-menu-item');
+      expect(itemList.at(0).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+      expect(itemList.at(1).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+
+      doSearch(wrapper, 'Label Little');
+      itemList = wrapper.find('.rc-cascader-menu-item');
+      expect(itemList.at(0).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+      expect(itemList.at(1).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+    });
+
+    it('should disable its leaf option', () => {
+      const customOptions = [
+        {
+          label: 'Label Light',
+          value: 'light',
+        },
+        {
+          label: 'Label Bamboo',
+          value: 'bamboo',
+          children: [
+            {
+              label: 'Label Little',
+              value: 'little',
+              disabled: true,
+              children: [
+                {
+                  label: 'Toy Fish',
+                  value: 'fish',
+                  children: [],
+                },
+                {
+                  label: 'Toy Cards',
+                  value: 'cards',
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      const wrapper = mount(
+        <Cascader
+          options={customOptions}
+          onChange={onChange}
+          onSearch={onSearch}
+          open
+          showSearch
+        />,
+      );
+
+      doSearch(wrapper, 'toy');
+      let itemList = wrapper.find('.rc-cascader-menu-item');
+      expect(itemList.at(0).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+      expect(itemList.at(1).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+
+      doSearch(wrapper, 'Label Little');
+      itemList = wrapper.find('.rc-cascader-menu-item');
+      expect(itemList.at(0).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+      expect(itemList.at(1).hasClass('rc-cascader-menu-item-disabled')).toBe(true);
+    });
+  });
 });
