@@ -250,7 +250,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // Pass the parent disabled property to the children
   const initialOptions = (newOptions: DefaultOptionType[] = []) => {
     newOptions.forEach(newOption => {
-      if (Array.isArray(newOption.children)) {
+      if (newOption.children) {
         newOption.children.forEach(appendDisabled(newOption.disabled));
       }
     });
