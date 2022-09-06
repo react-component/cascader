@@ -162,19 +162,6 @@ function toRawValues(value: ValueType): SingleValueType[] {
   return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
 }
 
-const appendDisabled = (disabled: boolean) => (option: DefaultOptionType) => {
-  let newDisabled = disabled;
-
-  if (disabled || option.disabled) {
-    option.disabled = true;
-    newDisabled = true;
-  }
-
-  if (option.children) {
-    option.children.forEach(appendDisabled(newDisabled));
-  }
-};
-
 const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
   const {
     // MISC
@@ -248,14 +235,18 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // =========================== Option ===========================
 
   // Pass the parent disabled property to the children
-  const initialOptions = (newOptions: DefaultOptionType[] = []) => {
-    newOptions.forEach(newOption => {
-      if (newOption.children) {
-        newOption.children.forEach(appendDisabled(newOption.disabled));
+  const initialOptions = (newOptions: DefaultOptionType[] = [], disabled: boolean = false) => {
+    return newOptions.map(option => {
+      option.disabled = disabled || option.disabled;
+
+      if (option.children) {
+        initialOptions(option.children, option.disabled);
       }
+
+      return option;
     });
-    return newOptions;
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const mergedOptions = React.useMemo(() => initialOptions(options) || [], [options]);
 
   // Only used in multiple mode, this fn will not call in single mode
