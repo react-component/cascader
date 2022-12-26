@@ -32,7 +32,8 @@ export default (
         option => option[fieldNames.value] === activeValueCells[i],
       );
 
-      if (nextActiveIndex === -1) {
+      const subOption = currentOptions = currentOptions[activeIndex]?.[fieldNames.children];
+      if (!subOption?.length || nextActiveIndex === -1) {
         break;
       }
 
@@ -40,7 +41,7 @@ export default (
       mergedActiveIndexes.push(activeIndex);
       mergedActiveValueCells.push(activeValueCells[i]);
 
-      currentOptions = currentOptions[activeIndex][fieldNames.children];
+      currentOptions = subOption;
     }
 
     // Fill last active options
