@@ -1,3 +1,8 @@
-## adjust-overflow
+---
+title: adjust-overflow
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/adjust-overflow.jsx">
+<code src="../../examples/adjust-overflow.tsx"></code>
