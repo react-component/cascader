@@ -3,6 +3,7 @@ import { BaseSelect } from 'rc-select';
 import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import type { BuildInPlacements } from 'rc-trigger/lib/interface';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
@@ -100,6 +101,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   /** @deprecated Use `placement` instead */
   popupPlacement?: Placement;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
 
   /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;

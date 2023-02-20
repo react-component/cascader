@@ -1,3 +1,8 @@
-## dropdown-render
+---
+title: dropdown-render
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/dropdown-render.jsx">
+<code src="../../examples/dropdown-render.tsx"></code>

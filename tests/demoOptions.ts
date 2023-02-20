@@ -1,4 +1,6 @@
-export const optionsForActiveMenuItems = [
+import type { DefaultOptionType } from '@/Cascader';
+
+export const optionsForActiveMenuItems: DefaultOptionType[] = [
   {
     value: '1',
     label: '1',
@@ -33,7 +35,7 @@ export const optionsForActiveMenuItems = [
   },
 ];
 
-export const addressOptions = [
+export const addressOptions: DefaultOptionType[] = [
   {
     label: '福建',
     value: 'fj',

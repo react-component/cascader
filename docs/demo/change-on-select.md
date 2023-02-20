@@ -1,3 +1,8 @@
-## change-on-select
+---
+title: change-on-select
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/change-on-select.jsx">
+<code src="../../examples/change-on-select.tsx"></code>
