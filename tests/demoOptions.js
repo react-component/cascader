@@ -68,6 +68,16 @@ export const addressOptions = [
           },
         ],
       },
+      {
+        label: '福州',
+        value: 'fuzhou',
+        children: [
+          {
+            label: '马尾',
+            value: 'mawei',
+          },
+        ],
+      },
     ],
   },
   {

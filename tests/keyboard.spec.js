@@ -95,6 +95,24 @@ describe('Cascader.Keyboard', () => {
       addressOptions[1].children[0].children[0],
     ]);
   });
+  it('enter on search when has same sub key', () => {
+    wrapper.find('input').simulate('change', { target: { value: '福' } });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建 / 福州 / 马尾');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建 / 泉州');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('浙江 / 福州 / 马尾');
+  });
 
   it('rtl', () => {
     wrapper = mount(<Cascader options={addressOptions} onChange={onChange} direction="rtl" />);

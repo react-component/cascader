@@ -6,6 +6,7 @@ import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import {
+  getFullPathKeys,
   isLeaf,
   scrollIntoParentView,
   toPathKey,
@@ -122,10 +123,14 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     const optionList = [{ options: mergedOptions }];
     let currentList = mergedOptions;
 
+    const fullPathKeys = getFullPathKeys(currentList, fieldNames);
+
     for (let i = 0; i < activeValueCells.length; i += 1) {
       const activeValueCell = activeValueCells[i];
       const currentOption = currentList.find(
-        option => option[fieldNames.value] === activeValueCell,
+        (option, index) =>
+          (fullPathKeys[index] ? toPathKey(fullPathKeys[index]) : option[fieldNames.value]) ===
+          activeValueCell,
       );
 
       const subOptions = currentOption?.[fieldNames.children];
