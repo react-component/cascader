@@ -1,3 +1,8 @@
-## dynamic-options
+---
+title: dynamic-options
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/dynamic-options.jsx">
+<code src="../../examples/dynamic-options.tsx"></code>

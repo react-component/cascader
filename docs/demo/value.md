@@ -1,3 +1,8 @@
-## value
+---
+title: value
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/value.jsx">
+<code src="../../examples/value.tsx"></code>

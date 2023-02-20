@@ -1,3 +1,8 @@
-## disabled
+---
+title: disabled
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/disabled.jsx">
+<code src="../../examples/disabled.tsx"></code>

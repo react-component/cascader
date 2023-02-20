@@ -33,3 +33,7 @@ coverage
 .umi-test
 .env.local
 .doc
+
+# dumi
+.dumi/tmp
+.dumi/tmp-production
