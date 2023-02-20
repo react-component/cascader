@@ -1,9 +1,10 @@
-import * as React from 'react';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import { useBaseProps } from 'rc-select';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import KeyCode from 'rc-util/lib/KeyCode';
+import * as React from 'react';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
+import { getFullPathKeys, toPathKey } from '../utils/commonUtil';
 
 export default (
   ref: React.Ref<RefOptionListProps>,
@@ -16,41 +17,46 @@ export default (
   const { direction, searchValue, toggleOpen, open } = useBaseProps();
   const rtl = direction === 'rtl';
 
-  const [validActiveValueCells, lastActiveIndex, lastActiveOptions] = React.useMemo(() => {
-    let activeIndex = -1;
-    let currentOptions = options;
+  const [validActiveValueCells, lastActiveIndex, lastActiveOptions, fullPathKeys] =
+    React.useMemo(() => {
+      let activeIndex = -1;
+      let currentOptions = options;
 
-    const mergedActiveIndexes: number[] = [];
-    const mergedActiveValueCells: React.Key[] = [];
+      const mergedActiveIndexes: number[] = [];
+      const mergedActiveValueCells: React.Key[] = [];
 
-    const len = activeValueCells.length;
+      const len = activeValueCells.length;
 
-    // Fill validate active value cells and index
-    for (let i = 0; i < len && currentOptions; i += 1) {
-      // Mark the active index for current options
-      const nextActiveIndex = currentOptions.findIndex(
-        option => option[fieldNames.value] === activeValueCells[i],
-      );
+      const pathKeys = getFullPathKeys(options, fieldNames);
 
-      if (nextActiveIndex === -1) {
-        break;
+      // Fill validate active value cells and index
+      for (let i = 0; i < len && currentOptions; i += 1) {
+        // Mark the active index for current options
+        const nextActiveIndex = currentOptions.findIndex(
+          (option, index) =>
+            (pathKeys[index] ? toPathKey(pathKeys[index]) : option[fieldNames.value]) ===
+            activeValueCells[i],
+        );
+
+        if (nextActiveIndex === -1) {
+          break;
+        }
+
+        activeIndex = nextActiveIndex;
+        mergedActiveIndexes.push(activeIndex);
+        mergedActiveValueCells.push(activeValueCells[i]);
+
+        currentOptions = currentOptions[activeIndex][fieldNames.children];
       }
 
-      activeIndex = nextActiveIndex;
-      mergedActiveIndexes.push(activeIndex);
-      mergedActiveValueCells.push(activeValueCells[i]);
+      // Fill last active options
+      let activeOptions = options;
+      for (let i = 0; i < mergedActiveIndexes.length - 1; i += 1) {
+        activeOptions = activeOptions[mergedActiveIndexes[i]][fieldNames.children];
+      }
 
-      currentOptions = currentOptions[activeIndex][fieldNames.children];
-    }
-
-    // Fill last active options
-    let activeOptions = options;
-    for (let i = 0; i < mergedActiveIndexes.length - 1; i += 1) {
-      activeOptions = activeOptions[mergedActiveIndexes[i]][fieldNames.children];
-    }
-
-    return [mergedActiveValueCells, activeIndex, activeOptions];
-  }, [activeValueCells, fieldNames, options]);
+      return [mergedActiveValueCells, activeIndex, activeOptions, pathKeys];
+    }, [activeValueCells, fieldNames, options]);
 
   // Update active value cells and scroll to target element
   const internalSetActiveValueCells = (next: React.Key[]) => {
@@ -69,10 +75,14 @@ export default (
     for (let i = 0; i < len; i += 1) {
       currentIndex = (currentIndex + offset + len) % len;
       const option = lastActiveOptions[currentIndex];
-
       if (option && !option.disabled) {
-        const value = option[fieldNames.value];
-        const nextActiveCells = validActiveValueCells.slice(0, -1).concat(value);
+        const nextActiveCells = validActiveValueCells
+          .slice(0, -1)
+          .concat(
+            fullPathKeys[currentIndex]
+              ? toPathKey(fullPathKeys[currentIndex])
+              : option[fieldNames.value],
+          );
         internalSetActiveValueCells(nextActiveCells);
         return;
       }

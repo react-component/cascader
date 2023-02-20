@@ -138,7 +138,8 @@ export default function Column({
               key={fullPathKey}
               className={classNames(menuItemPrefixCls, {
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
-                [`${menuItemPrefixCls}-active`]: activeValue === value,
+                [`${menuItemPrefixCls}-active`]:
+                  activeValue === value || activeValue === fullPathKey,
                 [`${menuItemPrefixCls}-disabled`]: disabled,
                 [`${menuItemPrefixCls}-loading`]: isLoading,
               })}

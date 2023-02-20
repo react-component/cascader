@@ -1,3 +1,4 @@
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 import type {
   DefaultOptionType,
   FieldNames,
@@ -48,4 +49,8 @@ export function scrollIntoParentView(element: HTMLElement) {
   } else if (elementToParent + element.offsetHeight - parent.scrollTop > parent.offsetHeight) {
     parent.scrollTo({ top: elementToParent + element.offsetHeight - parent.offsetHeight });
   }
+}
+
+export function getFullPathKeys(options: DefaultOptionType[], fieldNames: FieldNames) {
+  return options.map(item => item[SEARCH_MARK]?.map(opt => opt[fieldNames.value]));
 }
