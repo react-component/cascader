@@ -103,15 +103,10 @@ export default (
     const nextOptions: DefaultOptionType[] =
       lastActiveOptions[lastActiveIndex]?.[fieldNames.children] || [];
 
-    const nextOptionIndex = nextOptions.findIndex(option => !option.disabled);
+    const nextOption = nextOptions.find(option => !option.disabled);
 
-    if (nextOptionIndex >= 0) {
-      const nextActiveCells = [
-        ...validActiveValueCells,
-        fullPathKeys[nextOptionIndex]
-          ? toPathKey(fullPathKeys[nextOptionIndex])
-          : nextOptions[nextOptionIndex][fieldNames.value],
-      ];
+    if (nextOption) {
+      const nextActiveCells = [...validActiveValueCells, nextOption[fieldNames.value]];
       internalSetActiveValueCells(nextActiveCells);
     }
   };
