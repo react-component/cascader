@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
+import { render } from '@testing-library/react';
 import React from 'react';
-import { mount } from './enzyme';
 import Cascader from '../src';
 
 describe('Cascader.Private', () => {
   it('dropdownPrefixCls', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         defaultValue={['light', 'toy']}
         options={[
@@ -27,6 +27,7 @@ describe('Cascader.Private', () => {
       />,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container.querySelector('.bamboo-dropdown')).toBeTruthy();
+    expect(container.querySelector('.little-menus')).toBeTruthy();
   });
 });
