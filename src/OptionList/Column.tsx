@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { isLeaf, toPathKey, toPathValueStr } from '../utils/commonUtil';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
 import CascaderContext from '../context';
 import Checkbox from './Checkbox';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
@@ -113,10 +113,10 @@ export default function Column({
           // >>>>> Open
           const triggerOpenPath = () => {
             if (!disabled) {
-              const nextValueCells = hoverOpen && isMergedLeaf
-                ? toPathValueStr(fullPathKey).slice(0, -1)
-                : fullPath
-
+              const nextValueCells = [...fullPath];
+              if (hoverOpen && isMergedLeaf) {
+                nextValueCells.pop();
+              }
               onActive(nextValueCells);
             }
           };
