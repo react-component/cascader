@@ -3,6 +3,7 @@
 import React from 'react';
 import { mount } from './enzyme';
 import Cascader from '../src';
+import { addressOptions } from './demoOptions';
 
 describe('Cascader.Checkable', () => {
   const options = [
@@ -165,5 +166,16 @@ describe('Cascader.Checkable', () => {
     wrapper.find('input').simulate('click');
     const menus = wrapper.find('.rc-cascader-menu');
     expect(menus.find('.rc-cascader-checkbox').length).toBe(0);
+  });
+
+  it('should work with custom checkable', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable={<span className="my-custom-checkbox" >0</span>}
+        open
+        options={addressOptions}
+      />,
+    );
+    expect(wrapper.find('.my-custom-checkbox')).toHaveLength(3);
   });
 });

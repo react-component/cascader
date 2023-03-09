@@ -112,8 +112,12 @@ export default function Column({
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
-            if (!disabled && (!hoverOpen || !isMergedLeaf)) {
-              onActive(fullPath);
+            if (!disabled) {
+              const nextValueCells = [...fullPath];
+              if (hoverOpen && isMergedLeaf) {
+                nextValueCells.pop();
+              }
+              onActive(nextValueCells);
             }
           };
 
