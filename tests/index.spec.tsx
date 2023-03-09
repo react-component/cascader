@@ -784,6 +784,28 @@ describe('Cascader.Basic', () => {
       expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(1);
       expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
     });
+
+    describe('the defaultValue should be activated the first time it is opened', () => {
+      (['click', 'hover'] as const).forEach(expandTrigger => {
+        it(`expandTrigger: ${expandTrigger}`, () => {
+          const wrapper = mount(
+            <Cascader
+              expandTrigger={expandTrigger}
+              defaultValue={['tw', 'gaoxiong']}
+              options={addressOptionsForUneven}
+            >
+              <input readOnly />
+            </Cascader>,
+          );
+
+          wrapper.find('input').simulate('click');
+          const activeItems = wrapper.find('li.rc-cascader-menu-item-active');
+          expect(activeItems).toHaveLength(2);
+          expect(activeItems.last().text()).toEqual('高雄');
+        });
+      })
+    });
+
   });
 
   it('defaultValue not exist', () => {
