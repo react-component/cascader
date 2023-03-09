@@ -1,14 +1,18 @@
 import { defineConfig } from 'dumi';
-import path from 'path';
+
+const name = 'cascader'
+
+const isProdSite =
+  // 不是预览模式 同时是生产环境
+  process.env.PREVIEW !== 'true' && process.env.NODE_ENV === 'production';
 
 export default defineConfig({
-  alias: {
-    'rc-cascader$': path.resolve('src'),
-    'rc-cascader/es': path.resolve('src'),
-  },
   favicons: ['https://avatars0.githubusercontent.com/u/9441414?s=200&v=4'],
   themeConfig: {
-    name: 'Cascader',
+    name,
     logo: 'https://avatars0.githubusercontent.com/u/9441414?s=200&v=4',
   },
+  base: isProdSite ? `/${name}/` : '/',
+  outputPath: '.doc',
+  publicPath: isProdSite ? `/${name}/` : '/',
 });
