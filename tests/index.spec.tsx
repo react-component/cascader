@@ -4,7 +4,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import Cascader from '../src';
-import { addressOptions, optionsForActiveMenuItems } from './demoOptions';
+import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 
 describe('Cascader.Basic', () => {
@@ -647,6 +647,44 @@ describe('Cascader.Basic', () => {
     const menus = wrapper.find('.rc-cascader-dropdown');
     expect(menus.render()).toMatchSnapshot();
   });
+
+  // https://github.com/ant-design/ant-design/issues/41134
+  it('hover to no secondary menu should hide the previous secondary menu', () => {
+    const wrapper = mount(
+      <Cascader
+        changeOnSelect
+        expandTrigger="hover"
+        options={addressOptionsForUneven}
+        onChange={onChange}>
+        <input readOnly />
+      </Cascader>,
+    );
+
+    wrapper.find('input').simulate('click');
+    const menus = wrapper.find('.rc-cascader-menu');
+    expect(menus.length).toBe(1);
+    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    expect(menu1Items.length).toBe(5);
+    wrapper.clickOption(0, 3, 'mouseEnter');
+
+    const menus2 = wrapper.find('.rc-cascader-menu');
+    expect(menus2.length).toBe(2);
+    const menu2Items = menus2.at(1).find('.rc-cascader-menu-item');
+    expect(menu2Items.length).toBe(2);
+    wrapper.clickOption(1, 0, 'mouseEnter');
+
+    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(3);
+    wrapper.clickOption(1, 1, 'mouseEnter');
+    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(2); // should hide the previous secondary menu
+
+    wrapper.clickOption(0, 4, 'mouseEnter');
+    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(1); // should hide the previous secondary menu
+
+    jest.runAllTimers();
+    wrapper.update();
+    expect(selectedValue).toBeFalsy();
+    expect(wrapper.isOpen()).toBeTruthy();
+  })
 
   describe('focus test', () => {
     let domSpy;
