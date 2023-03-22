@@ -33,3 +33,4 @@ coverage
 .umi-test
 .env.local
 .doc
+.dumi
