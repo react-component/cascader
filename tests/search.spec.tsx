@@ -74,7 +74,10 @@ describe('Cascader.Search', () => {
   });
 
   it('changeOnSelect', () => {
-    const wrapper = mount(<Cascader options={options} open showSearch changeOnSelect />);
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Cascader options={options} onChange={onChange} open showSearch changeOnSelect />,
+    );
 
     // Leaf
     doSearch(wrapper, 'Label Little');
@@ -83,6 +86,14 @@ describe('Cascader.Search', () => {
     expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little');
     expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
     expect(itemList.at(2).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+
+    // Should not expandable
+    expect(wrapper.exists('.rc-cascader-menu-item-expand-icon')).toBeFalsy();
+
+    // Trigger onChange
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(onChange).toHaveBeenCalledWith(['bamboo', 'little'], expect.anything());
   });
 
   it('sort', () => {
