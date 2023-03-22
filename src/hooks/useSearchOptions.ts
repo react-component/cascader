@@ -53,6 +53,7 @@ export default (
                 fieldNames,
               ),
               [SEARCH_MARK]: connectedPathOptions,
+              [fieldNames.children]: undefined,
             });
           }
         }
