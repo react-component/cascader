@@ -203,6 +203,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
       <Column
         key={index}
         {...columnProps}
+        searchValue={searchValue}
         prefixCls={mergedPrefixCls}
         options={col.options}
         prevValuePath={prevValuePath}
