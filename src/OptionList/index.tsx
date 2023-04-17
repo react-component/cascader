@@ -14,12 +14,13 @@ import {
   toPathValueStr,
 } from '../utils/commonUtil';
 import { toPathOptions } from '../utils/treeUtil';
+import CacheContent from './CacheContent';
 import Column, { FIX_LABEL } from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction } =
+  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open } =
     useBaseProps();
 
   const containerRef = React.useRef<HTMLDivElement>();
@@ -213,15 +214,17 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // >>>>> Render
   return (
-    <div
-      className={classNames(`${mergedPrefixCls}-menus`, {
-        [`${mergedPrefixCls}-menu-empty`]: isEmpty,
-        [`${mergedPrefixCls}-rtl`]: rtl,
-      })}
-      ref={containerRef}
-    >
-      {columnNodes}
-    </div>
+    <CacheContent open={open}>
+      <div
+        className={classNames(`${mergedPrefixCls}-menus`, {
+          [`${mergedPrefixCls}-menu-empty`]: isEmpty,
+          [`${mergedPrefixCls}-rtl`]: rtl,
+        })}
+        ref={containerRef}
+      >
+        {columnNodes}
+      </div>
+    </CacheContent>
   );
 });
 
