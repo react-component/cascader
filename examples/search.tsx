@@ -13,13 +13,13 @@ const addressOptions = [
         value: 'fuzhou',
         children: [
           {
-            label: '马尾',
+            label: '马尾-mw',
             value: 'mawei',
           },
         ],
       },
       {
-        label: '泉州',
+        label: '泉州-qz',
         value: 'quanzhou',
       },
     ],
@@ -68,7 +68,9 @@ const addressOptions = [
 
 class Demo extends React.Component {
   render() {
-    return <Cascader options={addressOptions} showSearch />;
+    return (
+      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" />
+    );
   }
 }
 

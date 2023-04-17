@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import { mount, ReactWrapper } from './enzyme';
+import React from 'react';
 import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
+import { mount, ReactWrapper } from './enzyme';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {
@@ -243,5 +244,24 @@ describe('Cascader.Search', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: 'z' } });
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/41810
+  it('not back to options when selected', () => {
+    const { container } = render(<Cascader options={options} showSearch />);
+
+    // Search
+    fireEvent.change(container.querySelector('input'), {
+      target: {
+        value: 'bamboo',
+      },
+    });
+
+    // Click
+    fireEvent.click(document.querySelector('.rc-cascader-menu-item-content'));
+    expect(document.querySelector('.rc-cascader-dropdown-hidden')).toBeTruthy();
+    expect(document.querySelector('.rc-cascader-menu-item-content').textContent).toBe(
+      'Label Bamboo / Label Little / Toy Fish',
+    );
   });
 });
