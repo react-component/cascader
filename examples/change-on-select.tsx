@@ -3,57 +3,63 @@ import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
-const addressOptions = [
+const options = [
   {
-    label: '福建',
-    value: 'fj',
+    label: "Women Clothing",
+    value: "Women Clothing",
     children: [
       {
-        label: '福州',
-        value: 'fuzhou',
+        label: "Women Tops, Blouses & Tee",
+        value: "Women Tops, Blouses & Tee",
         children: [
           {
-            label: '马尾',
-            value: 'mawei',
+            label: "Women T-Shirts",
+            value: "Women T-Shirts"
           },
-        ],
+          {
+            label: "Women Tops",
+            value: "Women Tops"
+          },
+          {
+            label: "Women Tank Tops & Camis",
+            value: "Women Tank Tops & Camis"
+          },
+          {
+            label: "Women Blouses",
+            value: "Women Blouses"
+          }
+        ]
       },
       {
-        label: '泉州',
-        value: 'quanzhou',
-      },
-    ],
-  },
-  {
-    label: '浙江',
-    value: 'zj',
-    children: [
-      {
-        label: '杭州',
-        value: 'hangzhou',
+        label: "Women Suits",
+        value: "Women Suits",
         children: [
           {
-            label: '余杭',
-            value: 'yuhang',
+            label: "Women Suit Pants",
+            value: "Women Suit Pants"
           },
-        ],
-      },
-    ],
-  },
-  {
-    label: '北京',
-    value: 'bj',
-    children: [
-      {
-        label: '朝阳区',
-        value: 'chaoyang',
+          {
+            label: "Women Suit Sets",
+            value: "Women Suit Sets"
+          },
+          {
+            label: "Women Blazers",
+            value: "Women Blazers"
+          }
+        ]
       },
       {
-        label: '海淀区',
-        value: 'haidian',
-      },
-    ],
-  },
+        label: "Women Co-ords",
+        value: "Women Co-ords",
+        children: [
+          {
+            label: "Two-piece Outfits",
+            value: "Two-piece Outfits"
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 class Demo extends React.Component {
@@ -71,14 +77,13 @@ class Demo extends React.Component {
   render() {
     return (
       <Cascader
-        options={addressOptions}
+        showSearch
+        options={options}
         onChange={this.onChange}
         changeOnSelect
         expandTrigger="hover"
         loadData={() => console.log('loadData')}
-      >
-        <input placeholder="please select address" value={this.state.inputValue} readOnly />
-      </Cascader>
+      />
     );
   }
 }

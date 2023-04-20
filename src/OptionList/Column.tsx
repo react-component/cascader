@@ -1,10 +1,10 @@
-import * as React from 'react';
 import classNames from 'classnames';
-import { isLeaf, toPathKey } from '../utils/commonUtil';
-import CascaderContext from '../context';
-import Checkbox from './Checkbox';
+import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
+import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
@@ -23,6 +23,7 @@ export interface ColumnProps {
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
+  searchValue?: string;
 }
 
 export default function Column({
@@ -38,6 +39,7 @@ export default function Column({
   halfCheckedSet,
   loadingKeys,
   isSelectable,
+  searchValue,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -112,13 +114,14 @@ export default function Column({
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
-            if (!disabled) {
-              const nextValueCells = [...fullPath];
-              if (hoverOpen && isMergedLeaf) {
-                nextValueCells.pop();
-              }
-              onActive(nextValueCells);
+            if (disabled || searchValue) {
+              return;
             }
+            const nextValueCells = [...fullPath];
+            if (hoverOpen && isMergedLeaf) {
+              nextValueCells.pop();
+            }
+            onActive(nextValueCells);
           };
 
           // >>>>> Selection
