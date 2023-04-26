@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import * as React from 'react';
-import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import type { CascaderProps, DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import {
   getFullPathKeys,
@@ -37,6 +37,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
     dropdownPrefixCls,
     loadData,
     expandTrigger,
+    uncheckableItemValues,
   } = React.useContext(CascaderContext);
 
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
@@ -121,7 +122,7 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
   // ========================== Column ==========================
   const optionColumns = React.useMemo(() => {
-    const optionList = [{ options: mergedOptions }];
+    const optionList = [{ options: addTreeIndexToOptions(mergedOptions) }];
     let currentList = mergedOptions;
 
     const fullPathKeys = getFullPathKeys(currentList, fieldNames);
@@ -145,6 +146,21 @@ const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
 
     return optionList;
   }, [mergedOptions, activeValueCells, fieldNames]);
+
+  function addTreeIndexToOptions(
+    optionsArray: CascaderProps['options'],
+    lastTreeItemKey: string | number = '',
+  ) {
+    for (let i = 0; i < optionsArray.length; i++) {
+      optionsArray[i].treeItemKey = lastTreeItemKey
+        ? [lastTreeItemKey, i + 1].join('-')
+        : (i + 1).toString();
+      if (!Array.isArray(optionsArray[i]?.children) || optionsArray[i].children?.length === 0)
+        continue;
+      addTreeIndexToOptions(optionsArray[i].children, optionsArray[i].treeItemKey);
+    }
+    return optionsArray;
+  }
 
   // ========================= Keyboard =========================
   const onKeyboardSelect = (selectValueCells: SingleValueType, option: DefaultOptionType) => {

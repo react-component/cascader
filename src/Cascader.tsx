@@ -74,6 +74,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
   showCheckedStrategy?: ShowCheckedStrategy;
+  uncheckableItemValues?: string[];
 
   // Search
   showSearch?: boolean | ShowSearchType<OptionType>;
@@ -178,6 +179,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onChange,
     displayRender,
     checkable,
+    uncheckableItemValues = [],
 
     // Search
     searchValue,
@@ -448,6 +450,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
+      uncheckableItemValues,
     }),
     [
       mergedOptions,
