@@ -9,11 +9,13 @@ const optionLists = [
     value: 'zhejiang',
     label: 'Zhejiang',
     isLeaf: false,
+    disableCheckbox: true,
   },
   {
     value: 'jiangsu',
     label: 'Jiangsu',
     isLeaf: false,
+    disableCheckbox: false
   },
 ];
 
@@ -35,10 +37,12 @@ const Demo = () => {
         {
           label: `${targetOption.label} Dynamic 1`,
           value: 'dynamic1',
+          disableCheckbox: false,
         },
         {
           label: `${targetOption.label} Dynamic 2`,
           value: 'dynamic2',
+          disableCheckbox: true,
         },
       ];
       setOptions([...options]);

@@ -24,7 +24,6 @@ export interface ColumnProps {
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
   searchValue?: string;
-  uncheckableItemValues?: string[];
 }
 
 export default function Column({
@@ -52,7 +51,6 @@ export default function Column({
     expandIcon,
     loadingIcon,
     dropdownMenuColumnStyle,
-    uncheckableItemValues,
   } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
@@ -61,7 +59,7 @@ export default function Column({
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled, treeItemKey } = option;
+        const { disabled, treeItemKey, disableCheckbox = false } = option;
         const searchOptions = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
@@ -92,6 +90,7 @@ export default function Column({
           checked,
           halfChecked,
           option,
+          disableCheckbox,
           fullPath,
           fullPathKey,
         };
@@ -114,7 +113,7 @@ export default function Column({
           option,
           fullPath,
           fullPathKey,
-          treeItemKey,
+          disableCheckbox,
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
@@ -180,7 +179,7 @@ export default function Column({
                 e.preventDefault();
               }}
             >
-              {multiple && !uncheckableItemValues.some(item => treeItemKey.startsWith(item)) && (
+              {multiple && !disableCheckbox && (
                 <Checkbox
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
