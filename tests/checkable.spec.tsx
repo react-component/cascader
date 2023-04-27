@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-bind */
 
 import React from 'react';
-import { mount } from './enzyme';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
+import { mount } from './enzyme';
 
 describe('Cascader.Checkable', () => {
   const options = [
@@ -171,11 +171,34 @@ describe('Cascader.Checkable', () => {
   it('should work with custom checkable', () => {
     const wrapper = mount(
       <Cascader
-        checkable={<span className="my-custom-checkbox" >0</span>}
+        checkable={<span className="my-custom-checkbox">0</span>}
         open
         options={addressOptions}
       />,
     );
     expect(wrapper.find('.my-custom-checkbox')).toHaveLength(3);
+  });
+
+  it('should be disableCheckbox with className', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable={true}
+        open
+        options={[
+          {
+            label: '台湾',
+            value: 'tw',
+            disableCheckbox: true,
+            children: [
+              {
+                label: '福建',
+                value: 'fj',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+    expect(wrapper.find('.rc-cascader-checkbox-disabled')).toHaveLength(1);
   });
 });
