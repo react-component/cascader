@@ -179,12 +179,13 @@ export default function Column({
                 e.preventDefault();
               }}
             >
-              {multiple && !disableCheckbox && (
+              {multiple && (
                 <Checkbox
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
                   halfChecked={halfChecked}
                   disabled={disabled}
+                  disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                     e.stopPropagation();
                     triggerSelect();
