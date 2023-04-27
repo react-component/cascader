@@ -59,7 +59,7 @@ export default function Column({
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled, disableCheckbox = false } = option;
+        const { disabled, disableCheckbox } = option;
         const searchOptions = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
