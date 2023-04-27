@@ -179,7 +179,7 @@ describe('Cascader.Checkable', () => {
     expect(wrapper.find('.my-custom-checkbox')).toHaveLength(3);
   });
 
-  it('should be disableCheckbox with className', () => {
+  it('should be correct expression with disableCheckbox', () => {
     const wrapper = mount(
       <Cascader
         checkable={true}
@@ -188,17 +188,31 @@ describe('Cascader.Checkable', () => {
           {
             label: '台湾',
             value: 'tw',
-            disableCheckbox: true,
+
             children: [
               {
                 label: '福建',
                 value: 'fj',
+                disableCheckbox: true,
               },
+              {
+                label: '兰州',
+                value: 'lz',
+              },
+              { label: '北京', value: 'bj' },
             ],
           },
         ]}
       />,
     );
+
+    // disabled className
+    wrapper.find('.rc-cascader-menu-item').simulate('click');
     expect(wrapper.find('.rc-cascader-checkbox-disabled')).toHaveLength(1);
+
+    // Check all children except disableCheckbox When the parent checkbox is checked
+    expect(wrapper.find('.rc-cascader-checkbox')).toHaveLength(4);
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(3);
   });
 });
