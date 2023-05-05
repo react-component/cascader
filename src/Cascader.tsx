@@ -54,6 +54,7 @@ export interface DefaultOptionType extends BaseOptionType {
   label: React.ReactNode;
   value?: string | number | null;
   children?: DefaultOptionType[];
+  disableCheckbox?: boolean;
 }
 
 interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>

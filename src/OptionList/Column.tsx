@@ -59,7 +59,7 @@ export default function Column({
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled } = option;
+        const { disabled, disableCheckbox } = option;
         const searchOptions = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
@@ -89,6 +89,7 @@ export default function Column({
           checked,
           halfChecked,
           option,
+          disableCheckbox,
           fullPath,
           fullPathKey,
         };
@@ -111,6 +112,7 @@ export default function Column({
           option,
           fullPath,
           fullPathKey,
+          disableCheckbox,
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
@@ -182,6 +184,7 @@ export default function Column({
                   checked={checked}
                   halfChecked={halfChecked}
                   disabled={disabled}
+                  disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                     e.stopPropagation();
                     triggerSelect();
