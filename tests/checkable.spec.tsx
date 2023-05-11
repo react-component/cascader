@@ -208,7 +208,16 @@ describe('Cascader.Checkable', () => {
 
     // disabled className
     wrapper.find('.rc-cascader-menu-item').simulate('click');
+    expect(wrapper.find('.rc-cascader-menu-item')).toHaveLength(4);
     expect(wrapper.find('.rc-cascader-checkbox-disabled')).toHaveLength(1);
+
+    // click disableCkeckbox
+    wrapper.find('.rc-cascader-menu-item').at(1).simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
+
+    // click disableMenuItem
+    wrapper.find('.rc-cascader-checkbox-disabled').simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
 
     // Check all children except disableCheckbox When the parent checkbox is checked
     expect(wrapper.find('.rc-cascader-checkbox')).toHaveLength(4);
