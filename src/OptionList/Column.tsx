@@ -159,6 +159,7 @@ export default function Column({
               data-path-key={fullPathKey}
               onClick={() => {
                 triggerOpenPath();
+                if (disableCheckbox) return;
                 if (!multiple || isMergedLeaf) {
                   triggerSelect();
                 }
@@ -183,7 +184,7 @@ export default function Column({
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
                   halfChecked={halfChecked}
-                  disabled={disabled}
+                  disabled={disabled || disableCheckbox}
                   disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                     e.stopPropagation();
