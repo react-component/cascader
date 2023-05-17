@@ -1,5 +1,5 @@
-import type { DefaultOptionType, ShowSearchType, InternalFieldNames } from '../Cascader';
 import * as React from 'react';
+import type { DefaultOptionType, InternalFieldNames, ShowSearchType } from '../Cascader';
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
@@ -36,26 +36,19 @@ export default (
         const children = option[fieldNames.children];
 
         // If current option is filterable
-        if (
-          // If is leaf option
-          !children ||
-          children.length === 0 ||
-          // If is changeOnSelect
-          changeOnSelect
-        ) {
-          if (filter(search, connectedPathOptions, { label: fieldNames.label })) {
-            filteredOptions.push({
-              ...option,
-              [fieldNames.label as 'label']: render(
-                search,
-                connectedPathOptions,
-                prefixCls,
-                fieldNames,
-              ),
-              [SEARCH_MARK]: connectedPathOptions,
-              [fieldNames.children]: undefined,
-            });
-          }
+
+        if (filter(search, connectedPathOptions, { label: fieldNames.label })) {
+          filteredOptions.push({
+            ...option,
+            [fieldNames.label as 'label']: render(
+              search,
+              connectedPathOptions,
+              prefixCls,
+              fieldNames,
+            ),
+            [SEARCH_MARK]: connectedPathOptions,
+            [fieldNames.children]: undefined,
+          });
         }
 
         if (children) {
