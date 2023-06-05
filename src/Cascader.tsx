@@ -1,7 +1,7 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
+import type { BaseSelectProps,BaseSelectPropsWithoutPrivate,BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
+import type { DisplayValueType,Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -14,9 +14,9 @@ import useRefFunc from './hooks/useRefFunc';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
-import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
-import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
-import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import { fillFieldNames,SHOW_CHILD,SHOW_PARENT,toPathKey,toPathKeys } from './utils/commonUtil';
+import { formatStrategyValues,toPathOptions } from './utils/treeUtil';
+import warningProps,{ warningNullOptions } from './utils/warningPropsUtil';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -199,6 +199,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     popupClassName,
     dropdownClassName,
+    dropdownStyle,
     dropdownMenuColumnStyle,
 
     popupPlacement,
@@ -473,14 +474,16 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ==============================================================
   const emptyOptions = !(mergedSearchValue ? searchOptions : mergedOptions).length;
 
-  const dropdownStyle: React.CSSProperties =
+  const mergedDropdownStyle: React.CSSProperties =
     // Search to match width
-    (mergedSearchValue && searchConfig.matchInputWidth) ||
-    // Empty keep the width
-    emptyOptions
-      ? {}
+    dropdownStyle ?? (mergedSearchValue && searchConfig.matchInputWidth) ?? emptyOptions
+      ? // Empty keep the width
+        {
+          ...dropdownStyle,
+        }
       : {
           minWidth: 'auto',
+          ...dropdownStyle,
         };
 
   return (
@@ -492,7 +495,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         id={mergedId}
         prefixCls={prefixCls}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={mergedDropdownStyle}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
