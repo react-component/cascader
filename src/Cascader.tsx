@@ -57,7 +57,7 @@ export interface DefaultOptionType extends BaseOptionType {
   disableCheckbox?: boolean;
 }
 
-interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+export interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
@@ -97,7 +97,14 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   /** @deprecated Use `dropdownClassName` instead */
   popupClassName?: string;
   dropdownClassName?: string;
+  /** @deprecated Use `styles.dropdownMenuColumn` instead */
   dropdownMenuColumnStyle?: React.CSSProperties;
+
+  // styles
+  styles?: {
+    dropdown?: React.CSSProperties;
+    dropdownMenuColumn?: React.CSSProperties;
+  };
 
   /** @deprecated Use `placement` instead */
   popupPlacement?: Placement;
@@ -196,6 +203,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     // Open
     popupVisible,
     open,
+
+    styles,
 
     popupClassName,
     dropdownClassName,
@@ -449,7 +458,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle,
+      dropdownMenuColumnStyle: styles?.dropdownMenuColumn ?? dropdownMenuColumnStyle,
     }),
     [
       mergedOptions,
@@ -466,6 +475,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
+      styles?.dropdownMenuColumn,
     ],
   );
 
@@ -476,13 +486,18 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   const mergedDropdownStyle: React.CSSProperties =
     // Search to match width
-    dropdownStyle ?? (mergedSearchValue && searchConfig.matchInputWidth) ?? emptyOptions
+    styles?.dropdown ??
+    dropdownStyle ??
+    (mergedSearchValue && searchConfig.matchInputWidth) ??
+    emptyOptions
       ? // Empty keep the width
         {
+          ...styles?.dropdown,
           ...dropdownStyle,
         }
       : {
           minWidth: 'auto',
+          ...styles?.dropdown,
           ...dropdownStyle,
         };
 

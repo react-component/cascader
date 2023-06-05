@@ -1,8 +1,8 @@
 import warning from 'rc-util/lib/warning';
-import type { DefaultOptionType, FieldNames, InternalCascaderProps } from '../Cascader';
+import type { DefaultOptionType, FieldNames, BaseCascaderProps } from '../Cascader';
 
-function warningProps(props: InternalCascaderProps) {
-  const { onPopupVisibleChange, popupVisible, popupClassName, popupPlacement } = props;
+function warningProps(props: BaseCascaderProps) {
+  const { onPopupVisibleChange, popupVisible, popupClassName, popupPlacement,dropdownMenuColumnStyle} = props;
 
   warning(
     !onPopupVisibleChange,
@@ -16,6 +16,10 @@ function warningProps(props: InternalCascaderProps) {
   warning(
     popupPlacement === undefined,
     '`popupPlacement` is deprecated. Please use `placement` instead.',
+  );
+  warning(
+    dropdownMenuColumnStyle === undefined,
+    '`dropdownMenuColumnStyle` is deprecated. Please use `styles.dropdownMenuColumn` instead.',
   );
 }
 
