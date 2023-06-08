@@ -1064,18 +1064,26 @@ describe('Cascader.Basic', () => {
     errorSpy.mockReset();
   });
 
-  it('``in Cascader options should throw a warning', () => {
+  it('`dropdownMenuColumnStyle`in Cascader options should throw a warning', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
-    mount(
-      <Cascader
-        dropdownMenuColumnStyle={{}}
-        options={[]}
-      />,
-    );
+    mount(<Cascader dropdownMenuColumnStyle={{}} options={[]} />);
 
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.dropdownMenuColumn` instead.',
     );
     errorSpy.mockReset();
   });
+
+    it('`dropdownMenuColumnStyle`in Cascader options should throw a warning', () => {
+      const wrapper = mount(<Cascader
+        styles={{ dropdown: { backgroundColor: 'red' }, dropdownMenuColumn: { backgroundColor: 'blue' } }}
+        options={[]}
+        open
+      />);
+      expect(wrapper.find('.rc-cascader-dropdown').props().style.backgroundColor).toEqual('red');
+      expect(wrapper.find('.rc-cascader-menu-item').props().style.backgroundColor).toEqual('blue');
+
+    });
+
+
 });
