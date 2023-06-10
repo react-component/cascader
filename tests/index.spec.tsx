@@ -1082,8 +1082,6 @@ describe('Cascader.Basic', () => {
       />);
       expect(wrapper.find('.rc-cascader-dropdown').props().style.backgroundColor).toEqual('red');
       expect(wrapper.find('.rc-cascader-menu-item').props().style.backgroundColor).toEqual('blue');
-
     });
-
 
 });
