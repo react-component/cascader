@@ -1069,19 +1069,23 @@ describe('Cascader.Basic', () => {
     mount(<Cascader dropdownMenuColumnStyle={{}} options={[]} />);
 
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.dropdownMenuColumn` instead.',
+      'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.popupMenuColumn` instead.',
     );
     errorSpy.mockReset();
   });
 
-    it('`dropdownMenuColumnStyle`in Cascader options should throw a warning', () => {
-      const wrapper = mount(<Cascader
-        styles={{ dropdown: { backgroundColor: 'red' }, dropdownMenuColumn: { backgroundColor: 'blue' } }}
+  it('`styles` api should work correctly', () => {
+    const wrapper = mount(
+      <Cascader
+        styles={{
+          popup: { backgroundColor: 'red' },
+          popupMenuColumn: { backgroundColor: 'blue' },
+        }}
         options={[]}
         open
-      />);
-      expect(wrapper.find('.rc-cascader-dropdown').props().style.backgroundColor).toEqual('red');
-      expect(wrapper.find('.rc-cascader-menu-item').props().style.backgroundColor).toEqual('blue');
-    });
-
+      />,
+    );
+    expect(wrapper.find('.rc-cascader-dropdown').props().style.backgroundColor).toEqual('red');
+    expect(wrapper.find('.rc-cascader-menu-item').props().style.backgroundColor).toEqual('blue');
+  });
 });
