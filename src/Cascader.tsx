@@ -1,7 +1,7 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
+import type { BaseSelectProps,BaseSelectPropsWithoutPrivate,BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
+import type { DisplayValueType,Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
@@ -14,9 +14,9 @@ import useRefFunc from './hooks/useRefFunc';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
-import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
-import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
-import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import { fillFieldNames,SHOW_CHILD,SHOW_PARENT,toPathKey,toPathKeys } from './utils/commonUtil';
+import { formatStrategyValues,toPathOptions } from './utils/treeUtil';
+import warningProps,{ warningNullOptions } from './utils/warningPropsUtil';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -97,13 +97,13 @@ export interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOp
   /** @deprecated Use `dropdownClassName` instead */
   popupClassName?: string;
   dropdownClassName?: string;
-  /** @deprecated Use `styles.dropdownMenuColumn` instead */
+  /** @deprecated Use `styles.popupColumn` instead */
   dropdownMenuColumnStyle?: React.CSSProperties;
 
   // styles
   styles?: {
     popup?: React.CSSProperties;
-    popupMenuColumn?: React.CSSProperties;
+    popupColumn?: React.CSSProperties;
   };
 
   /** @deprecated Use `placement` instead */
@@ -458,7 +458,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle: styles?.popupMenuColumn ?? dropdownMenuColumnStyle,
+      dropdownMenuColumnStyle: styles?.popupColumn ?? dropdownMenuColumnStyle,
     }),
     [
       mergedOptions,
@@ -475,7 +475,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
-      styles?.popupMenuColumn,
+      styles?.popupColumn,
     ],
   );
 

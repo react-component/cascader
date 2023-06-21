@@ -1069,7 +1069,7 @@ describe('Cascader.Basic', () => {
     mount(<Cascader dropdownMenuColumnStyle={{}} options={[]} />);
 
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.popupMenuColumn` instead.',
+      'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.popupColumn` instead.',
     );
     errorSpy.mockReset();
   });
@@ -1079,7 +1079,7 @@ describe('Cascader.Basic', () => {
       <Cascader
         styles={{
           popup: { backgroundColor: 'red' },
-          popupMenuColumn: { backgroundColor: 'blue' },
+          popupColumn: { backgroundColor: 'blue' },
         }}
         options={[]}
         open

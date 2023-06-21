@@ -19,7 +19,7 @@ function warningProps(props: BaseCascaderProps) {
   );
   warning(
     dropdownMenuColumnStyle === undefined,
-    '`dropdownMenuColumnStyle` is deprecated. Please use `styles.popupMenuColumn` instead.',
+    '`dropdownMenuColumnStyle` is deprecated. Please use `styles.popupColumn` instead.',
   );
 }
 
