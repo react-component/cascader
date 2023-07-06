@@ -227,6 +227,19 @@ describe('Cascader.Keyboard', () => {
     ).toHaveLength(0);
   });
 
+  it('should not switch column when press left/right key in search input', () => {
+    wrapper = mount(<Cascader options={addressOptions} showSearch />);
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: '123',
+      },
+    });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
+    expect(wrapper.isOpen()).toBeTruthy();
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    expect(wrapper.isOpen()).toBeTruthy();
+  });
+
   // TODO: This is strange that we need check on this
   it.skip('should not handle keyDown events when children specify the onKeyDown', () => {
     wrapper = mount(
