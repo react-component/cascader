@@ -1,6 +1,6 @@
 /* eslint-disable no-console,react/button-has-type */
-import React from 'react';
 import arrayTreeFilter from 'array-tree-filter';
+import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
