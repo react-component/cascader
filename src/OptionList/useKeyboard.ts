@@ -135,6 +135,9 @@ export default (
         }
 
         case KeyCode.LEFT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             nextColumn();
           } else {
@@ -144,6 +147,9 @@ export default (
         }
 
         case KeyCode.RIGHT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             prevColumn();
           } else {
