@@ -1,7 +1,7 @@
-import * as React from 'react';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import { useBaseProps } from 'rc-select';
+import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import KeyCode from 'rc-util/lib/KeyCode';
+import * as React from 'react';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
@@ -125,6 +125,9 @@ export default (
         }
 
         case KeyCode.LEFT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             nextColumn();
           } else {
@@ -134,6 +137,9 @@ export default (
         }
 
         case KeyCode.RIGHT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             prevColumn();
           } else {
