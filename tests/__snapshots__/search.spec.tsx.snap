@@ -2,7 +2,7 @@
 
 exports[`Cascader.Search should correct render Cascader with same field name of label and value 1`] = `
 <div
-  class="rc-cascader rc-cascader-single rc-cascader-show-arrow rc-cascader-open rc-cascader-show-search"
+  class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
 >
   <div
     class="rc-cascader-selector"
@@ -71,15 +71,5 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-cascader-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-cascader-arrow-icon"
-    />
-  </span>
 </div>
 `;
