@@ -75,7 +75,7 @@
     "classnames": "^2.3.1",
     "rc-select": "~14.7.0",
     "rc-tree": "~5.7.0",
-    "rc-util": "^5.6.1"
+    "rc-util": "^5.35.0"
   },
   "peerDependencies": {
     "react": ">=16.9.0",

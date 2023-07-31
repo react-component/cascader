@@ -4,13 +4,13 @@ import { BaseSelect } from 'rc-select';
 import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import useEvent from 'rc-util/lib/hooks/useEvent';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
 import useEntities from './hooks/useEntities';
 import useMissingValues from './hooks/useMissingValues';
-import useRefFunc from './hooks/useRefFunc';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
@@ -326,7 +326,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useRefFunc((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: ValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -345,7 +345,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   });
 
   // =========================== Select ===========================
-  const onInternalSelect = useRefFunc((valuePath: SingleValueType) => {
+  const onInternalSelect = useEvent((valuePath: SingleValueType) => {
     setSearchValue('');
     if (!multiple) {
       triggerChange(valuePath);
