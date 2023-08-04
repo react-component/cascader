@@ -264,4 +264,17 @@ describe('Cascader.Search', () => {
       'Label Bamboo / Label Little / Toy Fish',
     );
   });
+
+  it('autoClearSearchValue={false} should be worked', () => {
+    const wrapper = mount(
+      <Cascader options={options} showSearch checkable autoClearSearchValue={false} />,
+    );
+
+    // Search
+    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
+
+    // Click
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.find('input').prop('value')).toEqual('bamboo');
+  });
 });
