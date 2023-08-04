@@ -77,6 +77,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   showCheckedStrategy?: ShowCheckedStrategy;
 
   // Search
+  autoClearSearchValue?: boolean;
   showSearch?: boolean | ShowSearchType<OptionType>;
   searchValue?: string;
   onSearch?: (value: string) => void;
@@ -181,6 +182,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
+    autoClearSearchValue = true,
     searchValue,
     onSearch,
     showSearch,
@@ -346,10 +348,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   // =========================== Select ===========================
   const onInternalSelect = useEvent((valuePath: SingleValueType) => {
-    setSearchValue('');
     if (!multiple) {
+      setSearchValue('');
       triggerChange(valuePath);
     } else {
+      if (autoClearSearchValue) {
+        setSearchValue('');
+      }
       // Prepare conduct required info
       const pathKey = toPathKey(valuePath);
       const checkedPathKeys = toPathKeys(checkedValues);
