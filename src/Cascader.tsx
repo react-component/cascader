@@ -348,13 +348,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   // =========================== Select ===========================
   const onInternalSelect = useEvent((valuePath: SingleValueType) => {
-    if (!multiple) {
+    if (!multiple || autoClearSearchValue) {
       setSearchValue('');
+    }
+    if (!multiple) {
       triggerChange(valuePath);
     } else {
-      if (autoClearSearchValue) {
-        setSearchValue('');
-      }
       // Prepare conduct required info
       const pathKey = toPathKey(valuePath);
       const checkedPathKeys = toPathKeys(checkedValues);
