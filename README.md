@@ -119,7 +119,7 @@ React.render(
       <td>autoClearSearchValue</td>
       <td>boolean</td>
       <td>true</td>
-      <td>Whether the current search will be cleared on selecting an item</td>
+      <td>Whether the current search will be cleared on selecting an item. Only applies when checkable</td>
     </tr>
     <tr>
       <td>options</td>
