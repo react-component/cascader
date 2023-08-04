@@ -496,6 +496,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
+        autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         dropdownStyle={dropdownStyle}
         // Value
