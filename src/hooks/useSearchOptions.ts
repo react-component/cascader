@@ -27,8 +27,12 @@ export default (
 
     function dig(list: DefaultOptionType[], pathOptions: DefaultOptionType[]) {
       list.forEach(option => {
-        // Perf saving when `sort` is disabled and `limit` is provided
-        if (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) {
+        if (
+          // Perf saving when `sort` is disabled and `limit` is provided
+          (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) ||
+          // Skip for disabled options
+          option.disabled
+        ) {
           return;
         }
 

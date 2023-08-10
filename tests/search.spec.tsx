@@ -282,6 +282,7 @@ describe('Cascader.Search', () => {
     const { container } = render(
       <Cascader
         open
+        notFoundContent={null}
         searchValue="little"
         options={[
           {
