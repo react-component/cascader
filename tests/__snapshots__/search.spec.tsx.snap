@@ -15,6 +15,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-cascader-selection-search-input"
