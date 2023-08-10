@@ -1,3 +1,8 @@
-## multiple
+---
+title: multiple
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/multiple.tsx">
+<code src="../../examples/multiple.tsx"></code>

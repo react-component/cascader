@@ -1,3 +1,8 @@
-## hover
+---
+title: hover
+nav:
+  title: Demo
+  path: /demo
+---
 
-<code src="../../examples/hover.jsx">
+<code src="../../examples/hover.tsx"></code>

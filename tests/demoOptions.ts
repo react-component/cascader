@@ -1,4 +1,6 @@
-export const optionsForActiveMenuItems = [
+import type { DefaultOptionType } from '@/Cascader';
+
+export const optionsForActiveMenuItems: DefaultOptionType[] = [
   {
     value: '1',
     label: '1',
@@ -33,7 +35,7 @@ export const optionsForActiveMenuItems = [
   },
 ];
 
-export const addressOptions = [
+export const addressOptions: DefaultOptionType[] = [
   {
     label: '福建',
     value: 'fj',
@@ -65,6 +67,16 @@ export const addressOptions = [
           {
             label: '余杭',
             value: 'yuhang',
+          },
+        ],
+      },
+      {
+        label: '福州',
+        value: 'fuzhou',
+        children: [
+          {
+            label: '马尾',
+            value: 'mawei',
           },
         ],
       },
@@ -138,3 +150,32 @@ export const addressOptionsForFieldNames = [
     ],
   },
 ];
+
+// Uneven
+export const addressOptionsForUneven = [
+  ...addressOptions,
+  {
+    label: '台湾',
+    value: 'tw',
+    children: [
+      {
+        label: '台北',
+        value: 'taipei',
+        children: [
+          {
+            label: '中正区',
+            value: 'zhongzheng',
+          },
+        ],
+      },
+      {
+        label: '高雄',
+        value: 'gaoxiong',
+      }
+    ]
+  },
+  {
+    label: '香港',
+    value: 'xg',
+  },
+]

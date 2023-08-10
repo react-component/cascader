@@ -2,7 +2,7 @@
 
 exports[`Cascader.Search should correct render Cascader with same field name of label and value 1`] = `
 <div
-  class="rc-cascader rc-cascader-single rc-cascader-show-arrow rc-cascader-open rc-cascader-show-search"
+  class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
 >
   <div
     class="rc-cascader-selector"
@@ -29,59 +29,47 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
       style="visibility: hidden;"
     />
   </div>
-  <div>
-    <div
-      class="rc-cascader-dropdown"
-      style="opacity: 0; min-width: 0;"
-    >
-      <div>
-        <div
-          class="rc-cascader-menus"
+  <div
+    class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0;"
+  >
+    <div>
+      <div
+        class="rc-cascader-menus"
+      >
+        <ul
+          class="rc-cascader-menu"
+          role="menu"
         >
-          <ul
-            class="rc-cascader-menu"
-            role="menu"
+          <li
+            aria-checked="false"
+            class="rc-cascader-menu-item"
+            data-path-key="Zhejiang__RC_CASCADER_SPLIT__Hangzhou__RC_CASCADER_SPLIT__West Lake"
+            role="menuitemcheckbox"
+            title="Zhejiang / Hangzhou / West Lake"
           >
-            <li
-              aria-checked="false"
-              class="rc-cascader-menu-item"
-              data-path-key="Zhejiang__RC_CASCADER_SPLIT__Hangzhou__RC_CASCADER_SPLIT__West Lake"
-              role="menuitemcheckbox"
-              title="Zhejiang / Hangzhou / West Lake"
+            <div
+              class="rc-cascader-menu-item-content"
             >
-              <div
-                class="rc-cascader-menu-item-content"
-              >
-                Zhejiang / Hangzhou / West Lake
-              </div>
-            </li>
-            <li
-              aria-checked="false"
-              class="rc-cascader-menu-item rc-cascader-menu-item-disabled"
-              data-path-key="Zhejiang__RC_CASCADER_SPLIT__Hangzhou__RC_CASCADER_SPLIT__Xia Sha"
-              role="menuitemcheckbox"
-              title="Zhejiang / Hangzhou / Xia Sha"
+              Zhejiang / Hangzhou / West Lake
+            </div>
+          </li>
+          <li
+            aria-checked="false"
+            class="rc-cascader-menu-item rc-cascader-menu-item-disabled"
+            data-path-key="Zhejiang__RC_CASCADER_SPLIT__Hangzhou__RC_CASCADER_SPLIT__Xia Sha"
+            role="menuitemcheckbox"
+            title="Zhejiang / Hangzhou / Xia Sha"
+          >
+            <div
+              class="rc-cascader-menu-item-content"
             >
-              <div
-                class="rc-cascader-menu-item-content"
-              >
-                Zhejiang / Hangzhou / Xia Sha
-              </div>
-            </li>
-          </ul>
-        </div>
+              Zhejiang / Hangzhou / Xia Sha
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
-  <span
-    aria-hidden="true"
-    class="rc-cascader-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-cascader-arrow-icon"
-    />
-  </span>
 </div>
 `;

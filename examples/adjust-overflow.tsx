@@ -1,4 +1,5 @@
 /* eslint-disable no-console, react/prop-types */
+import type { BuildInPlacements } from 'rc-trigger/lib/interface';
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -57,7 +58,7 @@ const addressOptions = [
   },
 ];
 
-class MyCascader extends React.Component {
+class MyCascader extends React.Component<{ builtinPlacements?: BuildInPlacements }> {
   state = {
     inputValue: '',
   };
@@ -120,7 +121,7 @@ const placements = {
 
 function Demo() {
   return (
-    <div style={{ position: 'absolute', right: 10, top: 150 }}>
+    <div>
       <MyCascader />
       <br />
       <br />

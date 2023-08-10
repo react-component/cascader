@@ -1,6 +1,5 @@
-/* eslint-disable no-console,react/button-has-type */
+/* eslint-disable no-console */
 import React from 'react';
-import arrayTreeFilter from 'array-tree-filter';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -55,36 +54,50 @@ const addressOptions = [
       },
     ],
   },
+  {
+    label: '台湾',
+    value: 'tw',
+    children: [
+      {
+        label: '台北',
+        value: 'taipei',
+        children: [
+          {
+            label: '中正区',
+            value: 'zhongzheng',
+          },
+        ],
+      },
+      {
+        label: '高雄',
+        value: 'gaoxiong',
+      }
+    ]
+  },
+  {
+    label: '香港',
+    value: 'xg',
+  },
 ];
 
 class Demo extends React.Component {
   state = {
-    value: [],
+    inputValue: '',
   };
 
-  onChange = value => {
-    console.log(value);
-    this.setState({ value });
-  };
-
-  setValue = () => {
+  onChange = (value, selectedOptions) => {
+    console.log(value, selectedOptions);
     this.setState({
-      value: ['bj', 'chaoyang'],
+      inputValue: selectedOptions.map(o => o.label).join(', '),
     });
   };
-
-  getLabel() {
-    return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
-      .map(o => o.label)
-      .join(', ');
-  }
 
   render() {
     return (
       <div>
-        <button onClick={this.setValue}>set value to 北京朝阳区</button>
-        <Cascader value={this.state.value} options={addressOptions} onChange={this.onChange}>
-          <input value={this.getLabel()} readOnly />
+        <p>Hover to expand children</p>
+        <Cascader expandTrigger="hover" options={addressOptions} onChange={this.onChange}>
+          <input placeholder="please select address" value={this.state.inputValue} readOnly />
         </Cascader>
       </div>
     );

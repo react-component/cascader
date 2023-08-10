@@ -1,4 +1,3 @@
-import React from 'react';
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Cascader from '../src';
@@ -94,6 +93,24 @@ describe('Cascader.Keyboard', () => {
       addressOptions[1].children[0],
       addressOptions[1].children[0].children[0],
     ]);
+  });
+  it('enter on search when has same sub key', () => {
+    wrapper.find('input').simulate('change', { target: { value: '福' } });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建 / 福州 / 马尾');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('福建 / 泉州');
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    expect(wrapper.find('.rc-cascader-menu-item-active').length).toBe(1);
+    expect(
+      wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content').last().text(),
+    ).toEqual('浙江 / 福州 / 马尾');
   });
 
   it('rtl', () => {
@@ -226,6 +243,19 @@ describe('Cascader.Keyboard', () => {
     expect(
       wrapper.find('.rc-cascader-menu-item-active .rc-cascader-menu-item-content'),
     ).toHaveLength(0);
+  });
+
+  it('should not switch column when press left/right key in search input', () => {
+    wrapper = mount(<Cascader options={addressOptions} showSearch />);
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: '123',
+      },
+    });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.LEFT });
+    expect(wrapper.isOpen()).toBeTruthy();
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.RIGHT });
+    expect(wrapper.isOpen()).toBeTruthy();
   });
 
   // TODO: This is strange that we need check on this

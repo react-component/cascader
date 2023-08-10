@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
-import React from 'react';
+/* eslint-disable no-console,react/button-has-type */
 import arrayTreeFilter from 'array-tree-filter';
+import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -60,15 +60,17 @@ const addressOptions = [
 class Demo extends React.Component {
   state = {
     value: [],
-    popupVisible: false,
   };
 
   onChange = value => {
+    console.log(value);
     this.setState({ value });
   };
 
-  onPopupVisibleChange = popupVisible => {
-    this.setState({ popupVisible });
+  setValue = () => {
+    this.setState({
+      value: ['bj', 'chaoyang'],
+    });
   };
 
   getLabel() {
@@ -79,15 +81,12 @@ class Demo extends React.Component {
 
   render() {
     return (
-      <Cascader
-        popupVisible={this.state.popupVisible}
-        value={this.state.value}
-        options={addressOptions}
-        onPopupVisibleChange={this.onPopupVisibleChange}
-        onChange={this.onChange}
-      >
-        <input value={this.getLabel()} readOnly />
-      </Cascader>
+      <div>
+        <button onClick={this.setValue}>set value to 北京朝阳区</button>
+        <Cascader value={this.state.value} options={addressOptions} onChange={this.onChange}>
+          <input value={this.getLabel()} readOnly />
+        </Cascader>
+      </div>
     );
   }
 }

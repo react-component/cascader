@@ -1,15 +1,16 @@
+import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
 import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import useEvent from 'rc-util/lib/hooks/useEvent';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
 import useEntities from './hooks/useEntities';
 import useMissingValues from './hooks/useMissingValues';
-import useRefFunc from './hooks/useRefFunc';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
@@ -53,6 +54,7 @@ export interface DefaultOptionType extends BaseOptionType {
   label: React.ReactNode;
   value?: string | number | null;
   children?: DefaultOptionType[];
+  disableCheckbox?: boolean;
 }
 
 interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -75,6 +77,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   showCheckedStrategy?: ShowCheckedStrategy;
 
   // Search
+  autoClearSearchValue?: boolean;
   showSearch?: boolean | ShowSearchType<OptionType>;
   searchValue?: string;
   onSearch?: (value: string) => void;
@@ -100,6 +103,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   /** @deprecated Use `placement` instead */
   popupPlacement?: Placement;
   placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
 
   /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
@@ -178,6 +182,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
+    autoClearSearchValue = true,
     searchValue,
     onSearch,
     showSearch,
@@ -337,7 +342,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useRefFunc((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: ValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -356,8 +361,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   });
 
   // =========================== Select ===========================
-  const onInternalSelect = useRefFunc((valuePath: SingleValueType) => {
-    setSearchValue('');
+  const onInternalSelect = useEvent((valuePath: SingleValueType) => {
+    if (!multiple || autoClearSearchValue) {
+      setSearchValue('');
+    }
     if (!multiple) {
       triggerChange(valuePath);
     } else {
@@ -502,6 +509,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
+        autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
         dropdownStyle={dropdownStyle}
         // Value

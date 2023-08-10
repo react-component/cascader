@@ -13,13 +13,13 @@ const addressOptions = [
         value: 'fuzhou',
         children: [
           {
-            label: '马尾',
+            label: '马尾-mw',
             value: 'mawei',
           },
         ],
       },
       {
-        label: '泉州',
+        label: '泉州-qz',
         value: 'quanzhou',
       },
     ],
@@ -35,6 +35,16 @@ const addressOptions = [
           {
             label: '余杭',
             value: 'yuhang',
+          },
+          {
+            label: '福州',
+            value: 'fuzhou',
+            children: [
+              {
+                label: '马尾',
+                value: 'mawei',
+              },
+            ],
           },
         ],
       },
@@ -57,25 +67,9 @@ const addressOptions = [
 ];
 
 class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
-
-  onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
-  };
-
   render() {
     return (
-      <div>
-        <p>Hover to expand children</p>
-        <Cascader expandTrigger="hover" options={addressOptions} onChange={this.onChange}>
-          <input placeholder="please select address" value={this.state.inputValue} readOnly />
-        </Cascader>
-      </div>
+      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" />
     );
   }
 }

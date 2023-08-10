@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import arrayTreeFilter from 'array-tree-filter';
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -58,26 +59,34 @@ const addressOptions = [
 
 class Demo extends React.Component {
   state = {
-    inputValue: '',
+    value: [],
+    popupVisible: false,
   };
 
-  onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+  onChange = value => {
+    this.setState({ value });
   };
+
+  onPopupVisibleChange = popupVisible => {
+    this.setState({ popupVisible });
+  };
+
+  getLabel() {
+    return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
+      .map(o => o.label)
+      .join(', ');
+  }
 
   render() {
     return (
       <Cascader
+        popupVisible={this.state.popupVisible}
+        value={this.state.value}
         options={addressOptions}
+        onPopupVisibleChange={this.onPopupVisibleChange}
         onChange={this.onChange}
-        changeOnSelect
-        expandTrigger="hover"
-        loadData={() => console.log('loadData')}
       >
-        <input placeholder="please select address" value={this.state.inputValue} readOnly />
+        <input value={this.getLabel()} readOnly />
       </Cascader>
     );
   }
