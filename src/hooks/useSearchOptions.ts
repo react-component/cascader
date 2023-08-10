@@ -1,5 +1,5 @@
-import type { DefaultOptionType, ShowSearchType, InternalFieldNames } from '../Cascader';
 import * as React from 'react';
+import type { DefaultOptionType, InternalFieldNames, ShowSearchType } from '../Cascader';
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
@@ -28,7 +28,7 @@ export default (
     function dig(list: DefaultOptionType[], pathOptions: DefaultOptionType[]) {
       list.forEach(option => {
         // Perf saving when `sort` is disabled and `limit` is provided
-        if (!sort && limit > 0 && filteredOptions.length >= limit) {
+        if (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) {
           return;
         }
 
@@ -73,6 +73,8 @@ export default (
       });
     }
 
-    return limit > 0 ? filteredOptions.slice(0, limit as number) : filteredOptions;
+    return limit !== false && limit > 0
+      ? filteredOptions.slice(0, limit as number)
+      : filteredOptions;
   }, [search, options, fieldNames, prefixCls, render, changeOnSelect, filter, sort, limit]);
 };
