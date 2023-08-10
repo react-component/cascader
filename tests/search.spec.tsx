@@ -277,4 +277,32 @@ describe('Cascader.Search', () => {
     wrapper.find('.rc-cascader-checkbox').first().simulate('click');
     expect(wrapper.find('input').prop('value')).toEqual('bamboo');
   });
+
+  it('disabled path should not search', () => {
+    const { container } = render(
+      <Cascader
+        open
+        searchValue="little"
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            disabled: true,
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(container.querySelectorAll('.rc-cascader-menu-item-disabled')).toHaveLength(1);
+    expect(container.querySelector('.rc-cascader-menu-item-disabled').textContent).toEqual(
+      'bamboo / little',
+    );
+  });
 });
