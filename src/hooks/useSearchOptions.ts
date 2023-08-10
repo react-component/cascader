@@ -25,19 +25,21 @@ export default (
       return [];
     }
 
-    function dig(list: DefaultOptionType[], pathOptions: DefaultOptionType[]) {
+    function dig(
+      list: DefaultOptionType[],
+      pathOptions: DefaultOptionType[],
+      parentDisabled = false,
+    ) {
       list.forEach(option => {
-        if (
-          // Perf saving when `sort` is disabled and `limit` is provided
-          (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) ||
-          // Skip for disabled options
-          option.disabled
-        ) {
+        // Perf saving when `sort` is disabled and `limit` is provided
+        if (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) {
           return;
         }
 
         const connectedPathOptions = [...pathOptions, option];
         const children = option[fieldNames.children];
+
+        const mergedDisabled = parentDisabled || option.disabled;
 
         // If current option is filterable
         if (
@@ -50,6 +52,7 @@ export default (
           if (filter(search, connectedPathOptions, { label: fieldNames.label })) {
             filteredOptions.push({
               ...option,
+              disabled: mergedDisabled,
               [fieldNames.label as 'label']: render(
                 search,
                 connectedPathOptions,
@@ -63,7 +66,11 @@ export default (
         }
 
         if (children) {
-          dig(option[fieldNames.children] as DefaultOptionType[], connectedPathOptions);
+          dig(
+            option[fieldNames.children] as DefaultOptionType[],
+            connectedPathOptions,
+            mergedDisabled,
+          );
         }
       });
     }

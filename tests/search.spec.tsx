@@ -282,7 +282,6 @@ describe('Cascader.Search', () => {
     const { container } = render(
       <Cascader
         open
-        notFoundContent={null}
         searchValue="little"
         options={[
           {
@@ -300,6 +299,10 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    expect(container.querySelector('.rc-cascader-menu-item')).toBeFalsy();
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(container.querySelectorAll('.rc-cascader-menu-item-disabled')).toHaveLength(1);
+    expect(container.querySelector('.rc-cascader-menu-item-disabled').textContent).toEqual(
+      'bamboo / little',
+    );
   });
 });
