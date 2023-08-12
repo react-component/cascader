@@ -41,7 +41,7 @@ export interface InternalFieldNames extends Required<FieldNames> {
   key: string;
 }
 
-export type SingleValueType = (string | number)[];
+export type SingleValueType = (string | number)[] | string[] | number[];
 
 export type ValueType = SingleValueType | SingleValueType[];
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
