@@ -57,9 +57,13 @@ export function scrollIntoParentView(element: HTMLElement, activeValueCells: Rea
   } else {
     const parentToContainer = parent.parentElement.children;
     if(activeValueCells.length === parentToContainer.length) return
-    if(typeof parentToContainer[activeValueCells.length] !== undefined){
-      parentToContainer[activeValueCells.length].scrollTo(0, 0)
+    const container = parentToContainer[activeValueCells.length];
+    if (container && typeof container.scrollTo === 'function') {
+        container.scrollTo(0, 0);
+    } else {
+        console.error("container || scrollTo error");
     }
+
   }
 }
 
