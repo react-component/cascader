@@ -60,10 +60,7 @@ export function scrollIntoParentView(element: HTMLElement, activeValueCells: Rea
     const container = parentToContainer[activeValueCells.length];
     if (container && typeof container.scrollTo === 'function') {
         container.scrollTo(0, 0);
-    } else {
-        console.error("container || scrollTo error");
-    }
-
+    } 
   }
 }
 
