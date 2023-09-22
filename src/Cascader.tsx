@@ -14,6 +14,7 @@ import useMissingValues from './hooks/useMissingValues';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
+import Panel from './Panel';
 import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
@@ -527,6 +528,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   displayName?: string;
   SHOW_PARENT: typeof SHOW_PARENT;
   SHOW_CHILD: typeof SHOW_CHILD;
+  Panel: typeof Panel;
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -535,4 +537,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 Cascader.SHOW_PARENT = SHOW_PARENT;
 Cascader.SHOW_CHILD = SHOW_CHILD;
+Cascader.Panel = Panel;
+
 export default Cascader;
