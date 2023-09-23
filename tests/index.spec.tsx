@@ -4,7 +4,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import Cascader from '../src';
-import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
+import { addressOptions,addressOptionsForUneven,optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 
 describe('Cascader.Basic', () => {
@@ -655,7 +655,8 @@ describe('Cascader.Basic', () => {
         changeOnSelect
         expandTrigger="hover"
         options={addressOptionsForUneven}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         <input readOnly />
       </Cascader>,
     );
@@ -684,7 +685,7 @@ describe('Cascader.Basic', () => {
     wrapper.update();
     expect(selectedValue).toBeFalsy();
     expect(wrapper.isOpen()).toBeTruthy();
-  })
+  });
 
   describe('focus test', () => {
     let domSpy;
@@ -803,9 +804,8 @@ describe('Cascader.Basic', () => {
           expect(activeItems).toHaveLength(2);
           expect(activeItems.last().text()).toEqual('高雄');
         });
-      })
+      });
     });
-
   });
 
   it('defaultValue not exist', () => {
@@ -1062,5 +1062,30 @@ describe('Cascader.Basic', () => {
       'Warning: `value` in Cascader options should not be `null`.',
     );
     errorSpy.mockReset();
+  });
+
+  it('`dropdownMenuColumnStyle`in Cascader options should throw a warning', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+    mount(<Cascader dropdownMenuColumnStyle={{}} options={[]} />);
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `dropdownMenuColumnStyle` is deprecated. Please use `styles.popupColumn` instead.',
+    );
+    errorSpy.mockReset();
+  });
+
+  it('`styles` api should work correctly', () => {
+    const wrapper = mount(
+      <Cascader
+        styles={{
+          popup: { backgroundColor: 'red' },
+          popupColumn: { backgroundColor: 'blue' },
+        }}
+        options={[]}
+        open
+      />,
+    );
+    expect(wrapper.find('.rc-cascader-dropdown').props().style.backgroundColor).toEqual('red');
+    expect(wrapper.find('.rc-cascader-menu-item').props().style.backgroundColor).toEqual('blue');
   });
 });

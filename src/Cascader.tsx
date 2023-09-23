@@ -1,7 +1,7 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
+import type { BaseSelectProps,BaseSelectPropsWithoutPrivate,BaseSelectRef } from 'rc-select';
 import { BaseSelect } from 'rc-select';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
+import type { DisplayValueType,Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useEvent from 'rc-util/lib/hooks/useEvent';
@@ -14,9 +14,9 @@ import useMissingValues from './hooks/useMissingValues';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import OptionList from './OptionList';
-import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
-import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
-import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import { fillFieldNames,SHOW_CHILD,SHOW_PARENT,toPathKey,toPathKeys } from './utils/commonUtil';
+import { formatStrategyValues,toPathOptions } from './utils/treeUtil';
+import warningProps,{ warningNullOptions } from './utils/warningPropsUtil';
 
 export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
@@ -57,7 +57,7 @@ export interface DefaultOptionType extends BaseOptionType {
   disableCheckbox?: boolean;
 }
 
-interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+export interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
@@ -98,7 +98,14 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   /** @deprecated Use `dropdownClassName` instead */
   popupClassName?: string;
   dropdownClassName?: string;
+  /** @deprecated Use `styles.popupColumn` instead */
   dropdownMenuColumnStyle?: React.CSSProperties;
+
+  // styles
+  styles?: {
+    popup?: React.CSSProperties;
+    popupColumn?: React.CSSProperties;
+  };
 
   /** @deprecated Use `placement` instead */
   popupPlacement?: Placement;
@@ -199,8 +206,11 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     popupVisible,
     open,
 
+    styles,
+
     popupClassName,
     dropdownClassName,
+    dropdownStyle,
     dropdownMenuColumnStyle,
 
     popupPlacement,
@@ -452,7 +462,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle,
+      dropdownMenuColumnStyle: styles?.popupColumn ?? dropdownMenuColumnStyle,
     }),
     [
       mergedOptions,
@@ -469,6 +479,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
+      styles?.popupColumn,
     ],
   );
 
@@ -477,14 +488,21 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ==============================================================
   const emptyOptions = !(mergedSearchValue ? searchOptions : mergedOptions).length;
 
-  const dropdownStyle: React.CSSProperties =
+  const mergedDropdownStyle: React.CSSProperties =
     // Search to match width
-    (mergedSearchValue && searchConfig.matchInputWidth) ||
-    // Empty keep the width
+    styles?.popup ??
+    dropdownStyle ??
+    (mergedSearchValue && searchConfig.matchInputWidth) ??
     emptyOptions
-      ? {}
+      ? // Empty keep the width
+        {
+          ...styles?.popup,
+          ...dropdownStyle,
+        }
       : {
           minWidth: 'auto',
+          ...styles?.popup,
+          ...dropdownStyle,
         };
 
   return (
@@ -497,7 +515,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={mergedDropdownStyle}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
