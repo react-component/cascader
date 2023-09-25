@@ -3,7 +3,6 @@ import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } fr
 import { BaseSelect } from 'rc-select';
 import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
 import useEvent from 'rc-util/lib/hooks/useEvent';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
@@ -13,6 +12,7 @@ import useMissingValues from './hooks/useMissingValues';
 import useOptions from './hooks/useOptions';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
+import useSelect from './hooks/useSelect';
 import useValues from './hooks/useValues';
 import OptionList from './OptionList';
 import Panel from './Panel';
@@ -20,7 +20,6 @@ import {
   fillFieldNames,
   SHOW_CHILD,
   SHOW_PARENT,
-  toPathKey,
   toPathKeys,
   toRawValues,
 } from './utils/commonUtil';
@@ -318,63 +317,23 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   });
 
   // =========================== Select ===========================
+  const handleSelection = useSelect(
+    multiple,
+    triggerChange,
+    checkedValues,
+    halfCheckedValues,
+    missingCheckedValues,
+    getPathKeyEntities,
+    getValueByKeyPath,
+    showCheckedStrategy,
+  );
+
   const onInternalSelect = useEvent((valuePath: SingleValueType) => {
     if (!multiple || autoClearSearchValue) {
       setSearchValue('');
     }
-    if (!multiple) {
-      triggerChange(valuePath);
-    } else {
-      // Prepare conduct required info
-      const pathKey = toPathKey(valuePath);
-      const checkedPathKeys = toPathKeys(checkedValues);
-      const halfCheckedPathKeys = toPathKeys(halfCheckedValues);
 
-      const existInChecked = checkedPathKeys.includes(pathKey);
-      const existInMissing = missingCheckedValues.some(
-        valueCells => toPathKey(valueCells) === pathKey,
-      );
-
-      // Do update
-      let nextCheckedValues = checkedValues;
-      let nextMissingValues = missingCheckedValues;
-
-      if (existInMissing && !existInChecked) {
-        // Missing value only do filter
-        nextMissingValues = missingCheckedValues.filter(
-          valueCells => toPathKey(valueCells) !== pathKey,
-        );
-      } else {
-        // Update checked key first
-        const nextRawCheckedKeys = existInChecked
-          ? checkedPathKeys.filter(key => key !== pathKey)
-          : [...checkedPathKeys, pathKey];
-
-        const pathKeyEntities = getPathKeyEntities();
-
-        // Conduction by selected or not
-        let checkedKeys: React.Key[];
-        if (existInChecked) {
-          ({ checkedKeys } = conductCheck(
-            nextRawCheckedKeys,
-            { checked: false, halfCheckedKeys: halfCheckedPathKeys },
-            pathKeyEntities,
-          ));
-        } else {
-          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
-        }
-
-        // Roll up to parent level keys
-        const deDuplicatedKeys = formatStrategyValues(
-          checkedKeys,
-          getPathKeyEntities,
-          showCheckedStrategy,
-        );
-        nextCheckedValues = getValueByKeyPath(deDuplicatedKeys);
-      }
-
-      triggerChange([...nextMissingValues, ...nextCheckedValues]);
-    }
+    handleSelection(valuePath);
   });
 
   // Display Value change logic

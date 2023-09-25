@@ -69,7 +69,12 @@ class Demo extends React.Component {
   };
 
   render() {
-    return <Cascader.Panel options={addressOptions} onChange={this.onChange} />;
+    return (
+      <>
+        <h1>Panel</h1>
+        <Cascader.Panel options={addressOptions} onChange={this.onChange} />
+      </>
+    );
   }
 }
 

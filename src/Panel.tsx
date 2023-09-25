@@ -1,18 +1,50 @@
-import { useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { CascaderProps, SingleValueType, ValueType } from './Cascader';
+import type { CascaderProps, InternalCascaderProps, SingleValueType, ValueType } from './Cascader';
 import CascaderContext from './context';
+import useMissingValues from './hooks/useMissingValues';
+import useOptions from './hooks/useOptions';
+import useSelect from './hooks/useSelect';
 import useValues from './hooks/useValues';
 import RawOptionList from './OptionList/List';
-import { toRawValues } from './utils/commonUtil';
+import { fillFieldNames, toRawValues } from './utils/commonUtil';
+import { toPathOptions } from './utils/treeUtil';
 
-export type PanelProps = Pick<
-  CascaderProps,
-  'value' | 'defaultValue' | 'changeOnSelect' | 'onChange' | 'options' | 'prefixCls' | 'checkable'
->;
+export type PickType =
+  | 'value'
+  | 'defaultValue'
+  | 'changeOnSelect'
+  | 'onChange'
+  | 'options'
+  | 'prefixCls'
+  | 'checkable'
+  | 'fieldNames'
+  | 'showCheckedStrategy'
+  | 'loadData'
+  | 'expandTrigger'
+  | 'expandIcon'
+  | 'loadingIcon';
+
+export type PanelProps = Pick<CascaderProps, PickType>;
+
+function noop() {}
 
 export default function Panel(props: PanelProps) {
-  const { prefixCls = 'rc-cascader', options, checkable, defaultValue, value } = props;
+  const {
+    prefixCls = 'rc-cascader',
+    options,
+    checkable,
+    defaultValue,
+    value,
+    fieldNames,
+    changeOnSelect,
+    onChange,
+    showCheckedStrategy,
+    loadData,
+    expandTrigger,
+    expandIcon = '>',
+    loadingIcon,
+  } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
   const multiple = !!checkable;
@@ -23,6 +55,23 @@ export default function Panel(props: PanelProps) {
     postState: toRawValues,
   });
 
+  // ========================= FieldNames =========================
+  const mergedFieldNames = React.useMemo(
+    () => fillFieldNames(fieldNames),
+    /* eslint-disable react-hooks/exhaustive-deps */
+    [JSON.stringify(fieldNames)],
+    /* eslint-enable react-hooks/exhaustive-deps */
+  );
+
+  // =========================== Option ===========================
+  const [mergedOptions, getPathKeyEntities, getValueByKeyPath] = useOptions(
+    mergedFieldNames,
+    options,
+  );
+
+  // ========================= Values =========================
+  const getMissingValues = useMissingValues(mergedOptions, mergedFieldNames);
+
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
@@ -32,13 +81,83 @@ export default function Panel(props: PanelProps) {
     getMissingValues,
   );
 
+  // =========================== Change ===========================
+  const triggerChange = useEvent((nextValues: ValueType) => {
+    setRawValues(nextValues);
+
+    // Save perf if no need trigger event
+    if (onChange) {
+      const nextRawValues = toRawValues(nextValues);
+
+      const valueOptions = nextRawValues.map(valueCells =>
+        toPathOptions(valueCells, mergedOptions, mergedFieldNames).map(valueOpt => valueOpt.option),
+      );
+
+      const triggerValues = multiple ? nextRawValues : nextRawValues[0];
+      const triggerOptions = multiple ? valueOptions : valueOptions[0];
+
+      onChange(triggerValues, triggerOptions);
+    }
+  });
+
+  // =========================== Select ===========================
+  const handleSelection = useSelect(
+    multiple,
+    triggerChange,
+    checkedValues,
+    halfCheckedValues,
+    missingCheckedValues,
+    getPathKeyEntities,
+    getValueByKeyPath,
+    showCheckedStrategy,
+  );
+
+  const onInternalSelect = useEvent((valuePath: SingleValueType) => {
+    handleSelection(valuePath);
+  });
+
   // ======================== Context =========================
-  const context = React.useMemo(() => ({ options }), [options]);
+  const cascaderContext = React.useMemo(
+    () => ({
+      options: mergedOptions,
+      fieldNames: mergedFieldNames,
+      values: checkedValues,
+      halfValues: halfCheckedValues,
+      changeOnSelect,
+      onSelect: onInternalSelect,
+      checkable,
+      searchOptions: [],
+      dropdownPrefixCls: null,
+      loadData,
+      expandTrigger,
+      expandIcon,
+      loadingIcon,
+      dropdownMenuColumnStyle: null,
+    }),
+    [
+      mergedOptions,
+      mergedFieldNames,
+      checkedValues,
+      halfCheckedValues,
+      changeOnSelect,
+      onInternalSelect,
+      checkable,
+      loadData,
+      expandTrigger,
+      expandIcon,
+      loadingIcon,
+    ],
+  );
 
   // ========================= Render =========================
   return (
-    <CascaderContext.Provider value={context}>
-      <RawOptionList prefixCls={prefixCls} />
+    <CascaderContext.Provider value={cascaderContext}>
+      <RawOptionList
+        prefixCls={prefixCls}
+        searchValue={null}
+        multiple={multiple}
+        toggleOpen={noop}
+      />
     </CascaderContext.Provider>
   );
 }
