@@ -61,6 +61,7 @@ export default () => {
     <>
       <h1>Panel</h1>
       <Cascader.Panel
+        checkable
         options={addressOptions}
         onChange={value => {
           console.log('Change:', value);

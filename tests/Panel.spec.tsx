@@ -43,6 +43,41 @@ describe('Cascader.Panel', () => {
 
     // Click second column
     fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[2]);
-    expect(onChange).toHaveBeenCalledWith(233);
+    expect(onChange).toHaveBeenCalledWith(['bamboo', 'little'], expect.anything());
+  });
+
+  it('multiple', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Cascader.Panel checkable options={options} onChange={onChange} />,
+    );
+
+    // Click first column - light
+    fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[0]);
+    expect(onChange).toHaveBeenCalledWith([['light']], expect.anything());
+    onChange.mockReset();
+
+    // Click first column - bamboo (no trigger onChange)
+    fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[1]);
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Click second column - little
+    fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[2]);
+    expect(onChange).toHaveBeenCalledWith([['light'], ['bamboo']], expect.anything());
+  });
+
+  it('multiple with showCheckedStrategy', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Cascader.Panel
+        checkable
+        options={options}
+        onChange={onChange}
+        showCheckedStrategy="SHOW_CHILD"
+      />,
+    );
+
+    fireEvent.click(container.querySelectorAll('.rc-cascader-checkbox')[1]);
+    expect(onChange).toHaveBeenCalledWith([['bamboo', 'little']], expect.anything());
   });
 });
