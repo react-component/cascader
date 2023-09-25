@@ -31,13 +31,18 @@ describe('Cascader.Panel', () => {
   ];
 
   it('basic', () => {
-    const { container } = render(<Cascader.Panel options={options} />);
+    const onChange = jest.fn();
+    const { container } = render(<Cascader.Panel options={options} onChange={onChange} />);
 
     expect(container.querySelector('.rc-cascader-panel')).toBeTruthy();
     expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(1);
 
-    // Click first
+    // Click first column
     fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[1]);
     expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(2);
+
+    // Click second column
+    fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item')[2]);
+    expect(onChange).toHaveBeenCalledWith(233);
   });
 });
