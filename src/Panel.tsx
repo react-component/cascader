@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { CascaderProps, InternalCascaderProps, SingleValueType, ValueType } from './Cascader';
@@ -23,7 +24,9 @@ export type PickType =
   | 'loadData'
   | 'expandTrigger'
   | 'expandIcon'
-  | 'loadingIcon';
+  | 'loadingIcon'
+  | 'className'
+  | 'style';
 
 export type PanelProps = Pick<CascaderProps, PickType>;
 
@@ -32,6 +35,8 @@ function noop() {}
 export default function Panel(props: PanelProps) {
   const {
     prefixCls = 'rc-cascader',
+    style,
+    className,
     options,
     checkable,
     defaultValue,
@@ -152,12 +157,15 @@ export default function Panel(props: PanelProps) {
   // ========================= Render =========================
   return (
     <CascaderContext.Provider value={cascaderContext}>
-      <RawOptionList
-        prefixCls={prefixCls}
-        searchValue={null}
-        multiple={multiple}
-        toggleOpen={noop}
-      />
+      <div className={classNames(`${prefixCls}-panel`, className)} style={style}>
+        <RawOptionList
+          prefixCls={prefixCls}
+          searchValue={null}
+          multiple={multiple}
+          toggleOpen={noop}
+          open
+        />
+      </div>
     </CascaderContext.Provider>
   );
 }

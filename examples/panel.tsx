@@ -56,26 +56,17 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
-
-  onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
-  };
-
-  render() {
-    return (
-      <>
-        <h1>Panel</h1>
-        <Cascader.Panel options={addressOptions} onChange={this.onChange} />
-      </>
-    );
-  }
-}
-
-export default Demo;
+export default () => {
+  return (
+    <>
+      <h1>Panel</h1>
+      <Cascader.Panel
+        changeOnSelect
+        options={addressOptions}
+        onChange={value => {
+          console.log('Change:', value);
+        }}
+      />
+    </>
+  );
+};
