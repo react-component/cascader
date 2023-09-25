@@ -9,14 +9,21 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
-import useEntities from './hooks/useEntities';
 import useMissingValues from './hooks/useMissingValues';
+import useOptions from './hooks/useOptions';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
 import useValues from './hooks/useValues';
 import OptionList from './OptionList';
 import Panel from './Panel';
-import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
+import {
+  fillFieldNames,
+  SHOW_CHILD,
+  SHOW_PARENT,
+  toPathKey,
+  toPathKeys,
+  toRawValues,
+} from './utils/commonUtil';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -152,22 +159,6 @@ export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOpt
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
 
-function isMultipleValue(value: ValueType): value is SingleValueType[] {
-  return Array.isArray(value) && Array.isArray(value[0]);
-}
-
-function toRawValues(value: ValueType): SingleValueType[] {
-  if (!value) {
-    return [];
-  }
-
-  if (isMultipleValue(value)) {
-    return value;
-  }
-
-  return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
-}
-
 const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
   const {
     // MISC
@@ -240,23 +231,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Option ===========================
-  const mergedOptions = React.useMemo(() => options || [], [options]);
-
-  // Only used in multiple mode, this fn will not call in single mode
-  const getPathKeyEntities = useEntities(mergedOptions, mergedFieldNames);
-
-  /** Convert path key back to value format */
-  const getValueByKeyPath = React.useCallback(
-    (pathKeys: React.Key[]): SingleValueType[] => {
-      const keyPathEntities = getPathKeyEntities();
-
-      return pathKeys.map(pathKey => {
-        const { nodes } = keyPathEntities[pathKey];
-
-        return nodes.map(node => node[mergedFieldNames.value]);
-      });
-    },
-    [getPathKeyEntities, mergedFieldNames],
+  const [mergedOptions, getPathKeyEntities, getValueByKeyPath] = useOptions(
+    mergedFieldNames,
+    options,
   );
 
   // =========================== Search ===========================
