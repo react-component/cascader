@@ -13,6 +13,7 @@ import useEntities from './hooks/useEntities';
 import useMissingValues from './hooks/useMissingValues';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
+import useValues from './hooks/useValues';
 import OptionList from './OptionList';
 import Panel from './Panel';
 import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
@@ -287,21 +288,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const getMissingValues = useMissingValues(mergedOptions, mergedFieldNames);
 
   // Fill `rawValues` with checked conduction values
-  const [checkedValues, halfCheckedValues, missingCheckedValues] = React.useMemo(() => {
-    const [existValues, missingValues] = getMissingValues(rawValues);
-
-    if (!multiple || !rawValues.length) {
-      return [existValues, [], missingValues];
-    }
-
-    const keyPathValues = toPathKeys(existValues);
-    const keyPathEntities = getPathKeyEntities();
-
-    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities);
-
-    // Convert key back to value cells
-    return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];
-  }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
+  const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
+    multiple,
+    rawValues,
+    getPathKeyEntities,
+    getValueByKeyPath,
+    getMissingValues,
+  );
 
   const deDuplicatedValues = React.useMemo(() => {
     const checkedKeys = toPathKeys(checkedValues);

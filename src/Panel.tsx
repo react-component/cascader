@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { CascaderProps } from './Cascader';
-import OptionList from './OptionList';
+import CascaderContext from './context';
+import RawOptionList from './OptionList/List';
 
 export type PanelProps = Pick<
   CascaderProps,
@@ -8,9 +9,15 @@ export type PanelProps = Pick<
 >;
 
 export default function Panel(props: PanelProps) {
-  const { prefixCls = 'rc-cascader' } = props;
+  const { prefixCls = 'rc-cascader', options } = props;
 
-  
+  // ======================== Context =========================
+  const context = React.useMemo(() => ({ options }), [options]);
 
-  return <OptionList />;
+  // ========================= Render =========================
+  return (
+    <CascaderContext.Provider value={context}>
+      <RawOptionList prefixCls={prefixCls} />
+    </CascaderContext.Provider>
+  );
 }
