@@ -1,12 +1,15 @@
 import Cascader from './Cascader';
+import Panel from './Panel';
 
 export type {
-  CascaderProps,
-  FieldNames,
-  ShowSearchType,
-  DefaultOptionType,
   BaseOptionType,
-  SingleCascaderProps,
+  CascaderProps,
+  DefaultOptionType,
+  FieldNames,
   MultipleCascaderProps,
+  ShowSearchType,
+  SingleCascaderProps,
 } from './Cascader';
+export { Panel };
+
 export default Cascader;

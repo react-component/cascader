@@ -1,8 +1,13 @@
 import * as React from 'react';
-import type { SingleValueType, DefaultOptionType, InternalFieldNames } from '../Cascader';
+import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
 import { toPathOptions } from '../utils/treeUtil';
 
-export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) => {
+export type GetMissValues = ReturnType<typeof useMissingValues>;
+
+export default function useMissingValues(
+  options: DefaultOptionType[],
+  fieldNames: InternalFieldNames,
+) {
   return React.useCallback(
     (rawValues: SingleValueType[]): [SingleValueType[], SingleValueType[]] => {
       const missingValues: SingleValueType[] = [];
@@ -21,4 +26,4 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
     },
     [options, fieldNames],
   );
-};
+}
