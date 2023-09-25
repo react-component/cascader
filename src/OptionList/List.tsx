@@ -89,7 +89,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const halfCheckedSet = React.useMemo(() => new Set(toPathKeys(halfValues)), [halfValues]);
 
   // ====================== Accessibility =======================
-  const [activeValueCells, setActiveValueCells] = useActive();
+  const [activeValueCells, setActiveValueCells] = useActive(multiple, open);
 
   // =========================== Path ===========================
   const onPathOpen = (nextValueCells: React.Key[]) => {
@@ -157,7 +157,12 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     }
   };
 
-  useKeyboard(ref, mergedOptions, fieldNames, activeValueCells, onPathOpen, onKeyboardSelect);
+  useKeyboard(ref, mergedOptions, fieldNames, activeValueCells, onPathOpen, onKeyboardSelect, {
+    direction,
+    searchValue,
+    toggleOpen,
+    open,
+  });
 
   // >>>>> Active Scroll
   React.useEffect(() => {

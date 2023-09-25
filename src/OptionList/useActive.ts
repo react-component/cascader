@@ -1,12 +1,13 @@
 import * as React from 'react';
 import CascaderContext from '../context';
-import { useBaseProps } from 'rc-select';
 
 /**
  * Control the active open options path.
  */
-export default (): [React.Key[], (activeValueCells: React.Key[]) => void] => {
-  const { multiple, open } = useBaseProps();
+export default (
+  multiple: boolean,
+  open: boolean,
+): [React.Key[], (activeValueCells: React.Key[]) => void] => {
   const { values } = React.useContext(CascaderContext);
 
   // Record current dropdown active options
