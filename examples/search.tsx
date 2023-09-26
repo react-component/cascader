@@ -69,7 +69,7 @@ const addressOptions = [
 class Demo extends React.Component {
   render() {
     return (
-      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" />
+      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" notFoundContent="Empty Content!" />
     );
   }
 }

@@ -67,6 +67,10 @@ export default () => {
           console.log('Change:', value);
         }}
       />
+
+      <Cascader.Panel options={addressOptions} direction="rtl" />
+
+      <Cascader.Panel notFoundContent="Empty!!!" />
     </>
   );
 };

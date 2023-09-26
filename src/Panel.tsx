@@ -26,7 +26,9 @@ export type PickType =
   | 'expandIcon'
   | 'loadingIcon'
   | 'className'
-  | 'style';
+  | 'style'
+  | 'direction'
+  | 'notFoundContent';
 
 export type PanelProps = Pick<CascaderProps, PickType>;
 
@@ -49,6 +51,8 @@ export default function Panel(props: PanelProps) {
     expandTrigger,
     expandIcon = '>',
     loadingIcon,
+    direction,
+    notFoundContent = 'Not Found',
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -155,16 +159,34 @@ export default function Panel(props: PanelProps) {
   );
 
   // ========================= Render =========================
+  const panelPrefixCls = `${prefixCls}-panel`;
+  const isEmpty = !mergedOptions.length;
+
   return (
     <CascaderContext.Provider value={cascaderContext}>
-      <div className={classNames(`${prefixCls}-panel`, className)} style={style}>
-        <RawOptionList
-          prefixCls={prefixCls}
-          searchValue={null}
-          multiple={multiple}
-          toggleOpen={noop}
-          open
-        />
+      <div
+        className={classNames(
+          panelPrefixCls,
+          {
+            [`${panelPrefixCls}-rtl`]: direction === 'rtl',
+            [`${panelPrefixCls}-empty`]: isEmpty,
+          },
+          className,
+        )}
+        style={style}
+      >
+        {isEmpty ? (
+          notFoundContent
+        ) : (
+          <RawOptionList
+            prefixCls={prefixCls}
+            searchValue={null}
+            multiple={multiple}
+            toggleOpen={noop}
+            open
+            direction={direction}
+          />
+        )}
       </div>
     </CascaderContext.Provider>
   );
