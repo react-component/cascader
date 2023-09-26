@@ -80,4 +80,16 @@ describe('Cascader.Panel', () => {
     fireEvent.click(container.querySelectorAll('.rc-cascader-checkbox')[1]);
     expect(onChange).toHaveBeenCalledWith([['bamboo', 'little']], expect.anything());
   });
+
+  it('rtl', () => {
+    const { container } = render(<Cascader.Panel options={options} direction="rtl" />);
+
+    expect(container.querySelector('.rc-cascader-panel-rtl')).toBeTruthy();
+  });
+
+  it('notFoundContent', () => {
+    const { container } = render(<Cascader.Panel notFoundContent="Hello World" />);
+
+    expect(container.querySelector('.rc-cascader-panel-empty').textContent).toEqual('Hello World');
+  });
 });
