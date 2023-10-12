@@ -116,6 +116,12 @@ React.render(
   </thead>
   <tbody>
     <tr>
+      <td>autoClearSearchValue</td>
+      <td>boolean</td>
+      <td>true</td>
+      <td>Whether the current search will be cleared on selecting an item. Only applies when checkable</td>
+    </tr>
+    <tr>
       <td>options</td>
       <td>Object</td>
       <td></td>

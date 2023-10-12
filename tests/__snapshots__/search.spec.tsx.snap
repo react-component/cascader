@@ -15,6 +15,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         aria-controls="rc_select_TEST_OR_SSR_list"
         aria-expanded="true"
         aria-haspopup="listbox"
+        aria-label="Search"
         aria-owns="rc_select_TEST_OR_SSR_list"
         autocomplete="off"
         class="rc-cascader-selection-search-input"
@@ -31,7 +32,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
   </div>
   <div
     class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
-    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0;"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
   >
     <div>
       <div

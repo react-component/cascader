@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
@@ -223,5 +224,39 @@ describe('Cascader.Checkable', () => {
     expect(wrapper.find('.rc-cascader-checkbox')).toHaveLength(4);
     wrapper.find('.rc-cascader-checkbox').first().simulate('click');
     expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(3);
+  });
+
+  it('should not merge disabled options', () => {
+    const onChange = jest.fn();
+
+    render(
+      <Cascader
+        open
+        defaultValue={[['China', 'beijing']]}
+        options={[
+          {
+            value: 'China',
+            label: 'China',
+            children: [
+              {
+                value: 'beijing',
+                label: 'beijing',
+                disabled: true,
+              },
+              {
+                value: 'shanghai',
+                label: 'shanghai',
+              },
+            ],
+          },
+        ]}
+        checkable
+        onChange={onChange}
+      />,
+    );
+
+    fireEvent.click(document.querySelector('[data-path-key="China"] .rc-cascader-checkbox'));
+
+    expect(onChange).toHaveBeenCalledWith([['China', 'beijing'], ['China']], expect.anything());
   });
 });

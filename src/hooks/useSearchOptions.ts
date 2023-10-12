@@ -1,5 +1,5 @@
-import type { DefaultOptionType, ShowSearchType, InternalFieldNames } from '../Cascader';
 import * as React from 'react';
+import type { DefaultOptionType, InternalFieldNames, ShowSearchType } from '../Cascader';
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
@@ -25,15 +25,21 @@ export default (
       return [];
     }
 
-    function dig(list: DefaultOptionType[], pathOptions: DefaultOptionType[]) {
+    function dig(
+      list: DefaultOptionType[],
+      pathOptions: DefaultOptionType[],
+      parentDisabled = false,
+    ) {
       list.forEach(option => {
         // Perf saving when `sort` is disabled and `limit` is provided
-        if (!sort && limit > 0 && filteredOptions.length >= limit) {
+        if (!sort && limit !== false && limit > 0 && filteredOptions.length >= limit) {
           return;
         }
 
         const connectedPathOptions = [...pathOptions, option];
         const children = option[fieldNames.children];
+
+        const mergedDisabled = parentDisabled || option.disabled;
 
         // If current option is filterable
         if (
@@ -46,6 +52,7 @@ export default (
           if (filter(search, connectedPathOptions, { label: fieldNames.label })) {
             filteredOptions.push({
               ...option,
+              disabled: mergedDisabled,
               [fieldNames.label as 'label']: render(
                 search,
                 connectedPathOptions,
@@ -59,7 +66,11 @@ export default (
         }
 
         if (children) {
-          dig(option[fieldNames.children] as DefaultOptionType[], connectedPathOptions);
+          dig(
+            option[fieldNames.children] as DefaultOptionType[],
+            connectedPathOptions,
+            mergedDisabled,
+          );
         }
       });
     }
@@ -73,6 +84,8 @@ export default (
       });
     }
 
-    return limit > 0 ? filteredOptions.slice(0, limit as number) : filteredOptions;
+    return limit !== false && limit > 0
+      ? filteredOptions.slice(0, limit as number)
+      : filteredOptions;
   }, [search, options, fieldNames, prefixCls, render, changeOnSelect, filter, sort, limit]);
 };

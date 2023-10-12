@@ -264,4 +264,45 @@ describe('Cascader.Search', () => {
       'Label Bamboo / Label Little / Toy Fish',
     );
   });
+
+  it('autoClearSearchValue={false} should be worked', () => {
+    const wrapper = mount(
+      <Cascader options={options} showSearch checkable autoClearSearchValue={false} />,
+    );
+
+    // Search
+    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
+
+    // Click
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.find('input').prop('value')).toEqual('bamboo');
+  });
+
+  it('disabled path should not search', () => {
+    const { container } = render(
+      <Cascader
+        open
+        searchValue="little"
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            disabled: true,
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(container.querySelectorAll('.rc-cascader-menu-item-disabled')).toHaveLength(1);
+    expect(container.querySelector('.rc-cascader-menu-item-disabled').textContent).toEqual(
+      'bamboo / little',
+    );
+  });
 });
