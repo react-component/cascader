@@ -413,9 +413,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     (mergedSearchValue && searchConfig.matchInputWidth) ||
     // Empty keep the width
     emptyOptions
-      ? { ...customDropdownStyle }
+      ? {}
       : {
-          ...customDropdownStyle,
           minWidth: 'auto',
         };
 
@@ -429,7 +428,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={{
+          ...dropdownStyle,
+          ...customDropdownStyle,
+        }}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
