@@ -1033,6 +1033,11 @@ describe('Cascader.Basic', () => {
     mount(<Cascader value={'bamboo' as any} />);
   });
 
+  it('support custom cascader', () => {
+    const wrapper = mount(<Cascader dropdownStyle={{ zIndex: 999 }} open />);
+    expect(wrapper.find('.rc-cascader-dropdown').props().style.zIndex).toBe(999);
+  });
+
   it('`null` is a value in Cascader options should throw a warning', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
     mount(

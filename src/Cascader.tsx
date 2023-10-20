@@ -194,6 +194,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     popupClassName,
     dropdownClassName,
     dropdownMenuColumnStyle,
+    dropdownStyle: customDropdownStyle,
 
     popupPlacement,
     placement,
@@ -412,8 +413,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     (mergedSearchValue && searchConfig.matchInputWidth) ||
     // Empty keep the width
     emptyOptions
-      ? {}
+      ? { ...customDropdownStyle }
       : {
+          ...customDropdownStyle,
           minWidth: 'auto',
         };
 
