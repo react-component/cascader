@@ -194,6 +194,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     popupClassName,
     dropdownClassName,
     dropdownMenuColumnStyle,
+    dropdownStyle: customDropdownStyle,
 
     popupPlacement,
     placement,
@@ -427,7 +428,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={{
+          ...dropdownStyle,
+          ...customDropdownStyle,
+        }}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
