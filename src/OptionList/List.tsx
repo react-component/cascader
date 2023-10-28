@@ -173,7 +173,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         `li[data-path-key="${cellKeyPath.replace(/\\{0,2}"/g, '\\"')}"]`, // matches unescaped double quotes
       );
       if (ele) {
-        scrollIntoParentView(ele);
+        scrollIntoParentView(ele, activeValueCells);
       }
     }
   }, [activeValueCells]);
