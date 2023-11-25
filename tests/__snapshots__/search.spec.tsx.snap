@@ -2,11 +2,36 @@
 
 exports[`Cascader.Search should correct render Cascader with same field name of label and value 1`] = `
 <div
-  class="rc-cascader rc-cascader-single rc-cascader-show-arrow rc-cascader-open rc-cascader-show-search"
+  class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
 >
   <div
+    class="rc-cascader-selector"
+  >
+    <span
+      class="rc-cascader-selection-search"
+    >
+      <input
+        aria-autocomplete="list"
+        aria-controls="rc_select_TEST_OR_SSR_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="rc_select_TEST_OR_SSR_list"
+        autocomplete="off"
+        class="rc-cascader-selection-search-input"
+        id="rc_select_TEST_OR_SSR"
+        role="combobox"
+        type="search"
+        value="z"
+      />
+    </span>
+    <span
+      class="rc-cascader-selection-placeholder"
+      style="visibility: hidden;"
+    />
+  </div>
+  <div
     class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
-    style="left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 0;"
+    style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
   >
     <div>
       <div
@@ -46,40 +71,5 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
       </div>
     </div>
   </div>
-  <div
-    class="rc-cascader-selector"
-  >
-    <span
-      class="rc-cascader-selection-search"
-    >
-      <input
-        aria-autocomplete="list"
-        aria-controls="rc_select_TEST_OR_SSR_list"
-        aria-expanded="true"
-        aria-haspopup="listbox"
-        aria-owns="rc_select_TEST_OR_SSR_list"
-        autocomplete="off"
-        class="rc-cascader-selection-search-input"
-        id="rc_select_TEST_OR_SSR"
-        role="combobox"
-        type="search"
-        value="z"
-      />
-    </span>
-    <span
-      class="rc-cascader-selection-placeholder"
-      style="visibility: hidden;"
-    />
-  </div>
-  <span
-    aria-hidden="true"
-    class="rc-cascader-arrow"
-    style="user-select: none;"
-    unselectable="on"
-  >
-    <span
-      class="rc-cascader-arrow-icon"
-    />
-  </span>
 </div>
 `;

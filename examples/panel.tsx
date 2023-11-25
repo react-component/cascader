@@ -13,13 +13,13 @@ const addressOptions = [
         value: 'fuzhou',
         children: [
           {
-            label: '马尾-mw',
+            label: '马尾',
             value: 'mawei',
           },
         ],
       },
       {
-        label: '泉州-qz',
+        label: '泉州',
         value: 'quanzhou',
       },
     ],
@@ -35,16 +35,6 @@ const addressOptions = [
           {
             label: '余杭',
             value: 'yuhang',
-          },
-          {
-            label: '福州',
-            value: 'fuzhou',
-            children: [
-              {
-                label: '马尾',
-                value: 'mawei',
-              },
-            ],
           },
         ],
       },
@@ -66,12 +56,21 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  render() {
-    return (
-      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" notFoundContent="Empty Content!" />
-    );
-  }
-}
+export default () => {
+  return (
+    <>
+      <h1>Panel</h1>
+      <Cascader.Panel
+        checkable
+        options={addressOptions}
+        onChange={value => {
+          console.log('Change:', value);
+        }}
+      />
 
-export default Demo;
+      <Cascader.Panel options={addressOptions} direction="rtl" />
+
+      <Cascader.Panel notFoundContent="Empty!!!" />
+    </>
+  );
+};

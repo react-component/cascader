@@ -20,6 +20,10 @@ export function formatStrategyValues(
     const parent = entity ? entity.parent : null;
     const children = entity ? entity.children : null;
 
+    if (entity && entity.node.disabled) {
+      return true;
+    }
+
     return showCheckedStrategy === SHOW_CHILD
       ? !(children && children.some(child => child.key && valueSet.has(child.key)))
       : !(parent && !parent.node.disabled && valueSet.has(parent.key));

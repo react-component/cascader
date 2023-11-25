@@ -1,10 +1,10 @@
-import * as React from 'react';
 import classNames from 'classnames';
-import { isLeaf, toPathKey } from '../utils/commonUtil';
-import CascaderContext from '../context';
-import Checkbox from './Checkbox';
+import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
+import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
@@ -23,6 +23,7 @@ export interface ColumnProps {
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
+  searchValue?: string;
 }
 
 export default function Column({
@@ -38,6 +39,7 @@ export default function Column({
   halfCheckedSet,
   loadingKeys,
   isSelectable,
+  searchValue,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -57,7 +59,7 @@ export default function Column({
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled } = option;
+        const { disabled, disableCheckbox } = option;
         const searchOptions = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
@@ -87,6 +89,7 @@ export default function Column({
           checked,
           halfChecked,
           option,
+          disableCheckbox,
           fullPath,
           fullPathKey,
         };
@@ -109,12 +112,18 @@ export default function Column({
           option,
           fullPath,
           fullPathKey,
+          disableCheckbox,
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
-            if (!disabled && (!hoverOpen || !isMergedLeaf)) {
-              onActive(fullPath);
+            if (disabled || searchValue) {
+              return;
             }
+            const nextValueCells = [...fullPath];
+            if (hoverOpen && isMergedLeaf) {
+              nextValueCells.pop();
+            }
+            onActive(nextValueCells);
           };
 
           // >>>>> Selection
@@ -150,6 +159,9 @@ export default function Column({
               data-path-key={fullPathKey}
               onClick={() => {
                 triggerOpenPath();
+                if (disableCheckbox) {
+                  return;
+                }
                 if (!multiple || isMergedLeaf) {
                   triggerSelect();
                 }
@@ -174,8 +186,12 @@ export default function Column({
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
                   halfChecked={halfChecked}
-                  disabled={disabled}
+                  disabled={disabled || disableCheckbox}
+                  disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                    if (disableCheckbox) {
+                      return;
+                    }
                     e.stopPropagation();
                     triggerSelect();
                   }}

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import { mount, ReactWrapper } from './enzyme';
+import React from 'react';
 import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
+import { mount, ReactWrapper } from './enzyme';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {
@@ -74,7 +75,10 @@ describe('Cascader.Search', () => {
   });
 
   it('changeOnSelect', () => {
-    const wrapper = mount(<Cascader options={options} open showSearch changeOnSelect />);
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <Cascader options={options} onChange={onChange} open showSearch changeOnSelect />,
+    );
 
     // Leaf
     doSearch(wrapper, 'Label Little');
@@ -83,6 +87,14 @@ describe('Cascader.Search', () => {
     expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little');
     expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
     expect(itemList.at(2).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+
+    // Should not expandable
+    expect(wrapper.exists('.rc-cascader-menu-item-expand-icon')).toBeFalsy();
+
+    // Trigger onChange
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.DOWN });
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+    expect(onChange).toHaveBeenCalledWith(['bamboo', 'little'], expect.anything());
   });
 
   it('sort', () => {
@@ -232,5 +244,65 @@ describe('Cascader.Search', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: 'z' } });
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/41810
+  it('not back to options when selected', () => {
+    const { container } = render(<Cascader options={options} showSearch />);
+
+    // Search
+    fireEvent.change(container.querySelector('input'), {
+      target: {
+        value: 'bamboo',
+      },
+    });
+
+    // Click
+    fireEvent.click(document.querySelector('.rc-cascader-menu-item-content'));
+    expect(document.querySelector('.rc-cascader-dropdown-hidden')).toBeTruthy();
+    expect(document.querySelector('.rc-cascader-menu-item-content').textContent).toBe(
+      'Label Bamboo / Label Little / Toy Fish',
+    );
+  });
+
+  it('autoClearSearchValue={false} should be worked', () => {
+    const wrapper = mount(
+      <Cascader options={options} showSearch checkable autoClearSearchValue={false} />,
+    );
+
+    // Search
+    wrapper.find('input').simulate('change', { target: { value: 'bamboo' } });
+
+    // Click
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.find('input').prop('value')).toEqual('bamboo');
+  });
+
+  it('disabled path should not search', () => {
+    const { container } = render(
+      <Cascader
+        open
+        searchValue="little"
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            disabled: true,
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(container.querySelectorAll('.rc-cascader-menu-item-disabled')).toHaveLength(1);
+    expect(container.querySelector('.rc-cascader-menu-item-disabled').textContent).toEqual(
+      'bamboo / little',
+    );
   });
 });

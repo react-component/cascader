@@ -1,4 +1,3 @@
-import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import KeyCode from 'rc-util/lib/KeyCode';
 import * as React from 'react';
@@ -13,8 +12,14 @@ export default (
   activeValueCells: React.Key[],
   setActiveValueCells: (activeValueCells: React.Key[]) => void,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
+  contextProps: {
+    direction: 'ltr' | 'rtl';
+    searchValue: string;
+    toggleOpen: (open?: boolean) => void;
+    open: boolean;
+  },
 ) => {
-  const { direction, searchValue, toggleOpen, open } = useBaseProps();
+  const { direction, searchValue, toggleOpen, open } = contextProps;
   const rtl = direction === 'rtl';
 
   const [validActiveValueCells, lastActiveIndex, lastActiveOptions, fullPathKeys] =
@@ -135,6 +140,9 @@ export default (
         }
 
         case KeyCode.LEFT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             nextColumn();
           } else {
@@ -144,6 +152,9 @@ export default (
         }
 
         case KeyCode.RIGHT: {
+          if (searchValue) {
+            break;
+          }
           if (rtl) {
             prevColumn();
           } else {

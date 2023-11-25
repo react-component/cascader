@@ -1,19 +1,26 @@
-import { SEARCH_MARK } from '../hooks/useSearchOptions';
 import type {
   DefaultOptionType,
   FieldNames,
   InternalFieldNames,
   SingleValueType,
+  ValueType,
 } from '../Cascader';
+import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
 export const VALUE_SPLIT = '__RC_CASCADER_SPLIT__';
 export const SHOW_PARENT = 'SHOW_PARENT';
 export const SHOW_CHILD = 'SHOW_CHILD';
 
+/**
+ * Will convert value to string, and join with `VALUE_SPLIT`
+ */
 export function toPathKey(value: SingleValueType) {
   return value.join(VALUE_SPLIT);
 }
 
+/**
+ * Batch convert value to string, and join with `VALUE_SPLIT`
+ */
 export function toPathKeys(value: SingleValueType[]) {
   return value.map(toPathKey);
 }
@@ -53,4 +60,20 @@ export function scrollIntoParentView(element: HTMLElement) {
 
 export function getFullPathKeys(options: DefaultOptionType[], fieldNames: FieldNames) {
   return options.map(item => item[SEARCH_MARK]?.map(opt => opt[fieldNames.value]));
+}
+
+function isMultipleValue(value: ValueType): value is SingleValueType[] {
+  return Array.isArray(value) && Array.isArray(value[0]);
+}
+
+export function toRawValues(value: ValueType): SingleValueType[] {
+  if (!value) {
+    return [];
+  }
+
+  if (isMultipleValue(value)) {
+    return value;
+  }
+
+  return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
 }

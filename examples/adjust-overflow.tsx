@@ -121,7 +121,7 @@ const placements = {
 
 function Demo() {
   return (
-    <div style={{ position: 'absolute', right: 10, top: 150 }}>
+    <div>
       <MyCascader />
       <br />
       <br />

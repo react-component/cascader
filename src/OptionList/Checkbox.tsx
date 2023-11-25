@@ -8,6 +8,7 @@ export interface CheckboxProps {
   halfChecked?: boolean;
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
+  disableCheckbox: boolean;
 }
 
 export default function Checkbox({
@@ -16,6 +17,7 @@ export default function Checkbox({
   halfChecked,
   disabled,
   onClick,
+  disableCheckbox,
 }: CheckboxProps) {
   const { checkable } = React.useContext(CascaderContext);
 
@@ -26,7 +28,7 @@ export default function Checkbox({
       className={classNames(`${prefixCls}`, {
         [`${prefixCls}-checked`]: checked,
         [`${prefixCls}-indeterminate`]: !checked && halfChecked,
-        [`${prefixCls}-disabled`]: disabled,
+        [`${prefixCls}-disabled`]: disabled || disableCheckbox,
       })}
       onClick={onClick}
     >

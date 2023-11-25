@@ -1,8 +1,10 @@
 /* eslint-disable react/jsx-no-bind */
 
+import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { mount } from './enzyme';
 import Cascader from '../src';
+import { addressOptions } from './demoOptions';
+import { mount } from './enzyme';
 
 describe('Cascader.Checkable', () => {
   const options = [
@@ -165,5 +167,96 @@ describe('Cascader.Checkable', () => {
     wrapper.find('input').simulate('click');
     const menus = wrapper.find('.rc-cascader-menu');
     expect(menus.find('.rc-cascader-checkbox').length).toBe(0);
+  });
+
+  it('should work with custom checkable', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable={<span className="my-custom-checkbox">0</span>}
+        open
+        options={addressOptions}
+      />,
+    );
+    expect(wrapper.find('.my-custom-checkbox')).toHaveLength(3);
+  });
+
+  it('should be correct expression with disableCheckbox', () => {
+    const wrapper = mount(
+      <Cascader
+        checkable={true}
+        open
+        options={[
+          {
+            label: '台湾',
+            value: 'tw',
+
+            children: [
+              {
+                label: '福建',
+                value: 'fj',
+                disableCheckbox: true,
+              },
+              {
+                label: '兰州',
+                value: 'lz',
+              },
+              { label: '北京', value: 'bj' },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    // disabled className
+    wrapper.find('.rc-cascader-menu-item').simulate('click');
+    expect(wrapper.find('.rc-cascader-menu-item')).toHaveLength(4);
+    expect(wrapper.find('.rc-cascader-checkbox-disabled')).toHaveLength(1);
+
+    // click disableCkeckbox
+    wrapper.find('.rc-cascader-menu-item').at(1).simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
+
+    // click disableMenuItem
+    wrapper.find('.rc-cascader-checkbox-disabled').simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
+
+    // Check all children except disableCheckbox When the parent checkbox is checked
+    expect(wrapper.find('.rc-cascader-checkbox')).toHaveLength(4);
+    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
+    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(3);
+  });
+
+  it('should not merge disabled options', () => {
+    const onChange = jest.fn();
+
+    render(
+      <Cascader
+        open
+        defaultValue={[['China', 'beijing']]}
+        options={[
+          {
+            value: 'China',
+            label: 'China',
+            children: [
+              {
+                value: 'beijing',
+                label: 'beijing',
+                disabled: true,
+              },
+              {
+                value: 'shanghai',
+                label: 'shanghai',
+              },
+            ],
+          },
+        ]}
+        checkable
+        onChange={onChange}
+      />,
+    );
+
+    fireEvent.click(document.querySelector('[data-path-key="China"] .rc-cascader-checkbox'));
+
+    expect(onChange).toHaveBeenCalledWith([['China', 'beijing'], ['China']], expect.anything());
   });
 });

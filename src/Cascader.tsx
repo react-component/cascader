@@ -3,18 +3,26 @@ import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } fr
 import { BaseSelect } from 'rc-select';
 import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
 import useId from 'rc-select/lib/hooks/useId';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import useEvent from 'rc-util/lib/hooks/useEvent';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
-import useEntities from './hooks/useEntities';
 import useMissingValues from './hooks/useMissingValues';
-import useRefFunc from './hooks/useRefFunc';
+import useOptions from './hooks/useOptions';
 import useSearchConfig from './hooks/useSearchConfig';
 import useSearchOptions from './hooks/useSearchOptions';
+import useSelect from './hooks/useSelect';
+import useValues from './hooks/useValues';
 import OptionList from './OptionList';
-import { fillFieldNames, SHOW_CHILD, SHOW_PARENT, toPathKey, toPathKeys } from './utils/commonUtil';
+import Panel from './Panel';
+import {
+  fillFieldNames,
+  SHOW_CHILD,
+  SHOW_PARENT,
+  toPathKeys,
+  toRawValues,
+} from './utils/commonUtil';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
@@ -54,6 +62,7 @@ export interface DefaultOptionType extends BaseOptionType {
   label: React.ReactNode;
   value?: string | number | null;
   children?: DefaultOptionType[];
+  disableCheckbox?: boolean;
 }
 
 interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
@@ -76,6 +85,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   showCheckedStrategy?: ShowCheckedStrategy;
 
   // Search
+  autoClearSearchValue?: boolean;
   showSearch?: boolean | ShowSearchType<OptionType>;
   searchValue?: string;
   onSearch?: (value: string) => void;
@@ -148,22 +158,6 @@ export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOpt
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
 
-function isMultipleValue(value: ValueType): value is SingleValueType[] {
-  return Array.isArray(value) && Array.isArray(value[0]);
-}
-
-function toRawValues(value: ValueType): SingleValueType[] {
-  if (!value) {
-    return [];
-  }
-
-  if (isMultipleValue(value)) {
-    return value;
-  }
-
-  return (value.length === 0 ? [] : [value]).map(val => (Array.isArray(val) ? val : [val]));
-}
-
 const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, ref) => {
   const {
     // MISC
@@ -180,6 +174,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
+    autoClearSearchValue = true,
     searchValue,
     onSearch,
     showSearch,
@@ -199,6 +194,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     popupClassName,
     dropdownClassName,
     dropdownMenuColumnStyle,
+    dropdownStyle: customDropdownStyle,
 
     popupPlacement,
     placement,
@@ -235,23 +231,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Option ===========================
-  const mergedOptions = React.useMemo(() => options || [], [options]);
-
-  // Only used in multiple mode, this fn will not call in single mode
-  const getPathKeyEntities = useEntities(mergedOptions, mergedFieldNames);
-
-  /** Convert path key back to value format */
-  const getValueByKeyPath = React.useCallback(
-    (pathKeys: React.Key[]): SingleValueType[] => {
-      const keyPathEntities = getPathKeyEntities();
-
-      return pathKeys.map(pathKey => {
-        const { nodes } = keyPathEntities[pathKey];
-
-        return nodes.map(node => node[mergedFieldNames.value]);
-      });
-    },
-    [getPathKeyEntities, mergedFieldNames],
+  const [mergedOptions, getPathKeyEntities, getValueByKeyPath] = useOptions(
+    mergedFieldNames,
+    options,
   );
 
   // =========================== Search ===========================
@@ -283,21 +265,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const getMissingValues = useMissingValues(mergedOptions, mergedFieldNames);
 
   // Fill `rawValues` with checked conduction values
-  const [checkedValues, halfCheckedValues, missingCheckedValues] = React.useMemo(() => {
-    const [existValues, missingValues] = getMissingValues(rawValues);
-
-    if (!multiple || !rawValues.length) {
-      return [existValues, [], missingValues];
-    }
-
-    const keyPathValues = toPathKeys(existValues);
-    const keyPathEntities = getPathKeyEntities();
-
-    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities);
-
-    // Convert key back to value cells
-    return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];
-  }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
+  const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
+    multiple,
+    rawValues,
+    getPathKeyEntities,
+    getValueByKeyPath,
+    getMissingValues,
+  );
 
   const deDuplicatedValues = React.useMemo(() => {
     const checkedKeys = toPathKeys(checkedValues);
@@ -325,7 +299,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useRefFunc((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: ValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -344,61 +318,23 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   });
 
   // =========================== Select ===========================
-  const onInternalSelect = useRefFunc((valuePath: SingleValueType) => {
-    setSearchValue('');
-    if (!multiple) {
-      triggerChange(valuePath);
-    } else {
-      // Prepare conduct required info
-      const pathKey = toPathKey(valuePath);
-      const checkedPathKeys = toPathKeys(checkedValues);
-      const halfCheckedPathKeys = toPathKeys(halfCheckedValues);
+  const handleSelection = useSelect(
+    multiple,
+    triggerChange,
+    checkedValues,
+    halfCheckedValues,
+    missingCheckedValues,
+    getPathKeyEntities,
+    getValueByKeyPath,
+    showCheckedStrategy,
+  );
 
-      const existInChecked = checkedPathKeys.includes(pathKey);
-      const existInMissing = missingCheckedValues.some(
-        valueCells => toPathKey(valueCells) === pathKey,
-      );
-
-      // Do update
-      let nextCheckedValues = checkedValues;
-      let nextMissingValues = missingCheckedValues;
-
-      if (existInMissing && !existInChecked) {
-        // Missing value only do filter
-        nextMissingValues = missingCheckedValues.filter(
-          valueCells => toPathKey(valueCells) !== pathKey,
-        );
-      } else {
-        // Update checked key first
-        const nextRawCheckedKeys = existInChecked
-          ? checkedPathKeys.filter(key => key !== pathKey)
-          : [...checkedPathKeys, pathKey];
-
-        const pathKeyEntities = getPathKeyEntities();
-
-        // Conduction by selected or not
-        let checkedKeys: React.Key[];
-        if (existInChecked) {
-          ({ checkedKeys } = conductCheck(
-            nextRawCheckedKeys,
-            { checked: false, halfCheckedKeys: halfCheckedPathKeys },
-            pathKeyEntities,
-          ));
-        } else {
-          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
-        }
-
-        // Roll up to parent level keys
-        const deDuplicatedKeys = formatStrategyValues(
-          checkedKeys,
-          getPathKeyEntities,
-          showCheckedStrategy,
-        );
-        nextCheckedValues = getValueByKeyPath(deDuplicatedKeys);
-      }
-
-      triggerChange([...nextMissingValues, ...nextCheckedValues]);
+  const onInternalSelect = useEvent((valuePath: SingleValueType) => {
+    if (!multiple || autoClearSearchValue) {
+      setSearchValue('');
     }
+
+    handleSelection(valuePath);
   });
 
   // Display Value change logic
@@ -490,8 +426,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
+        autoClearSearchValue={autoClearSearchValue}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={dropdownStyle}
+        dropdownStyle={{
+          ...dropdownStyle,
+          ...customDropdownStyle,
+        }}
         // Value
         displayValues={displayValues}
         onDisplayValuesChange={onDisplayValuesChange}
@@ -521,6 +461,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   displayName?: string;
   SHOW_PARENT: typeof SHOW_PARENT;
   SHOW_CHILD: typeof SHOW_CHILD;
+  Panel: typeof Panel;
 };
 
 if (process.env.NODE_ENV !== 'production') {
@@ -529,4 +470,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 Cascader.SHOW_PARENT = SHOW_PARENT;
 Cascader.SHOW_CHILD = SHOW_CHILD;
+Cascader.Panel = Panel;
+
 export default Cascader;
