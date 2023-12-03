@@ -8,15 +8,9 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        "src/.umi/*"
-      ],
-      "rc-cascader": [
-        "src/index.ts"
-      ]
+      "@/*": ["src/*"],
+      "@@/*": [".dumi/tmp/*"],
+      "rc-cascader": ["src/index.ts"]
     }
   }
 }
