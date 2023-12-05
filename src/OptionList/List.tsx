@@ -207,7 +207,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
 
   const columnNodes: React.ReactElement[] = mergedOptionColumns.map((col, index) => {
     const prevValuePath = activeValueCells.slice(0, index);
-    const activeValue = activeValueCells[index] ? activeValueCells[index] : values[0]?.[index];
+    const activeValue = values[0]?.[index] ?? activeValueCells[index];
 
     return (
       <Column
