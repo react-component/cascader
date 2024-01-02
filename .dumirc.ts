@@ -1,6 +1,7 @@
 import { defineConfig } from 'dumi';
 import path from 'path';
 
+// test
 export default defineConfig({
   alias: {
     'rc-cascader$': path.resolve('src'),
