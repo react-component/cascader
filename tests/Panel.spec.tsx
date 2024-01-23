@@ -92,4 +92,11 @@ describe('Cascader.Panel', () => {
 
     expect(container.querySelector('.rc-cascader-panel-empty').textContent).toEqual('Hello World');
   });
+
+  it('control', () => {
+    const { container } = render(<Cascader.Panel options={options} value={['bamboo', 'little']} />);
+
+    const checkedLi = container.querySelector('[aria-checked="true"]');
+    expect(checkedLi.textContent).toEqual('Little');
+  });
 });
