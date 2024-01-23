@@ -57,14 +57,33 @@ const addressOptions = [
 ];
 
 export default () => {
+  const [value, setValue] = React.useState([]);
+
   return (
     <>
       <h1>Panel</h1>
+      <button
+        onClick={() => {
+          setValue(['bj', 'haidian']);
+        }}
+      >
+        Set Value
+      </button>
+      <Cascader.Panel
+        value={value}
+        options={addressOptions}
+        onChange={nextValue => {
+          console.log('Change:', nextValue);
+          setValue(nextValue);
+        }}
+      />
+
       <Cascader.Panel
         checkable
+        value={value}
         options={addressOptions}
-        onChange={value => {
-          console.log('Change:', value);
+        onChange={nextValue => {
+          console.log('Change:', nextValue);
         }}
       />
 

@@ -10,6 +10,8 @@ export default (
 ): [React.Key[], (activeValueCells: React.Key[]) => void] => {
   const { values } = React.useContext(CascaderContext);
 
+  const firstValueCells = values[0];
+
   // Record current dropdown active options
   // This also control the open status
   const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
@@ -17,12 +19,11 @@ export default (
   React.useEffect(
     () => {
       if (open && !multiple) {
-        const firstValueCells = values[0];
         setActiveValueCells(firstValueCells || []);
       }
     },
     /* eslint-disable react-hooks/exhaustive-deps */
-    [open],
+    [open, firstValueCells],
     /* eslint-enable react-hooks/exhaustive-deps */
   );
 
