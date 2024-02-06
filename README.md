@@ -40,8 +40,7 @@ React Cascader Component
 
 ## Example
 
-http://react-component.github.io/cascader/
-
+https://cascader-react-component.vercel.app
 
 ## Install
 
