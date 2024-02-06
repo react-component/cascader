@@ -225,9 +225,8 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
     wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
     wrapper.clickOption(0, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    let menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
     wrapper.find('input').simulate('click');
@@ -684,7 +683,7 @@ describe('Cascader.Basic', () => {
     wrapper.update();
     expect(selectedValue).toBeFalsy();
     expect(wrapper.isOpen()).toBeTruthy();
-  })
+  });
 
   describe('focus test', () => {
     let domSpy;
