@@ -62,30 +62,18 @@ const options = [
   }
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
+const onChange = (value, selectedOptions) => {
+      console.log(value, selectedOptions);
+};
+  
 
-  onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
-  };
-
-  render() {
-    return (
-      <Cascader
-        showSearch
-        options={options}
-        onChange={this.onChange}
-        changeOnSelect
-        expandTrigger="hover"
-        loadData={() => console.log('loadData')}
-      />
-    );
-  }
-}
+const Demo = () => <Cascader
+showSearch
+options={options}
+onChange={onChange}
+changeOnSelect
+expandTrigger="hover"
+loadData={() => console.log('loadData')}
+/>;
 
 export default Demo;
