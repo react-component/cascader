@@ -225,8 +225,8 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
     wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
     wrapper.clickOption(0, 0);
+    let menus = wrapper.find('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
     wrapper.find('input').simulate('click');
