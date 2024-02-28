@@ -12,33 +12,41 @@
     "cascader"
   ],
   "homepage": "https://github.com/react-component/cascader",
-  "author": "afc163@gmail.com",
+  "bugs": {
+    "url": "https://github.com/react-component/cascader/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/react-component/cascader.git"
   },
-  "bugs": {
-    "url": "https://github.com/react-component/cascader/issues"
-  },
+  "license": "MIT",
+  "author": "afc163@gmail.com",
+  "main": "./lib/index",
+  "module": "./es/index",
   "files": [
     "lib",
     "es",
     "assets/*.css",
     "assets/*.less"
   ],
-  "license": "MIT",
-  "main": "./lib/index",
-  "module": "./es/index",
   "scripts": {
-    "start": "dumi dev",
     "build": "dumi build",
-    "deploy": "UMI_ENV=gh npm run build && gh-pages -d dist",
     "compile": "father build",
-    "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
-    "test": "rc-test",
     "coverage": "father test --coverage",
-    "now-build": "npm run build"
+    "deploy": "UMI_ENV=gh npm run build && gh-pages -d dist",
+    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
+    "now-build": "npm run build",
+    "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
+    "start": "dumi dev",
+    "test": "rc-test"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.12.5",
+    "array-tree-filter": "^2.1.0",
+    "classnames": "^2.3.1",
+    "rc-select": "~14.12.0",
+    "rc-tree": "~5.8.1",
+    "rc-util": "^5.37.0"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^1.0.0",
@@ -70,14 +78,6 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "typescript": "^5.3.2"
-  },
-  "dependencies": {
-    "@babel/runtime": "^7.12.5",
-    "array-tree-filter": "^2.1.0",
-    "classnames": "^2.3.1",
-    "rc-select": "~14.11.0",
-    "rc-tree": "~5.8.1",
-    "rc-util": "^5.37.0"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
