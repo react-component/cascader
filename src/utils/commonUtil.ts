@@ -44,6 +44,14 @@ export function isLeaf(option: DefaultOptionType, fieldNames: FieldNames) {
   return option.isLeaf ?? !option[fieldNames.children]?.length;
 }
 
+function scrollTo (el, distance) {
+    if (typeof el.scrollTo !== 'function') {
+        el.scrollTop = distance;
+    } else {
+        el.scrollTo({ top: distance });
+    }
+}
+
 export function scrollIntoParentView(element: HTMLElement) {
   const parent = element.parentElement;
   if (!parent) {
@@ -52,9 +60,9 @@ export function scrollIntoParentView(element: HTMLElement) {
 
   const elementToParent = element.offsetTop - parent.offsetTop; // offsetParent may not be parent.
   if (elementToParent - parent.scrollTop < 0) {
-    parent.scrollTo({ top: elementToParent });
+    scrollTo(parent, elementToParent);
   } else if (elementToParent + element.offsetHeight - parent.scrollTop > parent.offsetHeight) {
-    parent.scrollTo({ top: elementToParent + element.offsetHeight - parent.offsetHeight });
+    scrollTo(parent, elementToParent + element.offsetHeight - parent.offsetHeight);
   }
 }
 
