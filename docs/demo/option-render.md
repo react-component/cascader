@@ -1,5 +1,5 @@
 ---
-title: value
+title: option-render
 nav:
   title: Demo
   path: /demo
