@@ -21,6 +21,7 @@ export interface CascaderContextProps {
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
   dropdownMenuColumnStyle?: React.CSSProperties;
+  optionRender?: CascaderProps['optionRender'];
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>(null);

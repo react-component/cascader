@@ -74,6 +74,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   id?: string;
   prefixCls?: string;
   fieldNames?: FieldNames;
+  optionRender?: (oriOption: { label?: string; value?: React.Key }) => React.ReactNode;
   children?: React.ReactElement;
 
   // Value
@@ -210,6 +211,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     children,
     dropdownMatchSelectWidth = false,
     showCheckedStrategy = SHOW_PARENT,
+    optionRender,
     ...restProps
   } = props;
 
@@ -384,6 +386,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
+      optionRender,
     }),
     [
       mergedOptions,
@@ -400,6 +403,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandIcon,
       loadingIcon,
       dropdownMenuColumnStyle,
+      optionRender,
     ],
   );
 
