@@ -5,6 +5,7 @@ import Cascader from '../src';
 const addressOptions = [
   {
     label: '福建',
+    title: '福建-fj',
     value: 'fj',
     children: [
       {
@@ -26,6 +27,7 @@ const addressOptions = [
   {
     label: '浙江',
     value: 'zj',
+    title: '浙江-zj',
     children: [
       {
         label: '杭州',
@@ -42,6 +44,7 @@ const addressOptions = [
   {
     label: '北京',
     value: 'bj',
+    title: '北京-bj',
     children: [
       {
         label: '朝阳区',
@@ -60,11 +63,8 @@ const Demo = () => {
     <div>
       <Cascader
         options={addressOptions}
-        optionRender={item => {
-          if (item.label === '北京') {
-            return '南京';
-          }
-          return item.label;
+        optionRender={({ label, option }) => {
+          return <label title={option.title}>{label}</label>;
         }}
       />
     </div>
