@@ -75,8 +75,8 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   prefixCls?: string;
   fieldNames?: FieldNames;
   optionRender?: (oriOption: {
-    label?: string;
-    value?: React.Key;
+    label?: DefaultOptionType['label'];
+    value?: DefaultOptionType['value'];
     option?: OptionType;
   }) => React.ReactNode;
   children?: React.ReactElement;
