@@ -63,8 +63,14 @@ const Demo = () => {
     <div>
       <Cascader
         options={addressOptions}
-        optionRender={({ option }) => {
-          return <label title={option.title}>{option.label}</label>;
+        optionRender={({ option, level, index }) => {
+          return (
+            <label title={option.title}>
+              {option.label}
+              {level}
+              {index}
+            </label>
+          );
         }}
       />
     </div>

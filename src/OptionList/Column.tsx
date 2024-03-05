@@ -24,6 +24,7 @@ export interface ColumnProps {
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
   searchValue?: string;
+  level: number;
 }
 
 export default function Column({
@@ -40,6 +41,7 @@ export default function Column({
   loadingKeys,
   isSelectable,
   searchValue,
+  level,
 }: ColumnProps) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -101,7 +103,7 @@ export default function Column({
   // ============================ Render ============================
   return (
     <ul className={menuPrefixCls} role="menu">
-      {optionInfoList.map(item => {
+      {optionInfoList.map((item, index) => {
         const {
           disabled,
           label,
@@ -198,7 +200,7 @@ export default function Column({
               />
             )}
             <div className={`${menuItemPrefixCls}-content`}>
-              {optionRender ? optionRender({ option: item.option }) : label}
+              {optionRender ? optionRender({ option: item.option, level, index }) : label}
             </div>
             {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
