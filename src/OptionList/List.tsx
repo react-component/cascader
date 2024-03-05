@@ -218,7 +218,6 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         options={col.options}
         prevValuePath={prevValuePath}
         activeValue={activeValue}
-        level={index + 1}
       />
     );
   });

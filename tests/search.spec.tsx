@@ -310,11 +310,11 @@ describe('Cascader.Search', () => {
       <Cascader
         open
         options={[{ label: 'bamboo', value: 'bamboo' }]}
-        optionRender={({ option, level, index }) => `${option.label} - ${level} - ${index}`}
+        optionRender={option => `${option.label} - test`}
       />,
     );
     expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
-      'bamboo - 1 - 0',
+      'bamboo - test',
     );
   });
 });
