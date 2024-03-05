@@ -198,9 +198,7 @@ export default function Column({
               />
             )}
             <div className={`${menuItemPrefixCls}-content`}>
-              {optionRender
-                ? optionRender({ label: item.label, value: item.value, option: item.option })
-                : label}
+              {optionRender ? optionRender({ option: item.option }) : label}
             </div>
             {!isLoading && expandIcon && !isMergedLeaf && (
               <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
