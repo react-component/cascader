@@ -310,7 +310,7 @@ describe('Cascader.Search', () => {
       <Cascader
         open
         options={[{ label: 'bamboo', value: 'bamboo' }]}
-        optionRender={option => `${option.label} - test`}
+        optionRender={({ option }) => `${option.label} - test`}
       />,
     );
     expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
