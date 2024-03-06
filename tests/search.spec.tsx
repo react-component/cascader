@@ -320,11 +320,11 @@ describe('Cascader.Search', () => {
       <Cascader
         open
         options={[{ label: 'bamboo', disabled: true, value: 'bamboo' }]}
-        optionRender={option => `${option.label} - ${option.disabled}`}
+        optionRender={option => JSON.stringify(option)}
       />,
     );
     expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
-      'bamboo - true',
+      '{"label":"bamboo","disabled":true,"value":"bamboo"}',
     );
   });
 });
