@@ -306,7 +306,7 @@ describe('Cascader.Search', () => {
     );
   });
   it('Should optionRender work', () => {
-    const { container } = render(
+    const { container, rerender } = render(
       <Cascader
         open
         options={[{ label: 'bamboo', value: 'bamboo' }]}
@@ -315,6 +315,16 @@ describe('Cascader.Search', () => {
     );
     expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
       'bamboo - test',
+    );
+    rerender(
+      <Cascader
+        open
+        options={[{ label: 'bamboo', disabled: true, value: 'bamboo' }]}
+        optionRender={option => `${option.label} - ${option.disabled}`}
+      />,
+    );
+    expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
+      'bamboo - true',
     );
   });
 });
