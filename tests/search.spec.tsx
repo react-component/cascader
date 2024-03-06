@@ -305,4 +305,26 @@ describe('Cascader.Search', () => {
       'bamboo / little',
     );
   });
+  it('Should optionRender work', () => {
+    const { container, rerender } = render(
+      <Cascader
+        open
+        options={[{ label: 'bamboo', value: 'bamboo' }]}
+        optionRender={option => `${option.label} - test`}
+      />,
+    );
+    expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
+      'bamboo - test',
+    );
+    rerender(
+      <Cascader
+        open
+        options={[{ label: 'bamboo', disabled: true, value: 'bamboo' }]}
+        optionRender={option => JSON.stringify(option)}
+      />,
+    );
+    expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
+      '{"label":"bamboo","disabled":true,"value":"bamboo"}',
+    );
+  });
 });

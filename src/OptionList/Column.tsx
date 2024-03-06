@@ -51,6 +51,7 @@ export default function Column({
     expandIcon,
     loadingIcon,
     dropdownMenuColumnStyle,
+    optionRender,
   } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
@@ -197,7 +198,9 @@ export default function Column({
                   }}
                 />
               )}
-              <div className={`${menuItemPrefixCls}-content`}>{label}</div>
+              <div className={`${menuItemPrefixCls}-content`}>
+                {optionRender ? optionRender(option) : label}
+              </div>
               {!isLoading && expandIcon && !isMergedLeaf && (
                 <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
               )}
