@@ -16,16 +16,17 @@ export default (
   // This also control the open status
   const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
 
-  React.useEffect(
-    () => {
-      if (open && !multiple) {
-        setActiveValueCells(firstValueCells || []);
-      }
-    },
-    /* eslint-disable react-hooks/exhaustive-deps */
-    [open, firstValueCells],
-    /* eslint-enable react-hooks/exhaustive-deps */
-  );
+  // use useLayoutEffect Prevent flickering
+  React.useLayoutEffect(() => {
+    if (open && !multiple) {
+      setActiveValueCells(firstValueCells || []);
+      // no values run reset activeValueCells
+    } else if (values.length === 0) {
+      setActiveValueCells([]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, firstValueCells]);
 
   return [activeValueCells, setActiveValueCells];
 };
