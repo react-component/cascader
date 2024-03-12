@@ -11,21 +11,29 @@ export default (
   const { values } = React.useContext(CascaderContext);
 
   const firstValueCells = values[0];
+  const lastValuesRef = React.useRef(null);
 
   // Record current dropdown active options
   // This also control the open status
   const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
 
-  React.useEffect(
-    () => {
-      if (open && !multiple) {
+  // use useLayoutEffect timely update of DOM calculation position and Prevent flickering
+  React.useLayoutEffect(() => {
+    if (open && !multiple) {
+      // firstValueCells clear use delay update
+      if (lastValuesRef.current && !firstValueCells) {
+        setTimeout(() => {
+          setActiveValueCells([]);
+        }, 0);
+      } else {
         setActiveValueCells(firstValueCells || []);
       }
-    },
-    /* eslint-disable react-hooks/exhaustive-deps */
-    [open, firstValueCells],
-    /* eslint-enable react-hooks/exhaustive-deps */
-  );
+    }
+
+    lastValuesRef.current = firstValueCells;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, firstValueCells]);
 
   return [activeValueCells, setActiveValueCells];
 };
