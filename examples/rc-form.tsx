@@ -4,6 +4,7 @@ import { createForm } from 'rc-form';
 import { Component } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
+import React from 'react';
 
 const addressOptions = [
   {
@@ -58,7 +59,7 @@ const addressOptions = [
   },
 ];
 
-class CascaderInput extends Component {
+class CascaderInput extends Component<any> {
   onChange = value => {
     const props = this.props;
     if (props.onChange) {
@@ -69,7 +70,7 @@ class CascaderInput extends Component {
   getLabel() {
     const props = this.props;
     const value = props.value || [];
-    return arrayTreeFilter(props.options, (o, level) => o.value === value[level])
+    return arrayTreeFilter(props.options, (o: any, level) => o.value === value[level])
       .map(o => o.label)
       .join(', ');
   }
@@ -84,7 +85,7 @@ class CascaderInput extends Component {
   }
 }
 
-class Form extends Component {
+class Form extends Component<any> {
   onSubmit = e => {
     const props = this.props;
     const { form } = props;

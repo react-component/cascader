@@ -38,6 +38,7 @@
     "now-build": "npm run build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
     "start": "dumi dev",
+    "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "test": "rc-test"
   },
   "dependencies": {

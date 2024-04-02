@@ -6,7 +6,6 @@ export type {
   CascaderProps,
   DefaultOptionType,
   FieldNames,
-  MultipleCascaderProps,
   ShowSearchType,
   SingleCascaderProps,
 } from './Cascader';

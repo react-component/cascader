@@ -123,32 +123,19 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   loadingIcon?: React.ReactNode;
 }
 
-type OnSingleChange<OptionType> = (value: SingleValueType, selectOptions: OptionType[]) => void;
-type OnMultipleChange<OptionType> = (
-  value: SingleValueType[],
-  selectOptions: OptionType[][],
-) => void;
-
 export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseCascaderProps<OptionType> {
-  checkable?: false;
-
-  onChange?: OnSingleChange<OptionType>;
-}
-
-export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
-  checkable: true | React.ReactNode;
-
-  onChange?: OnMultipleChange<OptionType>;
+  onChange?: (
+    value: SingleValueType | SingleValueType[],
+    selectOptions: OptionType[] | OptionType[][],
+  ) => void;
 }
 
 export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
-  | SingleCascaderProps<OptionType>
-  | MultipleCascaderProps<OptionType>;
+  SingleCascaderProps<OptionType>;
 
 export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
-  SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
+  SingleCascaderProps<OptionType>,
   'onChange'
 > & {
   onChange?: (
