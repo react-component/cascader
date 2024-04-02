@@ -1,9 +1,8 @@
-/* eslint-disable no-console, react/no-multi-comp, react/prop-types, react/button-has-type,prefer-destructuring,max-len, max-classes-per-file */
 import arrayTreeFilter from 'array-tree-filter';
-import { createForm } from 'rc-form';
-import { Component } from 'react';
+import Form, { Field } from 'rc-field-form';
 import '../assets/index.less';
 import Cascader from '../src';
+import React from 'react';
 
 const addressOptions = [
   {
@@ -58,71 +57,53 @@ const addressOptions = [
   },
 ];
 
-class CascaderInput extends Component {
-  onChange = value => {
-    const props = this.props;
+const CascaderInput = (props: any) => {
+  const onChange = value => {
     if (props.onChange) {
       props.onChange(value);
     }
   };
 
-  getLabel() {
-    const props = this.props;
+  const getLabel = () => {
     const value = props.value || [];
-    return arrayTreeFilter(props.options, (o, level) => o.value === value[level])
+    return arrayTreeFilter(props.options, (o: any, level) => o.value === value[level])
       .map(o => o.label)
       .join(', ');
-  }
-
-  render() {
-    const props = this.props;
-    return (
-      <Cascader {...this.props} onChange={this.onChange}>
-        <input placeholder={props.placeholder} value={this.getLabel()} readOnly />
-      </Cascader>
-    );
-  }
-}
-
-class Form extends Component {
-  onSubmit = e => {
-    const props = this.props;
-    const { form } = props;
-    e.preventDefault();
-    form.validateFields((error, values) => {
-      if (!error) {
-        console.log('ok', values);
-      } else {
-        console.error('error', error, values);
-      }
-    });
   };
 
-  render() {
-    const props = this.props;
-    const { form } = props;
-    const addressFieldError = form.getFieldError('address');
-    return (
-      <div style={{ margin: 20 }}>
-        <form onSubmit={this.onSubmit}>
-          <p>
-            {form.getFieldDecorator('address', {
-              initialValue: [],
-              rules: [{ required: true, type: 'array' }],
-            })(<CascaderInput placeholder="please select address" options={addressOptions} />)}
-            <span style={{ color: '#f50' }}>
-              {addressFieldError ? addressFieldError.join(' ') : null}
-            </span>
-          </p>
-          <p>
-            <button>submit</button>
-          </p>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <Cascader {...props} onChange={onChange}>
+      <input placeholder={props.placeholder} value={getLabel()} readOnly />
+    </Cascader>
+  );
+};
 
-const NewForm = createForm()(Form);
+const Demo = () => {
+  return (
+    <div style={{ margin: 20 }}>
+      <Form
+        onFinish={values => {
+          console.error('values', values);
+        }}
+        initialValues={{ address: [] }}
+      >
+        <p>
+          <Field name="address" rules={[{ required: true, type: 'array' }]}>
+            <CascaderInput placeholder="please select address" options={addressOptions} />
+          </Field>
+          <Field shouldUpdate>
+            {(_, __, { getFieldError }) => {
+              const hasErrors = getFieldError('address');
+              return <div style={{ color: '#f50' }}>{hasErrors ? hasErrors.join(' ') : null}</div>;
+            }}
+          </Field>
+        </p>
+        <p>
+          <button>submit</button>
+        </p>
+      </Form>
+    </div>
+  );
+};
 
-export default NewForm;
+export default Demo;
