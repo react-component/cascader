@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -37,35 +38,28 @@ const options = [
   },
 ];
 
-class App extends React.Component {
-  state = {
-    inputValue: '',
-    value: [],
-  };
+const App = () => {
+  const [inputValue, setInputValue] = useState('');
 
-  onChange = (value, selectedOptions) => {
+  const [value, setValue] = useState([]);
+
+  const onChange = (value: any, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
       value.push(lastSelected.children[0].value);
-      this.setState({
-        inputValue: selectedOptions.map(o => o.label).join(', '),
-        value,
-      });
+      setInputValue(selectedOptions.map(o => o.label).join(', '));
+      setValue(value);
       return;
     }
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-      value,
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
+    setValue(value);
   };
 
-  render() {
-    return (
-      <Cascader options={options} value={this.state.value} changeOnSelect onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader options={options} value={value} changeOnSelect onChange={onChange}>
+      <input value={inputValue} readOnly />
+    </Cascader>
+  );
+};
 
 export default App;

@@ -1,6 +1,6 @@
-/* eslint-disable no-console,react/button-has-type */
+/* eslint-disable @typescript-eslint/no-shadow */
 import arrayTreeFilter from 'array-tree-filter';
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -57,38 +57,31 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    value: [],
-  };
-
-  onChange = value => {
+const Demo = () => {
+  const [value, setValue] = useState([]);
+  const onChange = value => {
     console.log(value);
-    this.setState({ value });
+    setValue(value);
   };
 
-  setValue = () => {
-    this.setState({
-      value: ['bj', 'chaoyang'],
-    });
+  const handleSetValue = () => {
+    setValue(['bj', 'chaoyang']);
   };
 
-  getLabel() {
-    return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
+  const getLabel = () => {
+    return arrayTreeFilter(addressOptions, (o, level) => o.value === value[level])
       .map(o => o.label)
       .join(', ');
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <button onClick={this.setValue}>set value to 北京朝阳区</button>
-        <Cascader value={this.state.value} options={addressOptions} onChange={this.onChange}>
-          <input value={this.getLabel()} readOnly />
-        </Cascader>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <button onClick={handleSetValue}>set value to 北京朝阳区</button>
+      <Cascader value={value} options={addressOptions} onChange={onChange}>
+        <input value={getLabel()} readOnly />
+      </Cascader>
+    </div>
+  );
+};
 
 export default Demo;

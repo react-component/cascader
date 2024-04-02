@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -81,39 +80,33 @@ const loadingPath =
   ' 7.9 4.1 11.4 1.3C854.5 760.8 912 649.1 912 523.9c0-' +
   '221.1-179.4-400.2-400.6-399.9z';
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-    dynamicInputValue: '',
-    options: [
-      {
-        label: '福建',
-        isLeaf: false,
-        value: 'fj',
-      },
-      {
-        label: '浙江',
-        isLeaf: false,
-        value: 'zj',
-      },
-    ],
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState('');
+  const [dynamicInputValue, setDynamicInputValue] = useState('');
+  const [options, setOptions] = useState([
+    {
+      label: '福建',
+      isLeaf: false,
+      value: 'fj',
+    },
+    {
+      label: '浙江',
+      isLeaf: false,
+      value: 'zj',
+    },
+  ]);
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  onChangeDynamic = (value, selectedOptions) => {
+  const onChangeDynamic = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      dynamicInputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setDynamicInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  expandIcon = (
+  const expandIcon = (
     <i>
       <svg
         viewBox="0 0 1024 1024"
@@ -130,7 +123,7 @@ class Demo extends React.Component {
     </i>
   );
 
-  loadingIcon = (
+  const loadingIcon = (
     <i
       style={{
         position: 'absolute',
@@ -153,7 +146,7 @@ class Demo extends React.Component {
     </i>
   );
 
-  loadData = selectedOptions => {
+  const loadData = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据
@@ -169,37 +162,32 @@ class Demo extends React.Component {
           value: 'dynamic2',
         },
       ];
-      this.setState({
-        // eslint-disable-next-line react/no-access-state-in-setstate
-        options: [...this.state.options],
-      });
+      setOptions([...options]);
     }, 1500);
   };
 
-  render() {
-    return (
-      <div style={{ padding: '2rem' }}>
-        <Cascader
-          style={{ marginBottom: '2rem' }}
-          options={addressOptions}
-          onChange={this.onChange}
-          expandIcon={this.expandIcon}
-        >
-          <input placeholder="please select address" value={this.state.inputValue} />
-        </Cascader>
-        <Cascader
-          options={this.state.options}
-          loadData={this.loadData}
-          onChange={this.onChangeDynamic}
-          expandIcon={this.expandIcon}
-          loadingIcon={this.loadingIcon}
-          changeOnSelect
-        >
-          <input value={this.state.dynamicInputValue} readOnly />
-        </Cascader>
-      </div>
-    );
-  }
-}
+  return (
+    <div style={{ padding: '2rem' }}>
+      <Cascader
+        style={{ marginBottom: '2rem' }}
+        options={addressOptions}
+        onChange={onChange}
+        expandIcon={expandIcon}
+      >
+        <input placeholder="please select address" value={inputValue} />
+      </Cascader>
+      <Cascader
+        options={options}
+        loadData={loadData}
+        onChange={onChangeDynamic}
+        expandIcon={expandIcon}
+        loadingIcon={loadingIcon}
+        changeOnSelect
+      >
+        <input value={dynamicInputValue} readOnly />
+      </Cascader>
+    </div>
+  );
+};
 
 export default Demo;
