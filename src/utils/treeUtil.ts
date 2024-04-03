@@ -50,12 +50,12 @@ export function toPathOptions(
       const val = (option as Record<string, any>)[fieldNames.value];
       return stringMode ? String(val) === String(valueCell) : val === valueCell;
     });
-    const foundOption: DefaultOptionType = foundIndex !== -1 ? currentList?.[foundIndex] : {};
+    const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : undefined;
 
     valueOptions.push({
       value: (foundOption as Record<string, any>)?.[fieldNames.value] ?? valueCell,
       index: foundIndex,
-      option: foundOption,
+      option: foundOption as DefaultOptionType,
     });
 
     currentList = (foundOption as Record<string, any>)?.[fieldNames.children];
