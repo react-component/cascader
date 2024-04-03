@@ -37,6 +37,7 @@
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
     "now-build": "npm run build",
     "prepublishOnly": "npm run compile && np --no-cleanup --yolo --no-publish",
+    "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "start": "dumi dev",
     "test": "rc-test"
   },
@@ -73,7 +74,7 @@
     "less": "^4.2.0",
     "np": "^9.2.0",
     "prettier": "^3.1.0",
-    "rc-form": "^2.4.0",
+    "rc-field-form": "^1.44.0",
     "rc-test": "^7.0.14",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

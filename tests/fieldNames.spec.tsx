@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-
 import React from 'react';
 import { mount } from './enzyme';
 import Cascader from '../src';

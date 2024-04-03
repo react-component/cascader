@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -57,35 +56,29 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState('');
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  render() {
-    return (
-      <Cascader
-        options={addressOptions}
-        onChange={this.onChange}
-        dropdownRender={menus => (
-          <div>
-            {menus}
-            <hr />
-            Hey, DropdownRender, Long DropdownRender, Long DropdownRender
-          </div>
-        )}
-      >
-        <input placeholder="please select address" value={this.state.inputValue} />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader
+      options={addressOptions}
+      onChange={onChange}
+      dropdownRender={menus => (
+        <div>
+          {menus}
+          <hr />
+          Hey, DropdownRender, Long DropdownRender, Long DropdownRender
+        </div>
+      )}
+    >
+      <input placeholder="please select address" value={inputValue} />
+    </Cascader>
+  );
+};
 
 export default Demo;

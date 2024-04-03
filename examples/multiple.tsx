@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -15,7 +14,7 @@ const optionLists = [
     value: 'jiangsu',
     label: 'Jiangsu',
     isLeaf: false,
-    disableCheckbox: false
+    disableCheckbox: false,
   },
 ];
 

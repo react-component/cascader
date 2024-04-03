@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -56,23 +55,14 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
+const Demo = () => {
+  const [inputValue] = useState('');
 
-  render() {
-    return (
-      <Cascader options={addressOptions} disabled>
-        <input
-          placeholder="please select address"
-          disabled
-          value={this.state.inputValue}
-          readOnly
-        />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader options={addressOptions} disabled>
+      <input placeholder="please select address" disabled value={inputValue} readOnly />
+    </Cascader>
+  );
+};
 
 export default Demo;

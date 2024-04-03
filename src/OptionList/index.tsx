@@ -1,4 +1,3 @@
-/* eslint-disable default-case */
 import { useBaseProps } from 'rc-select';
 import type { RefOptionListProps } from 'rc-select/lib/OptionList';
 import * as React from 'react';
