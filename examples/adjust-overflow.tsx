@@ -1,5 +1,5 @@
-import type { BuildInPlacements } from 'rc-trigger/lib/interface';
 import React, { useState } from 'react';
+import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import '../assets/index.less';
 import type { SingleCascaderProps } from '../src';
 import Cascader from '../src';
