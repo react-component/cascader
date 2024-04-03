@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-console */
 import arrayTreeFilter from 'array-tree-filter';
 import React, { useState } from 'react';
 import '../assets/index.less';

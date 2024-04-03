@@ -43,7 +43,7 @@ const App = () => {
 
   const [value, setValue] = useState([]);
 
-  const onChange = (value: any, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
       value.push(lastSelected.children[0].value);

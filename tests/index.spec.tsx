@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { useEffect, useState } from 'react';

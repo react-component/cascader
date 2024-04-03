@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-
 import { render } from '@testing-library/react';
 import React from 'react';
 import Cascader from '../src';

@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import Cascader from '../src';

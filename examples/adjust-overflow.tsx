@@ -1,4 +1,3 @@
-/* eslint-disable no-console, react/prop-types */
 import type { BuildInPlacements } from 'rc-trigger/lib/interface';
 import React, { useState } from 'react';
 import '../assets/index.less';
