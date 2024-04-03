@@ -20,7 +20,7 @@ export default (
       displayRender ||
       // Default displayRender
       (labels => {
-        const mergedLabels = multiple ? labels.slice(-1) : labels;
+        const mergedLabels: React.ReactNode[] = multiple ? labels.slice(-1) : labels;
         const SPLIT = ' / ';
 
         if (mergedLabels.every(label => ['string', 'number'].includes(typeof label))) {
@@ -36,8 +36,7 @@ export default (
           if (index === 0) {
             return [keyedLabel];
           }
-
-          return [...list, SPLIT, keyedLabel];
+          return [...(Array.isArray(list) ? list : []), SPLIT, keyedLabel];
         }, []);
       });
 
@@ -45,7 +44,7 @@ export default (
       const valueOptions = toPathOptions(valueCells, options, fieldNames);
 
       const label = mergedDisplayRender(
-        valueOptions.map(({ option, value }) => option?.[fieldNames.label] ?? value),
+        valueOptions.map(({ option, value }) => (option as any)?.[fieldNames.label] ?? value),
         valueOptions.map(({ option }) => option),
       );
 

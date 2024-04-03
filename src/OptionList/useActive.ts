@@ -4,9 +4,9 @@ import CascaderContext from '../context';
 /**
  * Control the active open options path.
  */
-export default (
-  multiple: boolean,
-  open: boolean,
+const useActive = (
+  multiple?: boolean,
+  open?: boolean,
 ): [React.Key[], (activeValueCells: React.Key[]) => void] => {
   const { values } = React.useContext(CascaderContext);
 
@@ -29,3 +29,5 @@ export default (
 
   return [activeValueCells, setActiveValueCells];
 };
+
+export default useActive;

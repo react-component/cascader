@@ -10,7 +10,7 @@ import { SHOW_CHILD } from './commonUtil';
 export function formatStrategyValues(
   pathKeys: React.Key[],
   getKeyPathEntities: GetEntities,
-  showCheckedStrategy: ShowCheckedStrategy,
+  showCheckedStrategy?: ShowCheckedStrategy,
 ) {
   const valueSet = new Set(pathKeys);
   const keyPathEntities = getKeyPathEntities();
@@ -47,18 +47,18 @@ export function toPathOptions(
   for (let i = 0; i < valueCells.length; i += 1) {
     const valueCell = valueCells[i];
     const foundIndex = currentList?.findIndex(option => {
-      const val = option[fieldNames.value];
+      const val = (option as Record<string, any>)[fieldNames.value];
       return stringMode ? String(val) === String(valueCell) : val === valueCell;
     });
-    const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : null;
+    const foundOption: DefaultOptionType = foundIndex !== -1 ? currentList?.[foundIndex] : {};
 
     valueOptions.push({
-      value: foundOption?.[fieldNames.value] ?? valueCell,
+      value: (foundOption as Record<string, any>)?.[fieldNames.value] ?? valueCell,
       index: foundIndex,
       option: foundOption,
     });
 
-    currentList = foundOption?.[fieldNames.children];
+    currentList = (foundOption as Record<string, any>)?.[fieldNames.children];
   }
 
   return valueOptions;

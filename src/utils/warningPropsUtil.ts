@@ -26,14 +26,14 @@ export function warningNullOptions(options: DefaultOptionType[], fieldNames: Fie
       for (let i = 0; i < optionsList.length; i++) {
         const option = optionsList[i];
 
-        if (option[fieldNames?.value] === null) {
+        if ((option as Record<string, any>)[fieldNames?.value as string] === null) {
           warning(false, '`value` in Cascader options should not be `null`.');
           return true;
         }
 
         if (
-          Array.isArray(option[fieldNames?.children]) &&
-          recursiveOptions(option[fieldNames?.children])
+          Array.isArray((option as Record<string, any>)[fieldNames?.children as string]) &&
+          recursiveOptions((option as Record<string, any>)[fieldNames?.children as string])
         ) {
           return true;
         }

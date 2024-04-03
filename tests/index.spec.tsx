@@ -1,13 +1,14 @@
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { useEffect, useState } from 'react';
+import type { SingleCascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 
 describe('Cascader.Basic', () => {
-  let selectedValue;
-  const onChange = function onChange(value) {
+  let selectedValue: any;
+  const onChange: SingleCascaderProps['onChange'] = function onChange(value) {
     selectedValue = value;
   };
 
@@ -677,7 +678,7 @@ describe('Cascader.Basic', () => {
   });
 
   describe('focus test', () => {
-    let domSpy;
+    let domSpy: any;
     let focusTimes = 0;
     let blurTimes = 0;
 
@@ -1024,7 +1025,7 @@ describe('Cascader.Basic', () => {
 
   it('support custom cascader', () => {
     const wrapper = mount(<Cascader dropdownStyle={{ zIndex: 999 }} open />);
-    expect(wrapper.find('.rc-cascader-dropdown').props().style.zIndex).toBe(999);
+    expect(wrapper.find('.rc-cascader-dropdown').props().style?.zIndex).toBe(999);
   });
 
   it('`null` is a value in Cascader options should throw a warning', () => {

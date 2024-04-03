@@ -26,7 +26,7 @@ import {
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
-export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
+export interface ShowSearchType<T = any, OptionType = DefaultOptionType<T>> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
   render?: (
     inputValue: string,
@@ -51,21 +51,17 @@ export interface InternalFieldNames extends Required<FieldNames> {
 
 export type SingleValueType = (string | number)[];
 
-export type ValueType = SingleValueType | SingleValueType[];
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
-export interface BaseOptionType {
-  disabled?: boolean;
-  [name: string]: any;
-}
-export interface DefaultOptionType extends BaseOptionType {
-  label: React.ReactNode;
-  value?: string | number | null;
-  children?: DefaultOptionType[];
+export interface DefaultOptionType<T = any> {
+  label?: React.ReactNode;
+  value?: T;
+  children?: DefaultOptionType<T>[];
   disableCheckbox?: boolean;
+  disabled?: boolean;
 }
 
-interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+interface BaseCascaderProps<T = any, OptionType = DefaultOptionType<T>>
   extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
@@ -78,8 +74,6 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   children?: React.ReactElement;
 
   // Value
-  value?: ValueType;
-  defaultValue?: ValueType;
   changeOnSelect?: boolean;
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
@@ -87,7 +81,7 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
 
   // Search
   autoClearSearchValue?: boolean;
-  showSearch?: boolean | ShowSearchType<OptionType>;
+  showSearch?: boolean | ShowSearchType<T, OptionType>;
   searchValue?: string;
   onSearch?: (value: string) => void;
 
@@ -123,38 +117,31 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   loadingIcon?: React.ReactNode;
 }
 
-type OnSingleChange<OptionType> = (value: SingleValueType, selectOptions: OptionType[]) => void;
-type OnMultipleChange<OptionType> = (
-  value: SingleValueType[],
-  selectOptions: OptionType[][],
-) => void;
-
-export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
+export interface SingleCascaderProps<T = any, OptionType = DefaultOptionType<T>>
+  extends BaseCascaderProps<T, OptionType> {
   checkable?: false;
-
-  onChange?: OnSingleChange<OptionType>;
+  value?: T[];
+  defaultValue?: T[];
+  onChange?: (value: T[], selectOptions: OptionType[]) => void;
 }
 
-export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
+export interface MultipleCascaderProps<T = any, OptionType = DefaultOptionType>
+  extends BaseCascaderProps<T, OptionType> {
   checkable: true | React.ReactNode;
-
-  onChange?: OnMultipleChange<OptionType>;
+  value?: T[][];
+  defaultValue?: T[][];
+  onChange?: (value: T[][], selectOptions: OptionType[]) => void;
 }
 
-export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
-  | SingleCascaderProps<OptionType>
-  | MultipleCascaderProps<OptionType>;
+export type CascaderProps<T = any, OptionType = DefaultOptionType<T>> =
+  | SingleCascaderProps<T, OptionType>
+  | MultipleCascaderProps<T, OptionType>;
 
-export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
-  SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
+export type InternalCascaderProps<T = any, OptionType = DefaultOptionType<T>> = Omit<
+  SingleCascaderProps<T, OptionType> | MultipleCascaderProps<T, OptionType>,
   'onChange'
 > & {
-  onChange?: (
-    value: SingleValueType | SingleValueType[],
-    selectOptions: OptionType[] | OptionType[][],
-  ) => void;
+  onChange?: (value: T | T[], selectOptions: OptionType[] | OptionType[][]) => void;
 };
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
@@ -167,9 +154,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     fieldNames,
 
     // Value
-    defaultValue,
+    defaultValue = [],
     value,
-    changeOnSelect,
+    changeOnSelect = false,
     onChange,
     displayRender,
     checkable,
@@ -219,7 +206,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const multiple = !!checkable;
 
   // =========================== Values ===========================
-  const [rawValues, setRawValues] = useMergedState<ValueType, SingleValueType[]>(defaultValue, {
+  const [rawValues, setRawValues] = useMergedState<any[], SingleValueType[]>(defaultValue, {
     value,
     postState: toRawValues,
   });
@@ -301,7 +288,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: any[]) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -453,12 +440,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         placement={mergedPlacement}
         onDropdownVisibleChange={onInternalDropdownVisibleChange}
         // Children
-        getRawInputElement={() => children}
+        getRawInputElement={() => children as React.ReactElement}
       />
     </CascaderContext.Provider>
   );
-}) as unknown as (<OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
-  props: React.PropsWithChildren<CascaderProps<OptionType>> & {
+}) as unknown as (<T = any, OptionType = DefaultOptionType<T>>(
+  props: React.PropsWithChildren<CascaderProps<T, OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
   },
 ) => React.ReactElement) & {

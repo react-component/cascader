@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { CascaderProps, InternalCascaderProps, SingleValueType, ValueType } from './Cascader';
+import type { CascaderProps, InternalCascaderProps, SingleValueType } from './Cascader';
+import type { CascaderContextProps } from './context';
 import CascaderContext from './context';
 import useMissingValues from './hooks/useMissingValues';
 import useOptions from './hooks/useOptions';
@@ -59,7 +60,7 @@ export default function Panel(props: PanelProps) {
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useMergedState<ValueType, SingleValueType[]>(defaultValue, {
+  const [rawValues, setRawValues] = useMergedState<any, SingleValueType[]>(defaultValue, {
     value,
     postState: toRawValues,
   });
@@ -91,7 +92,7 @@ export default function Panel(props: PanelProps) {
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: any[]) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -126,7 +127,7 @@ export default function Panel(props: PanelProps) {
   });
 
   // ======================== Context =========================
-  const cascaderContext = React.useMemo(
+  const cascaderContext = React.useMemo<CascaderContextProps>(
     () => ({
       options: mergedOptions,
       fieldNames: mergedFieldNames,
@@ -136,12 +137,12 @@ export default function Panel(props: PanelProps) {
       onSelect: onInternalSelect,
       checkable,
       searchOptions: [],
-      dropdownPrefixCls: null,
+      dropdownPrefixCls: '',
       loadData,
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle: null,
+      dropdownMenuColumnStyle: {},
     }),
     [
       mergedOptions,
@@ -180,7 +181,7 @@ export default function Panel(props: PanelProps) {
         ) : (
           <RawOptionList
             prefixCls={prefixCls}
-            searchValue={null}
+            searchValue=""
             multiple={multiple}
             toggleOpen={noop}
             open

@@ -13,10 +13,10 @@ export default (
   setActiveValueCells: (activeValueCells: React.Key[]) => void,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
   contextProps: {
-    direction: 'ltr' | 'rtl';
+    direction?: 'ltr' | 'rtl';
     searchValue: string;
     toggleOpen: (open?: boolean) => void;
-    open: boolean;
+    open?: boolean;
   },
 ) => {
   const { direction, searchValue, toggleOpen, open } = contextProps;
@@ -39,8 +39,9 @@ export default (
         // Mark the active index for current options
         const nextActiveIndex = currentOptions.findIndex(
           (option, index) =>
-            (pathKeys[index] ? toPathKey(pathKeys[index]) : option[fieldNames.value]) ===
-            activeValueCells[i],
+            (pathKeys[index]
+              ? toPathKey(pathKeys[index])
+              : (option as Record<string, any>)[fieldNames.value]) === activeValueCells[i],
         );
 
         if (nextActiveIndex === -1) {
@@ -51,13 +52,15 @@ export default (
         mergedActiveIndexes.push(activeIndex);
         mergedActiveValueCells.push(activeValueCells[i]);
 
-        currentOptions = currentOptions[activeIndex][fieldNames.children];
+        currentOptions = (currentOptions as Record<string, any>)[activeIndex][fieldNames.children];
       }
 
       // Fill last active options
       let activeOptions = options;
       for (let i = 0; i < mergedActiveIndexes.length - 1; i += 1) {
-        activeOptions = activeOptions[mergedActiveIndexes[i]][fieldNames.children];
+        activeOptions = (activeOptions as Record<string, any>)[mergedActiveIndexes[i]][
+          fieldNames.children
+        ];
       }
 
       return [mergedActiveValueCells, activeIndex, activeOptions, pathKeys];
@@ -86,7 +89,7 @@ export default (
           .concat(
             fullPathKeys[currentIndex]
               ? toPathKey(fullPathKeys[currentIndex])
-              : option[fieldNames.value],
+              : (option as Record<string, any>)[fieldNames.value],
           );
         internalSetActiveValueCells(nextActiveCells);
         return;
@@ -106,12 +109,15 @@ export default (
 
   const nextColumn = () => {
     const nextOptions: DefaultOptionType[] =
-      lastActiveOptions[lastActiveIndex]?.[fieldNames.children] || [];
+      (lastActiveOptions as Record<string, any>)[lastActiveIndex]?.[fieldNames.children] || [];
 
     const nextOption = nextOptions.find(option => !option.disabled);
 
     if (nextOption) {
-      const nextActiveCells = [...validActiveValueCells, nextOption[fieldNames.value]];
+      const nextActiveCells = [
+        ...validActiveValueCells,
+        (nextOption as Record<string, any>)[fieldNames.value],
+      ];
       internalSetActiveValueCells(nextActiveCells);
     }
   };
@@ -176,10 +182,11 @@ export default (
             const option = lastActiveOptions[lastActiveIndex];
 
             // Search option should revert back of origin options
-            const originOptions: DefaultOptionType[] = option?.[SEARCH_MARK] || [];
+            const originOptions: DefaultOptionType[] =
+              (option as Record<string, any>)?.[SEARCH_MARK] || [];
             if (originOptions.length) {
               onKeyBoardSelect(
-                originOptions.map(opt => opt[fieldNames.value]),
+                originOptions.map(opt => (opt as Record<string, any>)[fieldNames.value]),
                 originOptions[originOptions.length - 1],
               );
             } else {

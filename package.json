@@ -78,7 +78,7 @@
     "rc-test": "^7.0.14",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.4.3"
   },
   "peerDependencies": {
     "react": ">=16.9.0",

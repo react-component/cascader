@@ -8,7 +8,7 @@ export interface CheckboxProps {
   halfChecked?: boolean;
   disabled?: boolean;
   onClick?: React.MouseEventHandler;
-  disableCheckbox: boolean;
+  disableCheckbox?: boolean;
 }
 
 export default function Checkbox({

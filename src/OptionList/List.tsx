@@ -27,11 +27,11 @@ export type RawOptionListProps = Pick<
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open } = props;
 
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
 
   const {
-    options,
+    options = [],
     values,
     halfValues,
     fieldNames,
@@ -46,7 +46,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
   // ========================= loadData =========================
-  const [loadingKeys, setLoadingKeys] = React.useState([]);
+  const [loadingKeys, setLoadingKeys] = React.useState<React.Key[]>([]);
 
   const internalLoadData = (valueCells: React.Key[]) => {
     // Do not load when search
@@ -71,13 +71,17 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   React.useEffect(() => {
     if (loadingKeys.length) {
       loadingKeys.forEach(loadingKey => {
-        const valueStrCells = toPathValueStr(loadingKey);
+        const valueStrCells = toPathValueStr(loadingKey as string);
         const optionList = toPathOptions(valueStrCells, options, fieldNames, true).map(
           ({ option }) => option,
         );
         const lastOption = optionList[optionList.length - 1];
 
-        if (!lastOption || lastOption[fieldNames.children] || isLeaf(lastOption, fieldNames)) {
+        if (
+          !lastOption ||
+          (lastOption as Record<string, any>)[fieldNames.children] ||
+          isLeaf(lastOption, fieldNames)
+        ) {
           setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
         }
       });
@@ -134,11 +138,12 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
       const activeValueCell = activeValueCells[i];
       const currentOption = currentList.find(
         (option, index) =>
-          (fullPathKeys[index] ? toPathKey(fullPathKeys[index]) : option[fieldNames.value]) ===
-          activeValueCell,
+          (fullPathKeys[index]
+            ? toPathKey(fullPathKeys[index])
+            : (option as Record<string, any>)[fieldNames.value]) === activeValueCell,
       );
 
-      const subOptions = currentOption?.[fieldNames.children];
+      const subOptions = (currentOption as Record<string, any>)?.[fieldNames.children];
       if (!subOptions?.length) {
         break;
       }

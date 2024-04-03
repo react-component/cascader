@@ -17,8 +17,8 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
     options: DefaultOptionType[];
     info: OptionsInfo;
   }>({
-    options: null,
-    info: null,
+    options: [],
+    info: { keyEntities: {}, pathKeyEntities: {} },
   });
 
   const getEntities: GetEntities = React.useCallback(() => {
@@ -31,7 +31,9 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
           pathKeyEntities: {},
         }),
         processEntity: (entity, wrapper: any) => {
-          const pathKey = entity.nodes.map(node => node[fieldNames.value]).join(VALUE_SPLIT);
+          const pathKey = entity.nodes
+            .map(node => (node as any)[fieldNames.value])
+            .join(VALUE_SPLIT);
 
           wrapper.pathKeyEntities[pathKey] = entity;
 

@@ -8,10 +8,10 @@ import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
-export interface ColumnProps {
+export interface ColumnProps<T = any, OptionType = DefaultOptionType<T>> {
   prefixCls: string;
   multiple?: boolean;
-  options: DefaultOptionType[];
+  options: OptionType[];
   /** Current Column opened item key */
   activeValue?: React.Key;
   /** The value path before current column */
@@ -26,7 +26,7 @@ export interface ColumnProps {
   searchValue?: string;
 }
 
-export default function Column({
+export default function Column<T = any, OptionType = DefaultOptionType<T>>({
   prefixCls,
   multiple,
   options,
@@ -40,7 +40,7 @@ export default function Column({
   loadingKeys,
   isSelectable,
   searchValue,
-}: ColumnProps) {
+}: ColumnProps<T, OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
@@ -59,17 +59,19 @@ export default function Column({
   // ============================ Option ============================
   const optionInfoList = React.useMemo(
     () =>
-      options.map(option => {
+      (options as DefaultOptionType[]).map(option => {
         const { disabled, disableCheckbox } = option;
-        const searchOptions = option[SEARCH_MARK];
-        const label = option[FIX_LABEL] ?? option[fieldNames.label];
-        const value = option[fieldNames.value];
+        const searchOptions = (option as Record<string, any>)[SEARCH_MARK];
+        const label =
+          (option as Record<string, any>)[FIX_LABEL] ??
+          (option as Record<string, any>)[fieldNames.label];
+        const value = (option as Record<string, any>)[fieldNames.value];
 
         const isMergedLeaf = isLeaf(option, fieldNames);
 
         // Get real value of option. Search option is different way.
         const fullPath = searchOptions
-          ? searchOptions.map(opt => opt[fieldNames.value])
+          ? searchOptions.map((opt: any) => opt[fieldNames.value])
           : [...prevValuePath, value];
         const fullPathKey = toPathKey(fullPath);
 
@@ -135,9 +137,9 @@ export default function Column({
           };
 
           // >>>>> Title
-          let title: string;
-          if (typeof option.title === 'string') {
-            title = option.title;
+          let title: string | undefined;
+          if (typeof (option as Record<string, any>).title === 'string') {
+            title = (option as Record<string, any>).title;
           } else if (typeof label === 'string') {
             title = label;
           }

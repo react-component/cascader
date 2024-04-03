@@ -253,7 +253,9 @@ describe('Cascader.Checkable', () => {
       />,
     );
 
-    fireEvent.click(document.querySelector('[data-path-key="China"] .rc-cascader-checkbox'));
+    fireEvent.click(
+      document.querySelector('[data-path-key="China"] .rc-cascader-checkbox') as HTMLElement,
+    );
 
     expect(onChange).toHaveBeenCalledWith([['China', 'beijing'], ['China']], expect.anything());
   });

@@ -24,6 +24,13 @@ export interface CascaderContextProps {
   optionRender?: CascaderProps['optionRender'];
 }
 
-const CascaderContext = React.createContext<CascaderContextProps>(null);
+const CascaderContext = React.createContext<CascaderContextProps>({
+  options: [],
+  fieldNames: { key: '', label: '', value: '', children: '' },
+  values: [],
+  halfValues: [],
+  onSelect: () => undefined,
+  searchOptions: [],
+});
 
 export default CascaderContext;

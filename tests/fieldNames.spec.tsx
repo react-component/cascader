@@ -87,12 +87,12 @@ describe('Cascader.FieldNames', () => {
 
   it('displayRender', () => {
     const wrapper = mount(
-      <Cascader
+      <Cascader<string, any>
         options={options}
         fieldNames={fieldNames}
         defaultValue={['bamboo', 'little', 'toy']}
         displayRender={(labels, selectOptions) =>
-          `${labels.join('->')} & ${selectOptions.map((opt: any) => opt.customValue).join('>>')}`
+          `${labels.join('->')} & ${selectOptions?.map(opt => opt.customValue).join('>>')}`
         }
       />,
     );
