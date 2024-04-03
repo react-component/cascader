@@ -31,7 +31,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const rtl = direction === 'rtl';
 
   const {
-    options = [],
+    options,
     values,
     halfValues,
     fieldNames,

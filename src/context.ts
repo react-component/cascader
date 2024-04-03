@@ -7,7 +7,7 @@ import type {
 } from './Cascader';
 
 export interface CascaderContextProps {
-  options: CascaderProps['options'];
+  options: NonNullable<CascaderProps['options']>;
   fieldNames: InternalFieldNames;
   values: SingleValueType[];
   halfValues: SingleValueType[];
