@@ -105,7 +105,8 @@ jobs:
         with:
           path: node_modules
           key: node_modules-${{ hashFiles('**/package-temp-dir/package-lock.json') }}
-
+      - name: tsc
+        run: npm run lint:tsc
       - name: coverage
         run: npm test -- --coverage && bash <(curl -s https://codecov.io/bash)
 

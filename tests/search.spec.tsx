@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-
 import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
-import { mount, ReactWrapper } from './enzyme';
+import type { ReactWrapper } from './enzyme';
+import { mount } from './enzyme';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {

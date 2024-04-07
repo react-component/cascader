@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-shadow */
 import arrayTreeFilter from 'array-tree-filter';
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -57,39 +57,35 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    value: [],
-    popupVisible: false,
+const Demo = () => {
+  const [value, setValue] = useState([]);
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  const onChange = value => {
+    setValue(value);
   };
 
-  onChange = value => {
-    this.setState({ value });
+  const onPopupVisibleChange = popupVisible => {
+    setPopupVisible(popupVisible);
   };
 
-  onPopupVisibleChange = popupVisible => {
-    this.setState({ popupVisible });
-  };
-
-  getLabel() {
-    return arrayTreeFilter(addressOptions, (o, level) => o.value === this.state.value[level])
+  const getLabel = () => {
+    return arrayTreeFilter(addressOptions, (o, level) => o.value === value[level])
       .map(o => o.label)
       .join(', ');
-  }
+  };
 
-  render() {
-    return (
-      <Cascader
-        popupVisible={this.state.popupVisible}
-        value={this.state.value}
-        options={addressOptions}
-        onPopupVisibleChange={this.onPopupVisibleChange}
-        onChange={this.onChange}
-      >
-        <input value={this.getLabel()} readOnly />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader
+      popupVisible={popupVisible}
+      value={value}
+      options={addressOptions}
+      onPopupVisibleChange={onPopupVisibleChange}
+      onChange={onChange}
+    >
+      <input value={getLabel()} readOnly />
+    </Cascader>
+  );
+};
 
 export default Demo;

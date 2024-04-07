@@ -1,6 +1,5 @@
-/* eslint-disable no-console, react/prop-types */
-import type { BuildInPlacements } from 'rc-trigger/lib/interface';
-import React from 'react';
+import React, { useState } from 'react';
+import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -58,35 +57,24 @@ const addressOptions = [
   },
 ];
 
-class MyCascader extends React.Component<{ builtinPlacements?: BuildInPlacements }> {
-  state = {
-    inputValue: '',
-  };
+const MyCascader = ({ builtinPlacements }: { builtinPlacements?: BuildInPlacements }) => {
+  const [inputValue, setInputValue] = useState('');
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  render() {
-    const { builtinPlacements } = this.props;
-    return (
-      <Cascader
-        options={addressOptions}
-        builtinPlacements={builtinPlacements}
-        onChange={this.onChange}
-      >
-        <input
-          placeholder={builtinPlacements ? 'Will not adjust position' : 'Will adjust position'}
-          value={this.state.inputValue}
-          style={{ width: 170 }}
-        />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader options={addressOptions} builtinPlacements={builtinPlacements} onChange={onChange}>
+      <input
+        placeholder={builtinPlacements ? 'Will not adjust position' : 'Will adjust position'}
+        value={inputValue}
+        style={{ width: 170 }}
+      />
+    </Cascader>
+  );
+};
 
 const placements = {
   bottomLeft: {

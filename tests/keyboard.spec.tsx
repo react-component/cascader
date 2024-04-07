@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
+import React from 'react';
 
 describe('Cascader.Keyboard', () => {
   let wrapper;

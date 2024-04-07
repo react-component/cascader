@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -91,26 +90,20 @@ const defaultOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: defaultOptions.map(o => o.label).join(', '),
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState(defaultOptions.map(o => o.label).join(', '));
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  render() {
-    const defaultValue = defaultOptions.map(o => o.value);
-    return (
-      <Cascader defaultValue={defaultValue} options={addressOptions} onChange={this.onChange}>
-        <input value={this.state.inputValue} readOnly />
-      </Cascader>
-    );
-  }
-}
+  const defaultValue = defaultOptions.map(o => o.value);
+  return (
+    <Cascader defaultValue={defaultValue} options={addressOptions} onChange={onChange}>
+      <input value={inputValue} readOnly />
+    </Cascader>
+  );
+};
 
 export default Demo;

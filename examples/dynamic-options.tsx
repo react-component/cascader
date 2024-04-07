@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -16,20 +15,16 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-    options: addressOptions,
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState(addressOptions);
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log('OnChange:', value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  loadData = selectedOptions => {
+  const loadData = selectedOptions => {
     console.log('onLoad:', selectedOptions);
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
@@ -47,26 +42,21 @@ class Demo extends React.Component {
           value: 'dynamic2',
         },
       ];
-      this.setState({
-        // eslint-disable-next-line react/no-access-state-in-setstate
-        options: [...this.state.options],
-      });
+      setOptions([...options]);
     }, 500);
   };
 
-  render() {
-    return (
-      <Cascader
-        options={this.state.options}
-        loadData={this.loadData}
-        onChange={this.onChange}
-        loadingIcon="💽"
-        changeOnSelect
-      >
-        <input value={this.state.inputValue} readOnly />
-      </Cascader>
-    );
-  }
-}
+  return (
+    <Cascader
+      options={options}
+      loadData={loadData}
+      onChange={onChange}
+      loadingIcon="💽"
+      changeOnSelect
+    >
+      <input value={inputValue} readOnly />
+    </Cascader>
+  );
+};
 
 export default Demo;

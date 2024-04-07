@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -66,12 +65,16 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  render() {
-    return (
-      <Cascader options={addressOptions} showSearch style={{ width: 300 }} animation="slide-up" notFoundContent="Empty Content!" />
-    );
-  }
-}
+const Demo = () => {
+  return (
+    <Cascader
+      options={addressOptions}
+      showSearch
+      style={{ width: 300 }}
+      animation="slide-up"
+      notFoundContent="Empty Content!"
+    />
+  );
+};
 
 export default Demo;

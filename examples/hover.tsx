@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -71,8 +70,8 @@ const addressOptions = [
       {
         label: '高雄',
         value: 'gaoxiong',
-      }
-    ]
+      },
+    ],
   },
   {
     label: '香港',
@@ -80,28 +79,22 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '',
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState('');
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  render() {
-    return (
-      <div>
-        <p>Hover to expand children</p>
-        <Cascader expandTrigger="hover" options={addressOptions} onChange={this.onChange}>
-          <input placeholder="please select address" value={this.state.inputValue} readOnly />
-        </Cascader>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <p>Hover to expand children</p>
+      <Cascader expandTrigger="hover" options={addressOptions} onChange={onChange}>
+        <input placeholder="please select address" value={inputValue} readOnly />
+      </Cascader>
+    </div>
+  );
+};
 
 export default Demo;

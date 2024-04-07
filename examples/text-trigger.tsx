@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
@@ -56,28 +55,22 @@ const addressOptions = [
   },
 ];
 
-class Demo extends React.Component {
-  state = {
-    inputValue: '未选择',
-  };
+const Demo = () => {
+  const [inputValue, setInputValue] = useState('');
 
-  onChange = (value, selectedOptions) => {
+  const onChange = (value, selectedOptions) => {
     console.log(value, selectedOptions);
-    this.setState({
-      inputValue: selectedOptions.map(o => o.label).join(', '),
-    });
+    setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  render() {
-    return (
-      <span>
-        {this.state.inputValue}
-        <Cascader options={addressOptions} onChange={this.onChange}>
-          <a href="#">切换地区</a>
-        </Cascader>
-      </span>
-    );
-  }
-}
+  return (
+    <span>
+      {inputValue}
+      <Cascader options={addressOptions} onChange={onChange}>
+        <a href="#">切换地区</a>
+      </Cascader>
+    </span>
+  );
+};
 
 export default Demo;

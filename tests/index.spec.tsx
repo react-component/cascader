@@ -1,8 +1,6 @@
-/* eslint-disable react/jsx-no-bind */
-
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
@@ -438,33 +436,25 @@ describe('Cascader.Basic', () => {
 
   // https://github.com/ant-design/ant-design/issues/5666
   it('should have not change active value when value is not changed', () => {
-    class Demo extends React.Component {
-      state = {
-        value: [],
-      };
+    const Demo = () => {
+      const [value, setValue] = useState([]);
 
-      timeout = null;
-
-      componentDidMount() {
-        this.timeout = setTimeout(() => {
-          this.setState({
-            value: [],
-          });
+      // const  timeout = null;
+      useEffect(() => {
+        const timeout = setTimeout(() => {
+          setValue([]);
         }, 10);
-      }
+        return () => {
+          clearTimeout(timeout);
+        };
+      }, []);
 
-      componentWillUnmount() {
-        clearTimeout(this.timeout);
-      }
-
-      render() {
-        return (
-          <Cascader options={addressOptions} value={this.state.value}>
-            <input readOnly />
-          </Cascader>
-        );
-      }
-    }
+      return (
+        <Cascader options={addressOptions} value={value}>
+          <input readOnly />
+        </Cascader>
+      );
+    };
     const wrapper = mount(<Demo />);
     wrapper.find('input').simulate('click');
     let menus = wrapper.find('.rc-cascader-menu');
@@ -654,7 +644,8 @@ describe('Cascader.Basic', () => {
         changeOnSelect
         expandTrigger="hover"
         options={addressOptionsForUneven}
-        onChange={onChange}>
+        onChange={onChange}
+      >
         <input readOnly />
       </Cascader>,
     );
@@ -802,9 +793,8 @@ describe('Cascader.Basic', () => {
           expect(activeItems).toHaveLength(2);
           expect(activeItems.last().text()).toEqual('高雄');
         });
-      })
+      });
     });
-
   });
 
   it('defaultValue not exist', () => {
