@@ -19,7 +19,7 @@ export default (
   React.useEffect(
     () => {
       if (!multiple) {
-        setActiveValueCells(open || firstValueCells ? firstValueCells || [] : []);
+        setActiveValueCells(firstValueCells || []);
       }
     },
     /* eslint-disable react-hooks/exhaustive-deps */
