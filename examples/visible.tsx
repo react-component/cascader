@@ -2,9 +2,7 @@
 import arrayTreeFilter from 'array-tree-filter';
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
 import Cascader from '../src';
-import type { Option2 } from './utils';
 
 const addressOptions = [
   {
@@ -63,10 +61,6 @@ const Demo = () => {
   const [value, setValue] = useState<string[]>([]);
   const [popupVisible, setPopupVisible] = useState(false);
 
-  const onChange: SingleCascaderProps<Option2, string[]>['onChange'] = value => {
-    setValue(value);
-  };
-
   const getLabel = () => {
     return arrayTreeFilter(addressOptions, (o, level) => o.value === value[level])
       .map(o => o.label)
@@ -79,7 +73,7 @@ const Demo = () => {
       value={value}
       options={addressOptions}
       onPopupVisibleChange={open => setPopupVisible(open)}
-      onChange={onChange}
+      onChange={value => setValue(value)}
     >
       <input value={getLabel()} readOnly />
     </Cascader>
