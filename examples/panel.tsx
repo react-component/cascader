@@ -2,7 +2,6 @@
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
-import type { Option2 } from './utils';
 
 const addressOptions = [
   {
@@ -81,7 +80,7 @@ export default () => {
         }}
       />
 
-      <Cascader.Panel<Option2, string[][]>
+      <Cascader.Panel
         checkable
         value={value2}
         options={addressOptions}
