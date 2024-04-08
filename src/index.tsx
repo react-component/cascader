@@ -9,7 +9,6 @@ export type {
   MultipleCascaderProps,
   ShowSearchType,
   SingleCascaderProps,
-  ValueType,
 } from './Cascader';
 export { Panel };
 

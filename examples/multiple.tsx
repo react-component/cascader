@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { MultipleCascaderProps, ValueType } from '../src';
+import type { MultipleCascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -25,14 +25,17 @@ const optionLists = [
 const Demo = () => {
   const [options, setOptions] =
     React.useState<NonNullable<MultipleCascaderProps<Option2>['options']>>(optionLists);
-  const [value, setValue] = useState<ValueType[]>([]);
+  const [value, setValue] = useState<string[][]>([]);
 
-  const onChange: MultipleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: MultipleCascaderProps<Option2, string[][]>['onChange'] = (
+    value,
+    selectedOptions,
+  ) => {
     console.log(value, selectedOptions);
     setValue(value);
   };
 
-  const loadData: MultipleCascaderProps<Option2>['loadData'] = selectedOptions => {
+  const loadData: MultipleCascaderProps<Option2, string[]>['loadData'] = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 

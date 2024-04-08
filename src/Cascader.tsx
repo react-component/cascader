@@ -122,25 +122,27 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   loadingIcon?: React.ReactNode;
 }
 
-export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
+export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType, T = any>
   extends BaseCascaderProps<OptionType> {
   checkable?: false;
-  value?: ValueType;
-  defaultValue?: ValueType;
-  onChange?: (value: ValueType, selectOptions: OptionType[]) => void;
+  value?: T;
+  defaultValue?: T;
+  onChange?: (value: T, selectOptions: OptionType[]) => void;
 }
 
-export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
+export interface MultipleCascaderProps<
+  OptionType extends BaseOptionType = DefaultOptionType,
+  T = any,
+> extends BaseCascaderProps<OptionType> {
   checkable: true | React.ReactNode;
-  value?: ValueType[];
-  defaultValue?: ValueType[];
-  onChange?: (value: ValueType[], selectOptions: OptionType[]) => void;
+  value?: T;
+  defaultValue?: T;
+  onChange?: (value: T, selectOptions: OptionType[]) => void;
 }
 
-export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
-  | SingleCascaderProps<OptionType>
-  | MultipleCascaderProps<OptionType>;
+export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType, T = any> =
+  | SingleCascaderProps<OptionType, T>
+  | MultipleCascaderProps<OptionType, T>;
 
 export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
   SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
@@ -449,8 +451,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       />
     </CascaderContext.Provider>
   );
-}) as unknown as (<OptionType extends BaseOptionType = DefaultOptionType>(
-  props: React.PropsWithChildren<CascaderProps<OptionType>> & {
+}) as unknown as (<OptionType extends BaseOptionType = DefaultOptionType, T = any>(
+  props: React.PropsWithChildren<CascaderProps<OptionType, T>> & {
     ref?: React.Ref<BaseSelectRef>;
   },
 ) => React.ReactElement) & {
