@@ -45,10 +45,10 @@ const App = () => {
 
   const [value, setValue] = useState<string[]>([]);
 
-  const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: SingleCascaderProps<Option2, string[]>['onChange'] = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
-      value.push(lastSelected.children[0].value as any);
+      value.push(lastSelected.children[0].value as string);
       setInputValue(selectedOptions.map(o => o.label).join(', '));
       setValue(value);
       return;

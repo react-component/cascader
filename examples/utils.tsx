@@ -1,12 +1,12 @@
 export interface Option {
-  code?: string | number;
+  code?: string;
   name?: string;
   nodes?: Option[];
   disabled?: boolean;
 }
 
 export interface Option2 {
-  value?: string | number;
+  value?: string;
   label?: React.ReactNode;
   title?: React.ReactNode;
   disabled?: boolean;
