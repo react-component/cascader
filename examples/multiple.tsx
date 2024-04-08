@@ -57,7 +57,7 @@ const Demo = () => {
 
   // 直接选中一级选项，但是此时二级选项没有全部选中
   return (
-    <Cascader<Option2>
+    <Cascader
       checkable
       options={options}
       showCheckedStrategy={SHOW_CHILD}
