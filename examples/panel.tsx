@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React from 'react';
 import '../assets/index.less';
-import type { MultipleCascaderProps, SingleCascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -61,20 +60,7 @@ const addressOptions = [
 export default () => {
   const [value, setValue] = React.useState<string[]>([]);
 
-  const onChange: SingleCascaderProps<Option2, string[]>['onChange'] = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    setValue(value);
-  };
-
   const [value2, setValue2] = React.useState<string[][]>([]);
-
-  const onMultipleChange: MultipleCascaderProps<Option2, string[][]>['onChange'] = (
-    value,
-    selectedOptions,
-  ) => {
-    console.log(value, selectedOptions);
-    setValue2(value2);
-  };
 
   return (
     <>
@@ -86,13 +72,23 @@ export default () => {
       >
         Set Value
       </button>
-      <Cascader.Panel value={value} options={addressOptions} onChange={onChange} />
-
       <Cascader.Panel
-        checkable
         value={value}
         options={addressOptions}
-        onChange={onMultipleChange}
+        onChange={nextValue => {
+          console.log('Change:', nextValue);
+          setValue(nextValue);
+        }}
+      />
+
+      <Cascader.Panel<Option2, string[][]>
+        checkable
+        value={value2}
+        options={addressOptions}
+        onChange={nextValue => {
+          console.log('Change:', nextValue);
+          setValue2(nextValue);
+        }}
       />
 
       <Cascader.Panel options={addressOptions} direction="rtl" />

@@ -37,15 +37,15 @@ export type PickType =
   | 'direction'
   | 'notFoundContent';
 
-export type PanelProps<OptionType extends BaseOptionType = DefaultOptionType> = Pick<
-  CascaderProps<OptionType>,
+export type PanelProps<OptionType extends BaseOptionType = DefaultOptionType, T = any> = Pick<
+  CascaderProps<OptionType, T>,
   PickType
 >;
 
 function noop() {}
 
-export default function Panel<OptionType extends BaseOptionType = DefaultOptionType>(
-  props: PanelProps<OptionType>,
+export default function Panel<OptionType extends BaseOptionType = DefaultOptionType, T = any>(
+  props: PanelProps<OptionType, T>,
 ) {
   const {
     prefixCls = 'rc-cascader',
