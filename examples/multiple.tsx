@@ -25,7 +25,7 @@ const optionLists = [
 const Demo = () => {
   const [options, setOptions] =
     React.useState<NonNullable<MultipleCascaderProps<Option2>['options']>>(optionLists);
-  const [value, setValue] = useState<ValueType[][]>([]);
+  const [value, setValue] = useState<ValueType[]>([]);
 
   const onChange: MultipleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);

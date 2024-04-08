@@ -43,12 +43,12 @@ const options = [
 const App = () => {
   const [inputValue, setInputValue] = useState('');
 
-  const [value, setValue] = useState<ValueType[]>([]);
+  const [value, setValue] = useState<ValueType>([]);
 
   const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
-      value.push(lastSelected.children[0].value as unknown as ValueType);
+      value.push(lastSelected.children[0].value as any);
       setInputValue(selectedOptions.map(o => o.label).join(', '));
       setValue(value);
       return;

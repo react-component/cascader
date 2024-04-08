@@ -59,14 +59,14 @@ const addressOptions = [
 ];
 
 export default () => {
-  const [value, setValue] = React.useState<ValueType[]>([]);
+  const [value, setValue] = React.useState<ValueType>([]);
 
   const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setValue(value);
   };
 
-  const [value2, setValue2] = React.useState<ValueType[][]>([]);
+  const [value2, setValue2] = React.useState<ValueType[]>([]);
 
   const onMultipleChange: MultipleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);

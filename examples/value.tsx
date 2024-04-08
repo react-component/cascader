@@ -60,7 +60,7 @@ const addressOptions = [
 ];
 
 const Demo = () => {
-  const [value, setValue] = useState<ValueType[]>([]);
+  const [value, setValue] = useState<ValueType>([]);
   const onChange: SingleCascaderProps<Option2>['onChange'] = value => {
     console.log(value);
     setValue(value);

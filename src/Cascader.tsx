@@ -51,7 +51,7 @@ export interface InternalFieldNames extends Required<FieldNames> {
 
 export type SingleValueType = (string | number)[];
 
-export type ValueType = string | number | SingleValueType | SingleValueType[];
+export type ValueType = SingleValueType | SingleValueType[];
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
@@ -122,17 +122,17 @@ interface BaseCascaderProps<OptionType = DefaultOptionType>
 export interface SingleCascaderProps<OptionType = DefaultOptionType>
   extends BaseCascaderProps<OptionType> {
   checkable?: false;
-  value?: ValueType[];
-  defaultValue?: ValueType[];
-  onChange?: (value: ValueType[], selectOptions: OptionType[]) => void;
+  value?: ValueType;
+  defaultValue?: ValueType;
+  onChange?: (value: ValueType, selectOptions: OptionType[]) => void;
 }
 
 export interface MultipleCascaderProps<OptionType = DefaultOptionType>
   extends BaseCascaderProps<OptionType> {
   checkable: true | React.ReactNode;
-  value?: ValueType[][];
-  defaultValue?: ValueType[][];
-  onChange?: (value: ValueType[][], selectOptions: OptionType[]) => void;
+  value?: ValueType[];
+  defaultValue?: ValueType[];
+  onChange?: (value: ValueType[], selectOptions: OptionType[]) => void;
 }
 
 export type CascaderProps<OptionType = DefaultOptionType> =

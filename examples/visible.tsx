@@ -60,7 +60,7 @@ const addressOptions = [
 ];
 
 const Demo = () => {
-  const [value, setValue] = useState<ValueType[]>([]);
+  const [value, setValue] = useState<ValueType>([]);
   const [popupVisible, setPopupVisible] = useState(false);
 
   const onChange: SingleCascaderProps<Option2>['onChange'] = value => {
