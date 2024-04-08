@@ -145,7 +145,7 @@ describe('Cascader.LoadData', () => {
     const Demo = () => {
       const [options, setOptions] = React.useState([{ label: 'top', value: 'top', isLeaf: false }]);
 
-      const loadData: CascaderProps<string, any>['loadData'] = selectedOptions => {
+      const loadData: CascaderProps<any>['loadData'] = selectedOptions => {
         Promise.resolve().then(() => {
           act(() => {
             selectedOptions[selectedOptions.length - 1].children = [

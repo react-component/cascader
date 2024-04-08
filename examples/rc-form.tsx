@@ -60,7 +60,7 @@ const addressOptions = [
 ];
 
 const CascaderInput = (props: any) => {
-  const onChange: SingleCascaderProps<string, Option2>['onChange'] = value => {
+  const onChange: SingleCascaderProps<Option2>['onChange'] = value => {
     if (props.onChange) {
       props.onChange(value);
     }

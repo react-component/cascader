@@ -2,7 +2,7 @@
 import arrayTreeFilter from 'array-tree-filter';
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
+import type { SingleCascaderProps, ValueType } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -60,8 +60,8 @@ const addressOptions = [
 ];
 
 const Demo = () => {
-  const [value, setValue] = useState<string[]>([]);
-  const onChange: SingleCascaderProps<string, Option2>['onChange'] = value => {
+  const [value, setValue] = useState<ValueType[]>([]);
+  const onChange: SingleCascaderProps<Option2>['onChange'] = value => {
     console.log(value);
     setValue(value);
   };

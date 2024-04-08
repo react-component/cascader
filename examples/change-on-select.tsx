@@ -63,7 +63,7 @@ const options = [
   },
 ];
 
-const onChange: SingleCascaderProps<string, Option2>['onChange'] = (value, selectedOptions) => {
+const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
   console.log(value, selectedOptions);
 };
 

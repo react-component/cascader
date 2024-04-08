@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { MultipleCascaderProps } from '../src';
+import type { MultipleCascaderProps, ValueType } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -24,15 +24,15 @@ const optionLists = [
 
 const Demo = () => {
   const [options, setOptions] =
-    React.useState<NonNullable<MultipleCascaderProps<string, Option2>['options']>>(optionLists);
-  const [value, setValue] = useState<string[][]>([]);
+    React.useState<NonNullable<MultipleCascaderProps<Option2>['options']>>(optionLists);
+  const [value, setValue] = useState<ValueType[][]>([]);
 
-  const onChange: MultipleCascaderProps<string, Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: MultipleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setValue(value);
   };
 
-  const loadData: MultipleCascaderProps<string, Option2>['loadData'] = selectedOptions => {
+  const loadData: MultipleCascaderProps<Option2>['loadData'] = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 
@@ -57,7 +57,7 @@ const Demo = () => {
 
   // 直接选中一级选项，但是此时二级选项没有全部选中
   return (
-    <Cascader<string, Option2>
+    <Cascader<Option2>
       checkable
       options={options}
       showCheckedStrategy={SHOW_CHILD}

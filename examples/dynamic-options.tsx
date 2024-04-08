@@ -21,12 +21,12 @@ const Demo = () => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState(addressOptions);
 
-  const onChange: SingleCascaderProps<string, Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log('OnChange:', value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  const loadData: SingleCascaderProps<string, Option2>['loadData'] = selectedOptions => {
+  const loadData: SingleCascaderProps<Option2>['loadData'] = selectedOptions => {
     console.log('onLoad:', selectedOptions);
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;

@@ -4,7 +4,7 @@ import type { CascaderProps, SingleCascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
-const addressOptions: CascaderProps<string, Option2>['options'] = [
+const addressOptions: CascaderProps<Option2>['options'] = [
   {
     label: '福建',
     value: 'fj',
@@ -85,7 +85,7 @@ const loadingPath =
 const Demo = () => {
   const [inputValue, setInputValue] = useState('');
   const [dynamicInputValue, setDynamicInputValue] = useState('');
-  const [options, setOptions] = useState<CascaderProps<string, Option2>['options']>([
+  const [options, setOptions] = useState<CascaderProps<Option2>['options']>([
     {
       label: '福建',
       isLeaf: false,
@@ -98,15 +98,12 @@ const Demo = () => {
     },
   ]);
 
-  const onChange: SingleCascaderProps<string, Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  const onChangeDynamic: SingleCascaderProps<string, Option2>['onChange'] = (
-    value,
-    selectedOptions,
-  ) => {
+  const onChangeDynamic: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setDynamicInputValue(selectedOptions.map(o => o.label).join(', '));
   };
@@ -151,7 +148,7 @@ const Demo = () => {
     </i>
   );
 
-  const loadData: SingleCascaderProps<string, Option2>['loadData'] = selectedOptions => {
+  const loadData: SingleCascaderProps<Option2>['loadData'] = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据

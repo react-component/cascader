@@ -61,7 +61,7 @@ const addressOptions = [
 const Demo = () => {
   const [inputValue, setInputValue] = useState('');
 
-  const onChange: SingleCascaderProps<string, Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };

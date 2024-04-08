@@ -8,7 +8,7 @@ import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
-export interface ColumnProps<T = any, OptionType = DefaultOptionType<T>> {
+export interface ColumnProps<OptionType = DefaultOptionType> {
   prefixCls: string;
   multiple?: boolean;
   options: OptionType[];
@@ -26,7 +26,7 @@ export interface ColumnProps<T = any, OptionType = DefaultOptionType<T>> {
   searchValue?: string;
 }
 
-export default function Column<T = any, OptionType = DefaultOptionType<T>>({
+export default function Column<OptionType = DefaultOptionType>({
   prefixCls,
   multiple,
   options,
@@ -40,7 +40,7 @@ export default function Column<T = any, OptionType = DefaultOptionType<T>>({
   loadingKeys,
   isSelectable,
   searchValue,
-}: ColumnProps<T, OptionType>) {
+}: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 

@@ -61,10 +61,7 @@ const addressOptions: Option[] = [
 const Demo = () => {
   const [inputValue, setInputValue] = useState('');
 
-  const onChange: SingleCascaderProps<Option['code'], Option>['onChange'] = (
-    value,
-    selectedOptions,
-  ) => {
+  const onChange: SingleCascaderProps<Option>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.name).join(', '));
   };

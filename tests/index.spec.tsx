@@ -1,7 +1,7 @@
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { useEffect, useState } from 'react';
-import type { SingleCascaderProps } from '../src';
+import type { SingleCascaderProps, MultipleCascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
@@ -9,6 +9,9 @@ import { mount } from './enzyme';
 describe('Cascader.Basic', () => {
   let selectedValue: any;
   const onChange: SingleCascaderProps['onChange'] = function onChange(value) {
+    selectedValue = value;
+  };
+  const onMultipleChange: MultipleCascaderProps['onChange'] = value => {
     selectedValue = value;
   };
 
@@ -92,7 +95,7 @@ describe('Cascader.Basic', () => {
         checkable
         changeOnSelect
         options={addressOptions}
-        onChange={onChange}
+        onChange={onMultipleChange}
         showCheckedStrategy={'SHOW_PARENT'}
       >
         <input readOnly />
@@ -115,7 +118,7 @@ describe('Cascader.Basic', () => {
         checkable
         changeOnSelect
         options={addressOptions}
-        onChange={onChange}
+        onChange={onMultipleChange}
         showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
