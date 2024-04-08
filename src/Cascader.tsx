@@ -26,7 +26,18 @@ import {
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
-export interface ShowSearchType<OptionType = DefaultOptionType> {
+export interface BaseOptionType {
+  disabled?: boolean;
+  disableCheckbox?: boolean;
+  label?: React.ReactNode;
+  value?: string | number | null;
+  children?: DefaultOptionType[];
+  [name: string]: any;
+}
+
+export type DefaultOptionType = BaseOptionType;
+
+export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
   filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
   render?: (
     inputValue: string,
@@ -55,15 +66,7 @@ export type ValueType = SingleValueType | SingleValueType[];
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
-export interface DefaultOptionType<T = any> {
-  label?: React.ReactNode;
-  value?: T;
-  children?: DefaultOptionType<T>[];
-  disableCheckbox?: boolean;
-  disabled?: boolean;
-}
-
-interface BaseCascaderProps<OptionType = DefaultOptionType>
+interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
@@ -119,7 +122,7 @@ interface BaseCascaderProps<OptionType = DefaultOptionType>
   loadingIcon?: React.ReactNode;
 }
 
-export interface SingleCascaderProps<OptionType = DefaultOptionType>
+export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseCascaderProps<OptionType> {
   checkable?: false;
   value?: ValueType;
@@ -127,7 +130,7 @@ export interface SingleCascaderProps<OptionType = DefaultOptionType>
   onChange?: (value: ValueType, selectOptions: OptionType[]) => void;
 }
 
-export interface MultipleCascaderProps<OptionType = DefaultOptionType>
+export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
   extends BaseCascaderProps<OptionType> {
   checkable: true | React.ReactNode;
   value?: ValueType[];
@@ -135,11 +138,11 @@ export interface MultipleCascaderProps<OptionType = DefaultOptionType>
   onChange?: (value: ValueType[], selectOptions: OptionType[]) => void;
 }
 
-export type CascaderProps<OptionType = DefaultOptionType> =
+export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
   | SingleCascaderProps<OptionType>
   | MultipleCascaderProps<OptionType>;
 
-export type InternalCascaderProps<OptionType = DefaultOptionType> = Omit<
+export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
   SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
   'onChange'
 > & {
@@ -446,7 +449,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       />
     </CascaderContext.Provider>
   );
-}) as unknown as (<OptionType = DefaultOptionType>(
+}) as unknown as (<OptionType extends BaseOptionType = DefaultOptionType>(
   props: React.PropsWithChildren<CascaderProps<OptionType>> & {
     ref?: React.Ref<BaseSelectRef>;
   },

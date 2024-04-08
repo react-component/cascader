@@ -106,7 +106,7 @@ describe('Cascader.Search', () => {
             const finalA = pathA[pathA.length - 1];
             const finalB = pathB[pathB.length - 1];
 
-            if (finalA.value < finalB.value) {
+            if ((finalA.value as number) < (finalB.value as number)) {
               return -1;
             }
             return 1;

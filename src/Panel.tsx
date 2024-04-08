@@ -1,7 +1,13 @@
 import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { CascaderProps, InternalCascaderProps, SingleValueType } from './Cascader';
+import type {
+  BaseOptionType,
+  CascaderProps,
+  DefaultOptionType,
+  InternalCascaderProps,
+  SingleValueType,
+} from './Cascader';
 import type { CascaderContextProps } from './context';
 import CascaderContext from './context';
 import useMissingValues from './hooks/useMissingValues';
@@ -31,11 +37,16 @@ export type PickType =
   | 'direction'
   | 'notFoundContent';
 
-export type PanelProps = Pick<CascaderProps, PickType>;
+export type PanelProps<OptionType extends BaseOptionType = DefaultOptionType> = Pick<
+  CascaderProps<OptionType>,
+  PickType
+>;
 
 function noop() {}
 
-export default function Panel(props: PanelProps) {
+export default function Panel<OptionType extends BaseOptionType = DefaultOptionType>(
+  props: PanelProps<OptionType>,
+) {
   const {
     prefixCls = 'rc-cascader',
     style,
