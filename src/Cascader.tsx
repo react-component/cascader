@@ -78,7 +78,11 @@ export interface InternalFieldNames extends Required<FieldNames> {
 export type ValueType<
   OptionType extends DefaultOptionType = DefaultOptionType,
   T extends keyof OptionType = keyof OptionType,
-> = keyof OptionType extends T ? OptionType['value'] : OptionType[T];
+> = keyof OptionType extends T
+  ? unknown extends OptionType['value']
+    ? OptionType[T]
+    : OptionType['value']
+  : OptionType[T];
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
