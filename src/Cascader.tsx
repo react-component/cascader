@@ -151,7 +151,7 @@ export interface SingleCascaderProps<
   checkable?: false;
   value?: ValueType<OptionType, T>[];
   defaultValue?: ValueType<OptionType, T>[];
-  onChange?: (value: NonNullable<ValueType<OptionType, T>>[], selectOptions: OptionType[]) => void;
+  onChange?: (value: ValueType<Required<OptionType>, T>[], selectOptions: OptionType[]) => void;
 }
 
 export interface MultipleCascaderProps<
@@ -161,10 +161,7 @@ export interface MultipleCascaderProps<
   checkable: true | NonNullable<React.ReactNode>;
   value?: ValueType<OptionType, T>[][];
   defaultValue?: ValueType<OptionType, T>[][];
-  onChange?: (
-    value: NonNullable<ValueType<OptionType, T>>[][],
-    selectOptions: OptionType[],
-  ) => void;
+  onChange?: (value: ValueType<Required<OptionType>, T>[][], selectOptions: OptionType[]) => void;
 }
 
 export type CascaderProps<
