@@ -2,6 +2,7 @@ import type {
   DefaultOptionType,
   FieldNames,
   InternalFieldNames,
+  InternalValueType,
   SingleValueType,
 } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
@@ -68,11 +69,11 @@ export function getFullPathKeys(options: DefaultOptionType[], fieldNames: FieldN
   );
 }
 
-function isMultipleValue(value: any[]): value is SingleValueType[] {
+function isMultipleValue(value: InternalValueType): value is SingleValueType[] {
   return Array.isArray(value) && Array.isArray(value[0]);
 }
 
-export function toRawValues(value: any[]): SingleValueType[] {
+export function toRawValues(value: InternalValueType): SingleValueType[] {
   if (!value) {
     return [];
   }

@@ -175,12 +175,9 @@ export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOpt
   SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
   'onChange' | 'value' | 'defaultValue'
 > & {
-  value?: InternalValueType | InternalValueType[];
-  defaultValue?: InternalValueType | InternalValueType[];
-  onChange?: (
-    value: InternalValueType | InternalValueType[],
-    selectOptions: OptionType[] | OptionType[][],
-  ) => void;
+  value?: InternalValueType;
+  defaultValue?: InternalValueType;
+  onChange?: (value: InternalValueType, selectOptions: OptionType[] | OptionType[][]) => void;
 };
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;
@@ -245,13 +242,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const multiple = !!checkable;
 
   // =========================== Values ===========================
-  const [rawValues, setRawValues] = useMergedState<
-    InternalValueType | InternalValueType[],
-    SingleValueType[]
-  >(defaultValue, {
-    value,
-    postState: toRawValues,
-  });
+  const [rawValues, setRawValues] = useMergedState<InternalValueType, SingleValueType[]>(
+    defaultValue,
+    {
+      value,
+      postState: toRawValues,
+    },
+  );
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -330,7 +327,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: any[]) => {
+  const triggerChange = useEvent((nextValues: InternalValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event

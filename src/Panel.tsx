@@ -5,6 +5,7 @@ import type {
   BaseOptionType,
   DefaultOptionType,
   InternalCascaderProps,
+  InternalValueType,
   MultipleCascaderProps,
   SingleCascaderProps,
   SingleValueType,
@@ -57,7 +58,7 @@ export default function Panel<
     className,
     options,
     checkable,
-    defaultValue,
+    defaultValue = [],
     value,
     fieldNames,
     changeOnSelect,
@@ -75,10 +76,10 @@ export default function Panel<
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useMergedState<any, SingleValueType[]>(defaultValue, {
-    value,
-    postState: toRawValues,
-  });
+  const [rawValues, setRawValues] = useMergedState<InternalValueType, SingleValueType[]>(
+    defaultValue,
+    { value, postState: toRawValues },
+  );
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -107,7 +108,7 @@ export default function Panel<
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: any[]) => {
+  const triggerChange = useEvent((nextValues: InternalValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
