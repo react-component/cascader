@@ -85,7 +85,7 @@ const loadingPath =
 const Demo = () => {
   const [inputValue, setInputValue] = useState('');
   const [dynamicInputValue, setDynamicInputValue] = useState('');
-  const [options, setOptions] = useState<CascaderProps<Option2>['options']>([
+  const [options, setOptions] = useState([
     {
       label: '福建',
       isLeaf: false,
@@ -164,7 +164,7 @@ const Demo = () => {
           value: 'dynamic2',
         },
       ];
-      setOptions([...(options || [])]);
+      setOptions([...options]);
     }, 1500);
   };
 

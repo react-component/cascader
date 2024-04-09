@@ -23,8 +23,7 @@ const optionLists = [
 ];
 
 const Demo = () => {
-  const [options, setOptions] =
-    React.useState<NonNullable<MultipleCascaderProps<Option2>['options']>>(optionLists);
+  const [options, setOptions] = React.useState(optionLists);
   const [value, setValue] = useState<string[][]>([]);
 
   const onChange: MultipleCascaderProps<Option2, 'value'>['onChange'] = (
@@ -54,7 +53,7 @@ const Demo = () => {
           disableCheckbox: true,
         },
       ];
-      setOptions([...(options || [])]);
+      setOptions([...options]);
     }, 1000);
   };
 
