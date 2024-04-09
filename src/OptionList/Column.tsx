@@ -61,7 +61,7 @@ export default function Column<OptionType extends BaseOptionType = DefaultOption
     () =>
       (options as DefaultOptionType[]).map(option => {
         const { disabled, disableCheckbox } = option;
-        const searchOptions = option[SEARCH_MARK];
+        const searchOptions: Record<string, any>[] = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
 
@@ -69,7 +69,7 @@ export default function Column<OptionType extends BaseOptionType = DefaultOption
 
         // Get real value of option. Search option is different way.
         const fullPath = searchOptions
-          ? searchOptions.map((opt: any) => opt[fieldNames.value])
+          ? searchOptions.map(opt => opt[fieldNames.value])
           : [...prevValuePath, value];
         const fullPathKey = toPathKey(fullPath);
 
