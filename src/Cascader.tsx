@@ -244,10 +244,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // =========================== Values ===========================
   const [rawValues, setRawValues] = useMergedState<InternalValueType, SingleValueType[]>(
     defaultValue,
-    {
-      value,
-      postState: toRawValues,
-    },
+    { value, postState: toRawValues },
   );
 
   // ========================= FieldNames =========================
