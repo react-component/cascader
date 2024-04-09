@@ -50,7 +50,7 @@ export function toPathOptions(
       const val = option[fieldNames.value];
       return stringMode ? String(val) === String(valueCell) : val === valueCell;
     });
-    const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : undefined;
+    const foundOption = foundIndex !== -1 ? currentList?.[foundIndex] : null;
 
     valueOptions.push({
       value: foundOption?.[fieldNames.value] ?? valueCell,
