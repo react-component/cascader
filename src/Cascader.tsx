@@ -67,7 +67,7 @@ export interface FieldNames<
   T extends keyof OptionType = keyof OptionType,
 > {
   label?: keyof OptionType;
-  value?: T;
+  value?: keyof OptionType | T;
   children?: keyof OptionType;
 }
 
