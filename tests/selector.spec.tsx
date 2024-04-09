@@ -10,7 +10,7 @@ jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean
   const originHook = jest.requireActual('../src/OptionList/useActive').default;
   const [activeValueCells, setActiveValueCells] = originHook(multiple, open);
 
-  global.activeValueCells = activeValueCells;
+  (global as any).activeValueCells = activeValueCells;
 
   return [activeValueCells, setActiveValueCells];
 });
@@ -23,7 +23,7 @@ describe('Cascader.Selector', () => {
         <Cascader value={['not', 'exist']} allowClear onChange={onChange} />,
       );
 
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon'));
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon') as HTMLElement);
       expect(onChange).toHaveBeenCalledWith(undefined, undefined);
     });
 
@@ -41,16 +41,16 @@ describe('Cascader.Selector', () => {
       );
 
       // Open and select
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-selector'));
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-selector') as HTMLElement);
       expect(container.querySelector('.rc-cascader-open')).toBeTruthy();
 
-      fireEvent.click(container.querySelector('.rc-cascader-menu-item-content'));
+      fireEvent.click(container.querySelector('.rc-cascader-menu-item-content') as HTMLElement);
       fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item-content')[1]);
       expect(container.querySelector('.rc-cascader-open')).toBeFalsy();
 
       // Clear
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon'));
-      expect(global.activeValueCells).toEqual([]);
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon') as HTMLElement);
+      expect((global as any).activeValueCells).toEqual([]);
     });
 
     it('multiple', () => {
