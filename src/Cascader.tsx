@@ -66,9 +66,9 @@ export interface FieldNames<
   OptionType extends DefaultOptionType = DefaultOptionType,
   T extends keyof OptionType = keyof OptionType,
 > {
-  label?: T;
+  label?: keyof OptionType;
   value?: T;
-  children?: T;
+  children?: keyof OptionType;
 }
 
 export interface InternalFieldNames extends Required<FieldNames> {
