@@ -30,7 +30,7 @@ describe('Cascader.FieldNames', () => {
     label: 'customTitle',
     value: 'customValue',
     children: 'customChildren',
-  };
+  } as const;
 
   it('customize', () => {
     const onChange = jest.fn();

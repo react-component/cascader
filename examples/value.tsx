@@ -61,7 +61,7 @@ const addressOptions = [
 
 const Demo = () => {
   const [value, setValue] = useState<string[]>([]);
-  const onChange: SingleCascaderProps<Option2, string[]>['onChange'] = value => {
+  const onChange: SingleCascaderProps<Option2, 'value'>['onChange'] = value => {
     console.log(value);
     setValue(value);
   };

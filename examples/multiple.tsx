@@ -27,7 +27,7 @@ const Demo = () => {
     React.useState<NonNullable<MultipleCascaderProps<Option2>['options']>>(optionLists);
   const [value, setValue] = useState<string[][]>([]);
 
-  const onChange: MultipleCascaderProps<Option2, string[][]>['onChange'] = (
+  const onChange: MultipleCascaderProps<Option2, 'value'>['onChange'] = (
     value,
     selectedOptions,
   ) => {
@@ -35,7 +35,7 @@ const Demo = () => {
     setValue(value);
   };
 
-  const loadData: MultipleCascaderProps<Option2, string[]>['loadData'] = selectedOptions => {
+  const loadData: MultipleCascaderProps<Option2, 'value'>['loadData'] = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
 

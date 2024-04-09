@@ -25,7 +25,7 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
     if (cacheRef.current.options !== options) {
       cacheRef.current.options = options;
       cacheRef.current.info = convertDataToEntities(options as any, {
-        fieldNames,
+        fieldNames: fieldNames as any,
         initWrapper: wrapper => ({
           ...wrapper,
           pathKeyEntities: {},

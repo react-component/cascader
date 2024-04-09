@@ -15,6 +15,11 @@ export interface FieldNames<
   children?: T;
 }
 
+export type ValueType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  T extends keyof OptionType = keyof OptionType,
+> = keyof OptionType extends T ? OptionType['value'] : OptionType[T];
+
 export interface Props<
   OptionType extends DefaultOptionType = DefaultOptionType,
   T extends keyof OptionType = keyof OptionType,
@@ -22,8 +27,8 @@ export interface Props<
   fieldNames?: FieldNames<OptionType, T>;
   //   names?: T;
   options?: OptionType[];
-  value?: keyof OptionType extends T ? OptionType['value'] : OptionType[T];
-  onChange?: (value: any, selectOptions: OptionType[]) => void;
+  value?: ValueType<OptionType, T>;
+  onChange?: (value: ValueType<OptionType, T>, selectOptions: OptionType[]) => void;
 }
 
 function demo<

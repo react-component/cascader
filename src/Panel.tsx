@@ -3,9 +3,10 @@ import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import type {
   BaseOptionType,
-  CascaderProps,
   DefaultOptionType,
   InternalCascaderProps,
+  MultipleCascaderProps,
+  SingleCascaderProps,
   SingleValueType,
 } from './Cascader';
 import type { CascaderContextProps } from './context';
@@ -37,16 +38,19 @@ export type PickType =
   | 'direction'
   | 'notFoundContent';
 
-export type PanelProps<OptionType extends BaseOptionType = DefaultOptionType, T = any> = Pick<
-  CascaderProps<OptionType, T>,
-  PickType
->;
+export type PanelProps<
+  OptionType extends BaseOptionType = DefaultOptionType,
+  T extends keyof OptionType = keyof OptionType,
+> =
+  | Pick<SingleCascaderProps<OptionType, T>, PickType>
+  | Pick<MultipleCascaderProps<OptionType, T>, PickType>;
 
 function noop() {}
 
-export default function Panel<OptionType extends BaseOptionType = DefaultOptionType, T = any>(
-  props: PanelProps<OptionType, T>,
-) {
+export default function Panel<
+  OptionType extends BaseOptionType = DefaultOptionType,
+  T extends keyof OptionType = keyof OptionType,
+>(props: PanelProps<OptionType, T>) {
   const {
     prefixCls = 'rc-cascader',
     style,

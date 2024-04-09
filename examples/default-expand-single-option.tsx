@@ -45,7 +45,7 @@ const App = () => {
 
   const [value, setValue] = useState<string[]>([]);
 
-  const onChange: SingleCascaderProps<Option2, string[]>['onChange'] = (value, selectedOptions) => {
+  const onChange: SingleCascaderProps<Option2, 'value'>['onChange'] = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
       value.push(lastSelected.children[0].value as string);

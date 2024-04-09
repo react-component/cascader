@@ -34,7 +34,7 @@ export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
   return {
     label: label || 'label',
     value: val,
-    key: val,
+    key: val as string,
     children: children || 'children',
   };
 }
