@@ -488,7 +488,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   T extends keyof OptionType = keyof OptionType,
 >(
   props: React.PropsWithChildren<CascaderProps<OptionType, T>> & {
-    ref?: React.Ref<BaseSelectRef>;
+    ref?: React.Ref<CascaderRef>;
   },
 ) => React.ReactElement) & {
   displayName?: string;

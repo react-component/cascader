@@ -43,7 +43,7 @@ describe('Cascader.Search', () => {
         },
       ],
     },
-  ] as any;
+  ];
 
   it('default search', () => {
     const onSearch = jest.fn();
@@ -106,7 +106,8 @@ describe('Cascader.Search', () => {
             const finalA = pathA[pathA.length - 1];
             const finalB = pathB[pathB.length - 1];
 
-            if ((finalA.value as number) < (finalB.value as number)) {
+            // this value is string
+            if ((finalA.value as any) < (finalB.value as any)) {
               return -1;
             }
             return 1;

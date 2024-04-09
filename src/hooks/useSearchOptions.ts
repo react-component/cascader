@@ -63,7 +63,7 @@ export default (
                 prefixCls,
                 fieldNames,
               ),
-              [SEARCH_MARK as any]: connectedPathOptions,
+              [SEARCH_MARK]: connectedPathOptions,
               [fieldNames.children]: undefined,
             });
           }

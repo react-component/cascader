@@ -44,7 +44,7 @@ export default (
       const valueOptions = toPathOptions(valueCells, options, fieldNames);
 
       const label = mergedDisplayRender(
-        valueOptions.map(({ option, value }) => (option as any)?.[fieldNames.label] ?? value),
+        valueOptions.map(({ option, value }) => option?.[fieldNames.label] ?? value),
         valueOptions.map(({ option }) => option),
       );
 

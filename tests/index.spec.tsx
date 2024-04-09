@@ -5,6 +5,7 @@ import type { SingleCascaderProps, MultipleCascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
+import type { CascaderRef } from '@/Cascader';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -706,18 +707,18 @@ describe('Cascader.Basic', () => {
     });
 
     it('focus', () => {
-      const cascaderRef = React.createRef() as any;
+      const cascaderRef = React.createRef<CascaderRef>();
       mount(<Cascader ref={cascaderRef} />);
 
-      cascaderRef.current.focus();
+      cascaderRef.current?.focus();
       expect(focusTimes === 1).toBeTruthy();
     });
 
     it('blur', () => {
-      const cascaderRef = React.createRef() as any;
+      const cascaderRef = React.createRef<CascaderRef>();
       mount(<Cascader ref={cascaderRef} />);
 
-      cascaderRef.current.blur();
+      cascaderRef.current?.blur();
       expect(blurTimes === 1).toBeTruthy();
     });
   });

@@ -24,7 +24,7 @@ describe('Cascader.FieldNames', () => {
         },
       ],
     },
-  ] as any;
+  ];
 
   const fieldNames = {
     label: 'customTitle',
@@ -105,7 +105,7 @@ describe('Cascader.FieldNames', () => {
   it('same title & value should show correct title', () => {
     const wrapper = mount(
       <Cascader
-        options={[{ name: 'bamboo', children: [{ name: 'little' }] }] as any}
+        options={[{ name: 'bamboo', children: [{ name: 'little' }] }]}
         open
         defaultValue={['bamboo', 'little']}
         fieldNames={{
