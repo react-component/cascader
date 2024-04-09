@@ -18,7 +18,7 @@ export default (
 
   React.useEffect(
     () => {
-      if (open && !multiple) {
+      if (!multiple) {
         setActiveValueCells(firstValueCells || []);
       }
     },

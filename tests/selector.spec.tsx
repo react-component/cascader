@@ -1,16 +1,56 @@
 import React, { useState } from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import { mount } from './enzyme';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
+
+// Mock `useActive` hook
+jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean) => {
+  // Pass to origin hooks
+  const originHook = jest.requireActual('../src/OptionList/useActive').default;
+  const [activeValueCells, setActiveValueCells] = originHook(multiple, open);
+
+  global.activeValueCells = activeValueCells;
+
+  return [activeValueCells, setActiveValueCells];
+});
 
 describe('Cascader.Selector', () => {
   describe('clear all', () => {
     it('single', () => {
       const onChange = jest.fn();
-      const wrapper = mount(<Cascader value={['not', 'exist']} allowClear onChange={onChange} />);
+      const { container } = render(
+        <Cascader value={['not', 'exist']} allowClear onChange={onChange} />,
+      );
 
-      wrapper.find('.rc-cascader-clear-icon').simulate('mouseDown');
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon'));
       expect(onChange).toHaveBeenCalledWith(undefined, undefined);
+    });
+
+    it('Should clear activeCells', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <Cascader
+          allowClear
+          onChange={onChange}
+          options={[
+            { label: 'Bamboo', value: 'bamboo', children: [{ label: 'Little', value: 'little' }] },
+          ]}
+        />,
+      );
+
+      // Open and select
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-selector'));
+      expect(container.querySelector('.rc-cascader-open')).toBeTruthy();
+
+      fireEvent.click(container.querySelector('.rc-cascader-menu-item-content'));
+      fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item-content')[1]);
+      expect(container.querySelector('.rc-cascader-open')).toBeFalsy();
+
+      // Clear
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon'));
+      expect(global.activeValueCells).toEqual([]);
     });
 
     it('multiple', () => {
