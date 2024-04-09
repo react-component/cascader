@@ -77,11 +77,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         );
         const lastOption = optionList[optionList.length - 1];
 
-        if (
-          !lastOption ||
-          (lastOption as Record<string, any>)[fieldNames.children] ||
-          isLeaf(lastOption, fieldNames)
-        ) {
+        if (!lastOption || lastOption[fieldNames.children] || isLeaf(lastOption, fieldNames)) {
           setLoadingKeys(keys => keys.filter(key => key !== loadingKey));
         }
       });
@@ -138,12 +134,11 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
       const activeValueCell = activeValueCells[i];
       const currentOption = currentList.find(
         (option, index) =>
-          (fullPathKeys[index]
-            ? toPathKey(fullPathKeys[index])
-            : (option as Record<string, any>)[fieldNames.value]) === activeValueCell,
+          (fullPathKeys[index] ? toPathKey(fullPathKeys[index]) : option[fieldNames.value]) ===
+          activeValueCell,
       );
 
-      const subOptions = (currentOption as Record<string, any>)?.[fieldNames.children];
+      const subOptions = currentOption?.[fieldNames.children];
       if (!subOptions?.length) {
         break;
       }

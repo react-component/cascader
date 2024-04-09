@@ -61,11 +61,9 @@ export default function Column<OptionType extends BaseOptionType = DefaultOption
     () =>
       (options as DefaultOptionType[]).map(option => {
         const { disabled, disableCheckbox } = option;
-        const searchOptions = (option as Record<string, any>)[SEARCH_MARK];
-        const label =
-          (option as Record<string, any>)[FIX_LABEL] ??
-          (option as Record<string, any>)[fieldNames.label];
-        const value = (option as Record<string, any>)[fieldNames.value];
+        const searchOptions = option[SEARCH_MARK];
+        const label = option[FIX_LABEL] ?? option[fieldNames.label];
+        const value = option[fieldNames.value];
 
         const isMergedLeaf = isLeaf(option, fieldNames);
 
@@ -138,8 +136,8 @@ export default function Column<OptionType extends BaseOptionType = DefaultOption
 
           // >>>>> Title
           let title: string | undefined;
-          if (typeof (option as Record<string, any>).title === 'string') {
-            title = (option as Record<string, any>).title;
+          if (typeof option.title === 'string') {
+            title = option.title;
           } else if (typeof label === 'string') {
             title = label;
           }

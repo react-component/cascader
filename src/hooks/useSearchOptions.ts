@@ -5,13 +5,13 @@ export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
 const defaultFilter: ShowSearchType['filter'] = (search, options, { label }) =>
   options.some(opt =>
-    String((opt as Record<string, any>)[label as string])
+    String(opt[label as string])
       .toLowerCase()
       .includes(search.toLowerCase()),
   );
 
 const defaultRender: ShowSearchType['render'] = (inputValue, path, prefixCls, fieldNames) =>
-  path.map(opt => (opt as Record<string, any>)[fieldNames.label as string]).join(' / ');
+  path.map(opt => opt[fieldNames.label as string]).join(' / ');
 
 export default (
   search: string,
@@ -41,7 +41,7 @@ export default (
         }
 
         const connectedPathOptions = [...pathOptions, option];
-        const children = (option as Record<string, any>)[fieldNames.children];
+        const children = option[fieldNames.children];
 
         const mergedDisabled = parentDisabled || option.disabled;
 
@@ -71,7 +71,7 @@ export default (
 
         if (children) {
           dig(
-            (option as Record<string, any>)[fieldNames.children] as DefaultOptionType[],
+            option[fieldNames.children] as DefaultOptionType[],
             connectedPathOptions,
             mergedDisabled,
           );
@@ -84,12 +84,7 @@ export default (
     // Do sort
     if (sort) {
       filteredOptions.sort((a, b) => {
-        return sort(
-          (a as Record<string, any>)[SEARCH_MARK],
-          (b as Record<string, any>)[SEARCH_MARK],
-          search,
-          fieldNames,
-        );
+        return sort(a[SEARCH_MARK], b[SEARCH_MARK], search, fieldNames);
       });
     }
 

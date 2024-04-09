@@ -41,10 +41,7 @@ export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
 }
 
 export function isLeaf(option: DefaultOptionType, fieldNames: FieldNames) {
-  return (
-    (option as Record<string, any>).isLeaf ??
-    !(option as Record<string, any>)[fieldNames.children as string]?.length
-  );
+  return option.isLeaf ?? !option[fieldNames.children as string]?.length;
 }
 
 export function scrollIntoParentView(element: HTMLElement) {
@@ -63,9 +60,7 @@ export function scrollIntoParentView(element: HTMLElement) {
 
 export function getFullPathKeys(options: DefaultOptionType[], fieldNames: FieldNames) {
   return options.map(item =>
-    (item as Record<string, any>)[SEARCH_MARK]?.map(
-      (opt: Record<string, any>) => (opt as Record<string, any>)[fieldNames.value as string],
-    ),
+    item[SEARCH_MARK]?.map((opt: Record<string, any>) => opt[fieldNames.value as string]),
   );
 }
 

@@ -39,9 +39,8 @@ export default (
         // Mark the active index for current options
         const nextActiveIndex = currentOptions.findIndex(
           (option, index) =>
-            (pathKeys[index]
-              ? toPathKey(pathKeys[index])
-              : (option as Record<string, any>)[fieldNames.value]) === activeValueCells[i],
+            (pathKeys[index] ? toPathKey(pathKeys[index]) : option[fieldNames.value]) ===
+            activeValueCells[i],
         );
 
         if (nextActiveIndex === -1) {
@@ -52,15 +51,13 @@ export default (
         mergedActiveIndexes.push(activeIndex);
         mergedActiveValueCells.push(activeValueCells[i]);
 
-        currentOptions = (currentOptions as Record<string, any>)[activeIndex][fieldNames.children];
+        currentOptions = currentOptions[activeIndex][fieldNames.children];
       }
 
       // Fill last active options
       let activeOptions = options;
       for (let i = 0; i < mergedActiveIndexes.length - 1; i += 1) {
-        activeOptions = (activeOptions as Record<string, any>)[mergedActiveIndexes[i]][
-          fieldNames.children
-        ];
+        activeOptions = activeOptions[mergedActiveIndexes[i]][fieldNames.children];
       }
 
       return [mergedActiveValueCells, activeIndex, activeOptions, pathKeys];
@@ -89,7 +86,7 @@ export default (
           .concat(
             fullPathKeys[currentIndex]
               ? toPathKey(fullPathKeys[currentIndex])
-              : (option as Record<string, any>)[fieldNames.value],
+              : option[fieldNames.value],
           );
         internalSetActiveValueCells(nextActiveCells);
         return;
@@ -109,15 +106,12 @@ export default (
 
   const nextColumn = () => {
     const nextOptions: DefaultOptionType[] =
-      (lastActiveOptions as Record<string, any>)[lastActiveIndex]?.[fieldNames.children] || [];
+      lastActiveOptions[lastActiveIndex]?.[fieldNames.children] || [];
 
     const nextOption = nextOptions.find(option => !option.disabled);
 
     if (nextOption) {
-      const nextActiveCells = [
-        ...validActiveValueCells,
-        (nextOption as Record<string, any>)[fieldNames.value],
-      ];
+      const nextActiveCells = [...validActiveValueCells, nextOption[fieldNames.value]];
       internalSetActiveValueCells(nextActiveCells);
     }
   };
@@ -182,11 +176,10 @@ export default (
             const option = lastActiveOptions[lastActiveIndex];
 
             // Search option should revert back of origin options
-            const originOptions: DefaultOptionType[] =
-              (option as Record<string, any>)?.[SEARCH_MARK] || [];
+            const originOptions: DefaultOptionType[] = option?.[SEARCH_MARK] || [];
             if (originOptions.length) {
               onKeyBoardSelect(
-                originOptions.map(opt => (opt as Record<string, any>)[fieldNames.value]),
+                originOptions.map(opt => opt[fieldNames.value]),
                 originOptions[originOptions.length - 1],
               );
             } else {
