@@ -61,28 +61,6 @@ export interface ShowSearchType<
   limit?: number | false;
 }
 
-export interface FieldNames<
-  OptionType extends DefaultOptionType = DefaultOptionType,
-  ValueField extends keyof OptionType = keyof OptionType,
-> {
-  label?: keyof OptionType;
-  value?: keyof OptionType | ValueField;
-  children?: keyof OptionType;
-}
-
-export interface InternalFieldNames extends Required<FieldNames> {
-  key: string;
-}
-
-export type ValueType<
-  OptionType extends DefaultOptionType = DefaultOptionType,
-  ValueField extends keyof OptionType = keyof OptionType,
-> = keyof OptionType extends ValueField
-  ? unknown extends OptionType['value']
-    ? OptionType[ValueField]
-    : OptionType['value']
-  : OptionType[ValueField];
-
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
 interface BaseCascaderProps<
@@ -143,6 +121,24 @@ interface BaseCascaderProps<
   loadingIcon?: React.ReactNode;
 }
 
+export interface FieldNames<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> {
+  label?: keyof OptionType;
+  value?: keyof OptionType | ValueField;
+  children?: keyof OptionType;
+}
+
+export type ValueType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> = keyof OptionType extends ValueField
+  ? unknown extends OptionType['value']
+    ? OptionType[ValueField]
+    : OptionType['value']
+  : OptionType[ValueField];
+
 export type GetValueType<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
@@ -167,6 +163,10 @@ export interface CascaderProps<
 
 export type SingleValueType = (string | number)[];
 export type InternalValueType = SingleValueType | SingleValueType[];
+
+export interface InternalFieldNames extends Required<FieldNames> {
+  key: string;
+}
 
 export type InternalCascaderProps = Omit<CascaderProps, 'onChange' | 'value' | 'defaultValue'> & {
   value?: InternalValueType;
