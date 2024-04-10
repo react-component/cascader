@@ -5,6 +5,7 @@ import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
+import { toRawValues } from '../src/utils/commonUtil';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -1060,5 +1061,8 @@ describe('Cascader.Basic', () => {
       'Warning: `value` in Cascader options should not be `null`.',
     );
     errorSpy.mockReset();
+  });
+  it('toRawValues undefined', () => {
+    expect(toRawValues(undefined as any)).toEqual([]);
   });
 });
