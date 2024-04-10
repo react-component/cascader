@@ -187,7 +187,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     fieldNames,
 
     // Value
-    defaultValue = [],
+    defaultValue,
     value,
     changeOnSelect,
     onChange,
@@ -239,10 +239,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const multiple = !!checkable;
 
   // =========================== Values ===========================
-  const [rawValues, setRawValues] = useMergedState<InternalValueType, SingleValueType[]>(
-    defaultValue,
-    { value, postState: toRawValues },
-  );
+  const [rawValues, setRawValues] = useMergedState<
+    InternalValueType | undefined,
+    SingleValueType[]
+  >(defaultValue, { value, postState: toRawValues });
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(

@@ -56,7 +56,7 @@ export default function Panel<
     className,
     options,
     checkable,
-    defaultValue = [],
+    defaultValue,
     value,
     fieldNames,
     changeOnSelect,
@@ -74,10 +74,10 @@ export default function Panel<
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useMergedState<InternalValueType, SingleValueType[]>(
-    defaultValue,
-    { value, postState: toRawValues },
-  );
+  const [rawValues, setRawValues] = useMergedState<
+    InternalValueType | undefined,
+    SingleValueType[]
+  >(defaultValue, { value, postState: toRawValues });
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(

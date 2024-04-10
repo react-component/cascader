@@ -1063,6 +1063,6 @@ describe('Cascader.Basic', () => {
     errorSpy.mockReset();
   });
   it('toRawValues undefined', () => {
-    expect(toRawValues(undefined as any)).toEqual([]);
+    expect(toRawValues()).toEqual([]);
   });
 });
