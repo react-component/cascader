@@ -19,7 +19,7 @@ export default (
   fieldNames: InternalFieldNames,
   prefixCls: string,
   config: ShowSearchType,
-  changeOnSelect: boolean,
+  changeOnSelect?: boolean,
 ) => {
   const { filter = defaultFilter, render = defaultRender, limit = 50, sort } = config;
 

@@ -189,7 +189,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     // Value
     defaultValue = [],
     value,
-    changeOnSelect = false,
+    changeOnSelect,
     onChange,
     displayRender,
     checkable,
