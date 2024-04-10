@@ -143,21 +143,26 @@ interface BaseCascaderProps<
   loadingIcon?: React.ReactNode;
 }
 
+export type GetValueType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = false extends Multiple
+  ? ValueType<Required<OptionType>, ValueField>[]
+  : ValueType<Required<OptionType>, ValueField>[][];
+
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
   Multiple extends boolean | React.ReactNode = false,
 > extends BaseCascaderProps<OptionType, ValueField> {
   checkable?: Multiple;
-  value?: false extends Multiple
-    ? ValueType<OptionType, ValueField>[]
-    : ValueType<OptionType, ValueField>[][];
-  defaultValue?: false extends Multiple
-    ? ValueType<OptionType, ValueField>[]
-    : ValueType<OptionType, ValueField>[][];
-  onChange?: false extends Multiple
-    ? (value: ValueType<Required<OptionType>, ValueField>[], selectOptions: OptionType[]) => void
-    : (value: ValueType<Required<OptionType>, ValueField>[][], selectOptions: OptionType[]) => void;
+  value?: GetValueType<OptionType, ValueField, Multiple>;
+  defaultValue?: GetValueType<OptionType, ValueField, Multiple>;
+  onChange?: (
+    value: GetValueType<OptionType, ValueField, Multiple>,
+    selectOptions: OptionType[],
+  ) => void;
 }
 
 export type SingleValueType = (string | number)[];
