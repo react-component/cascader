@@ -30,12 +30,12 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
           ...wrapper,
           pathKeyEntities: {},
         }),
-        processEntity: (entity, wrapper: any) => {
-          const pathKey = entity.nodes
-            .map(node => (node as any)[fieldNames.value])
+        processEntity: (entity, wrapper) => {
+          const pathKey = (entity.nodes as DefaultOptionType[])
+            .map(node => node[fieldNames.value])
             .join(VALUE_SPLIT);
 
-          wrapper.pathKeyEntities[pathKey] = entity;
+          (wrapper as unknown as OptionsInfo).pathKeyEntities[pathKey] = entity;
 
           // Overwrite origin key.
           // this is very hack but we need let conduct logic work with connect path
