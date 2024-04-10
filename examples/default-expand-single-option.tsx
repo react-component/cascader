@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -45,7 +45,7 @@ const App = () => {
 
   const [value, setValue] = useState<string[]>([]);
 
-  const onChange: SingleCascaderProps<Option2, 'value'>['onChange'] = (value, selectedOptions) => {
+  const onChange: CascaderProps<Option2, 'value'>['onChange'] = (value, selectedOptions) => {
     const lastSelected = selectedOptions[selectedOptions.length - 1];
     if (lastSelected.children && lastSelected.children.length === 1) {
       value.push(lastSelected.children[0].value as string);

@@ -3,12 +3,11 @@ import Panel from './Panel';
 
 export type {
   BaseOptionType,
-  CascaderProps,
   DefaultOptionType,
+  CascaderProps,
   FieldNames,
-  MultipleCascaderProps,
   ShowSearchType,
-  SingleCascaderProps,
+  CascaderRef,
 } from './Cascader';
 export { Panel };
 

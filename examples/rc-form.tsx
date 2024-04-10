@@ -1,7 +1,7 @@
 import arrayTreeFilter from 'array-tree-filter';
 import Form, { Field } from 'rc-field-form';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import React from 'react';
 import type { Option2 } from './utils';
@@ -60,7 +60,7 @@ const addressOptions = [
 ];
 
 const CascaderInput = (props: any) => {
-  const onChange: SingleCascaderProps<Option2>['onChange'] = value => {
+  const onChange: CascaderProps<Option2>['onChange'] = value => {
     if (props.onChange) {
       props.onChange(value);
     }

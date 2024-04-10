@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -84,7 +84,7 @@ const addressOptions = [
 const Demo = () => {
   const [inputValue, setInputValue] = useState('');
 
-  const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
+  const onChange: CascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };

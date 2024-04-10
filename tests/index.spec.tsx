@@ -1,18 +1,17 @@
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { useEffect, useState } from 'react';
-import type { SingleCascaderProps, MultipleCascaderProps } from '../src';
+import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
-import type { CascaderRef } from '@/Cascader';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
-  const onChange: SingleCascaderProps['onChange'] = function onChange(value) {
+  const onChange: CascaderProps<BaseOptionType>['onChange'] = function onChange(value) {
     selectedValue = value;
   };
-  const onMultipleChange: MultipleCascaderProps['onChange'] = value => {
+  const onMultipleChange: CascaderProps<BaseOptionType, 'value', true>['onChange'] = value => {
     selectedValue = value;
   };
 

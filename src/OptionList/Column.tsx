@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { BaseOptionType, DefaultOptionType, SingleValueType } from '../Cascader';
+import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 import { isLeaf, toPathKey } from '../utils/commonUtil';
@@ -8,7 +8,7 @@ import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
-export interface ColumnProps<OptionType extends BaseOptionType = DefaultOptionType> {
+export interface ColumnProps<OptionType extends DefaultOptionType = DefaultOptionType> {
   prefixCls: string;
   multiple?: boolean;
   options: OptionType[];
@@ -26,7 +26,7 @@ export interface ColumnProps<OptionType extends BaseOptionType = DefaultOptionTy
   searchValue?: string;
 }
 
-export default function Column<OptionType extends BaseOptionType = DefaultOptionType>({
+export default function Column<OptionType extends DefaultOptionType = DefaultOptionType>({
   prefixCls,
   multiple,
   options,

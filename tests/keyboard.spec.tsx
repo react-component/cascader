@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
-import type { SingleCascaderProps } from '../src';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
 import React from 'react';
@@ -10,7 +10,7 @@ describe('Cascader.Keyboard', () => {
   let selectedValue: any;
   let selectedOptions: any;
   let menus;
-  const onChange: SingleCascaderProps['onChange'] = (value, options) => {
+  const onChange: CascaderProps['onChange'] = (value, options) => {
     selectedValue = value;
     selectedOptions = options;
   };

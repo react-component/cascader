@@ -2,12 +2,10 @@ import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import type {
-  BaseOptionType,
+  CascaderProps,
   DefaultOptionType,
   InternalCascaderProps,
   InternalValueType,
-  MultipleCascaderProps,
-  SingleCascaderProps,
   SingleValueType,
 } from './Cascader';
 import type { CascaderContextProps } from './context';
@@ -40,18 +38,18 @@ export type PickType =
   | 'notFoundContent';
 
 export type PanelProps<
-  OptionType extends BaseOptionType = DefaultOptionType,
-  T extends keyof OptionType = keyof OptionType,
-> =
-  | Pick<SingleCascaderProps<OptionType, T>, PickType>
-  | Pick<MultipleCascaderProps<OptionType, T>, PickType>;
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = Pick<CascaderProps<OptionType, ValueField, Multiple>, PickType>;
 
 function noop() {}
 
 export default function Panel<
-  OptionType extends BaseOptionType = DefaultOptionType,
-  T extends keyof OptionType = keyof OptionType,
->(props: PanelProps<OptionType, T>) {
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+>(props: PanelProps<OptionType, ValueField, Multiple>) {
   const {
     prefixCls = 'rc-cascader',
     style,

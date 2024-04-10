@@ -1,6 +1,6 @@
 import React from 'react';
 import '../assets/index.less';
-import type { SingleCascaderProps } from '../src';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
@@ -63,7 +63,7 @@ const options = [
   },
 ];
 
-const onChange: SingleCascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
+const onChange: CascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
   console.log(value, selectedOptions);
 };
 
