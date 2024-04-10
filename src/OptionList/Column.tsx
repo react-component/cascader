@@ -59,7 +59,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   // ============================ Option ============================
   const optionInfoList = React.useMemo(
     () =>
-      (options as DefaultOptionType[]).map(option => {
+      options.map(option => {
         const { disabled, disableCheckbox } = option;
         const searchOptions: Record<string, any>[] = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
