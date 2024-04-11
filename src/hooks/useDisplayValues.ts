@@ -28,7 +28,7 @@ export default (
         }
 
         // If exist non-string value, use ReactNode instead
-        return mergedLabels.reduce((list, label, index) => {
+        return mergedLabels.reduce((list: React.ReactNode[], label, index) => {
           const keyedLabel = React.isValidElement(label)
             ? React.cloneElement(label, { key: index })
             : label;
@@ -36,7 +36,7 @@ export default (
           if (index === 0) {
             return [keyedLabel];
           }
-          return [...(Array.isArray(list) ? list : []), SPLIT, keyedLabel];
+          return [...list, SPLIT, keyedLabel];
         }, []);
       });
 
