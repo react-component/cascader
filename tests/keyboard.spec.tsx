@@ -1,15 +1,16 @@
 import { mount } from 'enzyme';
 import KeyCode from 'rc-util/lib/KeyCode';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
 import React from 'react';
 
 describe('Cascader.Keyboard', () => {
-  let wrapper;
-  let selectedValue;
-  let selectedOptions;
+  let wrapper: any;
+  let selectedValue: any;
+  let selectedOptions: any;
   let menus;
-  const onChange = (value, options) => {
+  const onChange: CascaderProps['onChange'] = (value, options) => {
     selectedValue = value;
     selectedOptions = options;
   };
@@ -78,8 +79,8 @@ describe('Cascader.Keyboard', () => {
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
     expect(selectedOptions).toEqual([
       addressOptions[1],
-      addressOptions[1].children[0],
-      addressOptions[1].children[0].children[0],
+      addressOptions[1]?.children?.[0],
+      addressOptions[1]?.children?.[0]?.children?.[0],
     ]);
   });
 
@@ -91,8 +92,8 @@ describe('Cascader.Keyboard', () => {
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
     expect(selectedOptions).toEqual([
       addressOptions[1],
-      addressOptions[1].children[0],
-      addressOptions[1].children[0].children[0],
+      addressOptions[1]?.children?.[0],
+      addressOptions[1]?.children?.[0]?.children?.[0],
     ]);
   });
   it('enter on search when has same sub key', () => {

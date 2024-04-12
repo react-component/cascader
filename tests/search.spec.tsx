@@ -43,7 +43,7 @@ describe('Cascader.Search', () => {
         },
       ],
     },
-  ] as any;
+  ];
 
   it('default search', () => {
     const onSearch = jest.fn();
@@ -106,7 +106,8 @@ describe('Cascader.Search', () => {
             const finalA = pathA[pathA.length - 1];
             const finalB = pathB[pathB.length - 1];
 
-            if (finalA.value < finalB.value) {
+            // this value is string
+            if ((finalA.value as any) < (finalB.value as any)) {
               return -1;
             }
             return 1;
@@ -231,14 +232,14 @@ describe('Cascader.Search', () => {
         ],
       },
     ];
-    function customFilter(inputValue, path) {
-      return path.some(option => option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-    }
     const wrapper = mount(
       <Cascader
         options={customOptions}
         fieldNames={{ label: 'name', value: 'name' }}
-        showSearch={{ filter: customFilter }}
+        showSearch={{
+          filter: (inputValue, path) =>
+            path.some(option => option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1),
+        }}
       />,
     );
     wrapper.find('input').simulate('change', { target: { value: 'z' } });
@@ -250,16 +251,16 @@ describe('Cascader.Search', () => {
     const { container } = render(<Cascader options={options} showSearch />);
 
     // Search
-    fireEvent.change(container.querySelector('input'), {
+    fireEvent.change(container.querySelector('input') as HTMLElement, {
       target: {
         value: 'bamboo',
       },
     });
 
     // Click
-    fireEvent.click(document.querySelector('.rc-cascader-menu-item-content'));
+    fireEvent.click(document.querySelector('.rc-cascader-menu-item-content') as HTMLElement);
     expect(document.querySelector('.rc-cascader-dropdown-hidden')).toBeTruthy();
-    expect(document.querySelector('.rc-cascader-menu-item-content').textContent).toBe(
+    expect(document.querySelector('.rc-cascader-menu-item-content')?.textContent).toBe(
       'Label Bamboo / Label Little / Toy Fish',
     );
   });
@@ -300,7 +301,7 @@ describe('Cascader.Search', () => {
 
     expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
     expect(container.querySelectorAll('.rc-cascader-menu-item-disabled')).toHaveLength(1);
-    expect(container.querySelector('.rc-cascader-menu-item-disabled').textContent).toEqual(
+    expect(container.querySelector('.rc-cascader-menu-item-disabled')?.textContent).toEqual(
       'bamboo / little',
     );
   });
@@ -312,7 +313,7 @@ describe('Cascader.Search', () => {
         optionRender={option => `${option.label} - test`}
       />,
     );
-    expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
+    expect(container.querySelector('.rc-cascader-menu-item-content')?.innerHTML).toEqual(
       'bamboo - test',
     );
     rerender(
@@ -322,7 +323,7 @@ describe('Cascader.Search', () => {
         optionRender={option => JSON.stringify(option)}
       />,
     );
-    expect(container.querySelector('.rc-cascader-menu-item-content').innerHTML).toEqual(
+    expect(container.querySelector('.rc-cascader-menu-item-content')?.innerHTML).toEqual(
       '{"label":"bamboo","disabled":true,"value":"bamboo"}',
     );
   });

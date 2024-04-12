@@ -10,7 +10,7 @@ import { SHOW_CHILD } from './commonUtil';
 export function formatStrategyValues(
   pathKeys: React.Key[],
   getKeyPathEntities: GetEntities,
-  showCheckedStrategy: ShowCheckedStrategy,
+  showCheckedStrategy?: ShowCheckedStrategy,
 ) {
   const valueSet = new Set(pathKeys);
   const keyPathEntities = getKeyPathEntities();
@@ -55,7 +55,7 @@ export function toPathOptions(
     valueOptions.push({
       value: foundOption?.[fieldNames.value] ?? valueCell,
       index: foundIndex,
-      option: foundOption,
+      option: foundOption as DefaultOptionType,
     });
 
     currentList = foundOption?.[fieldNames.children];

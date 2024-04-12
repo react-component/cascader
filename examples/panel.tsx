@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
@@ -56,7 +57,9 @@ const addressOptions = [
 ];
 
 export default () => {
-  const [value, setValue] = React.useState([]);
+  const [value, setValue] = React.useState<string[]>([]);
+
+  const [value2, setValue2] = React.useState<string[][]>([]);
 
   return (
     <>
@@ -79,10 +82,11 @@ export default () => {
 
       <Cascader.Panel
         checkable
-        value={value}
+        value={value2}
         options={addressOptions}
         onChange={nextValue => {
           console.log('Change:', nextValue);
+          setValue2(nextValue);
         }}
       />
 

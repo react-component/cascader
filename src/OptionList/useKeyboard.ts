@@ -13,10 +13,10 @@ export default (
   setActiveValueCells: (activeValueCells: React.Key[]) => void,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
   contextProps: {
-    direction: 'ltr' | 'rtl';
+    direction?: 'ltr' | 'rtl';
     searchValue: string;
     toggleOpen: (open?: boolean) => void;
-    open: boolean;
+    open?: boolean;
   },
 ) => {
   const { direction, searchValue, toggleOpen, open } = contextProps;

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import '../assets/index.less';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
+import type { Option2 } from './utils';
 
-const addressOptions = [
+const addressOptions: CascaderProps<Option2>['options'] = [
   {
     label: '福建',
     value: 'fj',
@@ -96,12 +98,12 @@ const Demo = () => {
     },
   ]);
 
-  const onChange = (value, selectedOptions) => {
+  const onChange: CascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  const onChangeDynamic = (value, selectedOptions) => {
+  const onChangeDynamic: CascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log(value, selectedOptions);
     setDynamicInputValue(selectedOptions.map(o => o.label).join(', '));
   };
@@ -146,7 +148,7 @@ const Demo = () => {
     </i>
   );
 
-  const loadData = selectedOptions => {
+  const loadData: CascaderProps<Option2>['loadData'] = selectedOptions => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
     // 动态加载下级数据

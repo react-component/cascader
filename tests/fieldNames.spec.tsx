@@ -24,13 +24,13 @@ describe('Cascader.FieldNames', () => {
         },
       ],
     },
-  ] as any;
+  ];
 
   const fieldNames = {
     label: 'customTitle',
     value: 'customValue',
     children: 'customChildren',
-  };
+  } as const;
 
   it('customize', () => {
     const onChange = jest.fn();
@@ -92,7 +92,7 @@ describe('Cascader.FieldNames', () => {
         fieldNames={fieldNames}
         defaultValue={['bamboo', 'little', 'toy']}
         displayRender={(labels, selectOptions) =>
-          `${labels.join('->')} & ${selectOptions.map((opt: any) => opt.customValue).join('>>')}`
+          `${labels.join('->')} & ${selectOptions?.map(opt => opt.customValue).join('>>')}`
         }
       />,
     );
@@ -105,7 +105,7 @@ describe('Cascader.FieldNames', () => {
   it('same title & value should show correct title', () => {
     const wrapper = mount(
       <Cascader
-        options={[{ name: 'bamboo', children: [{ name: 'little' }] }] as any}
+        options={[{ name: 'bamboo', children: [{ name: 'little' }] }]}
         open
         defaultValue={['bamboo', 'little']}
         fieldNames={{

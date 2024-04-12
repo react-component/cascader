@@ -1,13 +1,18 @@
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React, { useEffect, useState } from 'react';
+import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
+import { toRawValues } from '../src/utils/commonUtil';
 
 describe('Cascader.Basic', () => {
-  let selectedValue;
-  const onChange = function onChange(value) {
+  let selectedValue: any;
+  const onChange: CascaderProps<BaseOptionType>['onChange'] = function onChange(value) {
+    selectedValue = value;
+  };
+  const onMultipleChange: CascaderProps<BaseOptionType, 'value', true>['onChange'] = value => {
     selectedValue = value;
   };
 
@@ -91,7 +96,7 @@ describe('Cascader.Basic', () => {
         checkable
         changeOnSelect
         options={addressOptions}
-        onChange={onChange}
+        onChange={onMultipleChange}
         showCheckedStrategy={'SHOW_PARENT'}
       >
         <input readOnly />
@@ -114,7 +119,7 @@ describe('Cascader.Basic', () => {
         checkable
         changeOnSelect
         options={addressOptions}
-        onChange={onChange}
+        onChange={onMultipleChange}
         showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
@@ -677,7 +682,7 @@ describe('Cascader.Basic', () => {
   });
 
   describe('focus test', () => {
-    let domSpy;
+    let domSpy: any;
     let focusTimes = 0;
     let blurTimes = 0;
 
@@ -702,18 +707,18 @@ describe('Cascader.Basic', () => {
     });
 
     it('focus', () => {
-      const cascaderRef = React.createRef() as any;
+      const cascaderRef = React.createRef<CascaderRef>();
       mount(<Cascader ref={cascaderRef} />);
 
-      cascaderRef.current.focus();
+      cascaderRef.current?.focus();
       expect(focusTimes === 1).toBeTruthy();
     });
 
     it('blur', () => {
-      const cascaderRef = React.createRef() as any;
+      const cascaderRef = React.createRef<CascaderRef>();
       mount(<Cascader ref={cascaderRef} />);
 
-      cascaderRef.current.blur();
+      cascaderRef.current?.blur();
       expect(blurTimes === 1).toBeTruthy();
     });
   });
@@ -1024,7 +1029,7 @@ describe('Cascader.Basic', () => {
 
   it('support custom cascader', () => {
     const wrapper = mount(<Cascader dropdownStyle={{ zIndex: 999 }} open />);
-    expect(wrapper.find('.rc-cascader-dropdown').props().style.zIndex).toBe(999);
+    expect(wrapper.find('.rc-cascader-dropdown').props().style?.zIndex).toBe(999);
   });
 
   it('`null` is a value in Cascader options should throw a warning', () => {
@@ -1056,5 +1061,8 @@ describe('Cascader.Basic', () => {
       'Warning: `value` in Cascader options should not be `null`.',
     );
     errorSpy.mockReset();
+  });
+  it('toRawValues undefined', () => {
+    expect(toRawValues()).toEqual([]);
   });
 });

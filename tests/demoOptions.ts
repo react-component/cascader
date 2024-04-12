@@ -1,6 +1,6 @@
-import type { DefaultOptionType } from '@/Cascader';
+import type { BaseOptionType } from '../src';
 
-export const optionsForActiveMenuItems: DefaultOptionType[] = [
+export const optionsForActiveMenuItems: BaseOptionType[] = [
   {
     value: '1',
     label: '1',
@@ -35,7 +35,7 @@ export const optionsForActiveMenuItems: DefaultOptionType[] = [
   },
 ];
 
-export const addressOptions: DefaultOptionType[] = [
+export const addressOptions: BaseOptionType[] = [
   {
     label: '福建',
     value: 'fj',
@@ -171,11 +171,11 @@ export const addressOptionsForUneven = [
       {
         label: '高雄',
         value: 'gaoxiong',
-      }
-    ]
+      },
+    ],
   },
   {
     label: '香港',
     value: 'xg',
   },
-]
+];

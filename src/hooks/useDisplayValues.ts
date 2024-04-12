@@ -20,7 +20,7 @@ export default (
       displayRender ||
       // Default displayRender
       (labels => {
-        const mergedLabels = multiple ? labels.slice(-1) : labels;
+        const mergedLabels: React.ReactNode[] = multiple ? labels.slice(-1) : labels;
         const SPLIT = ' / ';
 
         if (mergedLabels.every(label => ['string', 'number'].includes(typeof label))) {
@@ -28,7 +28,7 @@ export default (
         }
 
         // If exist non-string value, use ReactNode instead
-        return mergedLabels.reduce((list, label, index) => {
+        return mergedLabels.reduce((list: React.ReactNode[], label, index) => {
           const keyedLabel = React.isValidElement(label)
             ? React.cloneElement(label, { key: index })
             : label;
@@ -36,7 +36,6 @@ export default (
           if (index === 0) {
             return [keyedLabel];
           }
-
           return [...list, SPLIT, keyedLabel];
         }, []);
       });

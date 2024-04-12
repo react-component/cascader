@@ -26,60 +26,58 @@ import {
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
 
-export interface ShowSearchType<OptionType extends BaseOptionType = DefaultOptionType> {
-  filter?: (inputValue: string, options: OptionType[], fieldNames: FieldNames) => boolean;
+export interface BaseOptionType {
+  disabled?: boolean;
+  disableCheckbox?: boolean;
+  label?: React.ReactNode;
+  value?: string | number | null;
+  children?: DefaultOptionType[];
+}
+
+export type DefaultOptionType = BaseOptionType & Record<string, any>;
+
+export interface ShowSearchType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> {
+  filter?: (
+    inputValue: string,
+    options: OptionType[],
+    fieldNames: FieldNames<OptionType, ValueField>,
+  ) => boolean;
   render?: (
     inputValue: string,
     path: OptionType[],
     prefixCls: string,
-    fieldNames: FieldNames,
+    fieldNames: FieldNames<OptionType, ValueField>,
   ) => React.ReactNode;
-  sort?: (a: OptionType[], b: OptionType[], inputValue: string, fieldNames: FieldNames) => number;
+  sort?: (
+    a: OptionType[],
+    b: OptionType[],
+    inputValue: string,
+    fieldNames: FieldNames<OptionType, ValueField>,
+  ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
 }
 
-export interface FieldNames {
-  label?: string;
-  value?: string;
-  children?: string;
-}
-
-export interface InternalFieldNames extends Required<FieldNames> {
-  key: string;
-}
-
-export type SingleValueType = (string | number)[];
-
-export type ValueType = SingleValueType | SingleValueType[];
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
 
-export interface BaseOptionType {
-  disabled?: boolean;
-  [name: string]: any;
-}
-export interface DefaultOptionType extends BaseOptionType {
-  label: React.ReactNode;
-  value?: string | number | null;
-  children?: DefaultOptionType[];
-  disableCheckbox?: boolean;
-}
-
-interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends Omit<
+interface BaseCascaderProps<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> extends Omit<
     BaseSelectPropsWithoutPrivate,
     'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
   > {
   // MISC
   id?: string;
   prefixCls?: string;
-  fieldNames?: FieldNames;
+  fieldNames?: FieldNames<OptionType, ValueField>;
   optionRender?: (option: OptionType) => React.ReactNode;
   children?: React.ReactElement;
 
   // Value
-  value?: ValueType;
-  defaultValue?: ValueType;
   changeOnSelect?: boolean;
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
@@ -123,37 +121,59 @@ interface BaseCascaderProps<OptionType extends BaseOptionType = DefaultOptionTyp
   loadingIcon?: React.ReactNode;
 }
 
-type OnSingleChange<OptionType> = (value: SingleValueType, selectOptions: OptionType[]) => void;
-type OnMultipleChange<OptionType> = (
-  value: SingleValueType[],
-  selectOptions: OptionType[][],
-) => void;
-
-export interface SingleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
-  checkable?: false;
-
-  onChange?: OnSingleChange<OptionType>;
+export interface FieldNames<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> {
+  label?: keyof OptionType;
+  value?: keyof OptionType | ValueField;
+  children?: keyof OptionType;
 }
 
-export interface MultipleCascaderProps<OptionType extends BaseOptionType = DefaultOptionType>
-  extends BaseCascaderProps<OptionType> {
-  checkable: true | React.ReactNode;
+export type ValueType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+> = keyof OptionType extends ValueField
+  ? unknown extends OptionType['value']
+    ? OptionType[ValueField]
+    : OptionType['value']
+  : OptionType[ValueField];
 
-  onChange?: OnMultipleChange<OptionType>;
-}
+export type GetValueType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = false extends Multiple
+  ? ValueType<Required<OptionType>, ValueField>[]
+  : ValueType<Required<OptionType>, ValueField>[][];
 
-export type CascaderProps<OptionType extends BaseOptionType = DefaultOptionType> =
-  | SingleCascaderProps<OptionType>
-  | MultipleCascaderProps<OptionType>;
-
-export type InternalCascaderProps<OptionType extends BaseOptionType = DefaultOptionType> = Omit<
-  SingleCascaderProps<OptionType> | MultipleCascaderProps<OptionType>,
-  'onChange'
-> & {
+export interface CascaderProps<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> extends BaseCascaderProps<OptionType, ValueField> {
+  checkable?: Multiple;
+  value?: GetValueType<OptionType, ValueField, Multiple>;
+  defaultValue?: GetValueType<OptionType, ValueField, Multiple>;
   onChange?: (
-    value: SingleValueType | SingleValueType[],
-    selectOptions: OptionType[] | OptionType[][],
+    value: GetValueType<OptionType, ValueField, Multiple>,
+    selectOptions: OptionType[],
+  ) => void;
+}
+
+export type SingleValueType = (string | number)[];
+export type InternalValueType = SingleValueType | SingleValueType[];
+
+export interface InternalFieldNames extends Required<FieldNames> {
+  key: string;
+}
+
+export type InternalCascaderProps = Omit<CascaderProps, 'onChange' | 'value' | 'defaultValue'> & {
+  value?: InternalValueType;
+  defaultValue?: InternalValueType;
+  onChange?: (
+    value: InternalValueType,
+    selectOptions: BaseOptionType[] | BaseOptionType[][],
   ) => void;
 };
 
@@ -219,10 +239,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const multiple = !!checkable;
 
   // =========================== Values ===========================
-  const [rawValues, setRawValues] = useMergedState<ValueType, SingleValueType[]>(defaultValue, {
-    value,
-    postState: toRawValues,
-  });
+  const [rawValues, setRawValues] = useMergedState<
+    InternalValueType | undefined,
+    SingleValueType[]
+  >(defaultValue, { value, postState: toRawValues });
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -301,7 +321,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: InternalValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -453,13 +473,17 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         placement={mergedPlacement}
         onDropdownVisibleChange={onInternalDropdownVisibleChange}
         // Children
-        getRawInputElement={() => children}
+        getRawInputElement={() => children as React.ReactElement}
       />
     </CascaderContext.Provider>
   );
-}) as unknown as (<OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
-  props: React.PropsWithChildren<CascaderProps<OptionType>> & {
-    ref?: React.Ref<BaseSelectRef>;
+}) as unknown as (<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+>(
+  props: React.PropsWithChildren<CascaderProps<OptionType, ValueField, Multiple>> & {
+    ref?: React.Ref<CascaderRef>;
   },
 ) => React.ReactElement) & {
   displayName?: string;

@@ -1,8 +1,9 @@
 import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
+import type { Option2 } from './utils';
 
-const addressOptions = [
+const addressOptions: Option2[] = [
   // ...new Array(20).fill(null).map((_, i) => ({ label: String(i), value: `99${i}` })),
   {
     label: <span>空孩子</span>,
@@ -88,7 +89,7 @@ const addressOptions = [
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(true);
 
-  const onChange = (value: any, selectedOptions: any) => {
+  const onChange = (value: string[], selectedOptions: Option2[]) => {
     console.log('[DEBUG] onChange - value:', value);
     console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
   };
@@ -105,27 +106,19 @@ const Demo = () => {
         />
         Multiple
       </label>
-      <Cascader
-        style={{ width: 200 }}
-        options={addressOptions}
-        onChange={onChange}
-        checkable={multiple}
-        allowClear
-        // defaultValue={multiple ? [defaultValue] : defaultValue}
-        // defaultValue={[['not', 'yet'], ['exist']]}
-        // defaultValue={[['empty']]}
-        defaultValue={['fj', 'fuzhou']}
-        showSearch
-        // showSearch={{ limit: 1 }}
-        // open
-        // tagRender={props => {
-        //   console.log(props);
-        //   return props.label as any;
-        // }}
-        // direction="rtl"
-        // searchValue="福a"
-        // changeOnSelect
-      />
+      {multiple ? (
+        <Cascader style={{ width: 200 }} checkable defaultValue={[['fj'], ['fuzhou']]} showSearch />
+      ) : (
+        <Cascader
+          style={{ width: 200 }}
+          options={addressOptions}
+          onChange={onChange}
+          checkable={false}
+          allowClear
+          defaultValue={['fj', 'fuzhou']}
+          showSearch
+        />
+      )}
     </>
   );
 };

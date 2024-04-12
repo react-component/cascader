@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../assets/index.less';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
+import type { Option2 } from './utils';
 
 const addressOptions = [
   {
@@ -19,12 +21,12 @@ const Demo = () => {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState(addressOptions);
 
-  const onChange = (value, selectedOptions) => {
+  const onChange: CascaderProps<Option2>['onChange'] = (value, selectedOptions) => {
     console.log('OnChange:', value, selectedOptions);
     setInputValue(selectedOptions.map(o => o.label).join(', '));
   };
 
-  const loadData = selectedOptions => {
+  const loadData: CascaderProps<Option2>['loadData'] = selectedOptions => {
     console.log('onLoad:', selectedOptions);
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;

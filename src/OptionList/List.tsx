@@ -27,7 +27,7 @@ export type RawOptionListProps = Pick<
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
   const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open } = props;
 
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
 
   const {
@@ -46,7 +46,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const mergedPrefixCls = dropdownPrefixCls || prefixCls;
 
   // ========================= loadData =========================
-  const [loadingKeys, setLoadingKeys] = React.useState([]);
+  const [loadingKeys, setLoadingKeys] = React.useState<React.Key[]>([]);
 
   const internalLoadData = (valueCells: React.Key[]) => {
     // Do not load when search
@@ -71,7 +71,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   React.useEffect(() => {
     if (loadingKeys.length) {
       loadingKeys.forEach(loadingKey => {
-        const valueStrCells = toPathValueStr(loadingKey);
+        const valueStrCells = toPathValueStr(loadingKey as string);
         const optionList = toPathOptions(valueStrCells, options, fieldNames, true).map(
           ({ option }) => option,
         );

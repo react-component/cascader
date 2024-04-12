@@ -3,11 +3,11 @@ import type { DefaultOptionType, InternalFieldNames, ShowSearchType } from '../C
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
-const defaultFilter: ShowSearchType['filter'] = (search, options, { label }) =>
+const defaultFilter: ShowSearchType['filter'] = (search, options, { label = '' }) =>
   options.some(opt => String(opt[label]).toLowerCase().includes(search.toLowerCase()));
 
 const defaultRender: ShowSearchType['render'] = (inputValue, path, prefixCls, fieldNames) =>
-  path.map(opt => opt[fieldNames.label]).join(' / ');
+  path.map(opt => opt[fieldNames.label as string]).join(' / ');
 
 export default (
   search: string,
@@ -15,7 +15,7 @@ export default (
   fieldNames: InternalFieldNames,
   prefixCls: string,
   config: ShowSearchType,
-  changeOnSelect: boolean,
+  changeOnSelect?: boolean,
 ) => {
   const { filter = defaultFilter, render = defaultRender, limit = 50, sort } = config;
 

@@ -2,8 +2,8 @@ import type {
   DefaultOptionType,
   FieldNames,
   InternalFieldNames,
+  InternalValueType,
   SingleValueType,
-  ValueType,
 } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 
@@ -35,13 +35,13 @@ export function fillFieldNames(fieldNames?: FieldNames): InternalFieldNames {
   return {
     label: label || 'label',
     value: val,
-    key: val,
+    key: val as string,
     children: children || 'children',
   };
 }
 
 export function isLeaf(option: DefaultOptionType, fieldNames: FieldNames) {
-  return option.isLeaf ?? !option[fieldNames.children]?.length;
+  return option.isLeaf ?? !option[fieldNames.children as string]?.length;
 }
 
 export function scrollIntoParentView(element: HTMLElement) {
@@ -59,14 +59,16 @@ export function scrollIntoParentView(element: HTMLElement) {
 }
 
 export function getFullPathKeys(options: DefaultOptionType[], fieldNames: FieldNames) {
-  return options.map(item => item[SEARCH_MARK]?.map(opt => opt[fieldNames.value]));
+  return options.map(item =>
+    item[SEARCH_MARK]?.map((opt: Record<string, any>) => opt[fieldNames.value as string]),
+  );
 }
 
-function isMultipleValue(value: ValueType): value is SingleValueType[] {
+function isMultipleValue(value: InternalValueType): value is SingleValueType[] {
   return Array.isArray(value) && Array.isArray(value[0]);
 }
 
-export function toRawValues(value: ValueType): SingleValueType[] {
+export function toRawValues(value?: InternalValueType): SingleValueType[] {
   if (!value) {
     return [];
   }

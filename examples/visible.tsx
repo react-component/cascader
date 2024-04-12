@@ -58,16 +58,8 @@ const addressOptions = [
 ];
 
 const Demo = () => {
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState<string[]>([]);
   const [popupVisible, setPopupVisible] = useState(false);
-
-  const onChange = value => {
-    setValue(value);
-  };
-
-  const onPopupVisibleChange = popupVisible => {
-    setPopupVisible(popupVisible);
-  };
 
   const getLabel = () => {
     return arrayTreeFilter(addressOptions, (o, level) => o.value === value[level])
@@ -80,8 +72,8 @@ const Demo = () => {
       popupVisible={popupVisible}
       value={value}
       options={addressOptions}
-      onPopupVisibleChange={onPopupVisibleChange}
-      onChange={onChange}
+      onPopupVisibleChange={open => setPopupVisible(open)}
+      onChange={value => setValue(value)}
     >
       <input value={getLabel()} readOnly />
     </Cascader>

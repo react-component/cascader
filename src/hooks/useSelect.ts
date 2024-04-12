@@ -1,18 +1,18 @@
 import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
-import type { ShowCheckedStrategy, SingleValueType, ValueType } from '../Cascader';
+import type { InternalValueType, ShowCheckedStrategy, SingleValueType } from '../Cascader';
 import { toPathKey, toPathKeys } from '../utils/commonUtil';
 import { formatStrategyValues } from '../utils/treeUtil';
 import type { GetEntities } from './useEntities';
 
 export default function useSelect(
   multiple: boolean,
-  triggerChange: (nextValues: ValueType) => void,
+  triggerChange: (nextValues: InternalValueType) => void,
   checkedValues: SingleValueType[],
   halfCheckedValues: SingleValueType[],
   missingCheckedValues: SingleValueType[],
   getPathKeyEntities: GetEntities,
   getValueByKeyPath: (pathKeys: React.Key[]) => SingleValueType[],
-  showCheckedStrategy: ShowCheckedStrategy,
+  showCheckedStrategy?: ShowCheckedStrategy,
 ) {
   return (valuePath: SingleValueType) => {
     if (!multiple) {

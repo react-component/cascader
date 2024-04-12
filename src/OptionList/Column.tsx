@@ -8,10 +8,10 @@ import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
 
-export interface ColumnProps {
+export interface ColumnProps<OptionType extends DefaultOptionType = DefaultOptionType> {
   prefixCls: string;
   multiple?: boolean;
-  options: DefaultOptionType[];
+  options: OptionType[];
   /** Current Column opened item key */
   activeValue?: React.Key;
   /** The value path before current column */
@@ -26,7 +26,7 @@ export interface ColumnProps {
   searchValue?: string;
 }
 
-export default function Column({
+export default function Column<OptionType extends DefaultOptionType = DefaultOptionType>({
   prefixCls,
   multiple,
   options,
@@ -40,7 +40,7 @@ export default function Column({
   loadingKeys,
   isSelectable,
   searchValue,
-}: ColumnProps) {
+}: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
 
@@ -61,7 +61,7 @@ export default function Column({
     () =>
       options.map(option => {
         const { disabled, disableCheckbox } = option;
-        const searchOptions = option[SEARCH_MARK];
+        const searchOptions: Record<string, any>[] = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
 
@@ -135,7 +135,7 @@ export default function Column({
           };
 
           // >>>>> Title
-          let title: string;
+          let title: string | undefined;
           if (typeof option.title === 'string') {
             title = option.title;
           } else if (typeof label === 'string') {

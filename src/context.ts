@@ -7,7 +7,7 @@ import type {
 } from './Cascader';
 
 export interface CascaderContextProps {
-  options: CascaderProps['options'];
+  options: NonNullable<CascaderProps['options']>;
   fieldNames: InternalFieldNames;
   values: SingleValueType[];
   halfValues: SingleValueType[];
@@ -24,6 +24,6 @@ export interface CascaderContextProps {
   optionRender?: CascaderProps['optionRender'];
 }
 
-const CascaderContext = React.createContext<CascaderContextProps>(null);
+const CascaderContext = React.createContext<CascaderContextProps>({} as CascaderContextProps);
 
 export default CascaderContext;

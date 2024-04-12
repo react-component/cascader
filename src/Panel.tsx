@@ -1,7 +1,14 @@
 import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { CascaderProps, InternalCascaderProps, SingleValueType, ValueType } from './Cascader';
+import type {
+  CascaderProps,
+  DefaultOptionType,
+  InternalCascaderProps,
+  InternalValueType,
+  SingleValueType,
+} from './Cascader';
+import type { CascaderContextProps } from './context';
 import CascaderContext from './context';
 import useMissingValues from './hooks/useMissingValues';
 import useOptions from './hooks/useOptions';
@@ -30,11 +37,19 @@ export type PickType =
   | 'direction'
   | 'notFoundContent';
 
-export type PanelProps = Pick<CascaderProps, PickType>;
+export type PanelProps<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = Pick<CascaderProps<OptionType, ValueField, Multiple>, PickType>;
 
 function noop() {}
 
-export default function Panel(props: PanelProps) {
+export default function Panel<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  ValueField extends keyof OptionType = keyof OptionType,
+  Multiple extends boolean | React.ReactNode = false,
+>(props: PanelProps<OptionType, ValueField, Multiple>) {
   const {
     prefixCls = 'rc-cascader',
     style,
@@ -59,10 +74,10 @@ export default function Panel(props: PanelProps) {
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useMergedState<ValueType, SingleValueType[]>(defaultValue, {
-    value,
-    postState: toRawValues,
-  });
+  const [rawValues, setRawValues] = useMergedState<
+    InternalValueType | undefined,
+    SingleValueType[]
+  >(defaultValue, { value, postState: toRawValues });
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -91,7 +106,7 @@ export default function Panel(props: PanelProps) {
   );
 
   // =========================== Change ===========================
-  const triggerChange = useEvent((nextValues: ValueType) => {
+  const triggerChange = useEvent((nextValues: InternalValueType) => {
     setRawValues(nextValues);
 
     // Save perf if no need trigger event
@@ -126,7 +141,7 @@ export default function Panel(props: PanelProps) {
   });
 
   // ======================== Context =========================
-  const cascaderContext = React.useMemo(
+  const cascaderContext = React.useMemo<CascaderContextProps>(
     () => ({
       options: mergedOptions,
       fieldNames: mergedFieldNames,
@@ -136,12 +151,12 @@ export default function Panel(props: PanelProps) {
       onSelect: onInternalSelect,
       checkable,
       searchOptions: [],
-      dropdownPrefixCls: null,
+      dropdownPrefixCls: undefined,
       loadData,
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle: null,
+      dropdownMenuColumnStyle: undefined,
     }),
     [
       mergedOptions,
@@ -180,7 +195,7 @@ export default function Panel(props: PanelProps) {
         ) : (
           <RawOptionList
             prefixCls={prefixCls}
-            searchValue={null}
+            searchValue=""
             multiple={multiple}
             toggleOpen={noop}
             open

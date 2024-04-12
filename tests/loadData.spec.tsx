@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from './enzyme';
+import type { CascaderProps } from '../src';
 import Cascader from '../src';
 
 describe('Cascader.LoadData', () => {
@@ -144,7 +145,7 @@ describe('Cascader.LoadData', () => {
     const Demo = () => {
       const [options, setOptions] = React.useState([{ label: 'top', value: 'top', isLeaf: false }]);
 
-      const loadData = selectedOptions => {
+      const loadData: CascaderProps['loadData'] = selectedOptions => {
         Promise.resolve().then(() => {
           act(() => {
             selectedOptions[selectedOptions.length - 1].children = [

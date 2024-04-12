@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
 import type { DefaultOptionType, InternalFieldNames } from '../Cascader';
-import type { DataEntity } from 'rc-tree/lib/interface';
+import type { DataEntity, DataNode } from 'rc-tree/lib/interface';
 import { VALUE_SPLIT } from '../utils/commonUtil';
 
 export interface OptionsInfo {
@@ -17,23 +17,25 @@ export default (options: DefaultOptionType[], fieldNames: InternalFieldNames) =>
     options: DefaultOptionType[];
     info: OptionsInfo;
   }>({
-    options: null,
-    info: null,
+    options: [],
+    info: { keyEntities: {}, pathKeyEntities: {} },
   });
 
   const getEntities: GetEntities = React.useCallback(() => {
     if (cacheRef.current.options !== options) {
       cacheRef.current.options = options;
-      cacheRef.current.info = convertDataToEntities(options as any, {
-        fieldNames,
+      cacheRef.current.info = convertDataToEntities(options as DataNode[], {
+        fieldNames: fieldNames as any,
         initWrapper: wrapper => ({
           ...wrapper,
           pathKeyEntities: {},
         }),
-        processEntity: (entity, wrapper: any) => {
-          const pathKey = entity.nodes.map(node => node[fieldNames.value]).join(VALUE_SPLIT);
+        processEntity: (entity, wrapper) => {
+          const pathKey = (entity.nodes as DefaultOptionType[])
+            .map(node => node[fieldNames.value])
+            .join(VALUE_SPLIT);
 
-          wrapper.pathKeyEntities[pathKey] = entity;
+          (wrapper as unknown as OptionsInfo).pathKeyEntities[pathKey] = entity;
 
           // Overwrite origin key.
           // this is very hack but we need let conduct logic work with connect path
