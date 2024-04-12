@@ -89,7 +89,7 @@ const addressOptions: Option2[] = [
 const Demo = () => {
   const [multiple, setMultiple] = React.useState(true);
 
-  const onChange = (value: any, selectedOptions: any) => {
+  const onChange = (value: string[], selectedOptions: Option2[]) => {
     console.log('[DEBUG] onChange - value:', value);
     console.log('[DEBUG] onChange - selectedOptions:', selectedOptions);
   };

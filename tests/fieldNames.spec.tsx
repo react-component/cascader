@@ -87,7 +87,7 @@ describe('Cascader.FieldNames', () => {
 
   it('displayRender', () => {
     const wrapper = mount(
-      <Cascader<any>
+      <Cascader
         options={options}
         fieldNames={fieldNames}
         defaultValue={['bamboo', 'little', 'toy']}
