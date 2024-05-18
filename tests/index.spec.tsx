@@ -6,6 +6,7 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
+import { render } from '@testing-library/react';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -1064,5 +1065,11 @@ describe('Cascader.Basic', () => {
   });
   it('toRawValues undefined', () => {
     expect(toRawValues()).toEqual([]);
+  });
+
+  it('nativeElement', () => {
+    const cascaderRef = React.createRef<CascaderRef>();
+    const { container } = render(<Cascader ref={cascaderRef} />);
+    expect(cascaderRef.current?.nativeElement).toEqual(container.querySelector('.rc-cascader'));
   });
 });
