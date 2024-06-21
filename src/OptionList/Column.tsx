@@ -23,6 +23,7 @@ export interface ColumnProps<OptionType extends DefaultOptionType = DefaultOptio
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
+  activeValueCells:  React.Key[],
   searchValue?: string;
 }
 
@@ -40,6 +41,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   loadingKeys,
   isSelectable,
   searchValue,
+  activeValueCells
 }: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -117,6 +119,9 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
+            if (activeValueCells.includes(value)) {
+              return;
+            }
             if (disabled || searchValue) {
               return;
             }
