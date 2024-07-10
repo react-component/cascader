@@ -35,7 +35,8 @@ export type PickType =
   | 'className'
   | 'style'
   | 'direction'
-  | 'notFoundContent';
+  | 'notFoundContent'
+  | 'defaultActiveValueCells';
 
 export type PanelProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -68,6 +69,7 @@ export default function Panel<
     loadingIcon,
     direction,
     notFoundContent = 'Not Found',
+    defaultActiveValueCells
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -200,6 +202,7 @@ export default function Panel<
             toggleOpen={noop}
             open
             direction={direction}
+            defaultActiveValueCells={defaultActiveValueCells}
           />
         )}
       </div>

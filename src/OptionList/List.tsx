@@ -22,10 +22,10 @@ import useKeyboard from './useKeyboard';
 export type RawOptionListProps = Pick<
   ReturnType<typeof useBaseProps>,
   'prefixCls' | 'multiple' | 'searchValue' | 'toggleOpen' | 'notFoundContent' | 'direction' | 'open'
->;
+> & { defaultActiveValueCells?: React.Key[]; };
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open } = props;
+  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open, defaultActiveValueCells } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
@@ -98,6 +98,10 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     // Trigger loadData
     internalLoadData(nextValueCells);
   };
+
+  React.useEffect(() => {
+    setActiveValueCells(defaultActiveValueCells ?? [])
+  }, [defaultActiveValueCells, setActiveValueCells]);
 
   const isSelectable = (option: DefaultOptionType) => {
     const { disabled } = option;

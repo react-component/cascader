@@ -88,6 +88,7 @@ export default () => {
           console.log('Change:', nextValue);
           setValue2(nextValue);
         }}
+        defaultActiveValueCells={value}
       />
 
       <Cascader.Panel options={addressOptions} direction="rtl" />
