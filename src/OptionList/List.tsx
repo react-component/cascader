@@ -116,6 +116,10 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     internalLoadData(nextValueCells);
   };
 
+  React.useEffect(() => {
+    setActiveValueCells(defaultActiveValueCells ?? [])
+  }, [defaultActiveValueCells, setActiveValueCells]);
+
   const isSelectable = (option: DefaultOptionType) => {
     if (disabled) {
       return false;
