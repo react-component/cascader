@@ -29,7 +29,7 @@ export type RawOptionListProps = Pick<
   | 'direction'
   | 'open'
   | 'disabled'
->;
+> & { defaultActiveValueCells?: React.Key[]; };
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
   const {
@@ -41,6 +41,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     direction,
     open,
     disabled,
+    defaultActiveValueCells,
   } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -114,6 +115,10 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     // Trigger loadData
     internalLoadData(nextValueCells);
   };
+
+  React.useEffect(() => {
+    setActiveValueCells(defaultActiveValueCells ?? [])
+  }, [defaultActiveValueCells, setActiveValueCells]);
 
   const isSelectable = (option: DefaultOptionType) => {
     if (disabled) {

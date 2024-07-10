@@ -99,6 +99,7 @@ export default () => {
           setValue2(nextValue);
         }}
         disabled={disabled}
+        defaultActiveValueCells={value}
       />
 
       <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
