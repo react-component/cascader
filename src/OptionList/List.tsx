@@ -120,7 +120,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     if (defaultActiveValueCells && defaultActiveValueCells?.length > 0) {
         setActiveValueCells(defaultActiveValueCells)
     }
-  }, [defaultActiveValueCells, setActiveValueCells]);
+  }, [defaultActiveValueCells]);
 
   const isSelectable = (option: DefaultOptionType) => {
     if (disabled) {
