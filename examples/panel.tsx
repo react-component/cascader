@@ -70,7 +70,6 @@ export default () => {
       <button
         onClick={() => {
           setValue(['bj', 'haidian']);
-          setDefaultActiveValueCells(['bj', 'haidian']);
         }}
       >
         Set Value
@@ -92,6 +91,13 @@ export default () => {
         disabled={disabled}
       />
 
+      <button
+        onClick={() => {
+            setDefaultActiveValueCells(['bj', 'haidian']);
+        }}
+      >
+        Set defaultActiveValueCells
+      </button>
       <Cascader.Panel
         checkable
         value={value2}
