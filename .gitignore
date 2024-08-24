@@ -39,3 +39,5 @@ coverage
 .dumi/tmp-production
 dist
 .vscode
+
+bun.lockb
