@@ -280,6 +280,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     mergedFieldNames,
     dropdownPrefixCls || prefixCls,
     searchConfig,
+    changeOnSelect || multiple,
   );
 
   // =========================== Values ===========================
