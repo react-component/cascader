@@ -189,7 +189,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                   halfChecked={halfChecked}
                   disabled={disabled || disableCheckbox}
                   disableCheckbox={disableCheckbox}
-                  onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
+                  onClick={e => {
                     if (disableCheckbox) {
                       return;
                     }
