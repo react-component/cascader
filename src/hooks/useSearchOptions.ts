@@ -46,7 +46,7 @@ const useSearchOptions = (
           // If is leaf option
           !children ||
           children.length === 0 ||
-          // If is changeOnSelect
+          // If is changeOnSelect or multiple
           enableHalfPath
         ) {
           if (filter(search, connectedPathOptions, { label: fieldNames.label })) {
