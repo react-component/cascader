@@ -54,8 +54,7 @@ export default (
             [SEARCH_MARK]: connectedPathOptions,
             [fieldNames.children]: undefined,
           });
-        }
-        if (children) {
+        } else if (children) {
           dig(
             option[fieldNames.children] as DefaultOptionType[],
             connectedPathOptions,
