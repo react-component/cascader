@@ -26,7 +26,6 @@ const options = [
   {
     value: 'jiangsu',
     label: 'Jiangsu',
-    disableCheckbox: true,
     children: [
       {
         value: 'nanjing',
