@@ -166,7 +166,9 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
 
   // >>>>> Active Scroll
   React.useEffect(() => {
-    if (searchValue) return;
+    if (searchValue) {
+      return;
+    }
     for (let i = 0; i < activeValueCells.length; i += 1) {
       const cellPath = activeValueCells.slice(0, i + 1);
       const cellKeyPath = toPathKey(cellPath);
