@@ -202,6 +202,14 @@ describe('Cascader.Search', () => {
     wrapper.find('.rc-cascader-menu-item').first().simulate('click');
     wrapper.find('.rc-cascader-menu-item').first().simulate('mousedown');
     expect(onChange).toHaveBeenCalledWith([['bamboo', 'little', 'fish']], expect.anything());
+
+    doSearch(wrapper, 'light');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('click');
+    wrapper.find('.rc-cascader-menu-item').first().simulate('mousedown');
+    expect(onChange).toHaveBeenCalledWith(
+      [['bamboo', 'little', 'fish'], ['light']],
+      expect.anything(),
+    );
   });
 
   it('should not crash when exist options with same value on different levels', () => {
