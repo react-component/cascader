@@ -6,7 +6,7 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -1021,6 +1021,85 @@ describe('Cascader.Basic', () => {
 
       wrapper.find(`li[data-path-key]`).at(0).simulate('click');
       wrapper.find(`li[data-path-key]`).at(1).simulate('click');
+    });
+    it('hover + search', () => {
+      let getOffesetTopTimes = 0;
+      const spyElement = spyElementPrototypes(HTMLElement, {
+        offsetTop: {
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
+        },
+        scrollTop: {
+          get: () => 0,
+        },
+        offsetHeight: {
+          get: () => 10,
+        },
+      });
+
+      const wrapper = render(
+        <Cascader
+          expandTrigger="hover"
+          options={[
+            {
+              label: 'Women Clothing',
+              value: '1',
+              children: [
+                {
+                  label: 'Women Tops, Blouses & Tee',
+                  value: '11',
+                  children: [
+                    {
+                      label: 'Women T-Shirts',
+                      value: '111',
+                    },
+                    {
+                      label: 'Women Tops',
+                      value: '112',
+                    },
+                    {
+                      label: 'Women Tank Tops & Camis',
+                      value: '113',
+                    },
+                    {
+                      label: 'Women Blouses',
+                      value: '114',
+                    },
+                  ],
+                },
+                {
+                  label: 'Women Suits',
+                  value: '2',
+                  children: [
+                    {
+                      label: 'Women Suit Pants',
+                      value: '21',
+                    },
+                    {
+                      label: 'Women Suit Sets',
+                      value: '22',
+                    },
+                    {
+                      label: 'Women Blazers',
+                      value: '23',
+                    },
+                  ],
+                },
+              ],
+            },
+          ]}
+          showSearch
+          checkable
+          open
+        />,
+      );
+      fireEvent.change(wrapper.container.querySelector('input') as HTMLElement, {
+        target: { value: 'w' },
+      });
+      const items = wrapper.container.querySelectorAll('.rc-cascader-menu-item');
+      fireEvent.mouseEnter(items[9]);
+      expect(mockScrollTo).toHaveBeenCalledTimes(0);
+
+      spyElement.mockRestore();
     });
   });
 

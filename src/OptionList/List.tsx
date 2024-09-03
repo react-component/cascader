@@ -166,6 +166,9 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
 
   // >>>>> Active Scroll
   React.useEffect(() => {
+    if (searchValue) {
+      return;
+    }
     for (let i = 0; i < activeValueCells.length; i += 1) {
       const cellPath = activeValueCells.slice(0, i + 1);
       const cellKeyPath = toPathKey(cellPath);
@@ -176,7 +179,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         scrollIntoParentView(ele);
       }
     }
-  }, [activeValueCells]);
+  }, [activeValueCells, searchValue]);
 
   // ========================== Render ==========================
   // >>>>> Empty
@@ -213,7 +216,6 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
       <Column
         key={index}
         {...columnProps}
-        searchValue={searchValue}
         prefixCls={mergedPrefixCls}
         options={col.options}
         prevValuePath={prevValuePath}
