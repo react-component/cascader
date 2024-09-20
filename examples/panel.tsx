@@ -61,6 +61,8 @@ export default () => {
 
   const [value2, setValue2] = React.useState<string[][]>([]);
 
+  const [defaultActiveValueCells, setDefaultActiveValueCells] = React.useState<string[]>([]);
+
   return (
     <>
       <h1>Panel</h1>
@@ -80,6 +82,13 @@ export default () => {
         }}
       />
 
+      <button
+        onClick={() => {
+            setDefaultActiveValueCells(['bj', 'haidian']);
+        }}
+      >
+        Set defaultActiveValueCells
+      </button>
       <Cascader.Panel
         checkable
         value={value2}
@@ -88,6 +97,7 @@ export default () => {
           console.log('Change:', nextValue);
           setValue2(nextValue);
         }}
+        defaultActiveValueCells={defaultActiveValueCells}
       />
 
       <Cascader.Panel options={addressOptions} direction="rtl" />
