@@ -39,7 +39,7 @@ describe('Cascader.Search', () => {
 
     doSearch(wrapper, 'as');
     const itemList = wrapper.find('div.rc-cascader-menu-item-content');
-    expect(itemList).toHaveLength(itemList.length);
+    expect(itemList).toHaveLength(100);
   });
 
   it('limit', () => {
