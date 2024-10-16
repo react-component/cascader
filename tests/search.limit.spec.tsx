@@ -13,8 +13,7 @@ describe('Cascader.Search', () => {
   }
   const options = [
     {
-      region: 'Asia',
-      children: [],
+      children: [] as any[],
       isParent: true,
       label: 'Asia',
       value: 'Asia',
@@ -22,7 +21,6 @@ describe('Cascader.Search', () => {
   ];
   for (let i = 0; i < 100; i++) {
     options[0].children.push({
-      id: i,
       label: 'label' + i,
       value: 'value' + i,
     });
