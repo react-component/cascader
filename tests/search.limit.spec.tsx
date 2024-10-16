@@ -41,4 +41,36 @@ describe('Cascader.Search', () => {
     const itemList = wrapper.find('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(itemList.length);
   });
+
+  it('limit', () => {
+    const wrapper = mount(
+      <Cascader
+        options={options}
+        open
+        showSearch={{
+          limit: 0,
+        }}
+      />,
+    );
+
+    doSearch(wrapper, 'as');
+    const itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(50);
+  });
+
+  it('limit', () => {
+    const wrapper = mount(
+      <Cascader
+        options={options}
+        open
+        showSearch={{
+          limit: 20,
+        }}
+      />,
+    );
+
+    doSearch(wrapper, 'as');
+    const itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(20);
+  });
 });

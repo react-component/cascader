@@ -1,4 +1,3 @@
-
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import type { CascaderProps, ShowSearchType } from '../Cascader';
@@ -22,8 +21,8 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
       };
     }
 
-    if ((searchConfig.limit as number) <= 0) {
-      searchConfig.limit = false;
+    if ((searchConfig.limit as number) <= 0 && searchConfig.limit !== false) {
+      delete searchConfig.limit;
 
       if (process.env.NODE_ENV !== 'production') {
         warning(false, "'limit' of showSearch should be positive number or false.");
