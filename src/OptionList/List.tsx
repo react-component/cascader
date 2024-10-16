@@ -21,11 +21,27 @@ import useKeyboard from './useKeyboard';
 
 export type RawOptionListProps = Pick<
   ReturnType<typeof useBaseProps>,
-  'prefixCls' | 'multiple' | 'searchValue' | 'toggleOpen' | 'notFoundContent' | 'direction' | 'open'
+  | 'prefixCls'
+  | 'multiple'
+  | 'searchValue'
+  | 'toggleOpen'
+  | 'notFoundContent'
+  | 'direction'
+  | 'open'
+  | 'disabled'
 >;
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open } = props;
+  const {
+    prefixCls,
+    multiple,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    direction,
+    open,
+    disabled: panelDisabled,
+  } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
@@ -100,10 +116,11 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   };
 
   const isSelectable = (option: DefaultOptionType) => {
-    const { disabled } = option;
+    if (panelDisabled) return false;
 
+    const { disabled: optionDisabled } = option;
     const isMergedLeaf = isLeaf(option, fieldNames);
-    return !disabled && (isMergedLeaf || changeOnSelect || multiple);
+    return !optionDisabled && (isMergedLeaf || changeOnSelect || multiple);
   };
 
   const onPathSelect = (valuePath: SingleValueType, leaf: boolean, fromKeyboard = false) => {
@@ -203,6 +220,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     halfCheckedSet,
     loadingKeys,
     isSelectable,
+    panelDisabled,
   };
 
   // >>>>> Columns
@@ -220,6 +238,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         options={col.options}
         prevValuePath={prevValuePath}
         activeValue={activeValue}
+        panelDisabled={panelDisabled}
       />
     );
   });
