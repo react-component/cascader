@@ -22,7 +22,7 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
     }
 
     if ((searchConfig.limit as number) <= 0) {
-      delete searchConfig.limit;
+      searchConfig.limit = false;
 
       if (process.env.NODE_ENV !== 'production') {
         warning(false, "'limit' of showSearch should be positive number or false.");
