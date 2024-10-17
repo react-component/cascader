@@ -90,9 +90,9 @@ export default () => {
         }}
       />
 
-      <Cascader.Panel options={addressOptions} direction="rtl" />
-
       <Cascader.Panel disabled options={addressOptions} />
+
+      <Cascader.Panel options={addressOptions} direction="rtl" />
 
       <Cascader.Panel notFoundContent="Empty!!!" />
     </>
