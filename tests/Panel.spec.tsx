@@ -104,7 +104,7 @@ describe('Cascader.Panel', () => {
       <Cascader.Panel options={options} onChange={onChange} disabled={true} />,
     );
 
-    expect(container.querySelector('.rc-cascader-panel-disabled')).toBeTruthy();
+    expect(container.querySelector('.rc-cascader-menu-item-disabled')).toBeTruthy();
 
     const selectOption = container.querySelector('.rc-cascader-menu-item')!;
     fireEvent.click(selectOption);
