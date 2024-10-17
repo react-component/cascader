@@ -35,7 +35,8 @@ export type PickType =
   | 'className'
   | 'style'
   | 'direction'
-  | 'notFoundContent';
+  | 'notFoundContent'
+  | 'disabled';
 
 export type PanelProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -68,6 +69,7 @@ export default function Panel<
     loadingIcon,
     direction,
     notFoundContent = 'Not Found',
+    disabled,
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -200,6 +202,7 @@ export default function Panel<
             toggleOpen={noop}
             open
             direction={direction}
+            disabled={disabled}
           />
         )}
       </div>

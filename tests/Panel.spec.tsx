@@ -97,4 +97,17 @@ describe('Cascader.Panel', () => {
     const checkedLi = container.querySelector('[aria-checked="true"]');
     expect(checkedLi?.textContent).toEqual('Little');
   });
+
+  it('disabled', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <Cascader.Panel options={options} onChange={onChange} disabled={true} />,
+    );
+
+    expect(container.querySelector('.rc-cascader-menu-item-disabled')).toBeTruthy();
+
+    const selectOption = container.querySelector('.rc-cascader-menu-item')!;
+    fireEvent.click(selectOption);
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });
