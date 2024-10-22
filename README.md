@@ -1,6 +1,6 @@
 # rc-cascader
 
-React Cascader Component
+React Cascader Component.
 
 [![NPM version][npm-image]][npm-url]
 [![npm download][download-image]][download-url]
