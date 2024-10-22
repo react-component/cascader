@@ -59,7 +59,7 @@
     "@types/react-dom": "^18.0.11",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^4.0.0",
-    "array-tree-filter": "^3.0.0",
+    "array-tree-filter": "^3.0.1",
     "cheerio": "1.0.0-rc.12",
     "cross-env": "^7.0.0",
     "dumi": "^2.1.10",
