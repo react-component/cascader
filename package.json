@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.25.7",
-    "array-tree-filter": "^2.1.0",
     "classnames": "^2.3.1",
     "rc-select": "~14.16.2",
     "rc-tree": "~5.10.1",
@@ -60,6 +59,7 @@
     "@types/react-dom": "^18.0.11",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^4.0.0",
+    "array-tree-filter": "^3.0.2",
     "cheerio": "1.0.0-rc.12",
     "cross-env": "^7.0.0",
     "dumi": "^2.1.10",
