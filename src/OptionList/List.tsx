@@ -22,10 +22,10 @@ import useKeyboard from './useKeyboard';
 export type RawOptionListProps = Pick<
   ReturnType<typeof useBaseProps>,
   'prefixCls' | 'multiple' | 'searchValue' | 'toggleOpen' | 'notFoundContent' | 'direction' | 'open'
-> & { defaultActiveValueCells?: React.Key[]; };
+> & { defaultActiveKey?: React.Key[]; };
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open, defaultActiveValueCells } = props;
+  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open, defaultActiveKey } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
@@ -89,7 +89,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const halfCheckedSet = React.useMemo(() => new Set(toPathKeys(halfValues)), [halfValues]);
 
   // ====================== Accessibility =======================
-  const [activeValueCells, setActiveValueCells] = useActive(multiple, open);
+  const [activeValueCells, setActiveValueCells] = useActive(multiple, open, defaultActiveKey);
 
   // =========================== Path ===========================
   const onPathOpen = (nextValueCells: React.Key[]) => {
@@ -98,12 +98,6 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     // Trigger loadData
     internalLoadData(nextValueCells);
   };
-
-  React.useEffect(() => {
-    if (defaultActiveValueCells && defaultActiveValueCells?.length > 0) {
-        setActiveValueCells(defaultActiveValueCells)
-    }
-  }, [defaultActiveValueCells]);
 
   const isSelectable = (option: DefaultOptionType) => {
     const { disabled } = option;

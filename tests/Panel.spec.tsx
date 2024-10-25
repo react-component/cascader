@@ -79,14 +79,14 @@ describe('Cascader.Panel', () => {
     expect(onChange).toHaveBeenCalledWith([['bamboo', 'little']], expect.anything());
   });
 
-  it('multiple with defaultActiveValueCells', () => {
+  it('multiple with defaultActiveKey', () => {
     const onChange = jest.fn();
     const { container } = render(
       <Cascader.Panel
         checkable
         options={options}
         onChange={onChange}
-        defaultActiveValueCells={['bamboo', 'little']}
+        defaultActiveKey={['bamboo', 'little']}
       />,
     );
     expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(2);
