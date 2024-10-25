@@ -62,7 +62,6 @@ export default () => {
   const [value2, setValue2] = React.useState<string[][]>([]);
 
   const [disabled, setDisabled] = React.useState(false);
-  const [defaultActiveValueCells, setDefaultActiveValueCells] = React.useState<string[]>([]);
 
   return (
     <>
@@ -91,13 +90,6 @@ export default () => {
         disabled={disabled}
       />
 
-      <button
-        onClick={() => {
-            setDefaultActiveValueCells(['bj', 'haidian']);
-        }}
-      >
-        Set defaultActiveValueCells
-      </button>
       <Cascader.Panel
         checkable
         value={value2}
@@ -107,7 +99,7 @@ export default () => {
           setValue2(nextValue);
         }}
         disabled={disabled}
-        defaultActiveValueCells={defaultActiveValueCells}
+        defaultActiveKey={['bj', 'haidian']}
       />
 
       <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
