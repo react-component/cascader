@@ -36,9 +36,8 @@ export type PickType =
   | 'style'
   | 'direction'
   | 'notFoundContent'
-  | 'defaultActiveKey';
+  | 'defaultActiveKey'
   | 'disabled';
-  | 'defaultActiveKey';
 
 export type PanelProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -208,6 +207,7 @@ export default function Panel<
             direction={direction}
             defaultActiveKey={defaultActiveKey}
             disabled={disabled}
+            defaultActiveKey={defaultActiveKey}
           />
         )}
       </div>

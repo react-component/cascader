@@ -101,6 +101,7 @@ export default () => {
         }}
         defaultActiveKey={['bj', 'haidian']}
         disabled={disabled}
+        defaultActiveKey={['bj', 'haidian']}
       />
 
       <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
