@@ -23,7 +23,7 @@ export interface ColumnProps<OptionType extends DefaultOptionType = DefaultOptio
   halfCheckedSet: Set<React.Key>;
   loadingKeys: React.Key[];
   isSelectable: (option: DefaultOptionType) => boolean;
-  panelDisabled?: boolean;
+  disabled?: boolean;
 }
 
 export default function Column<OptionType extends DefaultOptionType = DefaultOptionType>({
@@ -39,7 +39,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   halfCheckedSet,
   loadingKeys,
   isSelectable,
-  panelDisabled,
+  disabled,
 }: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -56,7 +56,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 
   const hoverOpen = expandTrigger === 'hover';
 
-  const isOptionDisabled = (optionDisabled?: boolean) => panelDisabled || optionDisabled;
+  const isOptionDisabled = (optionDisabled?: boolean) => disabled || optionDisabled;
 
   // ============================ Option ============================
   const optionInfoList = React.useMemo(

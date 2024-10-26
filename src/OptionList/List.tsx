@@ -40,7 +40,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     notFoundContent,
     direction,
     open,
-    disabled: panelDisabled,
+    disabled,
   } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -116,10 +116,11 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   };
 
   const isSelectable = (option: DefaultOptionType) => {
-    if (panelDisabled) return false;
+    if (disabled) return false;
 
     const { disabled: optionDisabled } = option;
     const isMergedLeaf = isLeaf(option, fieldNames);
+
     return !optionDisabled && (isMergedLeaf || changeOnSelect || multiple);
   };
 
@@ -220,7 +221,6 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     halfCheckedSet,
     loadingKeys,
     isSelectable,
-    panelDisabled,
   };
 
   // >>>>> Columns
@@ -238,7 +238,6 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         options={col.options}
         prevValuePath={prevValuePath}
         activeValue={activeValue}
-        panelDisabled={panelDisabled}
       />
     );
   });

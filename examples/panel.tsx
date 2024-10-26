@@ -101,7 +101,7 @@ export default () => {
         disabled={disabled}
       />
 
-      <Cascader.Panel options={addressOptions} direction="rtl" />
+      <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
 
       <Cascader.Panel notFoundContent="Empty!!!" />
     </>
