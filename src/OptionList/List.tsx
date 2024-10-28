@@ -116,7 +116,9 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   };
 
   const isSelectable = (option: DefaultOptionType) => {
-    if (disabled) return false;
+    if (disabled) {
+      return false;
+    }
 
     const { disabled: optionDisabled } = option;
     const isMergedLeaf = isLeaf(option, fieldNames);
