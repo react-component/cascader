@@ -62,7 +62,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled, disableCheckbox } = option;
+        const { disabled: optionDisabled, disableCheckbox } = option;
         const searchOptions: Record<string, any>[] = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
@@ -84,7 +84,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
         const halfChecked = halfCheckedSet.has(fullPathKey);
 
         return {
-          disabled,
+          disabled: optionDisabled,
           label,
           value,
           isLeaf: isMergedLeaf,
@@ -105,7 +105,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     <ul className={menuPrefixCls} role="menu">
       {optionInfoList.map(
         ({
-          disabled,
+          disabled: optionDisabled,
           label,
           value,
           isLeaf: isMergedLeaf,
@@ -119,7 +119,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
-            if (isOptionDisabled(disabled)) {
+            if (isOptionDisabled(optionDisabled)) {
               return;
             }
             const nextValueCells = [...fullPath];
@@ -131,7 +131,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 
           // >>>>> Selection
           const triggerSelect = () => {
-            if (isSelectable(option) && !isOptionDisabled(disabled)) {
+            if (isSelectable(option) && !isOptionDisabled(optionDisabled)) {
               onSelect(fullPath, isMergedLeaf);
             }
           };
@@ -152,7 +152,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
                 [`${menuItemPrefixCls}-active`]:
                   activeValue === value || activeValue === fullPathKey,
-                [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(disabled),
+                [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(optionDisabled),
                 [`${menuItemPrefixCls}-loading`]: isLoading,
               })}
               style={dropdownMenuColumnStyle}
@@ -189,7 +189,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
                   halfChecked={halfChecked}
-                  disabled={isOptionDisabled(disabled) || disableCheckbox}
+                  disabled={isOptionDisabled(optionDisabled) || disableCheckbox}
                   disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                     if (disableCheckbox) {
