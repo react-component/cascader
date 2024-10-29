@@ -61,6 +61,8 @@ export default () => {
 
   const [value2, setValue2] = React.useState<string[][]>([]);
 
+  const [disabled, setDisabled] = React.useState(false);
+
   return (
     <>
       <h1>Panel</h1>
@@ -71,6 +73,13 @@ export default () => {
       >
         Set Value
       </button>
+      <button
+        onClick={() => {
+          setDisabled(prev => !prev);
+        }}
+      >
+        {disabled ? 'enable panel' : 'disable panel'}
+      </button>
       <Cascader.Panel
         value={value}
         options={addressOptions}
@@ -78,6 +87,7 @@ export default () => {
           console.log('Change:', nextValue);
           setValue(nextValue);
         }}
+        disabled={disabled}
       />
 
       <Cascader.Panel
@@ -88,9 +98,10 @@ export default () => {
           console.log('Change:', nextValue);
           setValue2(nextValue);
         }}
+        disabled={disabled}
       />
 
-      <Cascader.Panel options={addressOptions} direction="rtl" />
+      <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
 
       <Cascader.Panel notFoundContent="Empty!!!" />
     </>
