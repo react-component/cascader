@@ -39,7 +39,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   halfCheckedSet,
   loadingKeys,
   isSelectable,
-  disabled,
+  disabled: propsDisabled,
 }: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
@@ -56,13 +56,13 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 
   const hoverOpen = expandTrigger === 'hover';
 
-  const isOptionDisabled = (optionDisabled?: boolean) => disabled || optionDisabled;
+  const isOptionDisabled = (disabled?: boolean) => propsDisabled || disabled;
 
   // ============================ Option ============================
   const optionInfoList = React.useMemo(
     () =>
       options.map(option => {
-        const { disabled: optionDisabled, disableCheckbox } = option;
+        const { disabled, disableCheckbox } = option;
         const searchOptions: Record<string, any>[] = option[SEARCH_MARK];
         const label = option[FIX_LABEL] ?? option[fieldNames.label];
         const value = option[fieldNames.value];
@@ -84,7 +84,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
         const halfChecked = halfCheckedSet.has(fullPathKey);
 
         return {
-          disabled: optionDisabled,
+          disabled,
           label,
           value,
           isLeaf: isMergedLeaf,
@@ -105,7 +105,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     <ul className={menuPrefixCls} role="menu">
       {optionInfoList.map(
         ({
-          disabled: optionDisabled,
+          disabled,
           label,
           value,
           isLeaf: isMergedLeaf,
@@ -119,7 +119,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
         }) => {
           // >>>>> Open
           const triggerOpenPath = () => {
-            if (isOptionDisabled(optionDisabled)) {
+            if (isOptionDisabled(disabled)) {
               return;
             }
             const nextValueCells = [...fullPath];
@@ -131,7 +131,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 
           // >>>>> Selection
           const triggerSelect = () => {
-            if (isSelectable(option) && !isOptionDisabled(optionDisabled)) {
+            if (isSelectable(option) && !isOptionDisabled(disabled)) {
               onSelect(fullPath, isMergedLeaf);
             }
           };
@@ -152,7 +152,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
                 [`${menuItemPrefixCls}-active`]:
                   activeValue === value || activeValue === fullPathKey,
-                [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(optionDisabled),
+                [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(disabled),
                 [`${menuItemPrefixCls}-loading`]: isLoading,
               })}
               style={dropdownMenuColumnStyle}
@@ -189,7 +189,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                   prefixCls={`${prefixCls}-checkbox`}
                   checked={checked}
                   halfChecked={halfChecked}
-                  disabled={isOptionDisabled(optionDisabled) || disableCheckbox}
+                  disabled={isOptionDisabled(disabled) || disableCheckbox}
                   disableCheckbox={disableCheckbox}
                   onClick={(e: React.MouseEvent<HTMLSpanElement>) => {
                     if (disableCheckbox) {
