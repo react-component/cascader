@@ -37,6 +37,7 @@ export type PickType =
   | 'direction'
   | 'notFoundContent'
   | 'defaultActiveKey';
+  | 'disabled';
 
 export type PanelProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -70,6 +71,7 @@ export default function Panel<
     direction,
     notFoundContent = 'Not Found',
     defaultActiveKey
+    disabled,
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -203,6 +205,7 @@ export default function Panel<
             open
             direction={direction}
             defaultActiveKey={defaultActiveKey}
+            disabled={disabled}
           />
         )}
       </div>

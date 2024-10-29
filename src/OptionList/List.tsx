@@ -21,11 +21,28 @@ import useKeyboard from './useKeyboard';
 
 export type RawOptionListProps = Pick<
   ReturnType<typeof useBaseProps>,
-  'prefixCls' | 'multiple' | 'searchValue' | 'toggleOpen' | 'notFoundContent' | 'direction' | 'open'
+  | 'prefixCls'
+  | 'multiple'
+  | 'searchValue'
+  | 'toggleOpen'
+  | 'notFoundContent'
+  | 'direction'
+  | 'open'
+  | 'disabled'
 > & { defaultActiveKey?: React.Key[]; };
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
-  const { prefixCls, multiple, searchValue, toggleOpen, notFoundContent, direction, open, defaultActiveKey } = props;
+  const {
+    prefixCls,
+    multiple,
+    searchValue,
+    toggleOpen,
+    notFoundContent,
+    direction,
+    open,
+    disabled,
+    defaultActiveKey,
+  } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const rtl = direction === 'rtl';
@@ -100,10 +117,14 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   };
 
   const isSelectable = (option: DefaultOptionType) => {
-    const { disabled } = option;
+    if (disabled) {
+      return false;
+    }
 
+    const { disabled: optionDisabled } = option;
     const isMergedLeaf = isLeaf(option, fieldNames);
-    return !disabled && (isMergedLeaf || changeOnSelect || multiple);
+
+    return !optionDisabled && (isMergedLeaf || changeOnSelect || multiple);
   };
 
   const onPathSelect = (valuePath: SingleValueType, leaf: boolean, fromKeyboard = false) => {
