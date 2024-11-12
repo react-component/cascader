@@ -119,6 +119,10 @@ interface BaseCascaderProps<
   // Icon
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
+
+  virtual?: boolean;
+  listHeight?: number;
+  listItemHeight?: number;
 }
 
 export interface FieldNames<
@@ -232,6 +236,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     dropdownMatchSelectWidth = false,
     showCheckedStrategy = SHOW_PARENT,
     optionRender,
+    virtual = true,
+    listHeight = 170,
+    listItemHeight = 28,
     ...restProps
   } = props;
 
@@ -407,6 +414,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       loadingIcon,
       dropdownMenuColumnStyle,
       optionRender,
+      virtual,
+      listHeight,
+      listItemHeight,
     }),
     [
       mergedOptions,
@@ -424,6 +434,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       loadingIcon,
       dropdownMenuColumnStyle,
       optionRender,
+      virtual,
+      listHeight,
+      listItemHeight,
     ],
   );
 
