@@ -99,7 +99,6 @@ export default () => {
           setValue2(nextValue);
         }}
         disabled={disabled}
-        defaultActiveKey={['bj', 'haidian']}
       />
 
       <Cascader.Panel options={addressOptions} disabled={disabled} direction="rtl" />
