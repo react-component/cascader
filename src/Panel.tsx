@@ -70,9 +70,8 @@ export default function Panel<
     loadingIcon,
     direction,
     notFoundContent = 'Not Found',
-    defaultActiveKey
+    defaultActiveKey,
     disabled,
-    defaultActiveKey
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -207,7 +206,6 @@ export default function Panel<
             direction={direction}
             defaultActiveKey={defaultActiveKey}
             disabled={disabled}
-            defaultActiveKey={defaultActiveKey}
           />
         )}
       </div>
