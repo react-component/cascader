@@ -71,7 +71,7 @@ export default function Panel<
     direction,
     notFoundContent = 'Not Found',
     disabled,
-    defaultActiveValueCells
+    defaultActiveKey,
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
