@@ -57,6 +57,7 @@ export interface ShowSearchType<
     inputValue: string,
     fieldNames: FieldNames<OptionType, ValueField>,
   ) => number;
+  displayInInput?: boolean;
   matchInputWidth?: boolean;
   limit?: number | false;
 }

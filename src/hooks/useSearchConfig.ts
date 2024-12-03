@@ -12,6 +12,7 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
     let searchConfig: ShowSearchType = {
       matchInputWidth: true,
       limit: 50,
+      displayInInput: true,
     };
 
     if (showSearch && typeof showSearch === 'object') {
@@ -29,6 +30,6 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
       }
     }
 
-    return [true, searchConfig];
+    return [!!searchConfig.displayInInput, searchConfig];
   }, [showSearch]);
 }
