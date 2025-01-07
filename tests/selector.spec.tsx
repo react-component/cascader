@@ -5,10 +5,10 @@ import Cascader from '../src';
 import { addressOptions } from './demoOptions';
 
 // Mock `useActive` hook
-jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean) => {
+jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean, defaultActiveKey: React.Key[]) => {
   // Pass to origin hooks
   const originHook = jest.requireActual('../src/OptionList/useActive').default;
-  const [activeValueCells, setActiveValueCells] = originHook(multiple, open);
+  const [activeValueCells, setActiveValueCells] = originHook(multiple, open, defaultActiveKey);
 
   (global as any).activeValueCells = activeValueCells;
 
