@@ -77,7 +77,7 @@
     "prettier": "^3.1.0",
     "rc-field-form": "^1.44.0",
     "rc-test": "^7.0.14",
-    "react": "^16.0.0",
+    "react": "^19.0.0",
     "react-dom": "^16.0.0",
     "typescript": "^5.3.2"
   },
