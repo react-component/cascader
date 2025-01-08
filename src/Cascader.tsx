@@ -99,22 +99,18 @@ interface BaseCascaderProps<
   loadData?: (selectOptions: OptionType[]) => void;
 
   // Open
-  /** @deprecated Use `open` instead */
-  popupVisible?: boolean;
 
-  /** @deprecated Use `dropdownClassName` instead */
-  popupClassName?: string;
+  /** @deprecated Use `popupClassName` instead */
   dropdownClassName?: string;
+  popupClassName?: string;
   dropdownMenuColumnStyle?: React.CSSProperties;
 
-  /** @deprecated Use `placement` instead */
-  popupPlacement?: Placement;
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
 
-  /** @deprecated Use `onDropdownVisibleChange` instead */
-  onPopupVisibleChange?: (open: boolean) => void;
+  /** @deprecated Use `onPopupVisibleChange` instead */
   onDropdownVisibleChange?: (open: boolean) => void;
+  onPopupVisibleChange?: (open: boolean) => void;
 
   // Icon
   expandIcon?: React.ReactNode;
@@ -209,7 +205,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     loadData,
 
     // Open
-    popupVisible,
     open,
 
     popupClassName,
@@ -217,7 +212,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     dropdownMenuColumnStyle,
     dropdownStyle: customDropdownStyle,
 
-    popupPlacement,
     placement,
 
     onDropdownVisibleChange,
@@ -371,12 +365,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onInternalSelect(valueCells);
   };
 
-  // ============================ Open ============================
-  const mergedOpen = open !== undefined ? open : popupVisible;
-
   const mergedDropdownClassName = dropdownClassName || popupClassName;
-
-  const mergedPlacement = placement || popupPlacement;
 
   const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
     onDropdownVisibleChange?.(nextVisible);
@@ -468,9 +457,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         OptionList={OptionList}
         emptyOptions={emptyOptions}
         // Open
-        open={mergedOpen}
+        open={open}
         dropdownClassName={mergedDropdownClassName}
-        placement={mergedPlacement}
+        placement={placement}
         onDropdownVisibleChange={onInternalDropdownVisibleChange}
         // Children
         getRawInputElement={() => children as React.ReactElement}
