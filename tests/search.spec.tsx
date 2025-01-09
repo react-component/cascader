@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import React from 'react';
+import React, { useState } from 'react';
 import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
 import type { ReactWrapper } from './enzyme';
@@ -72,6 +72,49 @@ describe('Cascader.Search', () => {
     wrapper.clickOption(0, 0);
     expect(onChange).toHaveBeenCalledWith(['bamboo', 'little', 'fish'], expect.anything());
   });
+
+  it('externally controlled search',() => {
+    const onSearch = jest.fn();
+    const onChange = jest.fn();
+
+    function doExternalSearch(wrapper: ReactWrapper, search: string) {
+      wrapper.find('input[data-test="external-search"]').simulate('change', {
+        target: {
+          value: search,
+        },
+      });
+    }
+
+
+    const ExternallyControlledSearch = () => {
+      const [searchValue,setSearchValue] = useState('')
+      return (
+        <>
+          <input data-test="external-search" value={searchValue} onChange={e => setSearchValue(e.target.value)} />
+          <Cascader options={options} searchValue={searchValue} onChange={onChange} onSearch={onSearch} open showSearch={{displayInInput:false}} />,
+        </>      
+      );
+    }
+    const wrapper = mount(<ExternallyControlledSearch/>)
+
+    // Leaf
+    doExternalSearch(wrapper, 'toy');
+    let itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+
+    // Parent
+    doExternalSearch(wrapper, 'Label Little');
+    itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+
+    // Change
+    wrapper.clickOption(0, 0);
+    expect(onChange).toHaveBeenCalledWith(['bamboo', 'little', 'fish'], expect.anything());
+  })
 
   it('changeOnSelect', () => {
     const onChange = jest.fn();
