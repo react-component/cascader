@@ -2,20 +2,15 @@ import warning from 'rc-util/lib/warning';
 import type { DefaultOptionType, FieldNames, InternalCascaderProps } from '../Cascader';
 
 function warningProps(props: InternalCascaderProps) {
-  const { onPopupVisibleChange, popupVisible, popupClassName, popupPlacement } = props;
+  const { onDropdownVisibleChange, dropdownClassName } = props;
 
   warning(
-    !onPopupVisibleChange,
-    '`onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
-  );
-  warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
-  warning(
-    popupClassName === undefined,
-    '`popupClassName` is deprecated. Please use `dropdownClassName` instead.',
+    !onDropdownVisibleChange,
+    '`onDropdownVisibleChange` is deprecated. Please use `onPopupVisibleChange` instead.',
   );
   warning(
-    popupPlacement === undefined,
-    '`popupPlacement` is deprecated. Please use `placement` instead.',
+    dropdownClassName === undefined,
+    '`dropdownClassName` is deprecated. Please use `popupClassName` instead.',
   );
 }
 

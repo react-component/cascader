@@ -514,30 +514,24 @@ describe('Cascader.Basic', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
-  it('warning popupVisible & onPopupVisibleChange & popupClassName', () => {
+  it('onDropdownVisibleChange & dropdownClassName', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const onPopupVisibleChange = jest.fn();
+    const onDropdownVisibleChange = jest.fn();
     const wrapper = mount(
       <Cascader
-        popupVisible
-        onPopupVisibleChange={onPopupVisibleChange}
-        popupClassName="legacy-cls"
-        popupPlacement="topRight"
+        open
+        onDropdownVisibleChange={onDropdownVisibleChange}
+        dropdownClassName="legacy-cls"
+        placement="topRight"
       />,
     );
 
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
+      'Warning: `onDropdownVisibleChange` is deprecated. Please use `onPopupVisibleChange` instead.',
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupVisible` is deprecated. Please use `open` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupClassName` is deprecated. Please use `dropdownClassName` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupPlacement` is deprecated. Please use `placement` instead.',
+      'Warning: `dropdownClassName` is deprecated. Please use `popupClassName` instead.',
     );
 
     expect(wrapper.exists('.legacy-cls')).toBeTruthy();
@@ -610,7 +604,7 @@ describe('Cascader.Basic', () => {
       },
     ];
     const wrapper = mount(
-      <Cascader options={options} popupVisible>
+      <Cascader options={options} open>
         <input readOnly />
       </Cascader>,
     );
@@ -622,7 +616,7 @@ describe('Cascader.Basic', () => {
     const wrapper = mount(
       <Cascader
         options={addressOptions}
-        popupVisible
+        open
         dropdownRender={menus => (
           <div className="custom-dropdown">
             {menus}
