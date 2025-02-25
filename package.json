@@ -56,7 +56,7 @@
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^29.4.0",
     "@types/react": "^17.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react-dom": "^19.0.4",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^4.0.0",
     "array-tree-filter": "^3.0.2",
