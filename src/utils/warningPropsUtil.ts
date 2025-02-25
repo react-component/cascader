@@ -1,4 +1,4 @@
-import warning from 'rc-util/lib/warning';
+import warning from '@rc-component/util/lib/warning';
 import type { DefaultOptionType, FieldNames, InternalCascaderProps } from '../Cascader';
 
 function warningProps(props: InternalCascaderProps) {

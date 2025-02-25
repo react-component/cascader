@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import classNames from 'classnames';
-import type { useBaseProps } from 'rc-select';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import type { useBaseProps } from '@rc-component/select';
+import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';

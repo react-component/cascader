@@ -54,7 +54,7 @@ $ npm install rc-cascader --save
 
 ```js
 import React from 'react';
-import Cascader from 'rc-cascader';
+import Cascader from '@rc-component/cascader';
 
 const options = [{
   'label': '福建',

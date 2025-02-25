@@ -1,5 +1,5 @@
-import { useBaseProps } from 'rc-select';
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
+import { useBaseProps } from '@rc-component/select';
+import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import * as React from 'react';
 import RawOptionList from './List';
 

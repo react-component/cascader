@@ -1,10 +1,10 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
-import { BaseSelect } from 'rc-select';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
-import useId from 'rc-select/lib/hooks/useId';
-import useEvent from 'rc-util/lib/hooks/useEvent';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
+import { BaseSelect } from '@rc-component/select';
+import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
+import useId from '@rc-component/select/lib/hooks/useId';
+import useEvent from '@rc-component/util/lib/hooks/useEvent';
+import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';

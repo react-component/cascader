@@ -1,5 +1,5 @@
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
