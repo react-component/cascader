@@ -1,5 +1,5 @@
-import type { RefOptionListProps } from 'rc-select/lib/OptionList';
-import KeyCode from 'rc-util/lib/KeyCode';
+import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 import * as React from 'react';
 import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';

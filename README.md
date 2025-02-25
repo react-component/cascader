@@ -54,7 +54,7 @@ $ npm install rc-cascader --save
 
 ```js
 import React from 'react';
-import Cascader from 'rc-cascader';
+import Cascader from '@rc-component/cascader';
 
 const options = [{
   'label': '福建',
@@ -169,7 +169,7 @@ React.render(
       <td>visibility of popup overlay</td>
     </tr>
     <tr>
-      <td>onDropdownVisibleChange</td>
+      <td>onPopupVisibleChange</td>
       <td>Function(visible)</td>
       <td></td>
       <td>callback when popup overlay's visibility changed</td>
@@ -187,7 +187,7 @@ React.render(
       <td>prefix className of popup overlay</td>
     </tr>
     <tr>
-      <td>dropdownClassName</td>
+      <td>popupClassName</td>
       <td>String</td>
       <td></td>
       <td>additional className of popup overlay</td>

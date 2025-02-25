@@ -1,10 +1,10 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from 'rc-select';
-import { BaseSelect } from 'rc-select';
-import type { DisplayValueType, Placement } from 'rc-select/lib/BaseSelect';
-import useId from 'rc-select/lib/hooks/useId';
-import useEvent from 'rc-util/lib/hooks/useEvent';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
+import { BaseSelect } from '@rc-component/select';
+import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
+import useId from '@rc-component/select/lib/hooks/useId';
+import useEvent from '@rc-component/util/lib/hooks/useEvent';
+import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
@@ -102,9 +102,7 @@ interface BaseCascaderProps<
   /** @deprecated Use `open` instead */
   popupVisible?: boolean;
 
-  /** @deprecated Use `dropdownClassName` instead */
   popupClassName?: string;
-  dropdownClassName?: string;
   dropdownMenuColumnStyle?: React.CSSProperties;
 
   /** @deprecated Use `placement` instead */
@@ -112,9 +110,7 @@ interface BaseCascaderProps<
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
 
-  /** @deprecated Use `onDropdownVisibleChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
-  onDropdownVisibleChange?: (open: boolean) => void;
 
   // Icon
   expandIcon?: React.ReactNode;
@@ -213,14 +209,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     open,
 
     popupClassName,
-    dropdownClassName,
     dropdownMenuColumnStyle,
-    dropdownStyle: customDropdownStyle,
+    popupStyle: customPopupStyle,
 
     popupPlacement,
     placement,
 
-    onDropdownVisibleChange,
     onPopupVisibleChange,
 
     // Icon
@@ -229,7 +223,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     // Children
     children,
-    dropdownMatchSelectWidth = false,
+    popupMatchSelectWidth = false,
     showCheckedStrategy = SHOW_PARENT,
     optionRender,
     ...restProps
@@ -374,12 +368,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ============================ Open ============================
   const mergedOpen = open !== undefined ? open : popupVisible;
 
-  const mergedDropdownClassName = dropdownClassName || popupClassName;
 
   const mergedPlacement = placement || popupPlacement;
 
-  const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
-    onDropdownVisibleChange?.(nextVisible);
+  const onInternalPopupVisibleChange = (nextVisible: boolean) => {
     onPopupVisibleChange?.(nextVisible);
   };
 
@@ -432,7 +424,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ==============================================================
   const emptyOptions = !(mergedSearchValue ? searchOptions : mergedOptions).length;
 
-  const dropdownStyle: React.CSSProperties =
+  const popupStyle: React.CSSProperties =
     // Search to match width
     (mergedSearchValue && searchConfig.matchInputWidth) ||
     // Empty keep the width
@@ -451,10 +443,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         id={mergedId}
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
-        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
-        dropdownStyle={{
-          ...dropdownStyle,
-          ...customDropdownStyle,
+        popupMatchSelectWidth={popupMatchSelectWidth}
+        popupStyle={{
+          ...popupStyle,
+          ...customPopupStyle,
         }}
         // Value
         displayValues={displayValues}
@@ -469,9 +461,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         emptyOptions={emptyOptions}
         // Open
         open={mergedOpen}
-        dropdownClassName={mergedDropdownClassName}
+        popupClassName={popupClassName}
         placement={mergedPlacement}
-        onDropdownVisibleChange={onInternalDropdownVisibleChange}
+        onPopupVisibleChange={onInternalPopupVisibleChange}
         // Children
         getRawInputElement={() => children as React.ReactElement}
       />

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEvent, useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from '@rc-component/util';
 import * as React from 'react';
 import type {
   CascaderProps,

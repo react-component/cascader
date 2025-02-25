@@ -1,5 +1,5 @@
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
@@ -528,13 +528,7 @@ describe('Cascader.Basic', () => {
     );
 
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `onPopupVisibleChange` is deprecated. Please use `onDropdownVisibleChange` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `popupVisible` is deprecated. Please use `open` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupClassName` is deprecated. Please use `dropdownClassName` instead.',
     );
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `popupPlacement` is deprecated. Please use `placement` instead.',
@@ -623,7 +617,7 @@ describe('Cascader.Basic', () => {
       <Cascader
         options={addressOptions}
         popupVisible
-        dropdownRender={menus => (
+        popupRender={menus => (
           <div className="custom-dropdown">
             {menus}
             <hr />
@@ -1108,7 +1102,7 @@ describe('Cascader.Basic', () => {
   });
 
   it('support custom cascader', () => {
-    const wrapper = mount(<Cascader dropdownStyle={{ zIndex: 999 }} open />);
+    const wrapper = mount(<Cascader popupStyle={{ zIndex: 999 }} open />);
     expect(wrapper.find('.rc-cascader-dropdown').props().style?.zIndex).toBe(999);
   });
 
