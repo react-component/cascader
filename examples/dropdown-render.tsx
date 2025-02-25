@@ -70,7 +70,7 @@ const Demo = () => {
     <Cascader
       options={addressOptions}
       onChange={onChange}
-      dropdownRender={menus => (
+      popupRender={menus => (
         <div>
           {menus}
           <hr />
