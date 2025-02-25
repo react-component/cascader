@@ -155,6 +155,7 @@ export interface CascaderProps<
     value: GetValueType<OptionType, ValueField, Multiple>,
     selectOptions: OptionType[],
   ) => void;
+  defaultActiveKey?: React.Key[];
 }
 
 export type SingleValueType = (string | number)[];
@@ -171,6 +172,7 @@ export type InternalCascaderProps = Omit<CascaderProps, 'onChange' | 'value' | '
     value: InternalValueType,
     selectOptions: BaseOptionType[] | BaseOptionType[][],
   ) => void;
+  defaultActiveKey?: React.Key[];
 };
 
 export type CascaderRef = Omit<BaseSelectRef, 'scrollTo'>;

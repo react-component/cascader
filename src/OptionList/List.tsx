@@ -29,7 +29,7 @@ export type RawOptionListProps = Pick<
   | 'direction'
   | 'open'
   | 'disabled'
->;
+> & { defaultActiveKey?: React.Key[]; };
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
   const {
@@ -41,6 +41,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     direction,
     open,
     disabled,
+    defaultActiveKey,
   } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -105,7 +106,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const halfCheckedSet = React.useMemo(() => new Set(toPathKeys(halfValues)), [halfValues]);
 
   // ====================== Accessibility =======================
-  const [activeValueCells, setActiveValueCells] = useActive(multiple, open);
+  const [activeValueCells, setActiveValueCells] = useActive(multiple, open, defaultActiveKey);
 
   // =========================== Path ===========================
   const onPathOpen = (nextValueCells: React.Key[]) => {
