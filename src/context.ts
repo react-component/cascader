@@ -15,12 +15,12 @@ export interface CascaderContextProps {
   onSelect: (valuePath: SingleValueType) => void;
   checkable?: boolean | React.ReactNode;
   searchOptions: DefaultOptionType[];
-  dropdownPrefixCls?: string;
+  popupPrefixCls?: string;
   loadData?: (selectOptions: DefaultOptionType[]) => void;
   expandTrigger?: 'hover' | 'click';
   expandIcon?: React.ReactNode;
   loadingIcon?: React.ReactNode;
-  dropdownMenuColumnStyle?: React.CSSProperties;
+  popupMenuColumnStyle?: React.CSSProperties;
   optionRender?: CascaderProps['optionRender'];
 }
 

@@ -514,28 +514,20 @@ describe('Cascader.Basic', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
-  it('warning popupVisible & onPopupVisibleChange & popupClassName', () => {
+  it('warning onPopupVisibleChange & popupClassName', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const onPopupVisibleChange = jest.fn();
     const wrapper = mount(
       <Cascader
-        popupVisible
+        open
         onPopupVisibleChange={onPopupVisibleChange}
         popupClassName="legacy-cls"
-        popupPlacement="topRight"
+        placement="topRight"
       />,
     );
 
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupVisible` is deprecated. Please use `open` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupPlacement` is deprecated. Please use `placement` instead.',
-    );
-
     expect(wrapper.exists('.legacy-cls')).toBeTruthy();
-    expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
 
     errorSpy.mockRestore();
   });
@@ -604,7 +596,7 @@ describe('Cascader.Basic', () => {
       },
     ];
     const wrapper = mount(
-      <Cascader options={options} popupVisible>
+      <Cascader options={options} open>
         <input readOnly />
       </Cascader>,
     );
@@ -616,7 +608,7 @@ describe('Cascader.Basic', () => {
     const wrapper = mount(
       <Cascader
         options={addressOptions}
-        popupVisible
+        open
         popupRender={menus => (
           <div className="custom-dropdown">
             {menus}
