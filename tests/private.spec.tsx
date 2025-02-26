@@ -21,7 +21,7 @@ describe('Cascader.Private', () => {
         ]}
         open
         prefixCls="bamboo"
-        dropdownPrefixCls="little"
+        popupPrefixCls="little"
       />,
     );
 

@@ -50,7 +50,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     expandTrigger,
     expandIcon,
     loadingIcon,
-    dropdownMenuColumnStyle,
+    popupMenuColumnStyle,
     optionRender,
   } = React.useContext(CascaderContext);
 
@@ -155,7 +155,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                 [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(disabled),
                 [`${menuItemPrefixCls}-loading`]: isLoading,
               })}
-              style={dropdownMenuColumnStyle}
+              style={popupMenuColumnStyle}
               role="menuitemcheckbox"
               title={title}
               aria-checked={checked}

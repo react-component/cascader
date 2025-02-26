@@ -54,12 +54,12 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     changeOnSelect,
     onSelect,
     searchOptions,
-    dropdownPrefixCls,
+    popupPrefixCls,
     loadData,
     expandTrigger,
   } = React.useContext(CascaderContext);
 
-  const mergedPrefixCls = dropdownPrefixCls || prefixCls;
+  const mergedPrefixCls = popupPrefixCls || prefixCls;
 
   // ========================= loadData =========================
   const [loadingKeys, setLoadingKeys] = React.useState<React.Key[]>([]);

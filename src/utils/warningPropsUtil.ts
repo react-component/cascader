@@ -1,15 +1,5 @@
 import warning from '@rc-component/util/lib/warning';
-import type { DefaultOptionType, FieldNames, InternalCascaderProps } from '../Cascader';
-
-function warningProps(props: InternalCascaderProps) {
-  const { popupVisible, popupPlacement } = props;
-
-  warning(popupVisible === undefined, '`popupVisible` is deprecated. Please use `open` instead.');
-  warning(
-    popupPlacement === undefined,
-    '`popupPlacement` is deprecated. Please use `placement` instead.',
-  );
-}
+import type { DefaultOptionType, FieldNames } from '../Cascader';
 
 // value in Cascader options should not be null
 export function warningNullOptions(options: DefaultOptionType[], fieldNames: FieldNames) {
@@ -35,5 +25,3 @@ export function warningNullOptions(options: DefaultOptionType[], fieldNames: Fie
     recursiveOptions(options);
   }
 }
-
-export default warningProps;
