@@ -147,6 +147,11 @@ export type GetValueType<
   ? ValueType<Required<OptionType>, ValueField>[]
   : ValueType<Required<OptionType>, ValueField>[][];
 
+export type GetOptionType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = false extends Multiple ? OptionType[] : OptionType[][];
+
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
@@ -157,7 +162,7 @@ export interface CascaderProps<
   defaultValue?: GetValueType<OptionType, ValueField, Multiple>;
   onChange?: (
     value: GetValueType<OptionType, ValueField, Multiple>,
-    selectOptions: OptionType[],
+    selectOptions: GetOptionType<OptionType, Multiple>,
   ) => void;
 }
 
