@@ -604,16 +604,16 @@ describe('Cascader.Basic', () => {
     expect(menus.render()).toMatchSnapshot();
   });
 
-  it('should render custom dropdown correctly', () => {
+  it('should render custom popup correctly', () => {
     const wrapper = mount(
       <Cascader
         options={addressOptions}
         open
         popupRender={menus => (
-          <div className="custom-dropdown">
+          <div className="custom-popup">
             {menus}
             <hr />
-            <span className="custom-dropdown-content">Hello, DropdownRender</span>
+            <span className="custom-popup-content">Hello, popupRender</span>
           </div>
         )}
       >
@@ -621,10 +621,10 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
 
-    const customDropdown = wrapper.find('.custom-dropdown');
-    expect(customDropdown.length).toBe(1);
-    const customDropdownContent = wrapper.find('.custom-dropdown-content');
-    expect(customDropdownContent.length).toBe(1);
+    const customPopup = wrapper.find('.custom-popup');
+    expect(customPopup.length).toBe(1);
+    const customPopupContent = wrapper.find('.custom-popup-content');
+    expect(customPopupContent.length).toBe(1);
     const menus = wrapper.find('.rc-cascader-dropdown');
     expect(menus.render()).toMatchSnapshot();
   });
