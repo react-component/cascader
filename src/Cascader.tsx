@@ -1,5 +1,9 @@
 import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
-import type { BaseSelectProps, BaseSelectPropsWithoutPrivate, BaseSelectRef } from '@rc-component/select';
+import type {
+  BaseSelectProps,
+  BaseSelectPropsWithoutPrivate,
+  BaseSelectRef,
+} from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
 import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
 import useId from '@rc-component/select/lib/hooks/useId';
@@ -139,6 +143,11 @@ export type GetValueType<
   ? ValueType<Required<OptionType>, ValueField>[]
   : ValueType<Required<OptionType>, ValueField>[][];
 
+export type GetOptionType<
+  OptionType extends DefaultOptionType = DefaultOptionType,
+  Multiple extends boolean | React.ReactNode = false,
+> = false extends Multiple ? OptionType[] : OptionType[][];
+
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
@@ -149,7 +158,7 @@ export interface CascaderProps<
   defaultValue?: GetValueType<OptionType, ValueField, Multiple>;
   onChange?: (
     value: GetValueType<OptionType, ValueField, Multiple>,
-    selectOptions: OptionType[],
+    selectOptions: GetOptionType<OptionType, Multiple>,
   ) => void;
 }
 
@@ -358,6 +367,11 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     const { valueCells } = info.values[0] as DisplayValueType & { valueCells: SingleValueType };
     onInternalSelect(valueCells);
   };
+
+  // ============================ Open ============================
+  const mergedOpen = open !== undefined ? open : popupVisible;
+
+  const mergedPlacement = placement || popupPlacement;
 
   const onInternalPopupVisibleChange = (nextVisible: boolean) => {
     onPopupVisibleChange?.(nextVisible);

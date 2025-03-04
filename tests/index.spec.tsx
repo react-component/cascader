@@ -856,6 +856,11 @@ describe('Cascader.Basic', () => {
     });
 
     it('multiple', () => {
+      const onTypeChange: (
+        values: string[][],
+        options: { label: React.ReactNode; value: string }[][],
+      ) => void = jest.fn();
+
       const wrapper = mount(
         <Cascader
           options={[
@@ -877,6 +882,7 @@ describe('Cascader.Basic', () => {
           ]}
           value={[['parent'], ['normal', 'child']]}
           checkable
+          onChange={onTypeChange}
         />,
       );
 
