@@ -74,7 +74,7 @@ const Demo = () => {
         <div>
           {menus}
           <hr />
-          Hey, DropdownRender, Long DropdownRender, Long DropdownRender
+          Hey, popupRender, Long popupRender, Long popupRender
         </div>
       )}
     >

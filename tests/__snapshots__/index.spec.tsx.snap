@@ -60,14 +60,14 @@ exports[`Cascader.Basic should not show title when title is falsy 1`] = `
 </ul>
 `;
 
-exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
+exports[`Cascader.Basic should render custom popup correctly 1`] = `
 <div
   class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
   style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: auto;"
 >
   <div>
     <div
-      class="custom-dropdown"
+      class="custom-popup"
     >
       <div
         class="rc-cascader-menus"
@@ -134,9 +134,9 @@ exports[`Cascader.Basic should render custom dropdown correctly 1`] = `
       </div>
       <hr />
       <span
-        class="custom-dropdown-content"
+        class="custom-popup-content"
       >
-        Hello, DropdownRender
+        Hello, popupRender
       </span>
     </div>
   </div>

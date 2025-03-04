@@ -514,28 +514,20 @@ describe('Cascader.Basic', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
-  it('warning popupVisible & onPopupVisibleChange & popupClassName', () => {
+  it('warning onPopupVisibleChange & popupClassName', () => {
     resetWarned();
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const onPopupVisibleChange = jest.fn();
     const wrapper = mount(
       <Cascader
-        popupVisible
+        open
         onPopupVisibleChange={onPopupVisibleChange}
         popupClassName="legacy-cls"
-        popupPlacement="topRight"
+        placement="topRight"
       />,
     );
 
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupVisible` is deprecated. Please use `open` instead.',
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `popupPlacement` is deprecated. Please use `placement` instead.',
-    );
-
     expect(wrapper.exists('.legacy-cls')).toBeTruthy();
-    expect(wrapper.find('Trigger').prop('popupPlacement')).toEqual('topRight');
 
     errorSpy.mockRestore();
   });
@@ -604,7 +596,7 @@ describe('Cascader.Basic', () => {
       },
     ];
     const wrapper = mount(
-      <Cascader options={options} popupVisible>
+      <Cascader options={options} open>
         <input readOnly />
       </Cascader>,
     );
@@ -612,16 +604,16 @@ describe('Cascader.Basic', () => {
     expect(menus.render()).toMatchSnapshot();
   });
 
-  it('should render custom dropdown correctly', () => {
+  it('should render custom popup correctly', () => {
     const wrapper = mount(
       <Cascader
         options={addressOptions}
-        popupVisible
+        open
         popupRender={menus => (
-          <div className="custom-dropdown">
+          <div className="custom-popup">
             {menus}
             <hr />
-            <span className="custom-dropdown-content">Hello, DropdownRender</span>
+            <span className="custom-popup-content">Hello, popupRender</span>
           </div>
         )}
       >
@@ -629,10 +621,10 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
 
-    const customDropdown = wrapper.find('.custom-dropdown');
-    expect(customDropdown.length).toBe(1);
-    const customDropdownContent = wrapper.find('.custom-dropdown-content');
-    expect(customDropdownContent.length).toBe(1);
+    const customPopup = wrapper.find('.custom-popup');
+    expect(customPopup.length).toBe(1);
+    const customPopupContent = wrapper.find('.custom-popup-content');
+    expect(customPopupContent.length).toBe(1);
     const menus = wrapper.find('.rc-cascader-dropdown');
     expect(menus.render()).toMatchSnapshot();
   });
