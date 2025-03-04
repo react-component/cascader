@@ -368,11 +368,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onInternalSelect(valueCells);
   };
 
-  // ============================ Open ============================
-  const mergedOpen = open !== undefined ? open : popupVisible;
-
-  const mergedPlacement = placement || popupPlacement;
-
   const onInternalPopupVisibleChange = (nextVisible: boolean) => {
     onPopupVisibleChange?.(nextVisible);
   };
