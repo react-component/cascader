@@ -22,7 +22,7 @@ export default function useOptions(
       const keyPathEntities = getPathKeyEntities();
 
       return pathKeys.map(pathKey => {
-        const { nodes } = keyPathEntities[pathKey];
+        const { nodes } = keyPathEntities[pathKey as string];
 
         return nodes.map(node => (node as Record<string, any>)[mergedFieldNames.value]);
       });
