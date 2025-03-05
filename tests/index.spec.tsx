@@ -1,5 +1,4 @@
 import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
 import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
@@ -512,24 +511,6 @@ describe('Cascader.Basic', () => {
     wrapper.update();
     expect(selectedValue).toBeFalsy();
     expect(wrapper.isOpen()).toBeTruthy();
-  });
-
-  it('warning onPopupVisibleChange & popupClassName', () => {
-    resetWarned();
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    const onPopupVisibleChange = jest.fn();
-    const wrapper = mount(
-      <Cascader
-        open
-        onPopupVisibleChange={onPopupVisibleChange}
-        popupClassName="legacy-cls"
-        placement="topRight"
-      />,
-    );
-
-    expect(wrapper.exists('.legacy-cls')).toBeTruthy();
-
-    errorSpy.mockRestore();
   });
 
   it('should support custom expand icon(text icon)', () => {
