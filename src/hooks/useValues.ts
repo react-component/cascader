@@ -1,7 +1,7 @@
 import type { DataEntity } from '@rc-component/tree/lib/interface';
 import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import * as React from 'react';
-import type { SingleValueType } from '../Cascader';
+import type { LegacyKey, SingleValueType } from '../Cascader';
 import { toPathKeys } from '../utils/commonUtil';
 import type { GetMissValues } from './useMissingValues';
 
@@ -9,7 +9,7 @@ export default function useValues(
   multiple: boolean,
   rawValues: SingleValueType[],
   getPathKeyEntities: () => Record<string, DataEntity>,
-  getValueByKeyPath: (pathKeys: React.Key[]) => SingleValueType[],
+  getValueByKeyPath: (pathKeys: LegacyKey[]) => SingleValueType[],
   getMissingValues: GetMissValues,
 ): [
   checkedValues: SingleValueType[],

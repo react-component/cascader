@@ -161,6 +161,9 @@ export interface CascaderProps<
 }
 
 export type SingleValueType = (string | number)[];
+
+export type LegacyKey = string | number;
+
 export type InternalValueType = SingleValueType | SingleValueType[];
 
 export interface InternalFieldNames extends Required<FieldNames> {

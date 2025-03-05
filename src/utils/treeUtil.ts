@@ -3,12 +3,13 @@ import type {
   DefaultOptionType,
   InternalFieldNames,
   ShowCheckedStrategy,
+  LegacyKey,
 } from '../Cascader';
 import type { GetEntities } from '../hooks/useEntities';
 import { SHOW_CHILD } from './commonUtil';
 
 export function formatStrategyValues(
-  pathKeys: React.Key[],
+  pathKeys: LegacyKey[],
   getKeyPathEntities: GetEntities,
   showCheckedStrategy?: ShowCheckedStrategy,
 ) {

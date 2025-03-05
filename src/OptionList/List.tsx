@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import type { useBaseProps } from '@rc-component/select';
 import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import * as React from 'react';
-import type { DefaultOptionType, SingleValueType } from '../Cascader';
+import type { DefaultOptionType, LegacyKey, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import {
   getFullPathKeys,
@@ -62,9 +62,9 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const mergedPrefixCls = popupPrefixCls || prefixCls;
 
   // ========================= loadData =========================
-  const [loadingKeys, setLoadingKeys] = React.useState<React.Key[]>([]);
+  const [loadingKeys, setLoadingKeys] = React.useState<LegacyKey[]>([]);
 
-  const internalLoadData = (valueCells: React.Key[]) => {
+  const internalLoadData = (valueCells: LegacyKey[]) => {
     // Do not load when search
     if (!loadData || searchValue) {
       return;
@@ -108,7 +108,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   const [activeValueCells, setActiveValueCells] = useActive(multiple, open);
 
   // =========================== Path ===========================
-  const onPathOpen = (nextValueCells: React.Key[]) => {
+  const onPathOpen = (nextValueCells: LegacyKey[]) => {
     setActiveValueCells(nextValueCells);
 
     // Trigger loadData

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DefaultOptionType } from '..';
-import type { InternalFieldNames, SingleValueType } from '../Cascader';
+import type { InternalFieldNames, SingleValueType, LegacyKey } from '../Cascader';
 import useEntities, { type GetEntities } from './useEntities';
 
 export default function useOptions(
@@ -9,7 +9,7 @@ export default function useOptions(
 ): [
   mergedOptions: DefaultOptionType[],
   getPathKeyEntities: GetEntities,
-  getValueByKeyPath: (pathKeys: React.Key[]) => SingleValueType[],
+  getValueByKeyPath: (pathKeys: LegacyKey[]) => SingleValueType[],
 ] {
   const mergedOptions = React.useMemo(() => options || [], [options]);
 
@@ -18,7 +18,7 @@ export default function useOptions(
 
   /** Convert path key back to value format */
   const getValueByKeyPath = React.useCallback(
-    (pathKeys: React.Key[]): SingleValueType[] => {
+    (pathKeys: LegacyKey[]): SingleValueType[] => {
       const keyPathEntities = getPathKeyEntities();
 
       return pathKeys.map(pathKey => {

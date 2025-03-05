@@ -1,5 +1,5 @@
 import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
-import type { InternalValueType, ShowCheckedStrategy, SingleValueType } from '../Cascader';
+import type { InternalValueType, LegacyKey, ShowCheckedStrategy, SingleValueType } from '../Cascader';
 import { toPathKey, toPathKeys } from '../utils/commonUtil';
 import { formatStrategyValues } from '../utils/treeUtil';
 import type { GetEntities } from './useEntities';
@@ -11,7 +11,7 @@ export default function useSelect(
   halfCheckedValues: SingleValueType[],
   missingCheckedValues: SingleValueType[],
   getPathKeyEntities: GetEntities,
-  getValueByKeyPath: (pathKeys: React.Key[]) => SingleValueType[],
+  getValueByKeyPath: (pathKeys: LegacyKey[]) => SingleValueType[],
   showCheckedStrategy?: ShowCheckedStrategy,
 ) {
   return (valuePath: SingleValueType) => {
@@ -46,7 +46,7 @@ export default function useSelect(
         const pathKeyEntities = getPathKeyEntities();
 
         // Conduction by selected or not
-        let checkedKeys: React.Key[];
+        let checkedKeys: LegacyKey[];
         if (existInChecked) {
           ({ checkedKeys } = conductCheck(
             nextRawCheckedKeys,
