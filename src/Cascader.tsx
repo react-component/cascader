@@ -160,7 +160,7 @@ export interface CascaderProps<
   ) => void;
 }
 
-export type SingleValueType = React.Key[];
+export type SingleValueType = (string | number)[];
 export type InternalValueType = SingleValueType | SingleValueType[];
 
 export interface InternalFieldNames extends Required<FieldNames> {
