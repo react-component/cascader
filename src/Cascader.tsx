@@ -103,8 +103,6 @@ interface BaseCascaderProps<
   loadData?: (selectOptions: OptionType[]) => void;
 
   popupClassName?: string;
-  /** @deprecated Use `popupMenuColumnStyle` instead */
-  dropdownMenuColumnStyle?: React.CSSProperties;
   popupMenuColumnStyle?: React.CSSProperties;
 
   placement?: Placement;
@@ -212,7 +210,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     open,
 
     popupClassName,
-    dropdownMenuColumnStyle,
     popupMenuColumnStyle,
     popupStyle: customPopupStyle,
 
@@ -372,7 +369,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onPopupVisibleChange?.(nextVisible);
   };
 
-  const mergedPopupMenuColumnStyle = popupMenuColumnStyle || dropdownMenuColumnStyle;
 
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
@@ -395,7 +391,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandTrigger,
       expandIcon,
       loadingIcon,
-      popupMenuColumnStyle: mergedPopupMenuColumnStyle,
+      popupMenuColumnStyle,
       optionRender,
     }),
     [
@@ -412,7 +408,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       expandTrigger,
       expandIcon,
       loadingIcon,
-      mergedPopupMenuColumnStyle,
+      popupMenuColumnStyle,
       optionRender,
     ],
   );
