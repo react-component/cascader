@@ -16,7 +16,7 @@ export function formatStrategyValues(
   const keyPathEntities = getKeyPathEntities();
 
   return pathKeys.filter(key => {
-    const entity = keyPathEntities[key as string];
+    const entity = keyPathEntities[key];
     const parent = entity ? entity.parent : null;
     const children = entity ? entity.children : null;
 
