@@ -1,5 +1,5 @@
-import type { DataEntity } from 'rc-tree/lib/interface';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import type { DataEntity } from '@rc-component/tree/lib/interface';
+import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import * as React from 'react';
 import type { SingleValueType } from '../Cascader';
 import { toPathKeys } from '../utils/commonUtil';

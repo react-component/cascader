@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "@rc-component/select": "~1.0.0",
+    "@rc-component/tree": "~1.0.0",
     "@rc-component/util": "^1.2.1",
-    "classnames": "^2.3.1",
-    "rc-tree": "~5.13.1"
+    "classnames": "^2.3.1"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",

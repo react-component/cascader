@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { convertDataToEntities } from 'rc-tree/lib/utils/treeUtil';
+import { convertDataToEntities } from '@rc-component/tree/lib/utils/treeUtil';
 import type { DefaultOptionType, InternalFieldNames } from '../Cascader';
-import type { DataEntity, DataNode } from 'rc-tree/lib/interface';
+import type { DataEntity, DataNode } from '@rc-component/tree/lib/interface';
 import { VALUE_SPLIT } from '../utils/commonUtil';
 
 export interface OptionsInfo {

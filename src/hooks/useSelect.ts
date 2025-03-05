@@ -1,4 +1,4 @@
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import type { InternalValueType, ShowCheckedStrategy, SingleValueType } from '../Cascader';
 import { toPathKey, toPathKeys } from '../utils/commonUtil';
 import { formatStrategyValues } from '../utils/treeUtil';
