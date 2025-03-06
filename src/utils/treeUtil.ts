@@ -26,8 +26,8 @@ export function formatStrategyValues(
     }
 
     return showCheckedStrategy === SHOW_CHILD
-      ? !(children && children.some(child => child.key && valueSet.has(child.key)))
-      : !(parent && !parent.node.disabled && valueSet.has(parent.key));
+      ? !(children && children.some(child => child.key && valueSet.has(child.key as LegacyKey)))
+      : !(parent && !parent.node.disabled && valueSet.has(parent.key as LegacyKey));
   });
 }
 

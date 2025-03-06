@@ -1,5 +1,10 @@
 import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
-import type { InternalValueType, LegacyKey, ShowCheckedStrategy, SingleValueType } from '../Cascader';
+import type {
+  InternalValueType,
+  LegacyKey,
+  ShowCheckedStrategy,
+  SingleValueType,
+} from '../Cascader';
 import { toPathKey, toPathKeys } from '../utils/commonUtil';
 import { formatStrategyValues } from '../utils/treeUtil';
 import type { GetEntities } from './useEntities';
@@ -52,9 +57,11 @@ export default function useSelect(
             nextRawCheckedKeys,
             { checked: false, halfCheckedKeys: halfCheckedPathKeys },
             pathKeyEntities,
-          ));
+          ) as { checkedKeys: LegacyKey[] });
         } else {
-          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities));
+          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities) as {
+            checkedKeys: LegacyKey[];
+          });
         }
 
         // Roll up to parent level keys

@@ -27,7 +27,10 @@ export default function useValues(
     const keyPathValues = toPathKeys(existValues);
     const keyPathEntities = getPathKeyEntities();
 
-    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities);
+    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities) as {
+      checkedKeys: LegacyKey[];
+      halfCheckedKeys: LegacyKey[];
+    };
 
     // Convert key back to value cells
     return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];
