@@ -28,7 +28,7 @@ import {
   toRawValues,
 } from './utils/commonUtil';
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
-import warningProps, { warningNullOptions } from './utils/warningPropsUtil';
+import { warningNullOptions } from './utils/warningPropsUtil';
 
 export interface BaseOptionType {
   disabled?: boolean;
@@ -71,9 +71,9 @@ interface BaseCascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
 > extends Omit<
-    BaseSelectPropsWithoutPrivate,
-    'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
-  > {
+  BaseSelectPropsWithoutPrivate,
+  'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
+> {
   // MISC
   id?: string;
   prefixCls?: string;
@@ -99,18 +99,12 @@ interface BaseCascaderProps<
   // Options
   options?: OptionType[];
   /** @private Internal usage. Do not use in your production. */
-  dropdownPrefixCls?: string;
+  popupPrefixCls?: string;
   loadData?: (selectOptions: OptionType[]) => void;
 
-  // Open
-  /** @deprecated Use `open` instead */
-  popupVisible?: boolean;
-
   popupClassName?: string;
-  dropdownMenuColumnStyle?: React.CSSProperties;
+  popupMenuColumnStyle?: React.CSSProperties;
 
-  /** @deprecated Use `placement` instead */
-  popupPlacement?: Placement;
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
 
@@ -135,8 +129,8 @@ export type ValueType<
   ValueField extends keyof OptionType = keyof OptionType,
 > = keyof OptionType extends ValueField
   ? unknown extends OptionType['value']
-    ? OptionType[ValueField]
-    : OptionType['value']
+  ? OptionType[ValueField]
+  : OptionType['value']
   : OptionType[ValueField];
 
 export type GetValueType<
@@ -167,6 +161,9 @@ export interface CascaderProps<
 }
 
 export type SingleValueType = (string | number)[];
+
+export type LegacyKey = string | number;
+
 export type InternalValueType = SingleValueType | SingleValueType[];
 
 export interface InternalFieldNames extends Required<FieldNames> {
@@ -210,18 +207,15 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     // Options
     options,
-    dropdownPrefixCls,
+    popupPrefixCls,
     loadData,
 
-    // Open
-    popupVisible,
     open,
 
     popupClassName,
-    dropdownMenuColumnStyle,
+    popupMenuColumnStyle,
     popupStyle: customPopupStyle,
 
-    popupPlacement,
     placement,
 
     onPopupVisibleChange,
@@ -281,7 +275,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     mergedSearchValue,
     mergedOptions,
     mergedFieldNames,
-    dropdownPrefixCls || prefixCls,
+    popupPrefixCls || prefixCls,
     searchConfig,
     changeOnSelect || multiple,
   );
@@ -374,18 +368,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onInternalSelect(valueCells);
   };
 
-  // ============================ Open ============================
-  const mergedOpen = open !== undefined ? open : popupVisible;
-
-  const mergedPlacement = placement || popupPlacement;
-
   const onInternalPopupVisibleChange = (nextVisible: boolean) => {
     onPopupVisibleChange?.(nextVisible);
   };
 
+
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
-    warningProps(props);
     warningNullOptions(mergedOptions, mergedFieldNames);
   }
 
@@ -400,12 +389,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       onSelect: onInternalSelect,
       checkable,
       searchOptions,
-      dropdownPrefixCls,
+      popupPrefixCls,
       loadData,
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle,
+      popupMenuColumnStyle,
       optionRender,
     }),
     [
@@ -417,12 +406,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       onInternalSelect,
       checkable,
       searchOptions,
-      dropdownPrefixCls,
+      popupPrefixCls,
       loadData,
       expandTrigger,
       expandIcon,
       loadingIcon,
-      dropdownMenuColumnStyle,
+      popupMenuColumnStyle,
       optionRender,
     ],
   );
@@ -435,12 +424,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const popupStyle: React.CSSProperties =
     // Search to match width
     (mergedSearchValue && searchConfig.matchInputWidth) ||
-    // Empty keep the width
-    emptyOptions
+      // Empty keep the width
+      emptyOptions
       ? {}
       : {
-          minWidth: 'auto',
-        };
+        minWidth: 'auto',
+      };
 
   return (
     <CascaderContext.Provider value={cascaderContext}>
@@ -468,9 +457,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         OptionList={OptionList}
         emptyOptions={emptyOptions}
         // Open
-        open={mergedOpen}
+        open={open}
         popupClassName={popupClassName}
-        placement={mergedPlacement}
+        placement={placement}
         onPopupVisibleChange={onInternalPopupVisibleChange}
         // Children
         getRawInputElement={() => children as React.ReactElement}

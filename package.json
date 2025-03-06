@@ -33,6 +33,7 @@
     "build": "dumi build",
     "compile": "father build",
     "coverage": "father test --coverage",
+    "tsc": "bunx tsc --noEmit",
     "deploy": "UMI_ENV=gh npm run build && gh-pages -d dist",
     "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
     "now-build": "npm run build",
@@ -43,9 +44,9 @@
   },
   "dependencies": {
     "@rc-component/select": "~1.0.0",
+    "@rc-component/tree": "~1.0.0",
     "@rc-component/util": "^1.2.1",
-    "classnames": "^2.3.1",
-    "rc-tree": "~5.13.1"
+    "classnames": "^2.3.1"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",
@@ -55,8 +56,8 @@
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^29.4.0",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@types/warning": "^3.0.0",
     "@umijs/fabric": "^4.0.0",
     "array-tree-filter": "^3.0.2",

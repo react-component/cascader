@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CascaderContext from '../context';
+import { LegacyKey } from '@/Cascader';
 
 /**
  * Control the active open options path.
@@ -7,14 +8,14 @@ import CascaderContext from '../context';
 const useActive = (
   multiple?: boolean,
   open?: boolean,
-): [React.Key[], (activeValueCells: React.Key[]) => void] => {
+): [LegacyKey[], (activeValueCells: LegacyKey[]) => void] => {
   const { values } = React.useContext(CascaderContext);
 
   const firstValueCells = values[0];
 
   // Record current dropdown active options
   // This also control the open status
-  const [activeValueCells, setActiveValueCells] = React.useState<React.Key[]>([]);
+  const [activeValueCells, setActiveValueCells] = React.useState<LegacyKey[]>([]);
 
   React.useEffect(
     () => {

@@ -1,7 +1,7 @@
-import type { DataEntity } from 'rc-tree/lib/interface';
-import { conductCheck } from 'rc-tree/lib/utils/conductUtil';
+import type { DataEntity } from '@rc-component/tree/lib/interface';
+import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
 import * as React from 'react';
-import type { SingleValueType } from '../Cascader';
+import type { LegacyKey, SingleValueType } from '../Cascader';
 import { toPathKeys } from '../utils/commonUtil';
 import type { GetMissValues } from './useMissingValues';
 
@@ -9,7 +9,7 @@ export default function useValues(
   multiple: boolean,
   rawValues: SingleValueType[],
   getPathKeyEntities: () => Record<string, DataEntity>,
-  getValueByKeyPath: (pathKeys: React.Key[]) => SingleValueType[],
+  getValueByKeyPath: (pathKeys: LegacyKey[]) => SingleValueType[],
   getMissingValues: GetMissValues,
 ): [
   checkedValues: SingleValueType[],
@@ -27,7 +27,10 @@ export default function useValues(
     const keyPathValues = toPathKeys(existValues);
     const keyPathEntities = getPathKeyEntities();
 
-    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities);
+    const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities) as {
+      checkedKeys: LegacyKey[];
+      halfCheckedKeys: LegacyKey[];
+    };
 
     // Convert key back to value cells
     return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];

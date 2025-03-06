@@ -1,7 +1,7 @@
 import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import * as React from 'react';
-import type { DefaultOptionType, InternalFieldNames, SingleValueType } from '../Cascader';
+import type { DefaultOptionType, InternalFieldNames, LegacyKey, SingleValueType } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 import { getFullPathKeys, toPathKey } from '../utils/commonUtil';
 
@@ -9,8 +9,8 @@ export default (
   ref: React.Ref<RefOptionListProps>,
   options: DefaultOptionType[],
   fieldNames: InternalFieldNames,
-  activeValueCells: React.Key[],
-  setActiveValueCells: (activeValueCells: React.Key[]) => void,
+  activeValueCells: LegacyKey[],
+  setActiveValueCells: (activeValueCells: LegacyKey[]) => void,
   onKeyBoardSelect: (valueCells: SingleValueType, option: DefaultOptionType) => void,
   contextProps: {
     direction?: 'ltr' | 'rtl';
@@ -28,7 +28,7 @@ export default (
       let currentOptions = options;
 
       const mergedActiveIndexes: number[] = [];
-      const mergedActiveValueCells: React.Key[] = [];
+      const mergedActiveValueCells: LegacyKey[] = [];
 
       const len = activeValueCells.length;
 
@@ -64,7 +64,7 @@ export default (
     }, [activeValueCells, fieldNames, options]);
 
   // Update active value cells and scroll to target element
-  const internalSetActiveValueCells = (next: React.Key[]) => {
+  const internalSetActiveValueCells = (next: LegacyKey[]) => {
     setActiveValueCells(next);
   };
 

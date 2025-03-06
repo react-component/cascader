@@ -3,12 +3,13 @@ import type {
   DefaultOptionType,
   InternalFieldNames,
   ShowCheckedStrategy,
+  LegacyKey,
 } from '../Cascader';
 import type { GetEntities } from '../hooks/useEntities';
 import { SHOW_CHILD } from './commonUtil';
 
 export function formatStrategyValues(
-  pathKeys: React.Key[],
+  pathKeys: LegacyKey[],
   getKeyPathEntities: GetEntities,
   showCheckedStrategy?: ShowCheckedStrategy,
 ) {
@@ -25,8 +26,8 @@ export function formatStrategyValues(
     }
 
     return showCheckedStrategy === SHOW_CHILD
-      ? !(children && children.some(child => child.key && valueSet.has(child.key)))
-      : !(parent && !parent.node.disabled && valueSet.has(parent.key));
+      ? !(children && children.some(child => child.key && valueSet.has(child.key as LegacyKey)))
+      : !(parent && !parent.node.disabled && valueSet.has(parent.key as LegacyKey));
   });
 }
 

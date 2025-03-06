@@ -3,7 +3,7 @@ import React from 'react';
 import Cascader from '../src';
 
 describe('Cascader.Private', () => {
-  it('dropdownPrefixCls', () => {
+  it('popupPrefixCls', () => {
     const { container } = render(
       <Cascader
         defaultValue={['light', 'toy']}
@@ -21,7 +21,7 @@ describe('Cascader.Private', () => {
         ]}
         open
         prefixCls="bamboo"
-        dropdownPrefixCls="little"
+        popupPrefixCls="little"
       />,
     );
 
