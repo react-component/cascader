@@ -1023,10 +1023,9 @@ describe('Cascader.Basic', () => {
       wrapper.find(`li[data-path-key]`).at(1).simulate('click');
     });
     it('hover + search', () => {
-      let getOffesetTopTimes = 0;
       const spyElement = spyElementPrototypes(HTMLElement, {
         offsetTop: {
-          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
+          get: () => 0,
         },
         scrollTop: {
           get: () => 0,
