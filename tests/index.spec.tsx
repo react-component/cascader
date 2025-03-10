@@ -5,7 +5,8 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, act, waitFor } from '@testing-library/react';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -995,11 +996,11 @@ describe('Cascader.Basic', () => {
       wrapper.find(`li[data-path-key]`).at(0).simulate('click');
       wrapper.find(`li[data-path-key]`).at(1).simulate('click');
     });
+
     it('hover + search', () => {
-      let getOffesetTopTimes = 0;
       const spyElement = spyElementPrototypes(HTMLElement, {
         offsetTop: {
-          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
+          get: () => 0,
         },
         scrollTop: {
           get: () => 0,
@@ -1073,6 +1074,40 @@ describe('Cascader.Basic', () => {
       expect(mockScrollTo).toHaveBeenCalledTimes(0);
 
       spyElement.mockRestore();
+    });
+
+    it('should scroll into view when navigating with keyboard', () => {
+      // 渲染组件
+      const { container,rerender } = render(
+        <Cascader
+          options={Array.from({ length: 20 }).map((_, index) => ({
+            value: `item-${index}`,
+            label: `item-${index}`,
+          }))}
+          open
+          searchValue="1"
+        />,
+      );
+
+      window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
+      // 获取输入框并聚焦
+      const input = container.querySelector('input')!;
+      fireEvent.focus(input);
+
+      fireEvent.keyDown(input, { key: 'ArrowDown', keyCode: KeyCode.DOWN });
+
+      const targetElement = container.querySelector('.rc-cascader-menu-item-active')!;
+
+      const scrollSpy = jest.spyOn(targetElement, 'scrollIntoView').mockImplementation(() => null);
+
+      // 验证滚动调用
+      expect(scrollSpy).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+
+      scrollSpy.mockReset();
     });
   });
 

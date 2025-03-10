@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
-import { isLeaf, toPathKey } from '../utils/commonUtil';
+import { isLeaf, toPathKey, scrollIntoParentView } from '../utils/commonUtil';
 import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
@@ -99,6 +99,15 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
       }),
     [options, checkedSet, fieldNames, halfCheckedSet, loadingKeys, prevValuePath],
   );
+
+  React.useEffect(() => {
+    const escapedValue = String(activeValue).replace(/"/g, '\\"');
+    const selector = `[data-path-key="${escapedValue}"]`;
+    const activeElement = document.querySelector<HTMLElement>(selector);
+    if (activeElement) {
+      scrollIntoParentView(activeElement);
+    }
+  }, [activeValue]);
 
   // ============================ Render ============================
   return (
