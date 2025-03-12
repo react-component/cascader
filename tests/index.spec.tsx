@@ -6,7 +6,7 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
-import { fireEvent, render, act, waitFor } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 
 describe('Cascader.Basic', () => {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
-import { isLeaf, toPathKey, scrollIntoParentView } from '../utils/commonUtil';
+import { isLeaf, toPathKey } from '../utils/commonUtil';
 import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
