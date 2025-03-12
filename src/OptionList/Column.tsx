@@ -104,8 +104,12 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     const escapedValue = String(activeValue).replace(/"/g, '\\"');
     const selector = `[data-path-key="${escapedValue}"]`;
     const activeElement = document.querySelector<HTMLElement>(selector);
+
     if (activeElement) {
-      scrollIntoParentView(activeElement);
+      activeElement.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+      });
     }
   }, [activeValue]);
 

@@ -25,3 +25,5 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     return this;
   },
 });
+
+window.HTMLElement.prototype.scrollIntoView = jest.fn();

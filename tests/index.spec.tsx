@@ -1025,9 +1025,10 @@ describe('Cascader.Basic', () => {
     });
 
     it('hover + search', () => {
+      let getOffesetTopTimes = 0;
       const spyElement = spyElementPrototypes(HTMLElement, {
         offsetTop: {
-          get: () => 0,
+          get: () => (getOffesetTopTimes++ % 2 === 0 ? 100 : 0),
         },
         scrollTop: {
           get: () => 0,
@@ -1104,8 +1105,7 @@ describe('Cascader.Basic', () => {
     });
 
     it('should scroll into view when navigating with keyboard', () => {
-      // 渲染组件
-      const { container,rerender } = render(
+      const { container, rerender } = render(
         <Cascader
           options={Array.from({ length: 20 }).map((_, index) => ({
             value: `item-${index}`,
@@ -1116,9 +1116,6 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-      // 获取输入框并聚焦
       const input = container.querySelector('input')!;
       fireEvent.focus(input);
 
@@ -1128,7 +1125,6 @@ describe('Cascader.Basic', () => {
 
       const scrollSpy = jest.spyOn(targetElement, 'scrollIntoView').mockImplementation(() => null);
 
-      // 验证滚动调用
       expect(scrollSpy).toHaveBeenCalledWith({
         block: 'nearest',
         inline: 'nearest',
