@@ -101,12 +101,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   );
 
   React.useEffect(() => {
-    const escapedValue = String(activeValue)
-      .replace(/\\/g, '\\\\')
-      .replace(/"/g, '\\"');
-
-    const selector = `[data-path-key="${escapedValue}"]`;
-    const activeElement = document.querySelector<HTMLElement>(selector);
+    const activeElement = document.querySelector<HTMLElement>(`.${menuItemPrefixCls}-active`);
 
     if (activeElement) {
       activeElement.scrollIntoView({
