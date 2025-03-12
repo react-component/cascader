@@ -1105,14 +1105,13 @@ describe('Cascader.Basic', () => {
     });
 
     it('should scroll into view when navigating with keyboard', () => {
-      const { container, rerender } = render(
+      const { container } = render(
         <Cascader
           options={Array.from({ length: 20 }).map((_, index) => ({
             value: `item-${index}`,
             label: `item-${index}`,
           }))}
           open
-          searchValue="1"
         />,
       );
 
