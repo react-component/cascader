@@ -43,6 +43,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 }: ColumnProps<OptionType>) {
   const menuPrefixCls = `${prefixCls}-menu`;
   const menuItemPrefixCls = `${prefixCls}-menu-item`;
+  const menuRef = React.useRef<HTMLUListElement>(null);
 
   const {
     fieldNames,
@@ -101,19 +102,22 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   );
 
   React.useEffect(() => {
-    const activeElement = document.querySelector<HTMLElement>(`.${menuItemPrefixCls}-active`);
+    if (menuRef.current) {
+      const selector = `.${menuItemPrefixCls}-active`;
+      const activeElement = menuRef.current.querySelector<HTMLElement>(selector);
 
-    if (activeElement) {
-      activeElement.scrollIntoView({
-        block: 'nearest',
-        inline: 'nearest',
-      });
+      if (activeElement) {
+        activeElement.scrollIntoView({
+          block: 'nearest',
+          inline: 'nearest',
+        });
+      }
     }
-  }, [activeValue]);
+  }, [activeValue, menuItemPrefixCls]);
 
   // ============================ Render ============================
   return (
-    <ul className={menuPrefixCls} role="menu">
+    <ul className={menuPrefixCls} ref={menuRef} role="menu">
       {optionInfoList.map(
         ({
           disabled,
