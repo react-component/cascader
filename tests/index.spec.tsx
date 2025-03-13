@@ -6,6 +6,7 @@ import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } fr
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
 import { fireEvent, render } from '@testing-library/react';
+import KeyCode from '@rc-component/util/lib/KeyCode';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -995,6 +996,7 @@ describe('Cascader.Basic', () => {
       wrapper.find(`li[data-path-key]`).at(0).simulate('click');
       wrapper.find(`li[data-path-key]`).at(1).simulate('click');
     });
+
     it('hover + search', () => {
       let getOffesetTopTimes = 0;
       const spyElement = spyElementPrototypes(HTMLElement, {
@@ -1073,6 +1075,34 @@ describe('Cascader.Basic', () => {
       expect(mockScrollTo).toHaveBeenCalledTimes(0);
 
       spyElement.mockRestore();
+    });
+
+    it('should scroll into view when navigating with keyboard', () => {
+      const { container } = render(
+        <Cascader
+          options={Array.from({ length: 20 }).map((_, index) => ({
+            value: `item-${index}`,
+            label: `item-${index}`,
+          }))}
+          open
+        />,
+      );
+
+      const input = container.querySelector('input')!;
+      fireEvent.focus(input);
+
+      fireEvent.keyDown(input, { key: 'ArrowDown', keyCode: KeyCode.DOWN });
+
+      const targetElement = container.querySelector('.rc-cascader-menu-item-active')!;
+
+      const scrollSpy = jest.spyOn(targetElement, 'scrollIntoView').mockImplementation(() => null);
+
+      expect(scrollSpy).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      });
+
+      scrollSpy.mockReset();
     });
   });
 
