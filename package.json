@@ -1,6 +1,6 @@
 {
   "name": "@rc-component/cascader",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "cascade select ui component for react",
   "keywords": [
     "react",
