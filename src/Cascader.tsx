@@ -112,9 +112,11 @@ interface BaseCascaderProps<
   placement?: Placement;
   builtinPlacements?: BuildInPlacements;
 
-  /** @deprecated Use `onDropdownVisibleChange` instead */
+  /** @deprecated Use `onOpenChange` instead */
   onPopupVisibleChange?: (open: boolean) => void;
+  /** @deprecated Use `onOpenChange` instead */
   onDropdownVisibleChange?: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 
   // Icon
   expandIcon?: React.ReactNode;
@@ -227,6 +229,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
     onDropdownVisibleChange,
     onPopupVisibleChange,
+    onOpenChange,
 
     // Icon
     expandIcon = '>',
@@ -384,6 +387,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const mergedPlacement = placement || popupPlacement;
 
   const onInternalDropdownVisibleChange = (nextVisible: boolean) => {
+    onOpenChange?.(nextVisible)
     onDropdownVisibleChange?.(nextVisible);
     onPopupVisibleChange?.(nextVisible);
   };
