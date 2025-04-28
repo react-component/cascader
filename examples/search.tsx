@@ -2,6 +2,21 @@ import React from 'react';
 import '../assets/index.less';
 import Cascader from '../src';
 
+const testClassNames = {
+  prefix: 'test-prefix',
+  suffix: 'test-suffix',
+  input: 'test-input',
+  popup: {
+    list: 'test-popup-list',
+    listItem: 'test-popup-list-item',
+  },
+};
+const testStyles = {
+  popup: {
+    list: { background: 'red' },
+    listItem: { color: 'yellow' },
+  },
+};
 const addressOptions = [
   {
     label: '福建',
@@ -68,6 +83,10 @@ const addressOptions = [
 const Demo = () => {
   return (
     <Cascader
+      prefix="prefix"
+      suffixIcon={() => 'icon'}
+      classNames={testClassNames}
+      styles={testStyles}
       options={addressOptions}
       showSearch
       style={{ width: 300 }}
