@@ -22,6 +22,8 @@ export interface CascaderContextProps {
   loadingIcon?: React.ReactNode;
   popupMenuColumnStyle?: React.CSSProperties;
   optionRender?: CascaderProps['optionRender'];
+  classNames?: CascaderProps['classNames'];
+  styles?: CascaderProps['styles'];
 }
 
 const CascaderContext = React.createContext<CascaderContextProps>({} as CascaderContextProps);

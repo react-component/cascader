@@ -71,9 +71,9 @@ interface BaseCascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
 > extends Omit<
-  BaseSelectPropsWithoutPrivate,
-  'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
-> {
+    BaseSelectPropsWithoutPrivate,
+    'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
+  > {
   // MISC
   id?: string;
   prefixCls?: string;
@@ -129,8 +129,8 @@ export type ValueType<
   ValueField extends keyof OptionType = keyof OptionType,
 > = keyof OptionType extends ValueField
   ? unknown extends OptionType['value']
-  ? OptionType[ValueField]
-  : OptionType['value']
+    ? OptionType[ValueField]
+    : OptionType['value']
   : OptionType[ValueField];
 
 export type GetValueType<
@@ -146,11 +146,19 @@ export type GetOptionType<
   Multiple extends boolean | React.ReactNode = false,
 > = false extends Multiple ? OptionType[] : OptionType[][];
 
+type SemanticName = 'input' | 'prefix' | 'suffix';
+type PopupSemantic = 'list' | 'listItem';
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
   Multiple extends boolean | React.ReactNode = false,
 > extends BaseCascaderProps<OptionType, ValueField> {
+  styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
+    popup?: Partial<Record<PopupSemantic, React.CSSProperties>>;
+  };
+  classNames?: Partial<Record<SemanticName, string>> & {
+    popup?: Partial<Record<PopupSemantic, string>>;
+  };
   checkable?: Multiple;
   value?: GetValueType<OptionType, ValueField, Multiple>;
   defaultValue?: GetValueType<OptionType, ValueField, Multiple>;
@@ -215,6 +223,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     popupClassName,
     popupMenuColumnStyle,
     popupStyle: customPopupStyle,
+
+    classNames,
+    styles,
 
     placement,
 
@@ -372,7 +383,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onPopupVisibleChange?.(nextVisible);
   };
 
-
   // ========================== Warning ===========================
   if (process.env.NODE_ENV !== 'production') {
     warningNullOptions(mergedOptions, mergedFieldNames);
@@ -381,6 +391,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // ========================== Context ===========================
   const cascaderContext = React.useMemo(
     () => ({
+      classNames,
+      styles,
       options: mergedOptions,
       fieldNames: mergedFieldNames,
       values: checkedValues,
@@ -424,12 +436,12 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const popupStyle: React.CSSProperties =
     // Search to match width
     (mergedSearchValue && searchConfig.matchInputWidth) ||
-      // Empty keep the width
-      emptyOptions
+    // Empty keep the width
+    emptyOptions
       ? {}
       : {
-        minWidth: 'auto',
-      };
+          minWidth: 'auto',
+        };
 
   return (
     <CascaderContext.Provider value={cascaderContext}>
@@ -441,6 +453,16 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
         popupMatchSelectWidth={popupMatchSelectWidth}
+        classNames={{
+          prefix: classNames?.prefix,
+          suffix: classNames?.suffix,
+          input: classNames?.input,
+        }}
+        styles={{
+          prefix: styles?.prefix,
+          suffix: styles?.suffix,
+          input: styles?.input,
+        }}
         popupStyle={{
           ...popupStyle,
           ...customPopupStyle,

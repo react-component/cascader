@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import * as React from 'react';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
@@ -53,6 +53,8 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     loadingIcon,
     popupMenuColumnStyle,
     optionRender,
+    classNames,
+    styles,
   } = React.useContext(CascaderContext);
 
   const hoverOpen = expandTrigger === 'hover';
@@ -117,7 +119,12 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
 
   // ============================ Render ============================
   return (
-    <ul className={menuPrefixCls} ref={menuRef} role="menu">
+    <ul
+      className={cls(menuPrefixCls, classNames?.popup?.list)}
+      style={styles?.popup?.list}
+      ref={menuRef}
+      role="menu"
+    >
       {optionInfoList.map(
         ({
           disabled,
@@ -163,14 +170,14 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
           return (
             <li
               key={fullPathKey}
-              className={classNames(menuItemPrefixCls, {
+              className={cls(menuItemPrefixCls, classNames?.popup?.listItem, {
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
                 [`${menuItemPrefixCls}-active`]:
                   activeValue === value || activeValue === fullPathKey,
                 [`${menuItemPrefixCls}-disabled`]: isOptionDisabled(disabled),
                 [`${menuItemPrefixCls}-loading`]: isLoading,
               })}
-              style={popupMenuColumnStyle}
+              style={{ ...popupMenuColumnStyle, ...styles?.popup?.listItem }}
               role="menuitemcheckbox"
               title={title}
               aria-checked={checked}
