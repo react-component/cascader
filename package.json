@@ -46,7 +46,8 @@
     "@rc-component/select": "~1.0.0",
     "@rc-component/tree": "~1.0.0",
     "@rc-component/util": "^1.2.1",
-    "classnames": "^2.3.1"
+    "classnames": "^2.3.1",
+    "eslint-plugin-unicorn": "^47.0.0"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",
