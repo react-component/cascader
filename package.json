@@ -46,8 +46,7 @@
     "@rc-component/select": "~1.0.0",
     "@rc-component/tree": "~1.0.0",
     "@rc-component/util": "^1.2.1",
-    "classnames": "^2.3.1",
-    "eslint-plugin-unicorn": "^59.0.0"
+    "classnames": "^2.3.1"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",
@@ -71,7 +70,7 @@
     "enzyme-to-json": "^3.2.1",
     "eslint": "^8.54.0",
     "eslint-plugin-jest": "^28.8.3",
-    "eslint-plugin-unicorn": "^59.0.0",
+    "eslint-plugin-unicorn": "^56.0.1",
     "father": "^4.0.0",
     "gh-pages": "^6.1.1",
     "glob": "^7.1.6",
