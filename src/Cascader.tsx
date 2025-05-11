@@ -30,15 +30,19 @@ import {
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import { warningNullOptions } from './utils/warningPropsUtil';
 
+
+export type HTMLAriaDataAttributes = React.AriaAttributes & Record<`data-${string}`, unknown> & Pick<React.HTMLAttributes<HTMLDivElement>, 'role'>;
+
 export interface BaseOptionType {
   disabled?: boolean;
   disableCheckbox?: boolean;
   label?: React.ReactNode;
   value?: string | number | null;
   children?: DefaultOptionType[];
+  [key: string]: any;
 }
 
-export type DefaultOptionType = BaseOptionType & Record<string, any>;
+export type DefaultOptionType = BaseOptionType & HTMLAriaDataAttributes & Record<string, any>;
 
 export interface ShowSearchType<
   OptionType extends DefaultOptionType = DefaultOptionType,

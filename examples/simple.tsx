@@ -4,10 +4,13 @@ import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
-const addressOptions = [
+const addressOptions: CascaderProps["options"] = [
   {
     label: '福建',
     value: 'fj',
+    "aria-label": '福建',
+    "aria-labelledby": 'fj',
+    "data-type": 'fj',
     children: [
       {
         label: '福州',

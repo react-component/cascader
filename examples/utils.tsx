@@ -3,6 +3,7 @@ export interface Option {
   name?: string;
   nodes?: Option[];
   disabled?: boolean;
+  [key: string]: any;
 }
 
 export interface Option2 {
@@ -14,4 +15,5 @@ export interface Option2 {
   isLeaf?: boolean;
   loading?: boolean;
   children?: Option2[];
+  [key: string]: any;
 }
