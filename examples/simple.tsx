@@ -4,7 +4,7 @@ import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import type { Option2 } from './utils';
 
-const addressOptions: CascaderProps["options"] = [
+const addressOptions = [
   {
     label: '福建',
     value: 'fj',
