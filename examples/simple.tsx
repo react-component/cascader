@@ -8,6 +8,9 @@ const addressOptions = [
   {
     label: '福建',
     value: 'fj',
+    "aria-label": '福建',
+    "aria-labelledby": 'fj',
+    "data-type": 'fj',
     children: [
       {
         label: '福州',
