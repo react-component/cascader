@@ -63,6 +63,8 @@ export interface ShowSearchType<
   ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
+  searchValue?: string;
+  onSearch?: (value: string) => void;
 }
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
@@ -90,7 +92,9 @@ interface BaseCascaderProps<
   // Search
   autoClearSearchValue?: boolean;
   showSearch?: boolean | ShowSearchType<OptionType>;
+  /** @deprecated please use showSearch */
   searchValue?: string;
+  /** @deprecated please use showSearch */
   onSearch?: (value: string) => void;
 
   // Trigger
@@ -268,15 +272,15 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   // =========================== Search ===========================
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue,
+    value: (showSearch as ShowSearchType)?.searchValue ?? searchValue,
     postState: search => search || '',
   });
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
-
-    if (info.source !== 'blur' && onSearch) {
-      onSearch(searchText);
+    const search = (showSearch as ShowSearchType)?.onSearch ?? onSearch;
+    if (info.source !== 'blur' && search) {
+      search(searchText);
     }
   };
 

@@ -352,4 +352,50 @@ describe('Cascader.Search', () => {
       '{"label":"bamboo","disabled":true,"value":"bamboo"}',
     );
   });
+
+  it('onSearch and searchValue in showSearch', () => {
+    const onSearch = jest.fn();
+    const wrapper = mount(<Cascader options={options} open showSearch={{ onSearch }} />);
+
+    // Leaf
+    doSearch(wrapper, 'toy');
+    let itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(onSearch).toHaveBeenCalledWith('toy');
+
+    // Parent
+    doSearch(wrapper, 'Label Little');
+    itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(onSearch).toHaveBeenCalledWith('Label Little');
+  });
+
+  it('searchValue in showSearch', () => {
+    const { container } = render(
+      <Cascader
+        open
+        showSearch={{ searchValue: 'little' }}
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(
+      (container.querySelector('.rc-cascader-selection-search-input') as HTMLInputElement)?.value,
+    ).toBe('little');
+  });
 });
