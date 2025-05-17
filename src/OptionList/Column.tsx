@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
@@ -117,6 +118,10 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
           fullPathKey,
           disableCheckbox,
         }) => {
+          const ariaProps = pickAttrs(option, {
+            aria: true,
+            data: true
+          });
           // >>>>> Open
           const triggerOpenPath = () => {
             if (isOptionDisabled(disabled)) {
@@ -148,6 +153,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
           return (
             <li
               key={fullPathKey}
+              {...ariaProps}
               className={classNames(menuItemPrefixCls, {
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
                 [`${menuItemPrefixCls}-active`]:

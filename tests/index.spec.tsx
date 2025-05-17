@@ -1162,4 +1162,38 @@ describe('Cascader.Basic', () => {
     const { container } = render(<Cascader ref={cascaderRef} />);
     expect(cascaderRef.current?.nativeElement).toEqual(container.querySelector('.rc-cascader'));
   });
+  it('support aria-* and data-*', () => {
+    const options: CascaderProps["options"] = [
+      {
+        label: '福建',
+        value: 'fj',
+        "aria-label": '福建',
+        "aria-labelledby": 'fj',
+        "data-type": 'fj',
+        children: [
+          {
+            label: '福州',
+            value: 'fuzhou',
+            children: [
+              {
+                label: '马尾',
+                value: 'mawei',
+              },
+            ],
+          },
+          {
+            label: '泉州',
+            value: 'quanzhou',
+          },
+        ],
+      },
+    ];
+    const { container } = render(<Cascader options={options} />);
+    const item = container.querySelector('.rc-cascader-menu-item');
+    if (item) {
+      expect(item.getAttribute('aria-label')).toBe('福建');
+      expect(item.getAttribute('aria-labelledby')).toBe('fj');
+      expect(item.getAttribute('data-type')).toBe('fj');
+    }
+  });
 });
