@@ -1,12 +1,12 @@
 import * as React from 'react';
-import type { DefaultOptionType, InternalFieldNames, ShowSearchType } from '../Cascader';
+import type { DefaultOptionType, InternalFieldNames, SearchConfig } from '../Cascader';
 
 export const SEARCH_MARK = '__rc_cascader_search_mark__';
 
-const defaultFilter: ShowSearchType['filter'] = (search, options, { label = '' }) =>
+const defaultFilter: SearchConfig['filter'] = (search, options, { label = '' }) =>
   options.some(opt => String(opt[label]).toLowerCase().includes(search.toLowerCase()));
 
-const defaultRender: ShowSearchType['render'] = (inputValue, path, prefixCls, fieldNames) =>
+const defaultRender: SearchConfig['render'] = (inputValue, path, prefixCls, fieldNames) =>
   path.map(opt => opt[fieldNames.label as string]).join(' / ');
 
 const useSearchOptions = (
@@ -14,7 +14,7 @@ const useSearchOptions = (
   options: DefaultOptionType[],
   fieldNames: InternalFieldNames,
   prefixCls: string,
-  config: ShowSearchType,
+  config: SearchConfig,
   enableHalfPath?: boolean,
 ) => {
   const { filter = defaultFilter, render = defaultRender, limit = 50, sort } = config;

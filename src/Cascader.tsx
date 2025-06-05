@@ -40,7 +40,7 @@ export interface BaseOptionType {
 
 export type DefaultOptionType = BaseOptionType & Record<string, any>;
 
-export interface ShowSearchType<
+export interface SearchConfig<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
 > {
@@ -65,6 +65,7 @@ export interface ShowSearchType<
   limit?: number | false;
   searchValue?: string;
   onSearch?: (value: string) => void;
+  autoClearSearchValue?: boolean;
 }
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
@@ -90,11 +91,12 @@ interface BaseCascaderProps<
   showCheckedStrategy?: ShowCheckedStrategy;
 
   // Search
+  /** @deprecated please use showSearch.autoClearSearchValue */
   autoClearSearchValue?: boolean;
-  showSearch?: boolean | ShowSearchType<OptionType>;
-  /** @deprecated please use showSearch */
+  showSearch?: boolean | SearchConfig<OptionType>;
+  /** @deprecated please use showSearch.searchValue */
   searchValue?: string;
-  /** @deprecated please use showSearch */
+  /** @deprecated please use showSearch.onSearch */
   onSearch?: (value: string) => void;
 
   // Trigger
@@ -271,20 +273,19 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Search ===========================
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: (showSearch as ShowSearchType)?.searchValue ?? searchValue,
+    value: searchConfig?.searchValue ?? searchValue,
     postState: search => search || '',
   });
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
-    const search = (showSearch as ShowSearchType)?.onSearch ?? onSearch;
+    const search = searchConfig?.onSearch ?? onSearch;
     if (info.source !== 'blur' && search) {
       search(searchText);
     }
   };
-
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
 
   const searchOptions = useSearchOptions(
     mergedSearchValue,
@@ -455,7 +456,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
-        autoClearSearchValue={autoClearSearchValue}
+        autoClearSearchValue={searchConfig?.autoClearSearchValue ?? autoClearSearchValue}
         popupMatchSelectWidth={popupMatchSelectWidth}
         classNames={{
           prefix: classNames?.prefix,

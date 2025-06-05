@@ -1,15 +1,15 @@
 import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
-import type { CascaderProps, ShowSearchType } from '../Cascader';
+import type { CascaderProps, SearchConfig } from '../Cascader';
 
 // Convert `showSearch` to unique config
 export default function useSearchConfig(showSearch?: CascaderProps['showSearch']) {
-  return React.useMemo<[boolean, ShowSearchType]>(() => {
+  return React.useMemo<[boolean, SearchConfig]>(() => {
     if (!showSearch) {
       return [false, {}];
     }
 
-    let searchConfig: ShowSearchType = {
+    let searchConfig: SearchConfig = {
       matchInputWidth: true,
       limit: 50,
     };
