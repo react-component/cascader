@@ -230,9 +230,9 @@ React.render(
     </tr>
      <tr>
       <td>showSearch</td>
-      <td>Boolean | Object</td>
-      <td>>false</td>
-      <td>hide popup on select</td>
+      <td>boolean | object</td>
+      <td>false</td>
+      <td>Whether show search input in single mode</td>
     </tr>
   </tbody>
 </table>
@@ -247,8 +247,8 @@ React.render(
 | matchInputWidth | Whether the width of list matches input, ([how it looks](https://github.com/ant-design/ant-design/issues/25779)) | boolean | true |  |
 | render | Used to render filtered options | function(inputValue, path): ReactNode | - |  |
 | sort | Used to sort filtered options | function(a, b, inputValue) | - |  |
-| searchValue | The current input "search" text | string | - |
-| onSearch | called when input changed | function | - |
+| searchValue | The current input "search" text | string | - | - |
+| onSearch | called when input changed | function | - | - |
 
 ### option
 
