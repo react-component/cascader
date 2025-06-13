@@ -211,9 +211,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
-    autoClearSearchValue = true,
-    searchValue,
-    onSearch,
     showSearch,
 
     // Trigger
@@ -273,17 +270,17 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Search ===========================
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+  const { autoClearSearchValue = true, searchValue, onSearch } = searchConfig;
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchConfig?.searchValue ?? searchValue,
+    value: searchValue,
     postState: search => search || '',
   });
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
-    const search = searchConfig?.onSearch ?? onSearch;
-    if (info.source !== 'blur' && search) {
-      search(searchText);
+    if (info.source !== 'blur' && onSearch) {
+      onSearch(searchText);
     }
   };
 
@@ -456,7 +453,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         ref={ref as any}
         id={mergedId}
         prefixCls={prefixCls}
-        autoClearSearchValue={searchConfig?.autoClearSearchValue ?? autoClearSearchValue}
+        autoClearSearchValue={autoClearSearchValue}
         popupMatchSelectWidth={popupMatchSelectWidth}
         classNames={{
           prefix: classNames?.prefix,

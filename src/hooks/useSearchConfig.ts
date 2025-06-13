@@ -3,7 +3,8 @@ import * as React from 'react';
 import type { CascaderProps, SearchConfig } from '../Cascader';
 
 // Convert `showSearch` to unique config
-export default function useSearchConfig(showSearch?: CascaderProps['showSearch']) {
+export default function useSearchConfig(showSearch?: CascaderProps['showSearch'], props?: any) {
+  const { autoClearSearchValue, searchValue, onSearch } = props;
   return React.useMemo<[boolean, SearchConfig]>(() => {
     if (!showSearch) {
       return [false, {}];
@@ -12,6 +13,9 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
     let searchConfig: SearchConfig = {
       matchInputWidth: true,
       limit: 50,
+      autoClearSearchValue,
+      searchValue,
+      onSearch,
     };
 
     if (showSearch && typeof showSearch === 'object') {
@@ -30,5 +34,5 @@ export default function useSearchConfig(showSearch?: CascaderProps['showSearch']
     }
 
     return [true, searchConfig];
-  }, [showSearch]);
+  }, [showSearch, autoClearSearchValue, searchValue, onSearch]);
 }

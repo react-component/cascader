@@ -308,6 +308,7 @@ describe('Cascader.Search', () => {
       <Cascader
         open
         searchValue="little"
+        showSearch
         options={[
           {
             label: 'bamboo',
@@ -397,5 +398,34 @@ describe('Cascader.Search', () => {
     expect(
       (container.querySelector('.rc-cascader-selection-search-input') as HTMLInputElement)?.value,
     ).toBe('little');
+  });
+  it('autoClearSearchValue in showSearch', () => {
+    const { container } = render(
+      <Cascader
+        open
+        checkable
+        showSearch={{ autoClearSearchValue: false }}
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    const inputNode = container.querySelector<HTMLInputElement>(
+      '.rc-cascader-selection-search-input',
+    );
+    fireEvent.change(inputNode as HTMLInputElement, { target: { value: 'little' } });
+    expect(inputNode).toHaveValue('little');
+    fireEvent.click(document.querySelector('.rc-cascader-checkbox') as HTMLElement);
+    expect(inputNode).toHaveValue('little');
   });
 });
