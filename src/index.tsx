@@ -6,7 +6,7 @@ export type {
   DefaultOptionType,
   CascaderProps,
   FieldNames,
-  ShowSearchType,
+  SearchConfig,
   CascaderRef,
 } from './Cascader';
 export { Panel };

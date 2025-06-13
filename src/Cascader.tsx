@@ -40,7 +40,7 @@ export interface BaseOptionType {
 
 export type DefaultOptionType = BaseOptionType & Record<string, any>;
 
-export interface ShowSearchType<
+export interface SearchConfig<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
 > {
@@ -63,6 +63,9 @@ export interface ShowSearchType<
   ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
+  searchValue?: string;
+  onSearch?: (value: string) => void;
+  autoClearSearchValue?: boolean;
 }
 
 export type ShowCheckedStrategy = typeof SHOW_PARENT | typeof SHOW_CHILD;
@@ -88,9 +91,12 @@ interface BaseCascaderProps<
   showCheckedStrategy?: ShowCheckedStrategy;
 
   // Search
+  /** @deprecated please use showSearch.autoClearSearchValue */
   autoClearSearchValue?: boolean;
-  showSearch?: boolean | ShowSearchType<OptionType>;
+  showSearch?: boolean | SearchConfig<OptionType>;
+  /** @deprecated please use showSearch.searchValue */
   searchValue?: string;
+  /** @deprecated please use showSearch.onSearch */
   onSearch?: (value: string) => void;
 
   // Trigger
@@ -205,9 +211,6 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     checkable,
 
     // Search
-    autoClearSearchValue = true,
-    searchValue,
-    onSearch,
     showSearch,
 
     // Trigger
@@ -267,6 +270,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   );
 
   // =========================== Search ===========================
+  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
+  const { autoClearSearchValue = true, searchValue, onSearch } = searchConfig;
   const [mergedSearchValue, setSearchValue] = useMergedState('', {
     value: searchValue,
     postState: search => search || '',
@@ -274,13 +279,10 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
-
     if (info.source !== 'blur' && onSearch) {
       onSearch(searchText);
     }
   };
-
-  const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch);
 
   const searchOptions = useSearchOptions(
     mergedSearchValue,

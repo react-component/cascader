@@ -308,6 +308,7 @@ describe('Cascader.Search', () => {
       <Cascader
         open
         searchValue="little"
+        showSearch
         options={[
           {
             label: 'bamboo',
@@ -351,5 +352,80 @@ describe('Cascader.Search', () => {
     expect(container.querySelector('.rc-cascader-menu-item-content')?.innerHTML).toEqual(
       '{"label":"bamboo","disabled":true,"value":"bamboo"}',
     );
+  });
+
+  it('onSearch and searchValue in showSearch', () => {
+    const onSearch = jest.fn();
+    const wrapper = mount(<Cascader options={options} open showSearch={{ onSearch }} />);
+
+    // Leaf
+    doSearch(wrapper, 'toy');
+    let itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(onSearch).toHaveBeenCalledWith('toy');
+
+    // Parent
+    doSearch(wrapper, 'Label Little');
+    itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    expect(itemList).toHaveLength(2);
+    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(onSearch).toHaveBeenCalledWith('Label Little');
+  });
+
+  it('searchValue in showSearch', () => {
+    const { container } = render(
+      <Cascader
+        open
+        showSearch={{ searchValue: 'little' }}
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(
+      (container.querySelector('.rc-cascader-selection-search-input') as HTMLInputElement)?.value,
+    ).toBe('little');
+  });
+  it('autoClearSearchValue in showSearch', () => {
+    const { container } = render(
+      <Cascader
+        open
+        checkable
+        showSearch={{ autoClearSearchValue: false }}
+        options={[
+          {
+            label: 'bamboo',
+            value: 'bamboo',
+            children: [
+              {
+                label: 'little',
+                value: 'little',
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    const inputNode = container.querySelector<HTMLInputElement>(
+      '.rc-cascader-selection-search-input',
+    );
+    fireEvent.change(inputNode as HTMLInputElement, { target: { value: 'little' } });
+    expect(inputNode).toHaveValue('little');
+    fireEvent.click(document.querySelector('.rc-cascader-checkbox') as HTMLElement);
+    expect(inputNode).toHaveValue('little');
   });
 });
