@@ -298,3 +298,9 @@ $ npm run coverage
 ## License
 
 rc-cascader is released under the MIT license.
+
+## 🤝 Contributing 
+
+<a href="https://openomy.app/github/react-component/cascader" target="_blank" style="display: block; width: 100%;" align="center">
+  <img src="https://www.openomy.app/svg?repo=react-component/cascader&chart=bubble&latestMonth=24" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
+</a>

@@ -6,7 +6,7 @@ import type {
 } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
 import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
-import useId from '@rc-component/select/lib/hooks/useId';
+import useId from '@rc-component/util/lib/hooks/useId';
 import useEvent from '@rc-component/util/lib/hooks/useEvent';
 import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import * as React from 'react';
