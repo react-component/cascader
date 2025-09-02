@@ -36,7 +36,8 @@ export type PickType =
   | 'style'
   | 'direction'
   | 'notFoundContent'
-  | 'disabled';
+  | 'disabled'
+  | 'optionRender';
 
 export type PanelProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -70,6 +71,7 @@ export default function Panel<
     direction,
     notFoundContent = 'Not Found',
     disabled,
+    optionRender,
   } = props as Pick<InternalCascaderProps, PickType>;
 
   // ======================== Multiple ========================
@@ -159,6 +161,7 @@ export default function Panel<
       expandIcon,
       loadingIcon,
       popupMenuColumnStyle: undefined,
+      optionRender
     }),
     [
       mergedOptions,
@@ -172,6 +175,7 @@ export default function Panel<
       expandTrigger,
       expandIcon,
       loadingIcon,
+      optionRender,
     ],
   );
 

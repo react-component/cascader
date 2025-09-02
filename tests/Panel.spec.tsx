@@ -110,4 +110,25 @@ describe('Cascader.Panel', () => {
     fireEvent.click(selectOption);
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it('Should optionRender work in Panel', () => {
+    const { container, rerender } = render(
+      <Cascader.Panel
+        options={[{ label: 'bamboo', value: 'bamboo' }]}
+        optionRender={option => `${option.label} - test`}
+      />,
+    );
+    expect(container.querySelector('.rc-cascader-menu-item-content')?.innerHTML).toEqual(
+      'bamboo - test',
+    );
+    rerender(
+      <Cascader.Panel
+        options={[{ label: 'bamboo', disabled: true, value: 'bamboo' }]}
+        optionRender={option => JSON.stringify(option)}
+      />,
+    );
+    expect(container.querySelector('.rc-cascader-menu-item-content')?.innerHTML).toEqual(
+      '{"label":"bamboo","disabled":true,"value":"bamboo"}',
+    );
+  });
 });
