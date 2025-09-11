@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEvent, useMergedState } from '@rc-component/util';
+import { useEvent, useControlledState } from '@rc-component/util';
 import * as React from 'react';
 import type {
   CascaderProps,
@@ -78,10 +78,7 @@ export default function Panel<
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useMergedState<
-    InternalValueType | undefined,
-    SingleValueType[]
-  >(defaultValue, { value, postState: toRawValues });
+  const [rawValues, setRawValues] = useControlledState(defaultValue, value);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -103,7 +100,7 @@ export default function Panel<
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
-    rawValues,
+    toRawValues(rawValues),
     getPathKeyEntities,
     getValueByKeyPath,
     getMissingValues,
@@ -161,7 +158,7 @@ export default function Panel<
       expandIcon,
       loadingIcon,
       popupMenuColumnStyle: undefined,
-      optionRender
+      optionRender,
     }),
     [
       mergedOptions,

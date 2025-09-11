@@ -9,6 +9,7 @@ import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseS
 import useId from '@rc-component/util/lib/hooks/useId';
 import useEvent from '@rc-component/util/lib/hooks/useEvent';
 import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
+import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
@@ -250,10 +251,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   const multiple = !!checkable;
 
   // =========================== Values ===========================
-  const [rawValues, setRawValues] = useMergedState<
-    InternalValueType | undefined,
-    SingleValueType[]
-  >(defaultValue, { value, postState: toRawValues });
+  const [rawValues, setRawValues] = useControlledState(defaultValue, value);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -272,10 +270,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // =========================== Search ===========================
   const [mergedShowSearch, searchConfig] = useSearchConfig(showSearch, props);
   const { autoClearSearchValue = true, searchValue, onSearch } = searchConfig;
-  const [mergedSearchValue, setSearchValue] = useMergedState('', {
-    value: searchValue,
-    postState: search => search || '',
-  });
+  const [internalSearchValue, setSearchValue] = useControlledState('', searchValue);
+  const mergedSearchValue = internalSearchValue || '';
 
   const onInternalSearch: BaseSelectProps['onSearch'] = (searchText, info) => {
     setSearchValue(searchText);
@@ -299,7 +295,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
-    rawValues,
+    toRawValues(rawValues),
     getPathKeyEntities,
     getValueByKeyPath,
     getMissingValues,
