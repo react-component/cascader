@@ -8,7 +8,6 @@ import { BaseSelect } from '@rc-component/select';
 import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
 import useId from '@rc-component/util/lib/hooks/useId';
 import useEvent from '@rc-component/util/lib/hooks/useEvent';
-import useMergedState from '@rc-component/util/lib/hooks/useMergedState';
 import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
 import * as React from 'react';
 import CascaderContext from './context';
