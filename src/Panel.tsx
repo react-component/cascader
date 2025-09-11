@@ -78,8 +78,8 @@ export default function Panel<
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [internalValues, setRawValues] = useControlledState(defaultValue, value);
-  const rawValues = toRawValues(internalValues);
+  const [interanlRawValues, setRawValues] = useControlledState(defaultValue, value);
+  const rawValues = toRawValues(interanlRawValues);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
