@@ -78,7 +78,8 @@ export default function Panel<
   const multiple = !!checkable;
 
   // ========================= Values =========================
-  const [rawValues, setRawValues] = useControlledState(defaultValue, value);
+  const [internalValues, setRawValues] = useControlledState(defaultValue, value);
+  const rawValues = toRawValues(internalValues);
 
   // ========================= FieldNames =========================
   const mergedFieldNames = React.useMemo(
@@ -100,7 +101,7 @@ export default function Panel<
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
-    toRawValues(rawValues),
+    rawValues,
     getPathKeyEntities,
     getValueByKeyPath,
     getMissingValues,
