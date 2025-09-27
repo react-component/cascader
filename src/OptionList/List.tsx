@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { useBaseProps } from '@rc-component/select';
 import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import * as React from 'react';
@@ -248,7 +248,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   return (
     <CacheContent open={open}>
       <div
-        className={classNames(`${mergedPrefixCls}-menus`, {
+        className={clsx(`${mergedPrefixCls}-menus`, {
           [`${mergedPrefixCls}-menu-empty`]: isEmpty,
           [`${mergedPrefixCls}-rtl`]: rtl,
         })}

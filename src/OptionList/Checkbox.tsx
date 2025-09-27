@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import CascaderContext from '../context';
 
 export interface CheckboxProps {
@@ -25,7 +25,7 @@ export default function Checkbox({
 
   return (
     <span
-      className={classNames(`${prefixCls}`, {
+      className={clsx(`${prefixCls}`, {
         [`${prefixCls}-checked`]: checked,
         [`${prefixCls}-indeterminate`]: !checked && halfChecked,
         [`${prefixCls}-disabled`]: disabled || disableCheckbox,
