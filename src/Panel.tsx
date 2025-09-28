@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { useEvent, useControlledState } from '@rc-component/util';
 import * as React from 'react';
 import type {
@@ -184,12 +184,9 @@ export default function Panel<
   return (
     <CascaderContext.Provider value={cascaderContext}>
       <div
-        className={classNames(
+        className={clsx(
           panelPrefixCls,
-          {
-            [`${panelPrefixCls}-rtl`]: direction === 'rtl',
-            [`${panelPrefixCls}-empty`]: isEmpty,
-          },
+          { [`${panelPrefixCls}-rtl`]: direction === 'rtl', [`${panelPrefixCls}-empty`]: isEmpty },
           className,
         )}
         style={style}

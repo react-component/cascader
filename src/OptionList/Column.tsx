@@ -1,6 +1,6 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
@@ -121,7 +121,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
   // ============================ Render ============================
   return (
     <ul
-      className={cls(menuPrefixCls, classNames?.popup?.list)}
+      className={clsx(menuPrefixCls, classNames?.popup?.list)}
       style={styles?.popup?.list}
       ref={menuRef}
       role="menu"
@@ -140,10 +140,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
           fullPathKey,
           disableCheckbox,
         }) => {
-          const ariaProps = pickAttrs(option, {
-            aria: true,
-            data: true
-          });
+          const ariaProps = pickAttrs(option, { aria: true, data: true });
           // >>>>> Open
           const triggerOpenPath = () => {
             if (isOptionDisabled(disabled)) {
@@ -176,7 +173,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
             <li
               key={fullPathKey}
               {...ariaProps}
-              className={cls(menuItemPrefixCls, classNames?.popup?.listItem, {
+              className={clsx(menuItemPrefixCls, classNames?.popup?.listItem, {
                 [`${menuItemPrefixCls}-expand`]: !isMergedLeaf,
                 [`${menuItemPrefixCls}-active`]:
                   activeValue === value || activeValue === fullPathKey,
