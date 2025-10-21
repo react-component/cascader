@@ -6,6 +6,7 @@ import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
 import type { ReactWrapper } from './enzyme';
 import { mount } from './enzyme';
+import { expectOpen } from './util';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {
@@ -44,6 +45,14 @@ describe('Cascader.Search', () => {
       ],
     },
   ];
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it('default search', () => {
     const onSearch = jest.fn();
@@ -284,7 +293,7 @@ describe('Cascader.Search', () => {
 
     // Click
     fireEvent.click(document.querySelector('.rc-cascader-menu-item-content') as HTMLElement);
-    expect(document.querySelector('.rc-cascader-dropdown-hidden')).toBeTruthy();
+    expectOpen(container, false);
     expect(document.querySelector('.rc-cascader-menu-item-content')?.textContent).toBe(
       'Label Bamboo / Label Little / Toy Fish',
     );
