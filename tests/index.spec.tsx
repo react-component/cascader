@@ -5,8 +5,9 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
+import { expectOpen, selectOption } from './util';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -27,17 +28,23 @@ describe('Cascader.Basic', () => {
   });
 
   it('should toggle select panel when click it', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
 
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expectOpen(container, false);
+
+    fireEvent.mouseDown(container.querySelector('input')!);
+    fireEvent.mouseUp(container.querySelector('input')!);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+
+    fireEvent.mouseDown(container.querySelector('input')!);
+    fireEvent.mouseUp(container.querySelector('input')!);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, false);
   });
 
   it('should call onChange when finish select', () => {
@@ -536,17 +543,17 @@ describe('Cascader.Basic', () => {
   });
 
   it('should close popup on double click when changeOnSelect is set', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} changeOnSelect>
         <input readOnly />
       </Cascader>,
     );
 
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    wrapper.clickOption(0, 0, 'doubleClick');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expectOpen(container, false);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+    selectOption(container, 0, 0, 'doubleClick');
+    expectOpen(container, false);
   });
 
   // https://github.com/ant-design/ant-design/issues/9793
@@ -773,7 +780,7 @@ describe('Cascader.Basic', () => {
 
   it('defaultValue not exist', () => {
     const wrapper = mount(<Cascader defaultValue={['not', 'exist']} />);
-    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('not / exist');
+    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('not / exist');
   });
 
   it('number value', () => {
@@ -784,7 +791,7 @@ describe('Cascader.Basic', () => {
 
     wrapper.clickOption(0, 0);
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
-    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('One');
+    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('One');
   });
 
   it('empty children is last children', () => {
@@ -834,7 +841,7 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('Normal / Child');
+      expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('Normal / Child');
     });
 
     it('multiple', () => {
@@ -1156,13 +1163,13 @@ describe('Cascader.Basic', () => {
   });
 
   it('support aria-* and data-*', () => {
-    const options: CascaderProps["options"] = [
+    const options: CascaderProps['options'] = [
       {
         label: '福建',
         value: 'fj',
-        "aria-label": '福建',
-        "aria-labelledby": 'fj',
-        "data-type": 'fj',
+        'aria-label': '福建',
+        'aria-labelledby': 'fj',
+        'data-type': 'fj',
         children: [
           {
             label: '福州',

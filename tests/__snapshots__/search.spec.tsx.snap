@@ -1,38 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Cascader.Search should correct render Cascader with same field name of label and value 1`] = `
-<div
-  class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
->
+[
   <div
-    class="rc-cascader-selector"
+    class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
   >
-    <span
-      class="rc-cascader-selection-wrap"
+    <div
+      class="rc-cascader-content"
     >
-      <span
-        class="rc-cascader-selection-search"
-      >
-        <input
-          aria-autocomplete="list"
-          aria-controls="test-id_list"
-          aria-expanded="true"
-          aria-haspopup="listbox"
-          aria-owns="test-id_list"
-          autocomplete="off"
-          class="rc-cascader-selection-search-input"
-          id="test-id"
-          role="combobox"
-          type="search"
-          value="z"
-        />
-      </span>
-      <span
-        class="rc-cascader-selection-placeholder"
+      <div
+        class="rc-cascader-placeholder"
         style="visibility: hidden;"
       />
-    </span>
-  </div>
+      <input
+        aria-autocomplete="list"
+        aria-controls="test-id_list"
+        aria-expanded="true"
+        aria-haspopup="listbox"
+        aria-owns="test-id_list"
+        autocomplete="off"
+        class="rc-cascader-input"
+        id="test-id"
+        role="combobox"
+        type="search"
+        value="z"
+      />
+    </div>
+  </div>,
   <div
     class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
     style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
@@ -74,6 +68,6 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         </ul>
       </div>
     </div>
-  </div>
-</div>
+  </div>,
+]
 `;
