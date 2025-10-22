@@ -5,8 +5,9 @@ import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
 import { toRawValues } from '../src/utils/commonUtil';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
+import { expectOpen, selectOption } from './util';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -27,67 +28,71 @@ describe('Cascader.Basic', () => {
   });
 
   it('should toggle select panel when click it', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
 
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expectOpen(container, false);
+
+    fireEvent.mouseDown(container.querySelector('input')!);
+    fireEvent.mouseUp(container.querySelector('input')!);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+
+    fireEvent.mouseDown(container.querySelector('input')!);
+    fireEvent.mouseUp(container.querySelector('input')!);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, false);
   });
 
   it('should call onChange when finish select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
+    fireEvent.click(container.querySelector('input')!);
 
     // Menu 1
-    let menus = wrapper.find('.rc-cascader-menu');
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     expect(menu1Items.length).toBe(3);
     expect(selectedValue).toBeFalsy();
 
-    wrapper.clickOption(0, 0);
+    selectOption(container, 0, 0);
     expect(
-      wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-active'),
+      container.querySelector('.rc-cascader-menu-item')!.classList.contains('rc-cascader-menu-item-active')
     ).toBeTruthy();
 
     // Menu 2
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
+    const menu2Items = menus[1].querySelectorAll('.rc-cascader-menu-item');
     expect(menu2Items.length).toBe(2);
-    expect(wrapper.isOpen()).toBeTruthy();
+    expectOpen(container, true);
     expect(selectedValue).toBeFalsy();
 
-    wrapper.clickOption(1, 0);
+    selectOption(container, 1, 0);
     expect(
-      wrapper
-        .find('.rc-cascader-menu')
-        .at(1)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active'),
+      container
+        .querySelectorAll('.rc-cascader-menu')[1]
+        .querySelector('.rc-cascader-menu-item')!
+        .classList.contains('rc-cascader-menu-item-active')
     ).toBeTruthy();
 
     // Menu 3
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
+    const menu3Items = menus[2].querySelectorAll('.rc-cascader-menu-item');
     expect(menu3Items.length).toBe(1);
-    expect(wrapper.isOpen()).toBeTruthy();
+    expectOpen(container, true);
     expect(selectedValue).toBeFalsy();
 
-    wrapper.clickOption(2, 0);
-    expect(wrapper.isOpen()).toBeFalsy();
+    selectOption(container, 2, 0);
+    expectOpen(container, false);
     expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
   });
 
@@ -163,111 +168,109 @@ describe('Cascader.Basic', () => {
   });
 
   it('should support expand previous item when hover', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader expandTrigger="hover" options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
+    fireEvent.click(container.querySelector('input')!);
 
     // Menu 1
-    let menus = wrapper.find('.rc-cascader-menu');
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     expect(menu1Items.length).toBe(3);
     expect(selectedValue).toBeFalsy();
 
-    menu1Items.at(0).simulate('mouseEnter');
-    jest.runAllTimers();
-    wrapper.update();
+    selectOption(container, 0, 0, 'mouseEnter');
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(
-      wrapper
-        .find('.rc-cascader-menu')
-        .at(0)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active'),
+      container
+        .querySelectorAll('.rc-cascader-menu')[0]
+        .querySelector('.rc-cascader-menu-item')!
+        .classList.contains('rc-cascader-menu-item-active')
     ).toBeTruthy();
 
     // Menu 2
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    const menu2Items = menus.at(1).find('.rc-cascader-menu-item');
+    const menu2Items = menus[1].querySelectorAll('.rc-cascader-menu-item');
     expect(menu2Items.length).toBe(2);
-    expect(wrapper.isOpen()).toBeTruthy();
+    expectOpen(container, true);
     expect(selectedValue).toBeFalsy();
 
-    menu2Items.at(0).simulate('mouseEnter');
-    jest.runAllTimers();
-    wrapper.update();
+    selectOption(container, 1, 0, 'mouseEnter');
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(
-      wrapper
-        .find('.rc-cascader-menu')
-        .at(1)
-        .find('.rc-cascader-menu-item')
-        .first()
-        .hasClass('rc-cascader-menu-item-active'),
+      container
+        .querySelectorAll('.rc-cascader-menu')[1]
+        .querySelector('.rc-cascader-menu-item')!
+        .classList.contains('rc-cascader-menu-item-active')
     ).toBeTruthy();
 
     // Menu 3
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    const menu3Items = menus.at(2).find('.rc-cascader-menu-item');
+    const menu3Items = menus[2].querySelectorAll('.rc-cascader-menu-item');
     expect(menu3Items.length).toBe(1);
-    expect(wrapper.isOpen()).toBeTruthy();
+    expectOpen(container, true);
     expect(selectedValue).toBeFalsy();
 
-    wrapper.clickOption(2, 0);
-    expect(wrapper.isOpen()).toBeFalsy();
+    selectOption(container, 2, 0);
+    expectOpen(container, false);
     expect(selectedValue.join(',')).toBe('fj,fuzhou,mawei');
   });
 
   it('should clear active selection when no finish select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    wrapper.clickOption(0, 0);
-    let menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    selectOption(container, 0, 0);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, false);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
 
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
   });
 
   it('should set back to defaultValue when no finish select', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} defaultValue={['fj', 'fuzhou', 'mawei']}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
 
-    wrapper.clickOption(0, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    selectOption(container, 0, 0);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, false);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
   });
 
   it('should set the value on each selection', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
@@ -277,49 +280,49 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
 
-    wrapper.clickOption(0, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    selectOption(container, 0, 0);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, false);
 
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
     expect(selectedValue.length).toBe(1);
     expect(selectedValue[0]).toBe('fj');
   });
 
   it('should not change value inside when it is a controlled component', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} value={['fj']}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.clickOption(0, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    selectOption(container, 0, 0);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
-    wrapper.clickOption(1, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    selectOption(container, 1, 0);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
 
-    wrapper.clickOption(2, 0);
-    expect(wrapper.isOpen()).toBeFalsy();
+    selectOption(container, 2, 0);
+    expectOpen(container, false);
 
-    wrapper.find('input').simulate('click');
-    menus = wrapper.find('.rc-cascader-menu');
-    expect(wrapper.isOpen()).toBeTruthy();
+    fireEvent.click(container.querySelector('input')!);
+    menus = container.querySelectorAll('.rc-cascader-menu');
+    expectOpen(container, true);
     expect(menus.length).toBe(2);
   });
 
@@ -478,21 +481,21 @@ describe('Cascader.Basic', () => {
 
   // https://github.com/ant-design/ant-design/issues/7480
   it('should call onChange on click when expandTrigger=hover with changeOnSelect', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
 
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     expect(menu1Items.length).toBe(3);
 
-    wrapper.clickOption(0, 0);
+    selectOption(container, 0, 0);
     expect(selectedValue[0]).toBe('fj');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expectOpen(container, false);
   });
 
   it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
@@ -536,17 +539,17 @@ describe('Cascader.Basic', () => {
   });
 
   it('should close popup on double click when changeOnSelect is set', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} changeOnSelect>
         <input readOnly />
       </Cascader>,
     );
 
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    wrapper.clickOption(0, 0, 'doubleClick');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expectOpen(container, false);
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+    selectOption(container, 0, 0, 'doubleClick');
+    expectOpen(container, false);
   });
 
   // https://github.com/ant-design/ant-design/issues/9793
@@ -773,7 +776,7 @@ describe('Cascader.Basic', () => {
 
   it('defaultValue not exist', () => {
     const wrapper = mount(<Cascader defaultValue={['not', 'exist']} />);
-    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('not / exist');
+    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('not / exist');
   });
 
   it('number value', () => {
@@ -784,7 +787,7 @@ describe('Cascader.Basic', () => {
 
     wrapper.clickOption(0, 0);
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
-    expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('One');
+    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('One');
   });
 
   it('empty children is last children', () => {
@@ -834,7 +837,7 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-cascader-selection-item').text()).toEqual('Normal / Child');
+      expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('Normal / Child');
     });
 
     it('multiple', () => {
@@ -1156,13 +1159,13 @@ describe('Cascader.Basic', () => {
   });
 
   it('support aria-* and data-*', () => {
-    const options: CascaderProps["options"] = [
+    const options: CascaderProps['options'] = [
       {
         label: '福建',
         value: 'fj',
-        "aria-label": '福建',
-        "aria-labelledby": 'fj',
-        "data-type": 'fj',
+        'aria-label': '福建',
+        'aria-labelledby': 'fj',
+        'data-type': 'fj',
         children: [
           {
             label: '福州',

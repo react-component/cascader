@@ -6,6 +6,7 @@ import Cascader from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
 import type { ReactWrapper } from './enzyme';
 import { mount } from './enzyme';
+import { expectOpen } from './util';
 
 describe('Cascader.Search', () => {
   function doSearch(wrapper: ReactWrapper, search: string) {
@@ -44,6 +45,14 @@ describe('Cascader.Search', () => {
       ],
     },
   ];
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it('default search', () => {
     const onSearch = jest.fn();
@@ -284,7 +293,7 @@ describe('Cascader.Search', () => {
 
     // Click
     fireEvent.click(document.querySelector('.rc-cascader-menu-item-content') as HTMLElement);
-    expect(document.querySelector('.rc-cascader-dropdown-hidden')).toBeTruthy();
+    expectOpen(container, false);
     expect(document.querySelector('.rc-cascader-menu-item-content')?.textContent).toBe(
       'Label Bamboo / Label Little / Toy Fish',
     );
@@ -356,22 +365,26 @@ describe('Cascader.Search', () => {
 
   it('onSearch and searchValue in showSearch', () => {
     const onSearch = jest.fn();
-    const wrapper = mount(<Cascader options={options} open showSearch={{ onSearch }} />);
+    const { container } = render(<Cascader options={options} open showSearch={{ onSearch }} />);
 
     // Leaf
-    doSearch(wrapper, 'toy');
-    let itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    fireEvent.change(container.querySelector('input') as HTMLElement, {
+      target: { value: 'toy' },
+    });
+    let itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(2);
-    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
-    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(itemList[0].textContent).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList[1].textContent).toEqual('Label Bamboo / Label Little / Toy Cards');
     expect(onSearch).toHaveBeenCalledWith('toy');
 
     // Parent
-    doSearch(wrapper, 'Label Little');
-    itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    fireEvent.change(container.querySelector('input') as HTMLElement, {
+      target: { value: 'Label Little' },
+    });
+    itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(2);
-    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
-    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(itemList[0].textContent).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList[1].textContent).toEqual('Label Bamboo / Label Little / Toy Cards');
     expect(onSearch).toHaveBeenCalledWith('Label Little');
   });
 
@@ -395,10 +408,9 @@ describe('Cascader.Search', () => {
       />,
     );
     expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
-    expect(
-      (container.querySelector('.rc-cascader-selection-search-input') as HTMLInputElement)?.value,
-    ).toBe('little');
+    expect(container.querySelector('input') as HTMLInputElement).toHaveValue('little');
   });
+
   it('autoClearSearchValue in showSearch', () => {
     const { container } = render(
       <Cascader
@@ -420,9 +432,7 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    const inputNode = container.querySelector<HTMLInputElement>(
-      '.rc-cascader-selection-search-input',
-    );
+    const inputNode = container.querySelector<HTMLInputElement>('input');
     fireEvent.change(inputNode as HTMLInputElement, { target: { value: 'little' } });
     expect(inputNode).toHaveValue('little');
     fireEvent.click(document.querySelector('.rc-cascader-checkbox') as HTMLElement);
