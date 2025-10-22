@@ -152,7 +152,15 @@ export type GetOptionType<
   Multiple extends boolean | React.ReactNode = false,
 > = false extends Multiple ? OptionType[] : OptionType[][];
 
-type SemanticName = 'input' | 'prefix' | 'suffix';
+type SemanticName =
+  | 'input'
+  | 'prefix'
+  | 'suffix'
+  | 'placeholder'
+  | 'content'
+  | 'item'
+  | 'itemContent'
+  | 'itemRemove';
 type PopupSemantic = 'list' | 'listItem';
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -455,11 +463,21 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
           prefix: classNames?.prefix,
           suffix: classNames?.suffix,
           input: classNames?.input,
+          placeholder: classNames?.placeholder,
+          content: classNames?.content,
+          item: classNames?.item,
+          itemContent: classNames?.itemContent,
+          itemRemove: classNames?.itemRemove,
         }}
         styles={{
           prefix: styles?.prefix,
           suffix: styles?.suffix,
           input: styles?.input,
+          placeholder: styles?.placeholder,
+          content: styles?.content,
+          item: styles?.item,
+          itemContent: styles?.itemContent,
+          itemRemove: styles?.itemRemove,
         }}
         popupStyle={{
           ...popupStyle,

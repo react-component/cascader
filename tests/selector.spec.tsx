@@ -3,6 +3,7 @@ import { fireEvent, render } from '@testing-library/react';
 import { mount } from './enzyme';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
+import { expectOpen } from './util';
 
 // Mock `useActive` hook
 jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean) => {
@@ -23,7 +24,7 @@ describe('Cascader.Selector', () => {
         <Cascader value={['not', 'exist']} allowClear onChange={onChange} />,
       );
 
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon') as HTMLElement);
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect(onChange).toHaveBeenCalledWith(undefined, undefined);
     });
 
@@ -41,25 +42,25 @@ describe('Cascader.Selector', () => {
       );
 
       // Open and select
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-selector') as HTMLElement);
-      expect(container.querySelector('.rc-cascader-open')).toBeTruthy();
+      fireEvent.mouseDown(container.querySelector('.rc-cascader') as HTMLElement);
+      expectOpen(container);
 
       fireEvent.click(container.querySelector('.rc-cascader-menu-item-content') as HTMLElement);
       fireEvent.click(container.querySelectorAll('.rc-cascader-menu-item-content')[1]);
-      expect(container.querySelector('.rc-cascader-open')).toBeFalsy();
+      expectOpen(container, false);
 
       // Clear
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear-icon') as HTMLElement);
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect((global as any).activeValueCells).toEqual([]);
     });
 
     it('multiple', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <Cascader checkable value={[['not'], ['exist']]} allowClear onChange={onChange} />,
       );
 
-      wrapper.find('.rc-cascader-clear-icon').simulate('mouseDown');
+      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect(onChange).toHaveBeenCalledWith([], []);
     });
   });
@@ -70,7 +71,7 @@ describe('Cascader.Selector', () => {
       <Cascader checkable value={[['not'], ['exist']]} allowClear onChange={onChange} />,
     );
 
-    wrapper.find('.rc-cascader-selection-item-remove-icon').first().simulate('click');
+    wrapper.find('.rc-cascader-selection-item-remove').first().simulate('click');
     expect(onChange).toHaveBeenCalledWith([['exist']], expect.anything());
   });
 

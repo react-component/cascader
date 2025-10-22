@@ -365,22 +365,26 @@ describe('Cascader.Search', () => {
 
   it('onSearch and searchValue in showSearch', () => {
     const onSearch = jest.fn();
-    const wrapper = mount(<Cascader options={options} open showSearch={{ onSearch }} />);
+    const { container } = render(<Cascader options={options} open showSearch={{ onSearch }} />);
 
     // Leaf
-    doSearch(wrapper, 'toy');
-    let itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    fireEvent.change(container.querySelector('input') as HTMLElement, {
+      target: { value: 'toy' },
+    });
+    let itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(2);
-    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
-    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(itemList[0].textContent).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList[1].textContent).toEqual('Label Bamboo / Label Little / Toy Cards');
     expect(onSearch).toHaveBeenCalledWith('toy');
 
     // Parent
-    doSearch(wrapper, 'Label Little');
-    itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    fireEvent.change(container.querySelector('input') as HTMLElement, {
+      target: { value: 'Label Little' },
+    });
+    itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(2);
-    expect(itemList.at(0).text()).toEqual('Label Bamboo / Label Little / Toy Fish');
-    expect(itemList.at(1).text()).toEqual('Label Bamboo / Label Little / Toy Cards');
+    expect(itemList[0].textContent).toEqual('Label Bamboo / Label Little / Toy Fish');
+    expect(itemList[1].textContent).toEqual('Label Bamboo / Label Little / Toy Cards');
     expect(onSearch).toHaveBeenCalledWith('Label Little');
   });
 
@@ -404,10 +408,9 @@ describe('Cascader.Search', () => {
       />,
     );
     expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
-    expect(
-      (container.querySelector('.rc-cascader-selection-search-input') as HTMLInputElement)?.value,
-    ).toBe('little');
+    expect(container.querySelector('input') as HTMLInputElement).toHaveValue('little');
   });
+
   it('autoClearSearchValue in showSearch', () => {
     const { container } = render(
       <Cascader
