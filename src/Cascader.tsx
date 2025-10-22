@@ -459,26 +459,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
         prefixCls={prefixCls}
         autoClearSearchValue={autoClearSearchValue}
         popupMatchSelectWidth={popupMatchSelectWidth}
-        classNames={{
-          prefix: classNames?.prefix,
-          suffix: classNames?.suffix,
-          input: classNames?.input,
-          placeholder: classNames?.placeholder,
-          content: classNames?.content,
-          item: classNames?.item,
-          itemContent: classNames?.itemContent,
-          itemRemove: classNames?.itemRemove,
-        }}
-        styles={{
-          prefix: styles?.prefix,
-          suffix: styles?.suffix,
-          input: styles?.input,
-          placeholder: styles?.placeholder,
-          content: styles?.content,
-          item: styles?.item,
-          itemContent: styles?.itemContent,
-          itemRemove: styles?.itemRemove,
-        }}
+        classNames={classNames}
+        styles={styles}
         popupStyle={{
           ...popupStyle,
           ...customPopupStyle,
