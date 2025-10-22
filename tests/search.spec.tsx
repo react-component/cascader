@@ -429,9 +429,7 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    const inputNode = container.querySelector<HTMLInputElement>(
-      '.rc-cascader-selection-search-input',
-    );
+    const inputNode = container.querySelector<HTMLInputElement>('input');
     fireEvent.change(inputNode as HTMLInputElement, { target: { value: 'little' } });
     expect(inputNode).toHaveValue('little');
     fireEvent.click(document.querySelector('.rc-cascader-checkbox') as HTMLElement);
