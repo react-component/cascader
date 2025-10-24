@@ -79,7 +79,7 @@
     "rc-field-form": "^1.44.0",
     "rc-test": "^7.1.2",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react-dom": "^19.2.0",
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
