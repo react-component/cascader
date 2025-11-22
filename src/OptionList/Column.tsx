@@ -4,7 +4,7 @@ import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
-import { isLeaf, toPathKey } from '../utils/commonUtil';
+import { isLeaf, scrollIntoParentView, toPathKey } from '../utils/commonUtil';
 import Checkbox from './Checkbox';
 
 export const FIX_LABEL = '__cascader_fix_label__';
@@ -110,10 +110,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
       const activeElement = menuRef.current.querySelector<HTMLElement>(selector);
 
       if (activeElement) {
-        activeElement.scrollIntoView({
-          block: 'nearest',
-          inline: 'nearest',
-        });
+        scrollIntoParentView(activeElement);
       }
     }
   }, [activeValue, menuItemPrefixCls]);
