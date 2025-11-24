@@ -4,7 +4,7 @@ import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import { mount } from './enzyme';
-import { toRawValues } from '../src/utils/commonUtil';
+import * as commonUtil from '../src/utils/commonUtil';
 import { act, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { expectOpen, selectOption } from './util';
@@ -1075,7 +1075,7 @@ describe('Cascader.Basic', () => {
       });
       const items = wrapper.container.querySelectorAll('.rc-cascader-menu-item');
       fireEvent.mouseEnter(items[9]);
-      expect(mockScrollTo).toHaveBeenCalledTimes(0);
+      expect(mockScrollTo).toHaveBeenCalledTimes(1);
 
       spyElement.mockRestore();
     });
@@ -1094,18 +1094,12 @@ describe('Cascader.Basic', () => {
       const input = container.querySelector('input')!;
       fireEvent.focus(input);
 
+      const spy = jest.spyOn(commonUtil, 'scrollIntoParentView');
       fireEvent.keyDown(input, { key: 'ArrowDown', keyCode: KeyCode.DOWN });
 
       const targetElement = container.querySelector('.rc-cascader-menu-item-active')!;
-
-      const scrollSpy = jest.spyOn(targetElement, 'scrollIntoView').mockImplementation(() => null);
-
-      expect(scrollSpy).toHaveBeenCalledWith({
-        block: 'nearest',
-        inline: 'nearest',
-      });
-
-      scrollSpy.mockReset();
+      expect(spy).toHaveBeenCalledWith(targetElement);
+      spy.mockRestore();
     });
   });
 
@@ -1149,7 +1143,7 @@ describe('Cascader.Basic', () => {
     errorSpy.mockReset();
   });
   it('toRawValues undefined', () => {
-    expect(toRawValues()).toEqual([]);
+    expect(commonUtil.toRawValues()).toEqual([]);
   });
 
   it('nativeElement', () => {
