@@ -9,8 +9,8 @@ React Cascader Component.
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 [![dumi][dumi-image]][dumi-url]
 
-[npm-image]: http://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/@rc-component/cascader
+[npm-image]: https://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@rc-component/cascader
 [travis-image]: https://img.shields.io/travis/react-component/cascader/master?style=flat-square
 [travis-url]: https://travis-ci.com/react-component/cascader
 [github-actions-image]: https://github.com/react-component/cascader/actions/workflows/main.yml/badge.svg
