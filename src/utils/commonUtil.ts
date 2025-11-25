@@ -53,7 +53,9 @@ export function scrollIntoParentView(element: HTMLElement) {
   const elementToParent = element.offsetTop - parent.offsetTop; // offsetParent may not be parent.
   if (elementToParent - parent.scrollTop < 0) {
     parent.scrollTo({ top: elementToParent });
-  } else if (elementToParent + element.offsetHeight - parent.scrollTop > parent.offsetHeight) {
+  } else if (
+    elementToParent + element.offsetHeight - parent.scrollTop > parent.offsetHeight
+  ) {
     parent.scrollTo({ top: elementToParent + element.offsetHeight - parent.offsetHeight });
   }
 }
