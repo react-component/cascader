@@ -416,6 +416,8 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
       optionRender,
     }),
     [
+      classNames,
+      styles,
       mergedOptions,
       mergedFieldNames,
       checkedValues,

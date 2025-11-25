@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CascaderContext from '../context';
-import { LegacyKey } from '@/Cascader';
+import type { LegacyKey } from '../Cascader';
 
 /**
  * Control the active open options path.
