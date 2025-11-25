@@ -1,6 +1,6 @@
 ---
 hero:
-  title: rc-cascader
+  title: @rc-component/cascader
   description: React cascader Component
 ---
 

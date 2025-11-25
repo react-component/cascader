@@ -1,4 +1,4 @@
-# rc-cascader
+# @rc-component/cascader
 
 React Cascader Component.
 
@@ -9,22 +9,22 @@ React Cascader Component.
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 [![dumi][dumi-image]][dumi-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-cascader.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-cascader
+[npm-image]: http://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@rc-component/cascader
 [travis-image]: https://img.shields.io/travis/react-component/cascader/master?style=flat-square
 [travis-url]: https://travis-ci.com/react-component/cascader
-[github-actions-image]: https://github.com/react-component/cascader/workflows/CI/badge.svg
-[github-actions-url]: https://github.com/react-component/cascader/actions
+[github-actions-image]: https://github.com/react-component/cascader/actions/workflows/main.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/cascader/actions/workflows/main.yml
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square
 [codecov-url]: https://app.codecov.io/gh/react-component/cascader
 [david-url]: https://david-dm.org/react-component/cascader
 [david-image]: https://david-dm.org/react-component/cascader/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/cascader?type=dev
 [david-dev-image]: https://david-dm.org/react-component/cascader/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/rc-cascader.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-cascader
-[bundlephobia-url]: https://bundlephobia.com/package/rc-cascader
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-cascader
+[download-image]: https://img.shields.io/npm/dm/@rc-component/cascader.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/cascader
+[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/cascader
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/cascader
 [dumi-url]: https://github.com/umijs/dumi
 [dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
@@ -44,10 +44,10 @@ https://cascader-react-component.vercel.app
 
 ## Install
 
-[![rc-cascader](https://nodei.co/npm/rc-cascader.png)](https://npmjs.org/package/rc-cascader)
+[![@rc-component/cascader](https://nodei.co/npm/@rc-component/cascader.png)](https://npmjs.org/package/@rc-component/cascader)
 
 ```bash
-$ npm install rc-cascader --save
+$ npm install @rc-component/cascader --save
 ```
 
 ## Usage
@@ -310,7 +310,7 @@ $ npm run coverage
 
 ## License
 
-rc-cascader is released under the MIT license.
+@rc-component/cascader is released under the MIT license.
 
 ## 🤝 Contributing 
 
