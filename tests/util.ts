@@ -32,3 +32,32 @@ export function selectOption(container: HTMLElement, menuIndex: number, optionIn
     fireEvent.click(option);
   }
 }
+
+// Helper functions to replace enzyme-specific functionality
+export function isOpen(container: HTMLElement): boolean {
+  // Check the dropdown visibility
+  const dropdown = container.querySelector('.rc-cascader-dropdown');
+  return !!dropdown && !dropdown.className.includes('rc-cascader-dropdown-hidden');
+}
+
+export function findOption(container: HTMLElement, menuIndex: number, itemIndex: number): HTMLElement | null {
+  const menus = container.querySelectorAll('ul.rc-cascader-menu');
+  const menu = menus[menuIndex];
+  if (!menu) return null;
+  
+  const itemList = menu.querySelectorAll('li.rc-cascader-menu-item');
+  return itemList[itemIndex] || null;
+}
+
+export function clickOption(container: HTMLElement, menuIndex: number, itemIndex: number, type: 'click' | 'doubleClick' | 'mouseEnter' = 'click'): void {
+  const option = findOption(container, menuIndex, itemIndex);
+  if (!option) return;
+  
+  if (type === 'doubleClick') {
+    fireEvent.doubleClick(option);
+  } else if (type === 'mouseEnter') {
+    fireEvent.mouseEnter(option);
+  } else {
+    fireEvent.click(option);
+  }
+}

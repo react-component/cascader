@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
-import { mount } from './enzyme';
 import * as commonUtil from '../src/utils/commonUtil';
 import { act, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
-import { expectOpen, selectOption } from './util';
+import { expectOpen, selectOption, isOpen, clickOption } from './util';
 
 describe('Cascader.Basic', () => {
   let selectedValue: any;
@@ -97,7 +96,7 @@ describe('Cascader.Basic', () => {
   });
 
   it('should support showCheckedStrategy parent', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         checkable
         changeOnSelect
@@ -108,19 +107,19 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    wrapper.clickOption(0, 2);
-    menus = wrapper.find('.rc-cascader-menu');
+    clickOption(container, 0, 2);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    wrapper.clickOption(1, 0);
-    wrapper.clickOption(1, 1);
+    clickOption(container, 1, 0);
+    clickOption(container, 1, 1);
     expect(selectedValue.join(',')).toBe('bj');
   });
 
   it('should support showCheckedStrategy child', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         checkable
         changeOnSelect
@@ -131,23 +130,23 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
+    fireEvent.click(container.querySelector('input')!);
 
     // Menu 1
-    let menus = wrapper.find('.rc-cascader-menu');
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    wrapper.clickOption(0, 2);
-    menus = wrapper.find('.rc-cascader-menu');
+    clickOption(container, 0, 2);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
-    wrapper.clickOption(1, 0);
-    wrapper.clickOption(1, 1);
+    clickOption(container, 1, 0);
+    clickOption(container, 1, 1);
     expect(selectedValue[0].join(',')).toBe('bj,chaoyang');
     expect(selectedValue[1].join(',')).toBe('bj,haidian');
     expect(selectedValue.join(',')).toBe('bj,chaoyang,bj,haidian');
   });
 
   it('should has defaultValue', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
@@ -157,14 +156,14 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    const activeMenuItems = container.querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).toBe(3);
-    expect(activeMenuItems.at(0).text()).toBe('福建');
-    expect(activeMenuItems.at(1).text()).toBe('福州');
-    expect(activeMenuItems.at(2).text()).toBe('马尾');
+    expect(activeMenuItems[0].textContent).toBe('福建');
+    expect(activeMenuItems[1].textContent).toBe('福州');
+    expect(activeMenuItems[2].textContent).toBe('马尾');
   });
 
   it('should support expand previous item when hover', () => {
@@ -327,36 +326,40 @@ describe('Cascader.Basic', () => {
   });
 
   it('should be disabled', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={addressOptions} disabled onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeFalsy();
+    expect(isOpen(container)).toBeFalsy();
+    fireEvent.click(container.querySelector('input')!);
+    expect(isOpen(container)).toBeFalsy();
+    fireEvent.click(container.querySelector('input')!);
+    expect(isOpen(container)).toBeFalsy();
   });
 
   it('should display not found popup when there is no options', () => {
-    const wrapper = mount(
+    const { container, rerender } = render(
       <Cascader options={[]} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    expect(wrapper.isOpen()).toBeTruthy();
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(1);
-    expect(wrapper.find('.rc-cascader-menu-item')).toHaveLength(1);
-    expect(wrapper.find('.rc-cascader-menu-item').text()).toEqual('Not Found');
+    fireEvent.click(container.querySelector('input')!);
+    expect(isOpen(container)).toBeTruthy();
+    expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(1);
+    expect(container.querySelectorAll('.rc-cascader-menu-item')).toHaveLength(1);
+    expect(container.querySelector('.rc-cascader-menu-item')!.textContent).toEqual('Not Found');
 
-    wrapper.setProps({ notFoundContent: 'BambooLight' });
-    expect(wrapper.find('.rc-cascader-menu-item').text()).toEqual('BambooLight');
+    rerender(
+      <Cascader options={[]} onChange={onChange} notFoundContent="BambooLight">
+        <input readOnly />
+      </Cascader>
+    );
+    expect(container.querySelector('.rc-cascader-menu-item')!.textContent).toEqual('BambooLight');
   });
 
   it('should not display when children is empty', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={[
           {
@@ -370,8 +373,8 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
   });
 
@@ -382,23 +385,23 @@ describe('Cascader.Basic', () => {
         ...newAddressOptions[0],
         disabled: true,
       };
-      const wrapper = mount(
+      const { container } = render(
         <Cascader options={newAddressOptions} onChange={onChange}>
           <input readOnly />
         </Cascader>,
       );
-      wrapper.find('input').simulate('click');
-      let menus = wrapper.find('.rc-cascader-menu');
+      fireEvent.click(container.querySelector('input')!);
+      let menus = container.querySelectorAll('.rc-cascader-menu');
       expect(menus.length).toBe(1);
-      const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+      const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
       expect(menu1Items.length).toBe(3);
       expect(selectedValue).toBeFalsy();
 
-      menu1Items.at(0).simulate('click');
+      fireEvent.click(menu1Items[0]);
       expect(
-        wrapper.find('.rc-cascader-menu-item').first().hasClass('rc-cascader-menu-item-disabled'),
+        container.querySelector('.rc-cascader-menu-item')!.classList.contains('rc-cascader-menu-item-disabled'),
       ).toBe(true);
-      menus = wrapper.find('.rc-cascader-menu');
+      menus = container.querySelectorAll('.rc-cascader-menu');
       expect(menus.length).toBe(1);
     });
 
@@ -406,7 +409,7 @@ describe('Cascader.Basic', () => {
       const newAddressOptions = JSON.parse(JSON.stringify(addressOptions));
       newAddressOptions[0].children[0].disabled = true;
 
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           options={newAddressOptions}
           value={[
@@ -417,29 +420,29 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-cascader-selection-item-disabled').text()).toEqual('福州');
+      expect(container.querySelector('.rc-cascader-selection-item-disabled')!.textContent).toEqual('福州');
       expect(
-        wrapper
-          .find('.rc-cascader-selection-item:not(.rc-cascader-selection-item-disabled)')
-          .find('.rc-cascader-selection-item-content')
-          .text(),
+        container
+          .querySelector('.rc-cascader-selection-item:not(.rc-cascader-selection-item-disabled)')!
+          .querySelector('.rc-cascader-selection-item-content')!
+          .textContent,
       ).toEqual('朝阳区');
     });
   });
 
   it('should have correct active menu items', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={optionsForActiveMenuItems} defaultValue={['1', '2']} expandIcon="">
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    fireEvent.click(container.querySelector('input')!);
+    const activeMenuItems = container.querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).toBe(2);
-    expect(activeMenuItems.at(0).text()).toBe('1');
-    expect(activeMenuItems.at(1).text()).toBe('2');
-    const menus = wrapper.find('.rc-cascader-menu');
-    const activeMenuItemsInMenu1 = menus.at(0).find('.rc-cascader-menu-item-active');
+    expect(activeMenuItems[0].textContent).toBe('1');
+    expect(activeMenuItems[1].textContent).toBe('2');
+    const menus = container.querySelectorAll('.rc-cascader-menu');
+    const activeMenuItemsInMenu1 = menus[0].querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItemsInMenu1.length).toBe(1);
   });
 
@@ -464,18 +467,17 @@ describe('Cascader.Basic', () => {
         </Cascader>
       );
     };
-    const wrapper = mount(<Demo />);
-    wrapper.find('input').simulate('click');
-    let menus = wrapper.find('.rc-cascader-menu');
+    const { container } = render(<Demo />);
+    fireEvent.click(container.querySelector('input')!);
+    let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
 
-    wrapper.clickOption(0, 0);
-    menus = wrapper.find('.rc-cascader-menu');
+    clickOption(container, 0, 0);
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
 
     jest.runAllTimers();
-    wrapper.update();
-    menus = wrapper.find('.rc-cascader-menu');
+    menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(2);
   });
 
@@ -499,26 +501,25 @@ describe('Cascader.Basic', () => {
   });
 
   it('should not call onChange on hover when expandTrigger=hover with changeOnSelect', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader changeOnSelect expandTrigger="hover" options={addressOptions} onChange={onChange}>
         <input readOnly />
       </Cascader>,
     );
 
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     expect(menu1Items.length).toBe(3);
-    menu1Items.at(0).simulate('mouseEnter');
+    fireEvent.mouseEnter(menu1Items[0]);
     jest.runAllTimers();
-    wrapper.update();
     expect(selectedValue).toBeFalsy();
-    expect(wrapper.isOpen()).toBeTruthy();
+    expect(isOpen(container)).toBeTruthy();
   });
 
   it('should support custom expand icon(text icon)', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={addressOptions}
         defaultValue={['fj', 'fuzhou', 'mawei']}
@@ -528,14 +529,14 @@ describe('Cascader.Basic', () => {
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(3);
-    const activeMenuItems = wrapper.find('.rc-cascader-menu-item-active');
+    const activeMenuItems = container.querySelectorAll('.rc-cascader-menu-item-active');
     expect(activeMenuItems.length).toBe(3);
-    expect(activeMenuItems.at(0).text()).toBe('福建=>');
-    expect(activeMenuItems.at(1).text()).toBe('福州=>');
-    expect(activeMenuItems.at(2).text()).toBe('马尾');
+    expect(activeMenuItems[0].textContent).toBe('福建=>');
+    expect(activeMenuItems[1].textContent).toBe('福州=>');
+    expect(activeMenuItems[2].textContent).toBe('马尾');
   });
 
   it('should close popup on double click when changeOnSelect is set', () => {
@@ -580,17 +581,17 @@ describe('Cascader.Basic', () => {
         title: 'title',
       },
     ];
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={options} open>
         <input readOnly />
       </Cascader>,
     );
-    const menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.render()).toMatchSnapshot();
+    const menus = container.querySelector('.rc-cascader-menu');
+    expect(menus).toMatchSnapshot();
   });
 
   it('should render custom popup correctly', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={addressOptions}
         open
@@ -606,17 +607,17 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
 
-    const customPopup = wrapper.find('.custom-popup');
+    const customPopup = container.querySelectorAll('.custom-popup');
     expect(customPopup.length).toBe(1);
-    const customPopupContent = wrapper.find('.custom-popup-content');
+    const customPopupContent = container.querySelectorAll('.custom-popup-content');
     expect(customPopupContent.length).toBe(1);
-    const menus = wrapper.find('.rc-cascader-dropdown');
-    expect(menus.render()).toMatchSnapshot();
+    const menus = container.querySelector('.rc-cascader-dropdown');
+    expect(menus).toMatchSnapshot();
   });
 
   // https://github.com/ant-design/ant-design/issues/41134
   it('hover to no secondary menu should hide the previous secondary menu', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         changeOnSelect
         expandTrigger="hover"
@@ -627,30 +628,29 @@ describe('Cascader.Basic', () => {
       </Cascader>,
     );
 
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
+    fireEvent.click(container.querySelector('input')!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
     expect(menu1Items.length).toBe(5);
-    wrapper.clickOption(0, 3, 'mouseEnter');
+    clickOption(container, 0, 3, 'mouseEnter');
 
-    const menus2 = wrapper.find('.rc-cascader-menu');
+    const menus2 = container.querySelectorAll('.rc-cascader-menu');
     expect(menus2.length).toBe(2);
-    const menu2Items = menus2.at(1).find('.rc-cascader-menu-item');
+    const menu2Items = menus2[1].querySelectorAll('.rc-cascader-menu-item');
     expect(menu2Items.length).toBe(2);
-    wrapper.clickOption(1, 0, 'mouseEnter');
+    clickOption(container, 1, 0, 'mouseEnter');
 
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(3);
-    wrapper.clickOption(1, 1, 'mouseEnter');
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(2); // should hide the previous secondary menu
+    expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(3);
+    clickOption(container, 1, 1, 'mouseEnter');
+    expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(2); // should hide the previous secondary menu
 
-    wrapper.clickOption(0, 4, 'mouseEnter');
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(1); // should hide the previous secondary menu
+    clickOption(container, 0, 4, 'mouseEnter');
+    expect(container.querySelectorAll('.rc-cascader-menu')).toHaveLength(1); // should hide the previous secondary menu
 
     jest.runAllTimers();
-    wrapper.update();
     expect(selectedValue).toBeFalsy();
-    expect(wrapper.isOpen()).toBeTruthy();
+    expect(isOpen(container)).toBeTruthy();
   });
 
   describe('focus test', () => {
@@ -680,7 +680,7 @@ describe('Cascader.Basic', () => {
 
     it('focus', () => {
       const cascaderRef = React.createRef<CascaderRef>();
-      mount(<Cascader ref={cascaderRef} />);
+      render(<Cascader ref={cascaderRef} />);
 
       cascaderRef.current?.focus();
       expect(focusTimes === 1).toBeTruthy();
@@ -688,7 +688,7 @@ describe('Cascader.Basic', () => {
 
     it('blur', () => {
       const cascaderRef = React.createRef<CascaderRef>();
-      mount(<Cascader ref={cascaderRef} />);
+      render(<Cascader ref={cascaderRef} />);
 
       cascaderRef.current?.blur();
       expect(blurTimes === 1).toBeTruthy();
@@ -697,7 +697,7 @@ describe('Cascader.Basic', () => {
 
   describe('active className', () => {
     it('expandTrigger: click', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           open
           expandIcon=""
@@ -716,16 +716,16 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      wrapper.clickOption(0, 0);
-      wrapper.clickOption(1, 0);
+      clickOption(container, 0, 0);
+      clickOption(container, 1, 0);
 
-      expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(2);
-      expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
-      expect(wrapper.find('li.rc-cascader-menu-item-active').last().text()).toEqual('Little');
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')).toHaveLength(2);
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual('Bamboo');
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[1].textContent).toEqual('Little');
     });
 
     it('expandTrigger: hover', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           open
           expandIcon=""
@@ -745,17 +745,17 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      wrapper.clickOption(0, 0, 'mouseEnter');
-      wrapper.clickOption(1, 0, 'mouseEnter');
+      clickOption(container, 0, 0, 'mouseEnter');
+      clickOption(container, 1, 0, 'mouseEnter');
 
-      expect(wrapper.find('li.rc-cascader-menu-item-active')).toHaveLength(1);
-      expect(wrapper.find('li.rc-cascader-menu-item-active').first().text()).toEqual('Bamboo');
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')).toHaveLength(1);
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual('Bamboo');
     });
 
     describe('the defaultValue should be activated the first time it is opened', () => {
       (['click', 'hover'] as const).forEach(expandTrigger => {
         it(`expandTrigger: ${expandTrigger}`, () => {
-          const wrapper = mount(
+          const { container } = render(
             <Cascader
               expandTrigger={expandTrigger}
               defaultValue={['tw', 'gaoxiong']}
@@ -765,35 +765,35 @@ describe('Cascader.Basic', () => {
             </Cascader>,
           );
 
-          wrapper.find('input').simulate('click');
-          const activeItems = wrapper.find('li.rc-cascader-menu-item-active');
+          fireEvent.click(container.querySelector('input')!);
+          const activeItems = container.querySelectorAll('li.rc-cascader-menu-item-active');
           expect(activeItems).toHaveLength(2);
-          expect(activeItems.last().text()).toEqual('高雄');
+          expect(activeItems[1].textContent).toEqual('高雄');
         });
       });
     });
   });
 
   it('defaultValue not exist', () => {
-    const wrapper = mount(<Cascader defaultValue={['not', 'exist']} />);
-    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('not / exist');
+    const { container } = render(<Cascader defaultValue={['not', 'exist']} />);
+    expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('not / exist');
   });
 
   it('number value', () => {
     const onValueChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Cascader onChange={onValueChange} options={[{ label: 'One', value: 1 }]} open />,
     );
 
-    wrapper.clickOption(0, 0);
+    clickOption(container, 0, 0);
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
-    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('One');
+    expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('One');
   });
 
   it('empty children is last children', () => {
     const onValueChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         open
         onChange={onValueChange}
@@ -807,15 +807,15 @@ describe('Cascader.Basic', () => {
       />,
     );
 
-    wrapper.clickOption(0, 0);
+    clickOption(container, 0, 0);
 
     expect(onValueChange).toHaveBeenCalledWith(['parent'], expect.anything());
-    expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(1);
+    expect(container.querySelectorAll('ul.rc-cascader-menu')).toHaveLength(1);
   });
 
   describe('ReactNode label should not be [object]', () => {
     it('single', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           options={[
             {
@@ -837,7 +837,7 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('Normal / Child');
+      expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('Normal / Child');
     });
 
     it('multiple', () => {
@@ -846,7 +846,7 @@ describe('Cascader.Basic', () => {
         options: { label: React.ReactNode; value: string }[][],
       ) => void = jest.fn();
 
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           options={[
             { label: <span>Parent</span>, value: 'parent' },
@@ -871,8 +871,9 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-cascader-selection-item-content').first().text()).toEqual('Parent');
-      expect(wrapper.find('.rc-cascader-selection-item-content').last().text()).toEqual('Child');
+      const items = container.querySelectorAll('.rc-cascader-selection-item-content');
+      expect(items[0].textContent).toEqual('Parent');
+      expect(items[1].textContent).toEqual('Child');
     });
   });
 
@@ -905,7 +906,7 @@ describe('Cascader.Basic', () => {
         },
       });
 
-      const wrapper = mount(
+      const { unmount } = render(
         <Cascader
           fieldNames={{ value: 'label' }}
           options={[
@@ -918,7 +919,7 @@ describe('Cascader.Basic', () => {
         />,
       );
       expect(mockScrollTo).toBeCalledWith(undefined, { top: 10 });
-      wrapper.unmount();
+      unmount();
       spyElement.mockRestore();
     });
 
@@ -936,7 +937,7 @@ describe('Cascader.Basic', () => {
         },
       });
 
-      const wrapper = mount(
+      const { unmount } = render(
         <Cascader
           fieldNames={{ value: 'label' }}
           options={[
@@ -949,7 +950,7 @@ describe('Cascader.Basic', () => {
         />,
       );
       expect(mockScrollTo).toBeCalledWith(undefined, { top: 100 });
-      wrapper.unmount();
+      unmount();
       spyElement.mockRestore();
     });
 
@@ -960,7 +961,7 @@ describe('Cascader.Basic', () => {
         },
       });
 
-      const wrapper = mount(
+      const { unmount } = render(
         <Cascader
           fieldNames={{ value: 'label' }}
           options={[
@@ -973,12 +974,12 @@ describe('Cascader.Basic', () => {
         />,
       );
       expect(mockScrollTo).not.toHaveBeenCalled();
-      wrapper.unmount();
+      unmount();
       spyElement.mockRestore();
     });
 
     it('should support double quote in label and value', () => {
-      const wrapper = mount(
+      const { container } = render(
         <Cascader
           options={[
             {
@@ -996,8 +997,9 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      wrapper.find(`li[data-path-key]`).at(0).simulate('click');
-      wrapper.find(`li[data-path-key]`).at(1).simulate('click');
+      const items = container.querySelectorAll(`li[data-path-key]`);
+      fireEvent.click(items[0]);
+      fireEvent.click(items[1]);
     });
 
     it('hover + search', () => {
@@ -1014,7 +1016,7 @@ describe('Cascader.Basic', () => {
         },
       });
 
-      const wrapper = render(
+      const { container } = render(
         <Cascader
           expandTrigger="hover"
           options={[
@@ -1070,10 +1072,10 @@ describe('Cascader.Basic', () => {
           open
         />,
       );
-      fireEvent.change(wrapper.container.querySelector('input') as HTMLElement, {
+      fireEvent.change(container.querySelector('input') as HTMLElement, {
         target: { value: 'w' },
       });
-      const items = wrapper.container.querySelectorAll('.rc-cascader-menu-item');
+      const items = container.querySelectorAll('.rc-cascader-menu-item');
       fireEvent.mouseEnter(items[9]);
       expect(mockScrollTo).toHaveBeenCalledTimes(1);
 
@@ -1104,17 +1106,18 @@ describe('Cascader.Basic', () => {
   });
 
   it('not crash when value type is not array', () => {
-    mount(<Cascader value={'bamboo' as any} />);
+    render(<Cascader value={'bamboo' as any} />);
   });
 
   it('support custom cascader', () => {
-    const wrapper = mount(<Cascader popupStyle={{ zIndex: 999 }} open />);
-    expect(wrapper.find('.rc-cascader-dropdown').props().style?.zIndex).toBe(999);
+    const { container } = render(<Cascader popupStyle={{ zIndex: 999 }} open />);
+    const dropdown = container.querySelector('.rc-cascader-dropdown');
+    expect(dropdown?.style.zIndex).toBe('999');
   });
 
   it('`null` is a value in Cascader options should throw a warning', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
-    mount(
+    render(
       <Cascader
         options={[
           {
