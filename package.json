@@ -35,7 +35,7 @@
     "coverage": "father test --coverage",
     "tsc": "bunx tsc --noEmit",
     "deploy": "UMI_ENV=gh npm run build && gh-pages -d dist",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
+    "lint": "eslint src/ examples/ tests/ --ext .tsx,.ts,.jsx,.jsx",
     "now-build": "npm run build",
     "prepublishOnly": "npm run compile && rc-np",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
@@ -43,17 +43,17 @@
     "test": "rc-test"
   },
   "dependencies": {
-    "@rc-component/select": "~1.2.0",
-    "@rc-component/tree": "~1.0.0",
-    "@rc-component/util": "^1.3.0",
+    "@rc-component/select": "~1.3.0",
+    "@rc-component/tree": "~1.1.0",
+    "@rc-component/util": "^1.4.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",
+    "@rc-component/form": "^1.4.0",
     "@rc-component/np": "^1.0.3",
     "@rc-component/trigger": "^3.0.0",
-    "@testing-library/react": "^12.1.5",
-    "@types/enzyme": "^3.1.15",
+    "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.4.0",
     "@types/node": "^24.5.2",
     "@types/react": "^19.0.0",
@@ -65,9 +65,6 @@
     "core-js": "^3.40.0",
     "cross-env": "^7.0.0",
     "dumi": "^2.1.10",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.15.6",
-    "enzyme-to-json": "^3.2.1",
     "eslint": "^8.54.0",
     "eslint-plugin-jest": "^28.8.3",
     "eslint-plugin-unicorn": "^56.0.1",
@@ -76,14 +73,13 @@
     "glob": "^7.1.6",
     "less": "^4.2.0",
     "prettier": "^3.1.0",
-    "rc-field-form": "^1.44.0",
     "rc-test": "^7.1.2",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
-    "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   }
 }

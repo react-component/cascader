@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
-import { mount } from './enzyme';
+import { clickOption } from './util';
 
 describe('Cascader.Checkable', () => {
   const options = [
@@ -34,15 +34,16 @@ describe('Cascader.Checkable', () => {
 
   it('customize', () => {
     const onChange = jest.fn();
-    const wrapper = mount(<Cascader options={options} onChange={onChange} open checkable />);
+    const { container } = render(<Cascader options={options} onChange={onChange} open checkable />);
 
-    expect(wrapper.exists('.rc-cascader-checkbox')).toBeTruthy();
-    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeFalsy();
-    expect(wrapper.exists('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+    expect(container.querySelector('.rc-cascader-checkbox')).toBeTruthy();
+    expect(container.querySelector('.rc-cascader-checkbox-checked')).toBeFalsy();
+    expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
 
     // Check light
-    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
-    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeTruthy();
+    const checkboxes = container.querySelectorAll('.rc-cascader-checkbox');
+    fireEvent.click(checkboxes[0]);
+    expect(container.querySelector('.rc-cascader-checkbox-checked')).toBeTruthy();
     expect(onChange).toHaveBeenCalledWith(
       [['light']],
       [[expect.objectContaining({ value: 'light' })]],
@@ -51,13 +52,17 @@ describe('Cascader.Checkable', () => {
     onChange.mockReset();
 
     // Open bamboo > little
-    wrapper.clickOption(0, 1);
-    wrapper.clickOption(1, 0);
+    clickOption(container, 0, 1); // Click bamboo
+    clickOption(container, 1, 0); // Click little
 
-    // Check cards
-    wrapper.clickOption(2, 1);
-    expect(wrapper.find('.rc-cascader-checkbox-indeterminate')).toHaveLength(2);
-    expect(wrapper.exists('.rc-cascader-checkbox-indeterminate')).toBeTruthy();
+    // Check cards (index 1 in third menu)
+    clickOption(container, 2, 1); // Click cards
+
+    const indeterminateCheckboxes = container.querySelectorAll(
+      '.rc-cascader-checkbox-indeterminate',
+    );
+    expect(indeterminateCheckboxes).toHaveLength(2);
+    expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeTruthy();
     expect(onChange).toHaveBeenCalledWith(
       [
         // Light
@@ -77,10 +82,15 @@ describe('Cascader.Checkable', () => {
       ],
     );
 
-    // Check fish
-    wrapper.clickOption(2, 0);
-    expect(wrapper.find('.rc-cascader-checkbox-indeterminate')).toHaveLength(0);
-    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(5);
+    // Check fish (index 0 in third menu)
+    clickOption(container, 2, 0); // Click fish
+
+    const finalIndeterminateCheckboxes = container.querySelectorAll(
+      '.rc-cascader-checkbox-indeterminate',
+    );
+    expect(finalIndeterminateCheckboxes).toHaveLength(0);
+    const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+    expect(checkedCheckboxes).toHaveLength(5);
     expect(onChange).toHaveBeenCalledWith(
       [
         // Light
@@ -98,22 +108,23 @@ describe('Cascader.Checkable', () => {
   });
   it('click checkbox invoke one onChange', () => {
     const onChange = jest.fn();
-    const wrapper = mount(<Cascader options={options} onChange={onChange} open checkable />);
+    const { container } = render(<Cascader options={options} onChange={onChange} open checkable />);
 
-    expect(wrapper.exists('.rc-cascader-checkbox')).toBeTruthy();
-    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeFalsy();
-    expect(wrapper.exists('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+    expect(container.querySelector('.rc-cascader-checkbox')).toBeTruthy();
+    expect(container.querySelector('.rc-cascader-checkbox-checked')).toBeFalsy();
+    expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
 
     // Check checkbox
-    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
-    expect(wrapper.exists('.rc-cascader-checkbox-checked')).toBeTruthy();
+    const checkboxes = container.querySelectorAll('.rc-cascader-checkbox');
+    fireEvent.click(checkboxes[0]);
+    expect(container.querySelector('.rc-cascader-checkbox-checked')).toBeTruthy();
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   it('merge checked options', () => {
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         checkable
         open
@@ -138,48 +149,51 @@ describe('Cascader.Checkable', () => {
     );
 
     // Open parent
-    wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
+    clickOption(container, 0, 0);
 
     // Check child1
-    wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
+    const checkboxes = container.querySelectorAll('span.rc-cascader-checkbox');
+    fireEvent.click(checkboxes[1]);
     expect(onChange).toHaveBeenCalledWith([['parent', 'child1']], expect.anything());
 
     // Check child2
     onChange.mockReset();
-    wrapper.find('span.rc-cascader-checkbox').at(2).simulate('click');
+    fireEvent.click(checkboxes[2]);
     expect(onChange).toHaveBeenCalledWith([['parent']], expect.anything());
 
     // Uncheck child1
     onChange.mockReset();
-    wrapper.find('span.rc-cascader-checkbox').at(1).simulate('click');
+    fireEvent.click(checkboxes[1]);
     expect(onChange).toHaveBeenCalledWith([['parent', 'child2']], expect.anything());
   });
 
   // https://github.com/ant-design/ant-design/issues/33302
   it('should not display checkbox when children is empty', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader checkable options={[]}>
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
-    expect(menus.find('.rc-cascader-checkbox').length).toBe(0);
+    const input = container.querySelector('input');
+    fireEvent.click(input!);
+    const checkboxes = container.querySelectorAll('.rc-cascader-checkbox');
+    expect(checkboxes.length).toBe(0);
   });
 
   it('should work with custom checkable', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         checkable={<span className="my-custom-checkbox">0</span>}
         open
         options={addressOptions}
       />,
     );
-    expect(wrapper.find('.my-custom-checkbox')).toHaveLength(3);
+    const customCheckboxes = container.querySelectorAll('.my-custom-checkbox');
+    expect(customCheckboxes).toHaveLength(3);
   });
 
   it('should be correct expression with disableCheckbox', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         checkable={true}
         open
@@ -206,22 +220,30 @@ describe('Cascader.Checkable', () => {
     );
 
     // disabled className
-    wrapper.find('.rc-cascader-menu-item').simulate('click');
-    expect(wrapper.find('.rc-cascader-menu-item')).toHaveLength(4);
-    expect(wrapper.find('.rc-cascader-checkbox-disabled')).toHaveLength(1);
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item');
+    fireEvent.click(menuItems[0]);
+
+    // After clicking, we should have the parent item and its children
+    const updatedMenuItems = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(updatedMenuItems).toHaveLength(4);
+    const disabledCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-disabled');
+    expect(disabledCheckboxes).toHaveLength(1);
 
     // click disableCkeckbox
-    wrapper.find('.rc-cascader-menu-item').at(1).simulate('click');
-    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
+    fireEvent.click(updatedMenuItems[1]);
+    const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+    expect(checkedCheckboxes).toHaveLength(0);
 
     // click disableMenuItem
-    wrapper.find('.rc-cascader-checkbox-disabled').simulate('click');
-    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(0);
+    fireEvent.click(disabledCheckboxes[0]);
+    expect(checkedCheckboxes).toHaveLength(0);
 
     // Check all children except disableCheckbox When the parent checkbox is checked
-    expect(wrapper.find('.rc-cascader-checkbox')).toHaveLength(4);
-    wrapper.find('.rc-cascader-checkbox').first().simulate('click');
-    expect(wrapper.find('.rc-cascader-checkbox-checked')).toHaveLength(3);
+    const allCheckboxes = container.querySelectorAll('.rc-cascader-checkbox');
+    expect(allCheckboxes).toHaveLength(4);
+    fireEvent.click(allCheckboxes[0]);
+    const finalCheckedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+    expect(finalCheckedCheckboxes).toHaveLength(3);
   });
 
   it('should not merge disabled options', () => {

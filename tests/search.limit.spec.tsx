@@ -1,11 +1,11 @@
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import Cascader from '../src';
-import type { ReactWrapper } from './enzyme';
-import { mount } from './enzyme';
 
 describe('Cascader.Search', () => {
-  function doSearch(wrapper: ReactWrapper, search: string) {
-    wrapper.find('input').simulate('change', {
+  function doSearch(container: HTMLElement, search: string) {
+    const input = container.querySelector('input');
+    fireEvent.change(input!, {
       target: {
         value: search,
       },
@@ -27,7 +27,7 @@ describe('Cascader.Search', () => {
   }
 
   it('limit', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={options}
         open
@@ -37,13 +37,13 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    doSearch(wrapper, 'as');
-    const itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    doSearch(container, 'as');
+    const itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(100);
   });
 
   it('limit', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={options}
         open
@@ -53,13 +53,13 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    doSearch(wrapper, 'as');
-    const itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    doSearch(container, 'as');
+    const itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(100);
   });
 
   it('limit', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={options}
         open
@@ -69,8 +69,8 @@ describe('Cascader.Search', () => {
       />,
     );
 
-    doSearch(wrapper, 'as');
-    const itemList = wrapper.find('div.rc-cascader-menu-item-content');
+    doSearch(container, 'as');
+    const itemList = container.querySelectorAll('div.rc-cascader-menu-item-content');
     expect(itemList).toHaveLength(20);
   });
 });

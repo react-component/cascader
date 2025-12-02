@@ -1,5 +1,5 @@
 import arrayTreeFilter from 'array-tree-filter';
-import Form, { Field } from 'rc-field-form';
+import Form, { Field } from '@rc-component/form';
 import '../assets/index.less';
 import type { CascaderProps } from '../src';
 import Cascader from '../src';

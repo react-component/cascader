@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from './enzyme';
+import { fireEvent, render } from '@testing-library/react';
 import Cascader from '../src';
+import { clickOption, expectOpen } from './util';
 
 describe('Cascader.FieldNames', () => {
   const options = [
@@ -34,26 +35,31 @@ describe('Cascader.FieldNames', () => {
 
   it('customize', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={options} fieldNames={fieldNames} onChange={onChange} />,
     );
 
     // Open
-    wrapper.find('.rc-cascader').first().simulate('mousedown');
-    expect(wrapper.isOpen()).toBeTruthy();
+    const cascader = container.querySelector('.rc-cascader');
+    fireEvent.mouseDown(cascader!);
+    expectOpen(container);
 
     // Check values
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(1);
-    expect(wrapper.find('.rc-cascader-menu').at(0).find('.rc-cascader-menu-item')).toHaveLength(2);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
+    expect(menus).toHaveLength(1);
+    const menuItems = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    expect(menuItems).toHaveLength(2);
 
     // Click Bamboo
-    wrapper.clickOption(0, 1);
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(2);
-    expect(wrapper.find('.rc-cascader-menu').at(1).find('.rc-cascader-menu-item')).toHaveLength(1);
+    clickOption(container, 0, 1);
+    const updatedMenus = container.querySelectorAll('.rc-cascader-menu');
+    expect(updatedMenus).toHaveLength(2);
+    const updatedMenuItems = updatedMenus[1].querySelectorAll('.rc-cascader-menu-item');
+    expect(updatedMenuItems).toHaveLength(1);
 
     // Click Little & Toy
-    wrapper.clickOption(1, 0);
-    wrapper.clickOption(2, 0);
+    clickOption(container, 1, 0);
+    clickOption(container, 2, 0);
 
     expect(onChange).toHaveBeenCalledWith(
       ['bamboo', 'little', 'toy'],
@@ -66,7 +72,7 @@ describe('Cascader.FieldNames', () => {
   });
 
   it('defaultValue', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={options}
         fieldNames={fieldNames}
@@ -76,17 +82,20 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual('Bamboo / Little / Toy');
+    const contentValue = container.querySelector('.rc-cascader-content-value');
+    expect(contentValue?.textContent).toEqual('Bamboo / Little / Toy');
 
-    expect(wrapper.find('.rc-cascader-menu')).toHaveLength(3);
-    expect(wrapper.find('.rc-cascader-menu-item-active')).toHaveLength(3);
-    expect(wrapper.find('.rc-cascader-menu-item-active').at(0).text()).toEqual('Bamboo');
-    expect(wrapper.find('.rc-cascader-menu-item-active').at(1).text()).toEqual('Little');
-    expect(wrapper.find('.rc-cascader-menu-item-active').at(2).text()).toEqual('Toy');
+    const menus = container.querySelectorAll('.rc-cascader-menu');
+    expect(menus).toHaveLength(3);
+    const activeItems = container.querySelectorAll('.rc-cascader-menu-item-active');
+    expect(activeItems).toHaveLength(3);
+    expect(activeItems[0].textContent).toEqual('Bamboo');
+    expect(activeItems[1].textContent).toEqual('Little');
+    expect(activeItems[2].textContent).toEqual('Toy');
   });
 
   it('displayRender', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={options}
         fieldNames={fieldNames}
@@ -97,13 +106,12 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    expect(wrapper.find('.rc-cascader-content-value').text()).toEqual(
-      'Bamboo->Little->Toy & bamboo>>little>>toy',
-    );
+    const contentValue = container.querySelector('.rc-cascader-content-value');
+    expect(contentValue?.textContent).toEqual('Bamboo->Little->Toy & bamboo>>little>>toy');
   });
 
   it('same title & value should show correct title', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={[{ name: 'bamboo', children: [{ name: 'little' }] }]}
         open
@@ -115,11 +123,12 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('little');
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(menuItems[menuItems.length - 1].textContent).toEqual('little');
   });
 
   it('empty should correct when label same as value', () => {
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         options={[]}
         open
@@ -131,12 +140,13 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    expect(wrapper.find('.rc-cascader-menu-item').last().text()).toEqual('Not Found');
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(menuItems[menuItems.length - 1].textContent).toEqual('Not Found');
   });
 
   it('`null` is a value in fieldNames options should throw a warning', () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
-    mount(
+    render(
       <Cascader
         fieldNames={fieldNames}
         options={[

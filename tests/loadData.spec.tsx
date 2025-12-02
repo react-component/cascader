@@ -1,8 +1,8 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { mount } from './enzyme';
+import { act, fireEvent, render } from '@testing-library/react';
 import type { CascaderProps } from '../src';
 import Cascader from '../src';
+import { clickOption } from './util';
 
 describe('Cascader.LoadData', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Cascader.LoadData', () => {
 
   it('basic load', () => {
     const loadData = jest.fn();
-    const wrapper = mount(
+    const { container, rerender } = render(
       <Cascader
         loadingIcon={<div className="loading-icon" />}
         options={[
@@ -30,36 +30,41 @@ describe('Cascader.LoadData', () => {
       />,
     );
 
-    wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
-    expect(wrapper.exists('.loading-icon')).toBeTruthy();
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item-content');
+    fireEvent.click(menuItems[0]);
+    expect(container.querySelector('.loading-icon')).toBeTruthy();
     expect(loadData).toHaveBeenCalledWith([
       expect.objectContaining({
         value: 'bamboo',
       }),
     ]);
 
-    expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeTruthy();
-    expect(wrapper.exists('.rc-cascader-menu-item-loading-icon')).toBeTruthy();
+    expect(container.querySelector('.rc-cascader-menu-item-loading')).toBeTruthy();
+    expect(container.querySelector('.rc-cascader-menu-item-loading-icon')).toBeTruthy();
 
     // Fill data
-    wrapper.setProps({
-      options: [
-        {
-          label: 'Bamboo',
-          value: 'bamboo',
-          isLeaf: false,
-          children: [],
-        },
-      ],
-    });
-    wrapper.update();
-    expect(wrapper.exists('.loading-icon')).toBeFalsy();
+    rerender(
+      <Cascader
+        loadingIcon={<div className="loading-icon" />}
+        options={[
+          {
+            label: 'Bamboo',
+            value: 'bamboo',
+            isLeaf: false,
+            children: [],
+          },
+        ]}
+        loadData={loadData}
+        open
+      />,
+    );
+    expect(container.querySelector('.loading-icon')).toBeFalsy();
   });
 
   it('not load leaf', () => {
     const loadData = jest.fn();
     const onValueChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Cascader
         open
         loadData={loadData}
@@ -73,7 +78,7 @@ describe('Cascader.LoadData', () => {
       />,
     );
 
-    wrapper.clickOption(0, 0);
+    clickOption(container, 0, 0);
     expect(onValueChange).toHaveBeenCalled();
     expect(loadData).not.toHaveBeenCalled();
   });
@@ -93,15 +98,16 @@ describe('Cascader.LoadData', () => {
       },
     ];
     const loadData = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Cascader options={options} loadData={loadData} changeOnSelect expandTrigger="hover">
         <input readOnly />
       </Cascader>,
     );
-    wrapper.find('input').simulate('click');
-    const menus = wrapper.find('.rc-cascader-menu');
-    const menu1Items = menus.at(0).find('.rc-cascader-menu-item');
-    menu1Items.at(0).simulate('mouseEnter');
+    const input = container.querySelector('input');
+    fireEvent.click(input!);
+    const menus = container.querySelectorAll('.rc-cascader-menu');
+    const menu1Items = menus[0].querySelectorAll('.rc-cascader-menu-item');
+    fireEvent.mouseEnter(menu1Items[0]);
     jest.runAllTimers();
     expect(loadData).toHaveBeenCalled();
   });
@@ -129,16 +135,16 @@ describe('Cascader.LoadData', () => {
       return <Cascader options={options} loadData={loadData} open />;
     };
 
-    const wrapper = mount(<Demo />);
-    wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
-    expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeTruthy();
+    const { container } = render(<Demo />);
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item-content');
+    fireEvent.click(menuItems[0]);
+    expect(container.querySelector('.rc-cascader-menu-item-loading')).toBeTruthy();
 
     for (let i = 0; i < 3; i += 1) {
       await Promise.resolve();
     }
-    wrapper.update();
 
-    expect(wrapper.exists('.rc-cascader-menu-item-loading')).toBeFalsy();
+    expect(container.querySelector('.rc-cascader-menu-item-loading')).toBeFalsy();
   });
 
   it('nest load should not crash', async () => {
@@ -163,22 +169,23 @@ describe('Cascader.LoadData', () => {
       return <Cascader options={options} loadData={loadData} open />;
     };
 
-    const wrapper = mount(<Demo />);
+    const { container } = render(<Demo />);
 
     // First column click
-    wrapper.find('.rc-cascader-menu-item-content').last().simulate('click');
+    const menuItems = container.querySelectorAll('.rc-cascader-menu-item-content');
+    fireEvent.click(menuItems[menuItems.length - 1]);
     for (let i = 0; i < 3; i += 1) {
       await Promise.resolve();
     }
-    wrapper.update();
 
     // Second column click
-    wrapper.find('.rc-cascader-menu-item-content').last().simulate('click');
+    const updatedMenuItems = container.querySelectorAll('.rc-cascader-menu-item-content');
+    fireEvent.click(updatedMenuItems[updatedMenuItems.length - 1]);
     for (let i = 0; i < 3; i += 1) {
       await Promise.resolve();
     }
-    wrapper.update();
 
-    expect(wrapper.find('ul.rc-cascader-menu')).toHaveLength(3);
+    const menus = container.querySelectorAll('ul.rc-cascader-menu');
+    expect(menus).toHaveLength(3);
   });
 });
