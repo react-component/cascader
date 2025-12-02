@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Cascader.Search should correct render Cascader with same field name of label and value 1`] = `
-[
+<div>
   <div
     class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
   >
@@ -26,7 +26,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         value="z"
       />
     </div>
-  </div>,
+  </div>
   <div
     class="rc-cascader-dropdown rc-cascader-dropdown-placement-bottomLeft"
     style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
@@ -68,6 +68,6 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         </ul>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</div>
 `;
