@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import type { CascaderProps } from '../src';
 import Cascader from '../src';
@@ -38,12 +38,16 @@ describe('Cascader.Keyboard', () => {
       );
       keyDown(container, which);
       // Check if dropdown is open
-      jest.advanceTimersByTime(100000);
+      act(() => {
+        jest.advanceTimersByTime(100000);
+      });
       expect(isOpen(container)).toBeTruthy();
 
       keyDown(container, KeyCode.ESC);
       // Check if dropdown is closed
-      jest.advanceTimersByTime(100000);
+      act(() => {
+        jest.advanceTimersByTime(100000);
+      });
       expect(isOpen(container)).toBeFalsy();
     });
   });
@@ -54,7 +58,9 @@ describe('Cascader.Keyboard', () => {
     );
 
     keyDown(container, KeyCode.DOWN);
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
     let menus = container.querySelectorAll('.rc-cascader-menu');
     expect(menus.length).toBe(1);
@@ -98,7 +104,9 @@ describe('Cascader.Keyboard', () => {
     keyDown(container, KeyCode.ENTER);
 
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
     expect(selectedValue).toEqual(['zj', 'hangzhou', 'yuhang']);
     expect(selectedOptions).toEqual([
@@ -164,7 +172,9 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.DOWN);
@@ -187,7 +197,9 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.RIGHT);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
   });
 
@@ -199,7 +211,9 @@ describe('Cascader.Keyboard', () => {
 
       keyDown(container, KeyCode.ENTER);
       // Check if dropdown is open
-      jest.advanceTimersByTime(100000);
+      act(() => {
+        jest.advanceTimersByTime(100000);
+      });
       expect(isOpen(container)).toBeTruthy();
 
       keyDown(container, KeyCode.UP);
@@ -250,33 +264,45 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.LEFT);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.BACKSPACE);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.RIGHT);
     keyDown(container, KeyCode.ESC);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
   });
 
@@ -289,12 +315,16 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.ESC);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
 
     keyDown(container, KeyCode.ENTER);
@@ -309,7 +339,9 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.ENTER);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     // 0-0
@@ -321,7 +353,9 @@ describe('Cascader.Keyboard', () => {
     // Select
     keyDown(container, KeyCode.ENTER);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
     expect(selectedValue).toEqual(['fj', 'fuzhou']);
   });
@@ -355,12 +389,16 @@ describe('Cascader.Keyboard', () => {
     });
     keyDown(container, KeyCode.LEFT);
     // Check if dropdown is open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
 
     keyDown(container, KeyCode.RIGHT);
     // Check if dropdown is still open
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeTruthy();
   });
 
@@ -374,7 +412,9 @@ describe('Cascader.Keyboard', () => {
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is closed
-    jest.advanceTimersByTime(100000);
+    act(() => {
+      jest.advanceTimersByTime(100000);
+    });
     expect(isOpen(container)).toBeFalsy();
   });
 });
