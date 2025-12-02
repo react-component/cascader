@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import { mount } from './enzyme';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
-import { expectOpen } from './util';
+import { expectOpen, clickOption } from './util';
 
 // Mock `useActive` hook
 jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean) => {
@@ -17,6 +16,14 @@ jest.mock('../src/OptionList/useActive', () => (multiple: boolean, open: boolean
 });
 
 describe('Cascader.Selector', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   describe('clear all', () => {
     it('single', () => {
       const onChange = jest.fn();
@@ -67,11 +74,12 @@ describe('Cascader.Selector', () => {
 
   it('remove selector', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <Cascader checkable value={[['not'], ['exist']]} allowClear onChange={onChange} />,
     );
 
-    wrapper.find('.rc-cascader-selection-item-remove').first().simulate('click');
+    const removeButtons = container.querySelectorAll('.rc-cascader-selection-item-remove');
+    fireEvent.click(removeButtons[0]);
     expect(onChange).toHaveBeenCalledWith([['exist']], expect.anything());
   });
 
@@ -91,54 +99,51 @@ describe('Cascader.Selector', () => {
       );
     };
 
-    const wrapper = mount(
-      <Cascader
-        options={[
-          { label: 'AA', value: 'aa' },
-          { label: 'BB', value: 'bb' },
-          { label: 'CC', value: 'cc' },
-          { label: 'DD', value: 'dd' },
-          { label: 'EE', value: 'ee' },
-        ]}
-        value={[['aa'], ['bb'], ['cc'], ['dd'], ['ee']]}
-        onChange={values => {
-          wrapper.setProps({
-            value: values,
-          });
-        }}
-        tagRender={({ label, onClose }) => (
-          <Tag onClose={onClose} id={label}>
-            {label}
-          </Tag>
-        )}
-        checkable
-      />,
-    );
+    const TestComponent = () => {
+      const [value, setValue] = useState([['aa'], ['bb'], ['cc'], ['dd'], ['ee']]);
+      
+      return (
+        <Cascader
+          options={[
+            { label: 'AA', value: 'aa' },
+            { label: 'BB', value: 'bb' },
+            { label: 'CC', value: 'cc' },
+            { label: 'DD', value: 'dd' },
+            { label: 'EE', value: 'ee' },
+          ]}
+          value={value}
+          onChange={values => {
+            setValue(values);
+          }}
+          tagRender={({ label, onClose }) => (
+            <Tag onClose={onClose} id={label}>
+              {label}
+            </Tag>
+          )}
+          checkable
+        />
+      );
+    };
+
+    const { container } = render(<TestComponent />);
 
     for (let i = 5; i > 0; i--) {
-      const buttons = wrapper.find('button');
+      const buttons = container.querySelectorAll('button');
       expect(buttons.length).toBe(i);
-      buttons.first().simulate('click');
-      wrapper.update();
-      expect(wrapper.find('.reuse').length).toBe(0);
+      fireEvent.click(buttons[0]);
+      expect(container.querySelectorAll('.reuse').length).toBe(0);
     }
   });
 
   it('when selected modify options', () => {
-    const wrapper = mount(<Cascader options={addressOptions} open />);
+    const { container, rerender } = render(<Cascader options={addressOptions} open />);
 
     // First column click
-    wrapper.find('.rc-cascader-menu-item-content').first().simulate('click');
-    wrapper.update();
+    clickOption(container, 0, 0);
 
     // Second column click
-    wrapper.find('.rc-cascader-menu-item-content').last().simulate('click');
-    wrapper.update();
+    clickOption(container, 1, 1);
 
-    wrapper.setProps({
-      options: [{ label: '福建', value: 'fj', isLeaf: false }],
-    });
-
-    wrapper.update();
+    rerender(<Cascader options={[{ label: '福建', value: 'fj', isLeaf: false }]} open />);
   });
 });
