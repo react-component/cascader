@@ -161,7 +161,6 @@ describe('Cascader.Keyboard', () => {
     const { container } = render(
       <Cascader options={addressOptions} onChange={onChange} direction="rtl" />,
     );
-    const input = container.querySelector('input')!;
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
@@ -197,7 +196,6 @@ describe('Cascader.Keyboard', () => {
       const { container } = render(
         <Cascader options={addressOptions} onChange={onChange} expandIcon="" />,
       );
-      const input = container.querySelector('input')!;
 
       keyDown(container, KeyCode.ENTER);
       // Check if dropdown is open
@@ -235,7 +233,6 @@ describe('Cascader.Keyboard', () => {
           ]}
         />,
       );
-      const input = container.querySelector('input')!;
 
       keyDown(container, KeyCode.ENTER);
       keyDown(container, KeyCode.UP);
@@ -250,7 +247,6 @@ describe('Cascader.Keyboard', () => {
     const { container } = render(
       <Cascader options={addressOptions} onChange={onChange} expandIcon="" />,
     );
-    const input = container.querySelector('input')!;
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
@@ -290,7 +286,6 @@ describe('Cascader.Keyboard', () => {
     const { container } = render(
       <Cascader options={addressOptions} onChange={onChange} onKeyDown={onKeyDown} expandIcon="" />,
     );
-    const input = container.querySelector('input')!;
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is open
@@ -311,7 +306,6 @@ describe('Cascader.Keyboard', () => {
     const { container } = render(
       <Cascader options={addressOptions} onChange={onChange} changeOnSelect />,
     );
-    const input = container.querySelector('input')!;
 
     keyDown(container, KeyCode.ENTER);
     // Check if dropdown is open
@@ -340,7 +334,6 @@ describe('Cascader.Keyboard', () => {
         changeOnSelect
       />,
     );
-    const input = container.querySelector('input')!;
 
     for (let i = 0; i < 10; i += 1) {
       keyDown(container, KeyCode.DOWN);

@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
-import { clickOption, selectOption } from './util';
+import { clickOption } from './util';
 
 describe('Cascader.Checkable', () => {
   const options = [

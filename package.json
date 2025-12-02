@@ -35,7 +35,7 @@
     "coverage": "father test --coverage",
     "tsc": "bunx tsc --noEmit",
     "deploy": "UMI_ENV=gh npm run build && gh-pages -d dist",
-    "lint": "eslint src/ examples/ --ext .tsx,.ts,.jsx,.jsx",
+    "lint": "eslint src/ examples/ tests/ --ext .tsx,.ts,.jsx,.jsx",
     "now-build": "npm run build",
     "prepublishOnly": "npm run compile && rc-np",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
