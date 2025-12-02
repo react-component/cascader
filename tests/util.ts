@@ -38,7 +38,7 @@ export function selectOption(
   }
 }
 
-// Helper functions to replace enzyme-specific functionality
+// Helper functions for testing
 export function isOpen(container: HTMLElement): boolean {
   // Check the dropdown visibility
   const dropdown = container.querySelector('.rc-cascader-dropdown');
