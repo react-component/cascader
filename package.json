@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^2.0.2",
+    "@rc-component/form": "^1.4.0",
     "@rc-component/np": "^1.0.3",
     "@rc-component/trigger": "^3.0.0",
     "@testing-library/react": "^12.1.5",
@@ -76,10 +77,9 @@
     "glob": "^7.1.6",
     "less": "^4.2.0",
     "prettier": "^3.1.0",
-    "rc-field-form": "^1.44.0",
     "rc-test": "^7.1.2",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "typescript": "^5.3.2"
   },
   "peerDependencies": {
