@@ -378,7 +378,6 @@ describe('Cascader.Keyboard', () => {
         <input readOnly onKeyDown={() => {}} />
       </Cascader>,
     );
-    const input = container.querySelector('input')!;
 
     keyDown(container, KeyCode.DOWN);
     // Check if dropdown is closed
