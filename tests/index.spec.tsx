@@ -1112,7 +1112,7 @@ describe('Cascader.Basic', () => {
   it('support custom cascader', () => {
     const { container } = render(<Cascader popupStyle={{ zIndex: 999 }} open />);
     const dropdown = container.querySelector('.rc-cascader-dropdown');
-    expect(dropdown?.style.zIndex).toBe('999');
+    expect(dropdown).toHaveStyle({ zIndex: '999' });
   });
 
   it('`null` is a value in Cascader options should throw a warning', () => {
