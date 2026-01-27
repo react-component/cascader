@@ -29,8 +29,9 @@ export type RawOptionListProps = Pick<
   | 'direction'
   | 'open'
   | 'disabled'
-  | 'lockOptions'
->;
+> & {
+  lockOptions?: boolean;
+};
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
   const {
@@ -42,7 +43,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     direction,
     open,
     disabled,
-    lockOptions,
+    lockOptions = false,
   } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
