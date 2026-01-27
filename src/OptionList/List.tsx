@@ -3,6 +3,7 @@ import { clsx } from 'clsx';
 import type { useBaseProps } from '@rc-component/select';
 import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
 import * as React from 'react';
+import useMemo from '@rc-component/util/lib/hooks/useMemo';
 import type { DefaultOptionType, LegacyKey, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import {
@@ -14,7 +15,6 @@ import {
   toPathValueStr,
 } from '../utils/commonUtil';
 import { toPathOptions } from '../utils/treeUtil';
-import CacheContent from './CacheContent';
 import Column, { FIX_LABEL } from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
@@ -137,13 +137,20 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
   };
 
   // ========================== Option ==========================
-  const mergedOptions = React.useMemo(() => {
+  const filteredOptions = React.useMemo(() => {
     if (searchValue) {
       return searchOptions;
     }
 
     return options;
   }, [searchValue, searchOptions, options]);
+
+  // Update only when open or lockOptions
+  const mergedOptions = useMemo(
+    () => filteredOptions,
+    [open, lockOptions],
+    (prev, next) => !!next[0] && !next[1],
+  );
 
   // ========================== Column ==========================
   const optionColumns = React.useMemo(() => {
@@ -248,17 +255,15 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
 
   // >>>>> Render
   return (
-    <CacheContent open={open} lockOptions={lockOptions}>
-      <div
-        className={clsx(`${mergedPrefixCls}-menus`, {
-          [`${mergedPrefixCls}-menu-empty`]: isEmpty,
-          [`${mergedPrefixCls}-rtl`]: rtl,
-        })}
-        ref={containerRef}
-      >
-        {columnNodes}
-      </div>
-    </CacheContent>
+    <div
+      className={clsx(`${mergedPrefixCls}-menus`, {
+        [`${mergedPrefixCls}-menu-empty`]: isEmpty,
+        [`${mergedPrefixCls}-rtl`]: rtl,
+      })}
+      ref={containerRef}
+    >
+      {columnNodes}
+    </div>
   );
 });
 
