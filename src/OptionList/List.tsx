@@ -244,6 +244,8 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     );
   });
 
+  const messages = activeValueCells.join(" / ")
+
   // >>>>> Render
   return (
     <CacheContent open={open}>
@@ -255,6 +257,22 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
         ref={containerRef}
       >
         {columnNodes}
+      </div>
+      <div
+        aria-live="polite"
+        style={{
+          zIndex: 9999,
+          border: 0,
+          clip: 'rect(1px, 1px, 1px, 1px)',
+          height: 1,
+          width: 1,
+          position: 'absolute',
+          overflow: 'hidden',
+          padding: 0,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {messages}
       </div>
     </CacheContent>
   );
