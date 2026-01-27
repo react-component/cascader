@@ -223,7 +223,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                 />
               )}
               <div className={`${menuItemPrefixCls}-content`}>
-                {optionRender ? optionRender(option) : label}
+                {optionRender && value !== '__EMPTY__' ? optionRender(option) : label}
               </div>
               {!isLoading && expandIcon && !isMergedLeaf && (
                 <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>

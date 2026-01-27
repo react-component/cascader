@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import Cascader from '../src';
+import Cascader, { type DefaultOptionType } from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
 import { expectOpen, doSearch, keyDown } from './util';
 
@@ -443,5 +443,69 @@ describe('Cascader.Search', () => {
     expect(inputNode).toHaveValue('little');
     fireEvent.click(document.querySelector('.rc-cascader-checkbox') as HTMLElement);
     expect(inputNode).toHaveValue('little');
+  });
+
+  it('should display notFoundContent when search has no results with optionRender', () => {
+    const { container } = render(
+      <Cascader
+        options={options}
+        open
+        showSearch
+        optionRender={option => `${option.label} - custom render`}
+        notFoundContent="未找到相关内容"
+      />,
+    );
+
+    // Search for something that doesn't exist
+    doSearch(container, 'nonexistent');
+    const itemList = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(itemList).toHaveLength(1);
+    // Should display notFoundContent, not use optionRender
+    expect(itemList[0].textContent).toEqual('未找到相关内容');
+    expect(itemList[0].querySelector('.rc-cascader-menu-item-content')?.textContent).toEqual(
+      '未找到相关内容',
+    );
+  });
+
+  it('should use optionRender for search results when both optionRender and notFoundContent are provided', () => {
+    const { container } = render(
+      <Cascader
+        options={options}
+        open
+        showSearch
+        optionRender={option => `${option.label} - custom render`}
+        notFoundContent="未找到相关内容"
+      />,
+    );
+
+    // Search for something that exists
+    doSearch(container, 'toy');
+    const itemList = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(itemList.length).toBeGreaterThan(0);
+
+    // Should use optionRender for actual options
+    const firstItemContent = itemList[0].querySelector('.rc-cascader-menu-item-content');
+    expect(firstItemContent?.textContent).toContain('custom render');
+    expect(firstItemContent?.textContent).not.toEqual('未找到相关内容');
+  });
+
+  it('should display notFoundContent when options array is empty with optionRender', () => {
+    const { container } = render(
+      <Cascader
+        options={[] as DefaultOptionType[]}
+        open
+        showSearch
+        optionRender={option => `${option.label} - custom render`}
+        notFoundContent="空列表"
+      />,
+    );
+
+    const itemList = container.querySelectorAll('.rc-cascader-menu-item');
+    expect(itemList).toHaveLength(1);
+    // Should display notFoundContent, not use optionRender
+    expect(itemList[0].textContent).toEqual('空列表');
+    expect(itemList[0].querySelector('.rc-cascader-menu-item-content')?.textContent).toEqual(
+      '空列表',
+    );
   });
 });
