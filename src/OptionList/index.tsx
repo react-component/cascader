@@ -4,10 +4,10 @@ import * as React from 'react';
 import RawOptionList from './List';
 
 const RefOptionList = React.forwardRef<RefOptionListProps>((props, ref) => {
-  const baseProps = useBaseProps();
+  const { lockOptions, ...baseProps } = useBaseProps();
 
   // >>>>> Render
-  return <RawOptionList {...props} {...baseProps} ref={ref} />;
+  return <RawOptionList {...props} {...baseProps} lockOptions={lockOptions} ref={ref} />;
 });
 
 export default RefOptionList;

@@ -29,6 +29,7 @@ export type RawOptionListProps = Pick<
   | 'direction'
   | 'open'
   | 'disabled'
+  | 'lockOptions'
 >;
 
 const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((props, ref) => {
@@ -41,6 +42,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
     direction,
     open,
     disabled,
+    lockOptions,
   } = props;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -246,7 +248,7 @@ const RawOptionList = React.forwardRef<RefOptionListProps, RawOptionListProps>((
 
   // >>>>> Render
   return (
-    <CacheContent open={open}>
+    <CacheContent open={open} lockOptions={lockOptions}>
       <div
         className={clsx(`${mergedPrefixCls}-menus`, {
           [`${mergedPrefixCls}-menu-empty`]: isEmpty,
