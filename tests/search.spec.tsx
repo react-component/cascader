@@ -2,7 +2,7 @@ import { fireEvent, render } from '@testing-library/react';
 import KeyCode from '@rc-component/util/lib/KeyCode';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import Cascader from '../src';
+import Cascader, { type DefaultOptionType } from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';
 import { expectOpen, doSearch, keyDown } from './util';
 
@@ -492,7 +492,7 @@ describe('Cascader.Search', () => {
   it('should display notFoundContent when options array is empty with optionRender', () => {
     const { container } = render(
       <Cascader
-        options={[]}
+        options={[] as DefaultOptionType[]}
         open
         showSearch
         optionRender={option => `${option.label} - custom render`}
