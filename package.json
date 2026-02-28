@@ -63,7 +63,7 @@
     "array-tree-filter": "^3.0.2",
     "cheerio": "1.0.0-rc.12",
     "core-js": "^3.40.0",
-    "cross-env": "^7.0.0",
+    "cross-env": "^10.1.0",
     "dumi": "^2.1.10",
     "eslint": "^8.54.0",
     "eslint-plugin-jest": "^28.8.3",
