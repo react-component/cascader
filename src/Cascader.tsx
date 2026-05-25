@@ -1,14 +1,11 @@
-import type { BuildInPlacements } from '@rc-component/trigger/lib/interface';
+import type { BuildInPlacements } from '@rc-component/trigger';
 import type {
   BaseSelectProps,
   BaseSelectPropsWithoutPrivate,
   BaseSelectRef,
 } from '@rc-component/select';
 import { BaseSelect } from '@rc-component/select';
-import type { DisplayValueType, Placement } from '@rc-component/select/lib/BaseSelect';
-import useId from '@rc-component/util/lib/hooks/useId';
-import useEvent from '@rc-component/util/lib/hooks/useEvent';
-import useControlledState from '@rc-component/util/lib/hooks/useControlledState';
+import { useControlledState, useEvent, useId } from '@rc-component/util';
 import * as React from 'react';
 import CascaderContext from './context';
 import useDisplayValues from './hooks/useDisplayValues';
@@ -111,7 +108,7 @@ interface BaseCascaderProps<
   popupClassName?: string;
   popupMenuColumnStyle?: React.CSSProperties;
 
-  placement?: Placement;
+  placement?: BaseSelectPropsWithoutPrivate['placement'];
   builtinPlacements?: BuildInPlacements;
 
   onPopupVisibleChange?: (open: boolean) => void;
@@ -381,7 +378,9 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     }
 
     // Cascader do not support `add` type. Only support `remove`
-    const { valueCells } = info.values[0] as DisplayValueType & { valueCells: SingleValueType };
+    const { valueCells } = info.values[0] as BaseSelectProps['displayValues'][number] & {
+      valueCells: SingleValueType;
+    };
     onInternalSelect(valueCells);
   };
 

@@ -1,11 +1,11 @@
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { spyElementPrototypes } from '@rc-component/util';
 import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import * as commonUtil from '../src/utils/commonUtil';
 import { act, fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import { expectOpen, selectOption, isOpen, clickOption } from './util';
 
 describe('Cascader.Basic', () => {
@@ -776,7 +776,7 @@ describe('Cascader.Basic', () => {
 
   it('defaultValue not exist', () => {
     const { container } = render(<Cascader defaultValue={['not', 'exist']} />);
-    expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('not / exist');
+    expect(container.querySelector('.rc-cascader-content')!.textContent).toEqual('not / exist');
   });
 
   it('number value', () => {
@@ -787,7 +787,7 @@ describe('Cascader.Basic', () => {
 
     clickOption(container, 0, 0);
     expect(onValueChange).toHaveBeenCalledWith([1], expect.anything());
-    expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('One');
+    expect(container.querySelector('.rc-cascader-content')!.textContent).toEqual('One');
   });
 
   it('empty children is last children', () => {
@@ -837,7 +837,7 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(container.querySelector('.rc-cascader-content-value')!.textContent).toEqual('Normal / Child');
+      expect(container.querySelector('.rc-cascader-content')!.textContent).toEqual('Normal / Child');
     });
 
     it('multiple', () => {

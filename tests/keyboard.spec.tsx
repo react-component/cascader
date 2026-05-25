@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import type { CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';

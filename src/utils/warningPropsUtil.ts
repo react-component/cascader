@@ -1,4 +1,4 @@
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 import type { DefaultOptionType, FieldNames } from '../Cascader';
 
 // value in Cascader options should not be null
