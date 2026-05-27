@@ -1,4 +1,4 @@
-import { conductCheck } from '@rc-component/tree/lib/utils/conductUtil';
+import { conductCheck } from '@rc-component/tree';
 import type {
   InternalValueType,
   LegacyKey,

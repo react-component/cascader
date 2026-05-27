@@ -6,7 +6,7 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
     class="rc-cascader rc-cascader-single rc-cascader-open rc-cascader-show-search"
   >
     <div
-      class="rc-cascader-content"
+      class="rc-cascader-content rc-cascader-content-has-search-value"
     >
       <div
         class="rc-cascader-placeholder"

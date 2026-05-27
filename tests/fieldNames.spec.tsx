@@ -82,7 +82,7 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    const contentValue = container.querySelector('.rc-cascader-content-value');
+    const contentValue = container.querySelector('.rc-cascader-content');
     expect(contentValue?.textContent).toEqual('Bamboo / Little / Toy');
 
     const menus = container.querySelectorAll('.rc-cascader-menu');
@@ -106,7 +106,7 @@ describe('Cascader.FieldNames', () => {
       />,
     );
 
-    const contentValue = container.querySelector('.rc-cascader-content-value');
+    const contentValue = container.querySelector('.rc-cascader-content');
     expect(contentValue?.textContent).toEqual('Bamboo->Little->Toy & bamboo>>little>>toy');
   });
 

@@ -1,6 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { KeyCode, resetWarned } from '@rc-component/util';
 import React from 'react';
 import Cascader, { type DefaultOptionType } from '../src';
 import { optionsForActiveMenuItems } from './demoOptions';

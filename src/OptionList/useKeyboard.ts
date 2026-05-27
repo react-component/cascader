@@ -1,5 +1,4 @@
-import type { RefOptionListProps } from '@rc-component/select/lib/OptionList';
-import KeyCode from '@rc-component/util/lib/KeyCode';
+import { KeyCode } from '@rc-component/util';
 import * as React from 'react';
 import type {
   DefaultOptionType,
@@ -9,6 +8,7 @@ import type {
 } from '../Cascader';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
 import { getFullPathKeys, toPathKey } from '../utils/commonUtil';
+import type { RefOptionListProps } from './List';
 
 export default (
   ref: React.Ref<RefOptionListProps>,
