@@ -18,11 +18,11 @@ exports[`Cascader.Search should correct render Cascader with same field name of 
         aria-expanded="true"
         aria-haspopup="listbox"
         aria-owns="test-id_list"
-        autocomplete="off"
+        autocomplete="new-password"
         class="rc-cascader-input"
         id="test-id"
         role="combobox"
-        type="search"
+        type="text"
         value="z"
       />
     </div>
