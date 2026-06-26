@@ -156,18 +156,12 @@ npm run compile
 
 ## Release
 
-This package uses `prepublishOnly` to run the compile and release checks before publishing:
-
 ```bash
-npm publish
+npm run prepublishOnly
 ```
 
-The publish lifecycle runs:
-
-```bash
-npm run compile && rc-np
-```
+The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
 ## License
 
-`@rc-component/cascader` is released under the MIT license.
+@rc-component/cascader is released under the [MIT](./LICENSE.md) license.
