@@ -65,7 +65,14 @@ export default () => (
 
 ## 示例
 
-查看[在线示例](https://cascader-react-component.vercel.app/)，了解搜索、多选、自定义字段名称、延迟加载、面板模式和弹层窗口自定义。
+运行本地 dumi 站点：
+
+```bash
+npm install
+npm start
+```
+
+然后打开 `http://localhost:8000`。
 
 ## API
 

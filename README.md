@@ -65,7 +65,14 @@ export default () => (
 
 ## Examples
 
-Visit the [online examples](https://cascader-react-component.vercel.app/) for search, multiple selection, custom field names, lazy loading, panel mode, and popup customization.
+Run the local dumi site:
+
+```bash
+npm install
+npm start
+```
+
+Then open `http://localhost:8000`.
 
 ## API
 
