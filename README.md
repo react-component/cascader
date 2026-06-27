@@ -1,5 +1,6 @@
 <div align="center">
   <h1>@rc-component/cascader</h1>
+  <p><sub>Part of the Ant Design ecosystem.</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
   <p>🧭 React Cascader component for selecting values from hierarchical option trees, with search, multiple selection, async loading, and custom rendering.</p>
 
@@ -13,14 +14,6 @@
   </p>
 </div>
 
-<p align="center">
-  <sub>
-    <a href="https://ant.design">
-      <img alt="Ant Design" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" height="16">
-    </a>
-    Part of the Ant Design ecosystem.
-  </sub>
-</p>
 
 ## Highlights
 
@@ -42,8 +35,6 @@ npm install @rc-component/cascader
 
 ```tsx | pure
 import Cascader from '@rc-component/cascader';
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 
 const options = [
   {
@@ -64,13 +55,11 @@ const options = [
   },
 ];
 
-const App = () => (
+export default () => (
   <Cascader options={options}>
     <button type="button">Please select</button>
   </Cascader>
 );
-
-createRoot(document.getElementById('root')!).render(<App />);
 ```
 
 ## Examples
