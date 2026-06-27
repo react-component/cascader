@@ -1,7 +1,6 @@
 <div align="center">
   <h1>@rc-component/cascader</h1>
-  <p><sub>Ant Design 生态的一部分。</sub></p>
-  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Ant Design 生态的一部分。</sub></p>
   <p>🧭 React 级联选择组件，支持层级选项、搜索、多选、异步加载和自定义渲染。</p>
 
   <p>
@@ -21,11 +20,11 @@
 
 | 范围 | 支持 |
 | --------- | ---------------------------------------------------------------- |
-| Data      | Nested options, field name mapping, disabled nodes               |
-| Selection | Single, multiple, checkable, and change-on-select flows          |
-| Search    | Controlled search, custom filter, custom sort, custom render     |
-| Loading   | Async option loading with `loadData`                             |
-| Rendering | Custom option label, dropdown content, icons, and expand trigger |
+| 数据      | 嵌套选项、字段名映射和禁用节点               |
+| Selection | 单选、多选、勾选和逐级选择流程          |
+| 搜索    | 受控搜索、自定义过滤、自定义排序和自定义渲染     |
+| Loading   | 通过 `loadData` 异步加载选项                             |
+| Rendering | 自定义选项标签、下拉内容、图标和展开触发方式 |
 
 ## 安装
 
@@ -66,7 +65,7 @@ export default () => (
 
 ## 示例
 
-查看[在线示例](https://cascader-react-component.vercel.app/)，了解 search, multiple selection, custom field names, lazy loading, panel mode, and popup customization。
+查看[在线示例](https://cascader-react-component.vercel.app/)，了解搜索、多选、自定义字段名称、延迟加载、面板模式和弹层窗口自定义。
 
 ## API
 
@@ -74,59 +73,59 @@ export default () => (
 
 | 参数             | 类型                                                    | 默认值                                                    | 说明                                                |
 | -------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
-| autoClearSearchValue | boolean                                                 | true                                                       | Deprecated. Use `showSearch.autoClearSearchValue` instead. |
-| builtinPlacements    | BuildInPlacements                                       | -                                                          | Custom popup placements.                                   |
-| changeOnSelect       | boolean                                                 | false                                                      | Trigger `onChange` when selecting each level.              |
-| checkable            | boolean \| ReactNode                                    | false                                                      | Enable multiple selection with checkbox UI.                |
-| children             | ReactElement                                            | -                                                          | Trigger element.                                           |
-| classNames           | Semantic class name map                                 | -                                                          | Semantic class names for selector and popup elements.      |
-| defaultValue         | string[] \| number[] \| Array<string[] \| number[]>     | -                                                          | Initial selected value.                                    |
-| displayRender        | `(label, selectedOptions) => ReactNode`                 | -                                                          | Render selected labels.                                    |
-| expandIcon           | ReactNode                                               | `>`                                                        | Custom expand icon.                                        |
-| expandTrigger        | `click` \| `hover`                                      | `click`                                                    | Trigger action for expanding the next option level.        |
-| fieldNames           | `{ label?: string; value?: string; children?: string }` | `{ label: 'label', value: 'value', children: 'children' }` | Custom option field names.                                 |
-| loadData             | `(selectedOptions) => void`                             | -                                                          | Load child options asynchronously.                         |
-| loadingIcon          | ReactNode                                               | -                                                          | Custom loading icon.                                       |
-| onChange             | `(value, selectedOptions) => void`                      | -                                                          | Called when selection changes.                             |
-| onPopupVisibleChange | `(open: boolean) => void`                               | -                                                          | Called when popup visibility changes.                      |
-| onSearch             | `(value: string) => void`                               | -                                                          | Deprecated. Use `showSearch.onSearch` instead.             |
-| open                 | boolean                                                 | -                                                          | Controlled popup visibility.                               |
-| optionRender         | `(option) => ReactNode`                                 | -                                                          | Custom option renderer.                                    |
-| options              | Option[]                                                | -                                                          | Hierarchical option data.                                  |
-| placement            | Select placement                                        | -                                                          | Popup placement.                                           |
-| popupClassName       | string                                                  | -                                                          | Popup class name.                                          |
-| popupMenuColumnStyle | CSSProperties                                           | -                                                          | Style for each popup menu column.                          |
-| prefixCls            | string                                                  | `rc-cascader`                                              | Class name prefix.                                         |
-| searchValue          | string                                                  | -                                                          | Deprecated. Use `showSearch.searchValue` instead.          |
-| showCheckedStrategy  | `SHOW_PARENT` \| `SHOW_CHILD`                           | `SHOW_PARENT`                                              | Strategy for rendering checked values in multiple mode.    |
-| showSearch           | boolean \| SearchConfig                                 | false                                                      | Enable and configure search.                               |
-| styles               | Semantic style map                                      | -                                                          | Semantic styles for selector and popup elements.           |
-| value                | string[] \| number[] \| Array<string[] \| number[]>     | -                                                          | Controlled selected value.                                 |
+| autoClearSearchValue | boolean                                                 | true                                                       | 已弃用。请改用 `showSearch.autoClearSearchValue`。 |
+| builtinPlacements    | BuildInPlacements                                       | -                                                          | 自定义弹层位置。                                   |
+| changeOnSelect       | boolean                                                 | false                                                      | 选择每个级别时触发 `onChange`。              |
+| checkable            | boolean \| ReactNode                                    | false                                                      | 启用带复选框 UI 的多选。                |
+| 孩子们             | ReactElement                                            | -                                                          | 触发元素。                                           |
+| classNames           | 语义className映射                                 | -                                                          | 选择器和弹层元素的语义className称。      |
+| defaultValue         | 字符串[] \|数字[] \|数组<字符串[] \|数字[]>     | -                                                          | 初始选中值。                                    |
+| displayRender        | `(label, selectedOptions) => ReactNode`                 | -                                                          | 渲染选定的标签。                                    |
+| expandIcon           | ReactNode                                               | `>`                                                        | 自定义展开图标。                                        |
+| expandTrigger        | `click` \| `hover`                                      | `click`                                                    | 触发扩展下一个选项级别的操作。        |
+| fieldNames           | `{ label?: string; value?: string; children?: string }` | `{ label: 'label', value: 'value', children: 'children' }` | 自定义选项字段名称。                                 |
+| loadData             | `(selectedOptions) => void`                             | -                                                          | 异步加载子选项。                         |
+| loadingIcon          | ReactNode                                               | -                                                          | 自定义加载图标。                                       |
+| onChange             | `(value, selectedOptions) => void`                      | -                                                          | 选择更改时调用。                             |
+| onPopupVisibleChange | `(open: boolean) => void`                               | -                                                          | 当弹层窗口可见性发生变化时调用。                      |
+| onSearch             | `(value: string) => void`                               | -                                                          | 已弃用。请改用 `showSearch.onSearch`。             |
+| 打开                 | boolean                                                 | -                                                          | 受控的弹层窗口可见性。                               |
+| optionRender         | `(option) => ReactNode`                                 | -                                                          | 自定义选项渲染器。                                    |
+| 选项              | 选项[]                                                | -                                                          | 分层选项数据。                                  |
+| placement            | 选择展示位置                                        | -                                                          | 弹层窗口放置。                                           |
+| popupClassName       | string                                                  | -                                                          | 弹层className。                                          |
+| popupMenuColumnStyle | CSSProperties                                           | -                                                          | 每个弹出菜单列的样式。                          |
+| prefixCls            | string                                                  | `rc-cascader`                                              | className前缀。                                         |
+| searchValue          | string                                                  | -                                                          | 已弃用。请改用 `showSearch.searchValue`。          |
+| showCheckedStrategy  | `SHOW_PARENT` \| `SHOW_CHILD`                           | `SHOW_PARENT`                                              | 在多种模式下渲染检查值的策略。    |
+| showSearch           | boolean \| SearchConfig                                 | false                                                      | 启用并配置搜索。                               |
+| styles               | 语义风格图                                      | -                                                          | 选择器和弹层元素的语义样式。           |
+| 价值                | 字符串[] \|数字[] \|数组<字符串[] \|数字[]>     | -                                                          | 受控选中值。                                 |
 
-`Cascader` also accepts public props from `@rc-component/select` `BaseSelect`, except private select-only props such as `mode`, `labelInValue`, `showSearch`, and `tokenSeparators`.
+`Cascader` 还接受来自 `@rc-component/select` `BaseSelect` 的公共属性，但私有仅选择属性除外，例如 `mode` 、 `labelInValue` 、 `showSearch` 和 `tokenSeparators`。
 
 ### SearchConfig
 
 | 参数             | 类型                                                     | 默认值 | 说明                                                |
 | -------------------- | -------------------------------------------------------- | ------- | ---------------------------------------------------------- |
-| autoClearSearchValue | boolean                                                  | true    | Clear search text after selecting an item.                 |
-| filter               | `(inputValue, options, fieldNames) => boolean`           | -       | Return `true` to include an option path in search results. |
-| limit                | number \| false                                          | 50      | Limit the number of filtered items.                        |
-| matchInputWidth      | boolean                                                  | true    | Whether the search result width matches the input width.   |
-| onSearch             | `(value: string) => void`                                | -       | Called when search text changes.                           |
-| render               | `(inputValue, path, prefixCls, fieldNames) => ReactNode` | -       | Render a filtered option path.                             |
-| searchValue          | string                                                   | -       | Controlled search text.                                    |
-| sort                 | `(a, b, inputValue, fieldNames) => number`               | -       | Sort filtered option paths.                                |
+| autoClearSearchValue | boolean                                                  | true    | 选择项目后清除搜索文本。                 |
+| 筛选               | `(inputValue, options, fieldNames) => boolean`           | -       | 返回 `true` 以在搜索结果中包含选项路径。 |
+| limit                | number \| false                                          | 50      | 限制过滤项目的数量。                        |
+| matchInputWidth      | boolean                                                  | true    | 搜索结果宽度是否与输入宽度匹配。   |
+| onSearch             | `(value: string) => void`                                | -       | 当搜索文本更改时调用。                           |
+| 使成为               | `(inputValue, path, prefixCls, fieldNames) => ReactNode` | -       | 渲染过滤后的选项路径。                             |
+| searchValue          | string                                                   | -       | 受控搜索文本。                                    |
+| 种类                 | `(a, b, inputValue, fieldNames) => number`               | -       | 对过滤后的选项路径进行排序。                                |
 
-### Option
+＃＃＃ 选项
 
 | 参数        | 类型                     | 默认值 | 说明                                      |
 | --------------- | ------------------------ | ------- | ------------------------------------------------ |
-| children        | Option[]                 | -       | Child options.                                   |
-| disabled        | boolean                  | false   | Disable this option.                             |
-| disableCheckbox | boolean                  | false   | Disable this option's checkbox in multiple mode. |
+| 孩子们        | 选项[]                 | -       | 儿童选项。                                   |
+| disabled        | boolean                  | false   | 禁用此选项。                             |
+| disableCheckbox | boolean                  | false   | 在多种模式下禁用此选项的复选框。 |
 | label           | ReactNode                | -       | Display label.                                   |
-| value           | string \| number \| null | -       | Option value.                                    |
+| 价值           | 字符串\|数字\|无效的 | -       | 选项值。                                    |
 
 ## 本地开发
 
@@ -151,8 +150,8 @@ npm run compile
 npm run prepublishOnly
 ```
 
-The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
+包构建完成后，发布流程由 `@rc-component/np` 通过 `rc-np` 命令处理。
 
 ## 许可证
 
-@rc-component/cascader is released under the [MIT](./LICENSE.md) license.
+@rc-component/cascader 基于 [MIT](./LICENSE.md) 许可证发布。
