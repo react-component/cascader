@@ -1,8 +1,8 @@
 <div align="center">
   <h1>@rc-component/cascader</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
+  <p><sub>Ant Design 生态的一部分。</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>🧭 React Cascader component for selecting values from hierarchical option trees, with search, multiple selection, async loading, and custom rendering.</p>
+  <p>🧭 React 级联选择组件，支持层级选项、搜索、多选、异步加载和自定义渲染。</p>
 
   <p>
     <a href="https://npmjs.org/package/@rc-component/cascader"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square"></a>
@@ -14,12 +14,12 @@
   </p>
 </div>
 
-<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
 
-## Highlights
+## 特性
 
-| Area      | Support                                                          |
+| 范围 | 支持 |
 | --------- | ---------------------------------------------------------------- |
 | Data      | Nested options, field name mapping, disabled nodes               |
 | Selection | Single, multiple, checkable, and change-on-select flows          |
@@ -27,13 +27,13 @@
 | Loading   | Async option loading with `loadData`                             |
 | Rendering | Custom option label, dropdown content, icons, and expand trigger |
 
-## Install
+## 安装
 
 ```bash
 npm install @rc-component/cascader
 ```
 
-## Usage
+## 使用
 
 ```tsx | pure
 import Cascader from '@rc-component/cascader';
@@ -64,15 +64,15 @@ export default () => (
 );
 ```
 
-## Examples
+## 示例
 
-Visit the [online examples](https://cascader-react-component.vercel.app/) for search, multiple selection, custom field names, lazy loading, panel mode, and popup customization.
+查看[在线示例](https://cascader-react-component.vercel.app/)，了解 search, multiple selection, custom field names, lazy loading, panel mode, and popup customization。
 
 ## API
 
 ### Cascader
 
-| Property             | Type                                                    | Default                                                    | Description                                                |
+| 参数             | 类型                                                    | 默认值                                                    | 说明                                                |
 | -------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
 | autoClearSearchValue | boolean                                                 | true                                                       | Deprecated. Use `showSearch.autoClearSearchValue` instead. |
 | builtinPlacements    | BuildInPlacements                                       | -                                                          | Custom popup placements.                                   |
@@ -107,7 +107,7 @@ Visit the [online examples](https://cascader-react-component.vercel.app/) for se
 
 ### SearchConfig
 
-| Property             | Type                                                     | Default | Description                                                |
+| 参数             | 类型                                                     | 默认值 | 说明                                                |
 | -------------------- | -------------------------------------------------------- | ------- | ---------------------------------------------------------- |
 | autoClearSearchValue | boolean                                                  | true    | Clear search text after selecting an item.                 |
 | filter               | `(inputValue, options, fieldNames) => boolean`           | -       | Return `true` to include an option path in search results. |
@@ -120,7 +120,7 @@ Visit the [online examples](https://cascader-react-component.vercel.app/) for se
 
 ### Option
 
-| Property        | Type                     | Default | Description                                      |
+| 参数        | 类型                     | 默认值 | 说明                                      |
 | --------------- | ------------------------ | ------- | ------------------------------------------------ |
 | children        | Option[]                 | -       | Child options.                                   |
 | disabled        | boolean                  | false   | Disable this option.                             |
@@ -128,7 +128,7 @@ Visit the [online examples](https://cascader-react-component.vercel.app/) for se
 | label           | ReactNode                | -       | Display label.                                   |
 | value           | string \| number \| null | -       | Option value.                                    |
 
-## Development
+## 本地开发
 
 ```bash
 npm install
@@ -145,7 +145,7 @@ npm run lint:tsc
 npm run compile
 ```
 
-## Release
+## 发布
 
 ```bash
 npm run prepublishOnly
@@ -153,6 +153,6 @@ npm run prepublishOnly
 
 The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-## License
+## 许可证
 
 @rc-component/cascader is released under the [MIT](./LICENSE.md) license.
