@@ -85,7 +85,7 @@ npm start
 | changeOnSelect       | boolean                                                 | false                                                      | 选择每个级别时触发 `onChange`。              |
 | checkable            | boolean \| ReactNode                                    | false                                                      | 启用带复选框 UI 的多选。                |
 | children | ReactElement | - | 触发元素。 |
-| classNames | Semantic class name map | - | 选择器和弹层元素的语义className称。 |
+| classNames | Semantic class name map | - | 选择器和弹层元素的语义 className。 |
 | defaultValue | string[] \| number[] \| Array<string[] \| number[]> | - | 初始选中值。 |
 | displayRender        | `(label, selectedOptions) => ReactNode`                 | -                                                          | 渲染选定的标签。                                    |
 | expandIcon           | ReactNode                                               | `>`                                                        | 自定义展开图标。                                        |
@@ -100,9 +100,9 @@ npm start
 | optionRender         | `(option) => ReactNode`                                 | -                                                          | 自定义选项渲染器。                                    |
 | options | Option[] | - | 分层选项数据。 |
 | placement | Select placement | - | 弹层窗口放置。 |
-| popupClassName       | string                                                  | -                                                          | 弹层className。                                          |
+| popupClassName       | string                                                  | -                                                          | 弹层 className。                                          |
 | popupMenuColumnStyle | CSSProperties                                           | -                                                          | 每个弹出菜单列的样式。                          |
-| prefixCls            | string                                                  | `rc-cascader`                                              | className前缀。                                         |
+| prefixCls            | string                                                  | `rc-cascader`                                              | className 前缀。                                         |
 | searchValue          | string                                                  | -                                                          | 已弃用。请改用 `showSearch.searchValue`。          |
 | showCheckedStrategy  | `SHOW_PARENT` \| `SHOW_CHILD`                           | `SHOW_PARENT`                                              | 在多种模式下渲染检查值的策略。    |
 | showSearch           | boolean \| SearchConfig                                 | false                                                      | 启用并配置搜索。                               |
