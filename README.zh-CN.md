@@ -124,14 +124,14 @@ npm start
 | searchValue          | string                                                   | -       | 受控搜索文本。                                    |
 | sort | `(a, b, inputValue, fieldNames) => number` | - | 对过滤后的选项路径进行排序。 |
 
-＃＃＃ 选项
+### 选项
 
 | 参数        | 类型                     | 默认值 | 说明                                      |
 | --------------- | ------------------------ | ------- | ------------------------------------------------ |
-| children | Option[] | - | 儿童选项。 |
+| children | Option[] | - | 子选项。 |
 | disabled        | boolean                  | false   | 禁用此选项。                             |
 | disableCheckbox | boolean                  | false   | 在多种模式下禁用此选项的复选框。 |
-| label           | ReactNode                | -       | Display label.                                   |
+| label           | ReactNode                | -       | 显示标签。                                   |
 | value | string \| number \| null | - | 选项值。 |
 
 ## 本地开发
