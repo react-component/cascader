@@ -141,6 +141,8 @@ npm install
 npm start
 ```
 
+The dumi site runs at `http://localhost:8000` by default.
+
 Common commands:
 
 ```bash

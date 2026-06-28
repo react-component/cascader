@@ -141,6 +141,8 @@ npm install
 npm start
 ```
 
+dumi 站点默认运行在 `http://localhost:8000`。
+
 Common commands:
 
 ```bash
