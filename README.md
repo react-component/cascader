@@ -1,319 +1,166 @@
-# @rc-component/cascader
+<div align="center">
+  <h1>@rc-component/cascader</h1>
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Part of the Ant Design ecosystem.</sub></p>
+  <p>🧭 React Cascader component for selecting values from hierarchical option trees, with search, multiple selection, async loading, and custom rendering.</p>
 
-React Cascader Component.
+  <p>
+    <a href="https://npmjs.org/package/@rc-component/cascader"><img alt="NPM version" src="https://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square"></a>
+    <a href="https://npmjs.org/package/@rc-component/cascader"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@rc-component/cascader.svg?style=flat-square"></a>
+    <a href="https://github.com/react-component/cascader/actions/workflows/main.yml"><img alt="build status" src="https://github.com/react-component/cascader/actions/workflows/main.yml/badge.svg"></a>
+    <a href="https://app.codecov.io/gh/react-component/cascader"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square"></a>
+    <a href="https://bundlephobia.com/package/@rc-component/cascader"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@rc-component/cascader?style=flat-square"></a>
+    <a href="https://github.com/umijs/dumi"><img alt="dumi" src="https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square"></a>
+  </p>
+</div>
 
-[![NPM version][npm-image]][npm-url]
-[![npm download][download-image]][download-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
-[![dumi][dumi-image]][dumi-url]
+<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
 
-[npm-image]: https://img.shields.io/npm/v/@rc-component/cascader.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@rc-component/cascader
-[travis-image]: https://img.shields.io/travis/react-component/cascader/master?style=flat-square
-[travis-url]: https://travis-ci.com/react-component/cascader
-[github-actions-image]: https://github.com/react-component/cascader/actions/workflows/main.yml/badge.svg
-[github-actions-url]: https://github.com/react-component/cascader/actions/workflows/main.yml
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/cascader/master.svg?style=flat-square
-[codecov-url]: https://app.codecov.io/gh/react-component/cascader
-[david-url]: https://david-dm.org/react-component/cascader
-[david-image]: https://david-dm.org/react-component/cascader/status.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/react-component/cascader?type=dev
-[david-dev-image]: https://david-dm.org/react-component/cascader/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/@rc-component/cascader.svg?style=flat-square
-[download-url]: https://npmjs.org/package/@rc-component/cascader
-[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/cascader
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/cascader
-[dumi-url]: https://github.com/umijs/dumi
-[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
 
-## Browser Support
+## Highlights
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Electron |
-| --- | --- | --- | --- | --- |
-| IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## Screenshots
-
-<img src="https://os.alipayobjects.com/rmsportal/TYFXEbuQXIaMqQF.png" width="288"/>
-
-## Example
-
-https://cascader-react-component.vercel.app
+| Area      | Support                                                          |
+| --------- | ---------------------------------------------------------------- |
+| Data      | Nested options, field name mapping, disabled nodes               |
+| Selection | Single, multiple, checkable, and change-on-select flows          |
+| Search    | Controlled search, custom filter, custom sort, custom render     |
+| Loading   | Async option loading with `loadData`                             |
+| Rendering | Custom option label, dropdown content, icons, and expand trigger |
 
 ## Install
 
-[![@rc-component/cascader](https://nodei.co/npm/@rc-component/cascader.png)](https://npmjs.org/package/@rc-component/cascader)
-
 ```bash
-$ npm install @rc-component/cascader --save
+npm install @rc-component/cascader
 ```
 
 ## Usage
 
-```js
-import React from 'react';
+```tsx | pure
 import Cascader from '@rc-component/cascader';
 
-const options = [{
-  'label': '福建',
-  'value': 'fj',
-  'children': [{
-    'label': '福州',
-    'value': 'fuzhou',
-    'children': [{
-      'label': '马尾',
-      'value': 'mawei',
-    }],
-  }, {
-    'label': '泉州',
-    'value': 'quanzhou',
-  }],
-}, {
-  'label': '浙江',
-  'value': 'zj',
-  'children': [{
-    'label': '杭州',
-    'value': 'hangzhou',
-    'children': [{
-      'label': '余杭',
-      'value': 'yuhang',
-    }],
-  }],
-}, {
-  'label': '北京',
-  'value': 'bj',
-  'children': [{
-    'label': '朝阳区',
-    'value': 'chaoyang',
-  }, {
-    'label': '海淀区',
-    'value': 'haidian',
-  }],
-}];
+const options = [
+  {
+    label: 'Zhejiang',
+    value: 'zhejiang',
+    children: [
+      {
+        label: 'Hangzhou',
+        value: 'hangzhou',
+        children: [{ label: 'Xihu', value: 'xihu' }],
+      },
+    ],
+  },
+  {
+    label: 'Jiangsu',
+    value: 'jiangsu',
+    children: [{ label: 'Nanjing', value: 'nanjing' }],
+  },
+];
 
-React.render(
+export default () => (
   <Cascader options={options}>
-    ...
+    <button type="button">Please select</button>
   </Cascader>
-, container);
+);
 ```
+
+## Examples
+
+Run the local dumi site:
+
+```bash
+npm install
+npm start
+```
+
+Then open `http://localhost:8000`.
 
 ## API
 
-### props
+### Cascader
 
-<table class="table table-bordered table-striped">
-  <thead>
-  <tr>
-    <th style="width: 100px;">name</th>
-    <th style="width: 50px;">type</th>
-    <th style="width: 50px;">default</th>
-    <th>description</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>options</td>
-      <td>Object</td>
-      <td></td>
-      <td>The data options of cascade</td>
-    </tr>
-    <tr>
-      <td>value</td>
-      <td>Array</td>
-      <td></td>
-      <td>selected value</td>
-    </tr>
-    <tr>
-      <td>defaultValue</td>
-      <td>Array</td>
-      <td></td>
-      <td>initial selected value</td>
-    </tr>
-    <tr>
-      <td>onChange</td>
-      <td>Function(value, selectedOptions)</td>
-      <td></td>
-      <td>callback when finishing cascader select</td>
-    </tr>
-    <tr>
-      <td>changeOnSelect</td>
-      <td>Boolean</td>
-      <td>false</td>
-      <td>change value on each selection</td>
-    </tr>
-    <tr>
-      <td>loadData</td>
-      <td>Function(selectedOptions)</td>
-      <td></td>
-      <td>callback when click any option, use for loading more options</td>
-    </tr>
-    <tr>
-      <td>expandTrigger</td>
-      <td>String</td>
-      <td>'click'</td>
-      <td>expand current item when click or hover</td>
-    </tr>
-    <tr>
-      <td>open</td>
-      <td>Boolean</td>
-      <td></td>
-      <td>visibility of popup overlay</td>
-    </tr>
-    <tr>
-      <td>onPopupVisibleChange</td>
-      <td>Function(visible)</td>
-      <td></td>
-      <td>callback when popup overlay's visibility changed</td>
-    </tr>
-    <tr>
-      <td>transitionName</td>
-      <td>String</td>
-      <td></td>
-      <td>transition className like "slide-up"</td>
-    </tr>
-    <tr>
-      <td>prefixCls</td>
-      <td>String</td>
-      <td>rc-cascader</td>
-      <td>prefix className of popup overlay</td>
-    </tr>
-    <tr>
-      <td>popupClassName</td>
-      <td>String</td>
-      <td></td>
-      <td>additional className of popup overlay</td>
-    </tr>
-    <tr>
-      <td>popupPlacement</td>
-      <td>String</td>
-      <td>bottomLeft</td>
-      <td>use preset popup align config from builtinPlacements：bottomRight topRight bottomLeft topLeft</td>
-    </tr>
-    <tr>
-      <td>getPopupContainer</td>
-      <td>function(trigger:Node):Node</td>
-      <td>() => document.body</td>
-      <td>container which popup select menu rendered into</td>
-    </tr>
-    <tr>
-      <td>dropdownMenuColumnStyle</td>
-      <td>Object</td>
-      <td></td>
-      <td>style object for each cascader pop menu</td>
-    </tr>
-    <tr>
-      <td>fieldNames</td>
-      <td>Object</td>
-      <td>{ label: 'label', value: 'value', children: 'children' }</td>
-      <td>custom field name for label and value and children</td>
-    </tr>
-    <tr>
-      <td>expandIcon</td>
-      <td>ReactNode</td>
-      <td>></td>
-      <td>specific the default expand icon</td>
-    </tr>
-    <tr>
-      <td>loadingIcon</td>
-      <td>ReactNode</td>
-      <td>></td>
-      <td>specific the default loading icon</td>
-    </tr>
-    <tr>
-      <td>hidePopupOnSelect</td>
-      <td>Boolean</td>
-      <td>>true</td>
-      <td>hide popup on select</td>
-    </tr>
-     <tr>
-      <td>showSearch</td>
-      <td>boolean | object</td>
-      <td>false</td>
-      <td>Whether show search input in single mode</td>
-    </tr>
-  </tbody>
-</table>
+| Property             | Type                                                    | Default                                                    | Description                                                |
+| -------------------- | ------------------------------------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------- |
+| autoClearSearchValue | boolean                                                 | true                                                       | Deprecated. Use `showSearch.autoClearSearchValue` instead. |
+| builtinPlacements    | BuildInPlacements                                       | -                                                          | Custom popup placements.                                   |
+| changeOnSelect       | boolean                                                 | false                                                      | Trigger `onChange` when selecting each level.              |
+| checkable            | boolean \| ReactNode                                    | false                                                      | Enable multiple selection with checkbox UI.                |
+| children             | ReactElement                                            | -                                                          | Trigger element.                                           |
+| classNames           | Semantic class name map                                 | -                                                          | Semantic class names for selector and popup elements.      |
+| defaultValue         | string[] \| number[] \| Array<string[] \| number[]>     | -                                                          | Initial selected value.                                    |
+| displayRender        | `(label, selectedOptions) => ReactNode`                 | -                                                          | Render selected labels.                                    |
+| expandIcon           | ReactNode                                               | `>`                                                        | Custom expand icon.                                        |
+| expandTrigger        | `click` \| `hover`                                      | `click`                                                    | Trigger action for expanding the next option level.        |
+| fieldNames           | `{ label?: string; value?: string; children?: string }` | `{ label: 'label', value: 'value', children: 'children' }` | Custom option field names.                                 |
+| loadData             | `(selectedOptions) => void`                             | -                                                          | Load child options asynchronously.                         |
+| loadingIcon          | ReactNode                                               | -                                                          | Custom loading icon.                                       |
+| onChange             | `(value, selectedOptions) => void`                      | -                                                          | Called when selection changes.                             |
+| onPopupVisibleChange | `(open: boolean) => void`                               | -                                                          | Called when popup visibility changes.                      |
+| onSearch             | `(value: string) => void`                               | -                                                          | Deprecated. Use `showSearch.onSearch` instead.             |
+| open                 | boolean                                                 | -                                                          | Controlled popup visibility.                               |
+| optionRender         | `(option) => ReactNode`                                 | -                                                          | Custom option renderer.                                    |
+| options              | Option[]                                                | -                                                          | Hierarchical option data.                                  |
+| placement            | Select placement                                        | -                                                          | Popup placement.                                           |
+| popupClassName       | string                                                  | -                                                          | Popup class name.                                          |
+| popupMenuColumnStyle | CSSProperties                                           | -                                                          | Style for each popup menu column.                          |
+| prefixCls            | string                                                  | `rc-cascader`                                              | Class name prefix.                                         |
+| searchValue          | string                                                  | -                                                          | Deprecated. Use `showSearch.searchValue` instead.          |
+| showCheckedStrategy  | `SHOW_PARENT` \| `SHOW_CHILD`                           | `SHOW_PARENT`                                              | Strategy for rendering checked values in multiple mode.    |
+| showSearch           | boolean \| SearchConfig                                 | false                                                      | Enable and configure search.                               |
+| styles               | Semantic style map                                      | -                                                          | Semantic styles for selector and popup elements.           |
+| value                | string[] \| number[] \| Array<string[] \| number[]>     | -                                                          | Controlled selected value.                                 |
 
-### showSearch
+`Cascader` also accepts public props from `@rc-component/select` `BaseSelect`, except private select-only props such as `mode`, `labelInValue`, `showSearch`, and `tokenSeparators`.
 
-| Property | Description | Type | Default | Version |
-| --- | --- | --- | --- | --- |
-| autoClearSearchValue | Whether the current search will be cleared on selecting an item. Only applies when checkable| boolean | true |
-| filter | The function will receive two arguments, inputValue and option, if the function returns true, the option will be included in the filtered set; Otherwise, it will be excluded | function(inputValue, path): boolean | - |  |
-| limit | Set the count of filtered items | number \| false | 50 |  |
-| matchInputWidth | Whether the width of list matches input, ([how it looks](https://github.com/ant-design/ant-design/issues/25779)) | boolean | true |  |
-| render | Used to render filtered options | function(inputValue, path): ReactNode | - |  |
-| sort | Used to sort filtered options | function(a, b, inputValue) | - |  |
-| searchValue | The current input "search" text | string | - | - |
-| onSearch | called when input changed | function | - | - |
+### SearchConfig
 
-### option
+| Property             | Type                                                     | Default | Description                                                |
+| -------------------- | -------------------------------------------------------- | ------- | ---------------------------------------------------------- |
+| autoClearSearchValue | boolean                                                  | true    | Clear search text after selecting an item.                 |
+| filter               | `(inputValue, options, fieldNames) => boolean`           | -       | Return `true` to include an option path in search results. |
+| limit                | number \| false                                          | 50      | Limit the number of filtered items.                        |
+| matchInputWidth      | boolean                                                  | true    | Whether the search result width matches the input width.   |
+| onSearch             | `(value: string) => void`                                | -       | Called when search text changes.                           |
+| render               | `(inputValue, path, prefixCls, fieldNames) => ReactNode` | -       | Render a filtered option path.                             |
+| searchValue          | string                                                   | -       | Controlled search text.                                    |
+| sort                 | `(a, b, inputValue, fieldNames) => number`               | -       | Sort filtered option paths.                                |
 
-<table class="table table-bordered table-striped">
-  <thead>
-  <tr>
-    <th style="width: 100px;">name</th>
-    <th style="width: 50px;">type</th>
-    <th style="width: 50px;">default</th>
-    <th>description</th>
-  </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>label</td>
-      <td>String</td>
-      <td></td>
-      <td>option text to display</td>
-    </tr>
-    <tr>
-      <td>value</td>
-      <td>String</td>
-      <td></td>
-      <td>option value as react key</td>
-    </tr>
-    <tr>
-      <td>disabled</td>
-      <td>Boolean</td>
-      <td></td>
-      <td>disabled option</td>
-    </tr>
-    <tr>
-      <td>children</td>
-      <td>Array</td>
-      <td></td>
-      <td>children options</td>
-    </tr>
-  </tbody>
-</table>
+### Option
+
+| Property        | Type                     | Default | Description                                      |
+| --------------- | ------------------------ | ------- | ------------------------------------------------ |
+| children        | Option[]                 | -       | Child options.                                   |
+| disabled        | boolean                  | false   | Disable this option.                             |
+| disableCheckbox | boolean                  | false   | Disable this option's checkbox in multiple mode. |
+| label           | ReactNode                | -       | Display label.                                   |
+| value           | string \| number \| null | -       | Option value.                                    |
 
 ## Development
 
 ```bash
-$ npm install
-$ npm start
+npm install
+npm start
 ```
 
-## Test Case
+The dumi site runs at `http://localhost:8000` by default.
+
+Common commands:
 
 ```bash
-$ npm test
+npm run lint
+npm test
+npm run tsc
+npm run lint:tsc
+npm run compile
 ```
 
-## Coverage
+## Release
 
 ```bash
-$ npm run coverage
+npm run prepublishOnly
 ```
+
+The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
 ## License
 
-@rc-component/cascader is released under the MIT license.
-
-## 🤝 Contributing 
-
-<a href="https://openomy.app/github/react-component/cascader" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://www.openomy.app/svg?repo=react-component/cascader&chart=bubble&latestMonth=24" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
-</a>
+@rc-component/cascader is released under the [MIT](./LICENSE) license.

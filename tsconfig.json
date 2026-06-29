@@ -9,9 +9,16 @@
     "strict": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"],
-      "@rc-component/cascader": ["src/index.ts"]
-    }
+      "@/*": [
+        "src/*"
+      ],
+      "@@/*": [
+        "src/.umi/*"
+      ],
+      "@rc-component/cascader": [
+        "src/index.ts"
+      ]
+    },
+    "ignoreDeprecations": "5.0"
   }
 }

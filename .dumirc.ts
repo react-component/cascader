@@ -1,7 +1,13 @@
 import { defineConfig } from 'dumi';
 import path from 'path';
 
+const basePath = process.env.GH_PAGES ? '/cascader/' : '/';
+const publicPath = basePath;
+
 export default defineConfig({
+  outputPath: 'docs-dist',
+  base: basePath,
+  publicPath,
   alias: {
     'rc-cascader$': path.resolve('src'),
     'rc-cascader/es': path.resolve('src'),

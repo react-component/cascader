@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import { clsx } from 'clsx';
-import type { BaseSelectProps, useBaseProps } from '@rc-component/select';
+import type { useBaseProps } from '@rc-component/select';
 import * as React from 'react';
 import { useMemo } from '@rc-component/util';
 import type { DefaultOptionType, LegacyKey, SingleValueType } from '../Cascader';
@@ -18,12 +18,10 @@ import Column, { FIX_LABEL } from './Column';
 import useActive from './useActive';
 import useKeyboard from './useKeyboard';
 
-export type RefOptionListProps =
-  NonNullable<React.ComponentProps<BaseSelectProps['OptionList']>['ref']> extends React.Ref<
-    infer Ref
-  >
-    ? Ref
-    : never;
+export interface RefOptionListProps {
+  onKeyDown: React.KeyboardEventHandler;
+  onKeyUp: React.KeyboardEventHandler;
+}
 
 export type RawOptionListProps = Pick<
   ReturnType<typeof useBaseProps>,
