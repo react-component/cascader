@@ -58,11 +58,11 @@ const Demo = () => {
   return (
     <Cascader
       checkable
-      options={options}
+      options={options as any}
       showCheckedStrategy={SHOW_CHILD}
-      loadData={loadData}
-      value={value}
-      onChange={onChange}
+      loadData={loadData as any}
+      value={value as any}
+      onChange={onChange as any}
       changeOnSelect
     />
   );

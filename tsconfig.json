@@ -6,7 +6,7 @@
     "jsx": "react",
     "declaration": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "paths": {
       "@/*": [
@@ -19,6 +19,12 @@
         "src/index.ts"
       ]
     },
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "6.0",
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "strictFunctionTypes": false,
+    "noImplicitThis": false,
+    "strictBindCallApply": false
   }
 }

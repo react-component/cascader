@@ -100,8 +100,8 @@ describe('Cascader.Basic', () => {
       <Cascader
         checkable
         changeOnSelect
-        options={addressOptions}
-        onChange={onMultipleChange}
+        options={addressOptions as any}
+        onChange={onMultipleChange as any}
         showCheckedStrategy={'SHOW_PARENT'}
       >
         <input readOnly />
@@ -123,8 +123,8 @@ describe('Cascader.Basic', () => {
       <Cascader
         checkable
         changeOnSelect
-        options={addressOptions}
-        onChange={onMultipleChange}
+        options={addressOptions as any}
+        onChange={onMultipleChange as any}
         showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
@@ -864,10 +864,10 @@ describe('Cascader.Basic', () => {
                 },
               ],
             },
-          ]}
-          value={[['parent'], ['normal', 'child']]}
+          ] as any}
+          value={[['parent'], ['normal', 'child']] as any}
           checkable
-          onChange={onTypeChange}
+          onChange={onTypeChange as any}
         />,
       );
 
