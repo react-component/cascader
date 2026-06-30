@@ -1,10 +1,11 @@
+import { fireEvent } from '@testing-library/dom';
 import { spyElementPrototypes } from '@rc-component/util';
 import React, { useEffect, useState } from 'react';
 import type { CascaderRef, BaseOptionType, CascaderProps } from '../src';
 import Cascader from '../src';
 import { addressOptions, addressOptionsForUneven, optionsForActiveMenuItems } from './demoOptions';
 import * as commonUtil from '../src/utils/commonUtil';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import { expectOpen, selectOption, isOpen, clickOption } from './util';
 

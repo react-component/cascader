@@ -1,5 +1,6 @@
+import { fireEvent } from '@testing-library/dom';
 import React, { useState } from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Cascader from '../src';
 import { addressOptions } from './demoOptions';
 import { expectOpen, clickOption } from './util';

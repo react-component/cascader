@@ -1,4 +1,5 @@
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent } from '@testing-library/dom';
+import { act, render } from '@testing-library/react';
 import { KeyCode } from '@rc-component/util';
 import type { CascaderProps } from '../src';
 import Cascader from '../src';

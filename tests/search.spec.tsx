@@ -1,4 +1,5 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent } from '@testing-library/dom';
+import { render } from '@testing-library/react';
 import { KeyCode, resetWarned } from '@rc-component/util';
 import React from 'react';
 import Cascader, { type DefaultOptionType } from '../src';

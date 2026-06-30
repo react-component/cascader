@@ -1,4 +1,5 @@
-import { act, createEvent, fireEvent } from '@testing-library/react';
+import { createEvent, fireEvent } from '@testing-library/dom';
+import { act } from '@testing-library/react';
 
 export function expectOpen(dom: HTMLElement, open = true) {
   act(() => {
