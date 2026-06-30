@@ -31,7 +31,7 @@ describe('Cascader.Selector', () => {
         <Cascader value={['not', 'exist']} allowClear onChange={onChange} />,
       );
 
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
+      fireEvent.click(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect(onChange).toHaveBeenCalledWith(undefined, undefined);
     });
 
@@ -57,7 +57,7 @@ describe('Cascader.Selector', () => {
       expectOpen(container, false);
 
       // Clear
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
+      fireEvent.click(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect((global as any).activeValueCells).toEqual([]);
     });
 
@@ -67,7 +67,7 @@ describe('Cascader.Selector', () => {
         <Cascader checkable value={[['not'], ['exist']]} allowClear onChange={onChange} />,
       );
 
-      fireEvent.mouseDown(container.querySelector('.rc-cascader-clear') as HTMLElement);
+      fireEvent.click(container.querySelector('.rc-cascader-clear') as HTMLElement);
       expect(onChange).toHaveBeenCalledWith([], []);
     });
   });
@@ -101,7 +101,7 @@ describe('Cascader.Selector', () => {
 
     const TestComponent = () => {
       const [value, setValue] = useState([['aa'], ['bb'], ['cc'], ['dd'], ['ee']]);
-      
+
       return (
         <Cascader
           options={[
