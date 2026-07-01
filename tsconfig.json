@@ -5,25 +5,13 @@
     "jsx": "react",
     "declaration": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@@/*": [
-        "./src/.umi/*"
-      ],
-      "@rc-component/cascader": [
-        "./src/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/.umi/*"],
+      "@rc-component/cascader": ["./src/index.ts"]
     },
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "strictPropertyInitialization": false,
-    "strictFunctionTypes": false,
-    "noImplicitThis": false,
-    "strictBindCallApply": false,
     "module": "ESNext"
   }
 }
