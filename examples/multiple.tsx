@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import '../assets/index.less';
 import type { CascaderProps } from '../src';
@@ -7,7 +6,7 @@ import type { Option2 } from './utils';
 
 const { SHOW_CHILD } = Cascader;
 
-const optionLists = [
+const optionLists: Option2[] = [
   {
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -56,13 +55,13 @@ const Demo = () => {
 
   // 直接选中一级选项，但是此时二级选项没有全部选中
   return (
-    <Cascader
+    <Cascader<Option2, 'value', true>
       checkable
-      options={options as any}
+      options={options}
       showCheckedStrategy={SHOW_CHILD}
-      loadData={loadData as any}
-      value={value as any}
-      onChange={onChange as any}
+      loadData={loadData}
+      value={value}
+      onChange={onChange}
       changeOnSelect
     />
   );
