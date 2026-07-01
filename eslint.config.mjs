@@ -17,10 +17,7 @@ const compat = new FlatCompat({
 
 const recommendedTsRulesConfig = tsEslintPlugin.configs.recommended;
 const recommendedTsRulesObject = Array.isArray(recommendedTsRulesConfig)
-  ? recommendedTsRulesConfig.reduce(
-      (rules, config) => ({ ...rules, ...(config.rules || {}) }),
-      {},
-    )
+  ? recommendedTsRulesConfig.reduce((rules, config) => ({ ...rules, ...(config.rules || {}) }), {})
   : recommendedTsRulesConfig?.rules || {};
 const recommendedTsRules = new Set(Object.keys(recommendedTsRulesObject));
 const noopRule = {
@@ -39,6 +36,9 @@ function normalizeConfig(config) {
   if (next.rules) {
     next.rules = Object.fromEntries(
       Object.entries(next.rules).filter(([ruleName]) => {
+        if (ruleName.startsWith('@babel/')) {
+          return false;
+        }
         if (!ruleName.startsWith('@typescript-eslint/')) {
           return true;
         }
