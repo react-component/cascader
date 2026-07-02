@@ -63,7 +63,9 @@ describe('Cascader.Basic', () => {
 
     selectOption(container, 0, 0);
     expect(
-      container.querySelector('.rc-cascader-menu-item')!.classList.contains('rc-cascader-menu-item-active')
+      container
+        .querySelector('.rc-cascader-menu-item')!
+        .classList.contains('rc-cascader-menu-item-active'),
     ).toBeTruthy();
 
     // Menu 2
@@ -79,7 +81,7 @@ describe('Cascader.Basic', () => {
       container
         .querySelectorAll('.rc-cascader-menu')[1]
         .querySelector('.rc-cascader-menu-item')!
-        .classList.contains('rc-cascader-menu-item-active')
+        .classList.contains('rc-cascader-menu-item-active'),
     ).toBeTruthy();
 
     // Menu 3
@@ -97,7 +99,7 @@ describe('Cascader.Basic', () => {
 
   it('should support showCheckedStrategy parent', () => {
     const { container } = render(
-      <Cascader
+      <Cascader<BaseOptionType, 'value', true>
         checkable
         changeOnSelect
         options={addressOptions}
@@ -123,8 +125,8 @@ describe('Cascader.Basic', () => {
       <Cascader
         checkable
         changeOnSelect
-        options={addressOptions}
-        onChange={onMultipleChange}
+        options={addressOptions as any}
+        onChange={onMultipleChange as any}
         showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
@@ -189,7 +191,7 @@ describe('Cascader.Basic', () => {
       container
         .querySelectorAll('.rc-cascader-menu')[0]
         .querySelector('.rc-cascader-menu-item')!
-        .classList.contains('rc-cascader-menu-item-active')
+        .classList.contains('rc-cascader-menu-item-active'),
     ).toBeTruthy();
 
     // Menu 2
@@ -208,7 +210,7 @@ describe('Cascader.Basic', () => {
       container
         .querySelectorAll('.rc-cascader-menu')[1]
         .querySelector('.rc-cascader-menu-item')!
-        .classList.contains('rc-cascader-menu-item-active')
+        .classList.contains('rc-cascader-menu-item-active'),
     ).toBeTruthy();
 
     // Menu 3
@@ -353,7 +355,7 @@ describe('Cascader.Basic', () => {
     rerender(
       <Cascader options={[]} onChange={onChange} notFoundContent="BambooLight">
         <input readOnly />
-      </Cascader>
+      </Cascader>,
     );
     expect(container.querySelector('.rc-cascader-menu-item')!.textContent).toEqual('BambooLight');
   });
@@ -399,7 +401,9 @@ describe('Cascader.Basic', () => {
 
       fireEvent.click(menu1Items[0]);
       expect(
-        container.querySelector('.rc-cascader-menu-item')!.classList.contains('rc-cascader-menu-item-disabled'),
+        container
+          .querySelector('.rc-cascader-menu-item')!
+          .classList.contains('rc-cascader-menu-item-disabled'),
       ).toBe(true);
       menus = container.querySelectorAll('.rc-cascader-menu');
       expect(menus.length).toBe(1);
@@ -420,12 +424,13 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(container.querySelector('.rc-cascader-selection-item-disabled')!.textContent).toEqual('福州');
+      expect(container.querySelector('.rc-cascader-selection-item-disabled')!.textContent).toEqual(
+        '福州',
+      );
       expect(
         container
           .querySelector('.rc-cascader-selection-item:not(.rc-cascader-selection-item-disabled)')!
-          .querySelector('.rc-cascader-selection-item-content')!
-          .textContent,
+          .querySelector('.rc-cascader-selection-item-content')!.textContent,
       ).toEqual('朝阳区');
     });
   });
@@ -720,8 +725,12 @@ describe('Cascader.Basic', () => {
       clickOption(container, 1, 0);
 
       expect(container.querySelectorAll('li.rc-cascader-menu-item-active')).toHaveLength(2);
-      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual('Bamboo');
-      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[1].textContent).toEqual('Little');
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual(
+        'Bamboo',
+      );
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[1].textContent).toEqual(
+        'Little',
+      );
     });
 
     it('expandTrigger: hover', () => {
@@ -749,7 +758,9 @@ describe('Cascader.Basic', () => {
       clickOption(container, 1, 0, 'mouseEnter');
 
       expect(container.querySelectorAll('li.rc-cascader-menu-item-active')).toHaveLength(1);
-      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual('Bamboo');
+      expect(container.querySelectorAll('li.rc-cascader-menu-item-active')[0].textContent).toEqual(
+        'Bamboo',
+      );
     });
 
     describe('the defaultValue should be activated the first time it is opened', () => {
@@ -837,35 +848,36 @@ describe('Cascader.Basic', () => {
         />,
       );
 
-      expect(container.querySelector('.rc-cascader-content')!.textContent).toEqual('Normal / Child');
+      expect(container.querySelector('.rc-cascader-content')!.textContent).toEqual(
+        'Normal / Child',
+      );
     });
 
     it('multiple', () => {
-      const onTypeChange: (
-        values: string[][],
-        options: { label: React.ReactNode; value: string }[][],
-      ) => void = jest.fn();
+      const onTypeChange: CascaderProps<BaseOptionType, 'value', true>['onChange'] = jest.fn();
+      const options: BaseOptionType[] = [
+        { label: <span>Parent</span>, value: 'parent' },
+        {
+          label: 'Normal',
+          value: 'normal',
+          children: [
+            {
+              label: <span>Child</span>,
+              value: 'child',
+            },
+            {
+              label: 'Child2',
+              value: 'child2',
+            },
+          ],
+        },
+      ];
+      const value: string[][] = [['parent'], ['normal', 'child']];
 
       const { container } = render(
-        <Cascader
-          options={[
-            { label: <span>Parent</span>, value: 'parent' },
-            {
-              label: 'Normal',
-              value: 'normal',
-              children: [
-                {
-                  label: <span>Child</span>,
-                  value: 'child',
-                },
-                {
-                  label: 'Child2',
-                  value: 'child2',
-                },
-              ],
-            },
-          ]}
-          value={[['parent'], ['normal', 'child']]}
+        <Cascader<BaseOptionType, 'value', true>
+          options={options}
+          value={value}
           checkable
           onChange={onTypeChange}
         />,
