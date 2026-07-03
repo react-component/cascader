@@ -50,7 +50,7 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@rc-component/father-plugin": "^2.2.0",
     "@rc-component/form": "^1.4.0",
     "@rc-component/np": "^1.0.4",
@@ -64,11 +64,11 @@
     "@types/react-dom": "^19.2.3",
     "@types/warning": "^3.0.4",
     "array-tree-filter": "^3.0.2",
-    "cheerio": "1.0.0-rc.12",
+    "cheerio": "1.2.0",
     "core-js": "^3.40.0",
     "cross-env": "^10.1.0",
     "dumi": "^2.4.38",
-    "eslint": "^9.39.4",
+    "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.15.4",
     "eslint-plugin-react": "^7.37.5",
