@@ -125,8 +125,8 @@ describe('Cascader.Basic', () => {
       <Cascader
         checkable
         changeOnSelect
-        options={addressOptions as any}
-        onChange={onMultipleChange as any}
+        options={addressOptions}
+        onChange={onMultipleChange}
         showCheckedStrategy={'SHOW_CHILD'}
       >
         <input readOnly />
