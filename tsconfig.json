@@ -1,24 +1,17 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "moduleResolution": "node",
-    "baseUrl": "./",
+    "moduleResolution": "bundler",
     "jsx": "react",
     "declaration": true,
     "skipLibCheck": true,
     "strict": true,
     "esModuleInterop": true,
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        "src/.umi/*"
-      ],
-      "@rc-component/cascader": [
-        "src/index.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/.umi/*"],
+      "@rc-component/cascader": ["./src/index.ts"]
     },
-    "ignoreDeprecations": "5.0"
+    "module": "ESNext"
   }
 }
