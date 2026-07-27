@@ -34,7 +34,7 @@
     "compile": "father build",
     "coverage": "father test --coverage",
     "tsc": "tsc --noEmit",
-    "deploy": "UMI_ENV=gh npm run build && gh-pages -d docs-dist",
+    "deploy": "cross-env GH_PAGES=1 npm run build && gh-pages -d docs-dist",
     "lint": "eslint src/ examples/ tests/ --ext .tsx,.ts,.jsx,.js",
     "prepublishOnly": "npm run compile && rc-np",
     "prettier": "prettier --write --ignore-unknown .",
