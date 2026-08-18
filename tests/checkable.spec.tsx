@@ -281,4 +281,220 @@ describe('Cascader.Checkable', () => {
 
     expect(onChange).toHaveBeenCalledWith([['China', 'beijing'], ['China']], expect.anything());
   });
+
+  // ========================= checkStrictly =========================
+  describe('checkStrictly', () => {
+    it('clicking parent does not check children, and no indeterminate', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader options={options} onChange={onChange} open checkable checkStrictly />,
+      );
+
+      // Open bamboo > little
+      clickOption(container, 0, 1); // Click bamboo
+      clickOption(container, 1, 0); // Click little
+
+      // Check parent `bamboo`
+      const bambooCheckbox = container.querySelector(
+        '[data-path-key="bamboo"] .rc-cascader-checkbox',
+      ) as HTMLElement;
+      fireEvent.click(bambooCheckbox);
+
+      // Only bamboo is checked, children stay unchecked
+      const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+      expect(checkedCheckboxes).toHaveLength(1);
+      // No indeterminate under checkStrictly
+      expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+      expect(onChange).toHaveBeenCalledWith([['bamboo']], expect.anything());
+    });
+
+    it('clicking child does not affect parent', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader options={options} onChange={onChange} open checkable checkStrictly />,
+      );
+
+      clickOption(container, 0, 1); // Click bamboo
+      clickOption(container, 1, 0); // Click little
+
+      // Check grandchild `fish`
+      clickOption(container, 2, 0); // Click fish
+
+      const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+      expect(checkedCheckboxes).toHaveLength(1);
+      expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+      expect(onChange).toHaveBeenCalledWith([['bamboo', 'little', 'fish']], expect.anything());
+    });
+
+    it('precisely selects a non-leaf intermediate value under control', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader
+          options={options}
+          onChange={onChange}
+          open
+          checkable
+          checkStrictly
+          defaultValue={[['bamboo']]}
+        />,
+      );
+
+      // Province `bamboo` is precisely checked alone (no auto-checked children)
+      const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+      expect(checkedCheckboxes).toHaveLength(1);
+      expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+      // Uncheck it
+      const bambooCheckbox = container.querySelector(
+        '[data-path-key="bamboo"] .rc-cascader-checkbox',
+      ) as HTMLElement;
+      fireEvent.click(bambooCheckbox);
+      expect(onChange).toHaveBeenCalledWith([], expect.anything());
+    });
+
+    it('ignores showCheckedStrategy under checkStrictly', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader
+          options={options}
+          onChange={onChange}
+          open
+          checkable
+          checkStrictly
+          showCheckedStrategy={Cascader.SHOW_PARENT}
+        />,
+      );
+
+      clickOption(container, 0, 1); // Click bamboo
+      clickOption(container, 1, 0); // Click little
+
+      // Check both fish and cards (children of little)
+      clickOption(container, 2, 0); // fish
+      clickOption(container, 2, 1); // cards
+
+      // Under checkStrictly, strategy roll-up is bypassed: both remain, no merge to `little`.
+      const checkedCheckboxes = container.querySelectorAll('.rc-cascader-checkbox-checked');
+      expect(checkedCheckboxes).toHaveLength(2);
+      expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+      expect(onChange).toHaveBeenLastCalledWith(
+        [
+          ['bamboo', 'little', 'fish'],
+          ['bamboo', 'little', 'cards'],
+        ],
+        expect.anything(),
+      );
+    });
+
+    it('missing values are preserved and removable under checkStrictly', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader
+          options={options}
+          onChange={onChange}
+          open
+          checkable
+          checkStrictly
+          defaultValue={[['nonexistent']]}
+        />,
+      );
+
+      // Click a real parent `bamboo` (single mode already open because defaultValue exists)
+      clickOption(container, 0, 1); // Click bamboo
+
+      // Check bamboo alongside the missing value
+      const bambooCheckbox = container.querySelector(
+        '[data-path-key="bamboo"] .rc-cascader-checkbox',
+      ) as HTMLElement;
+      fireEvent.click(bambooCheckbox);
+
+      expect(onChange).toHaveBeenLastCalledWith([['nonexistent'], ['bamboo']], expect.anything());
+    });
+
+    // https://github.com/ant-design/ant-design/issues/38049
+    // checkStrictly skips `conductCheck`, so disabled-sibling conduction
+    // (present in non-strict mode) must also be bypassed.
+    it('disabled sibling does not trigger parent roll-up under checkStrictly', () => {
+      const disabledSiblingOptions = [
+        {
+          label: 'Parent',
+          value: 'parent',
+          children: [
+            { label: 'Normal', value: 'normal' },
+            { label: 'Disabled', value: 'disabled', disabled: true },
+          ],
+        },
+      ];
+
+      // ---- checkStrictly: only the clicked leaf is checked, no parent roll-up ----
+      const strictOnChange = jest.fn();
+      const { container: strictContainer } = render(
+        <Cascader
+          options={disabledSiblingOptions}
+          onChange={strictOnChange}
+          open
+          checkable
+          checkStrictly
+        />,
+      );
+      clickOption(strictContainer, 0, 0); // expand Parent
+
+      // Checks `normal`; `disabled` stays unchecked, `parent` does NOT get pulled in.
+      fireEvent.click(strictContainer.querySelectorAll('.rc-cascader-checkbox')[1] as HTMLElement);
+
+      expect(strictContainer.querySelectorAll('.rc-cascader-checkbox-checked')).toHaveLength(1);
+      expect(strictContainer.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+      expect(strictOnChange).toHaveBeenLastCalledWith([['parent', 'normal']], expect.anything());
+
+      // ---- non-strict (default SHOW_PARENT): same click rolls up to parent ----
+      // because the only checkable leaf being checked makes the parent fully checked.
+      const { container: nonStrictContainer } = render(
+        <Cascader
+          options={disabledSiblingOptions}
+          open
+          checkable
+          // default showCheckedStrategy = SHOW_PARENT
+        />,
+      );
+      clickOption(nonStrictContainer, 0, 0);
+      fireEvent.click(
+        nonStrictContainer.querySelectorAll('.rc-cascader-checkbox')[1] as HTMLElement,
+      );
+
+      // Confirms the two modes genuinely differ: non-strict collapses to parent.
+      expect(nonStrictContainer.querySelectorAll('.rc-cascader-checkbox-checked')).toHaveLength(2);
+    });
+
+    it('controlled value round-trips under checkStrictly (uncheck removes exact path)', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Cascader
+          options={options}
+          onChange={onChange}
+          open
+          checkable
+          checkStrictly
+          value={[['bamboo', 'little', 'fish']]}
+        />,
+      );
+
+      // Open bamboo > little so the controlled leaf checkbox is visible.
+      clickOption(container, 0, 1); // Click bamboo
+      clickOption(container, 1, 0); // Click little
+
+      // Controlled propagation renders the precise path checked, no conduction
+      // to ancestors: only `fish` is checked, `bamboo`/`little` are not.
+      expect(container.querySelectorAll('.rc-cascader-checkbox-checked')).toHaveLength(1);
+      expect(container.querySelector('.rc-cascader-checkbox-indeterminate')).toBeFalsy();
+
+      const fishCheckbox = container.querySelector(
+        '[data-path-key="bamboo__RC_CASCADER_SPLIT__little__RC_CASCADER_SPLIT__fish"] .rc-cascader-checkbox',
+      ) as HTMLElement;
+      fireEvent.click(fishCheckbox);
+
+      expect(onChange).toHaveBeenLastCalledWith([], expect.anything());
+    });
+  });
 });
