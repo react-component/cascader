@@ -43,42 +43,40 @@ export default function useSelect(
         nextMissingValues = missingCheckedValues.filter(
           valueCells => toPathKey(valueCells) !== pathKey,
         );
+      } else if (checkStrictly) {
+        // No conduction, no strategy roll-up: precisely toggle this path only.
+        nextCheckedValues = existInChecked
+          ? checkedValues.filter(cells => toPathKey(cells) !== pathKey)
+          : [...checkedValues, valuePath];
       } else {
-        if (checkStrictly) {
-          // No conduction, no strategy roll-up: precisely toggle this path only.
-          nextCheckedValues = existInChecked
-            ? checkedValues.filter(cells => toPathKey(cells) !== pathKey)
-            : [...checkedValues, valuePath];
+        // Update checked key first
+        const nextRawCheckedKeys = existInChecked
+          ? checkedPathKeys.filter(key => key !== pathKey)
+          : [...checkedPathKeys, pathKey];
+
+        const pathKeyEntities = getPathKeyEntities();
+
+        // Conduction by selected or not
+        let checkedKeys: LegacyKey[];
+        if (existInChecked) {
+          ({ checkedKeys } = conductCheck(
+            nextRawCheckedKeys,
+            { checked: false, halfCheckedKeys: halfCheckedPathKeys },
+            pathKeyEntities,
+          ) as { checkedKeys: LegacyKey[] });
         } else {
-          // Update checked key first
-          const nextRawCheckedKeys = existInChecked
-            ? checkedPathKeys.filter(key => key !== pathKey)
-            : [...checkedPathKeys, pathKey];
-
-          const pathKeyEntities = getPathKeyEntities();
-
-          // Conduction by selected or not
-          let checkedKeys: LegacyKey[];
-          if (existInChecked) {
-            ({ checkedKeys } = conductCheck(
-              nextRawCheckedKeys,
-              { checked: false, halfCheckedKeys: halfCheckedPathKeys },
-              pathKeyEntities,
-            ) as { checkedKeys: LegacyKey[] });
-          } else {
-            ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities) as {
-              checkedKeys: LegacyKey[];
-            });
-          }
-
-          // Roll up to parent level keys
-          const deDuplicatedKeys = formatStrategyValues(
-            checkedKeys,
-            getPathKeyEntities,
-            showCheckedStrategy,
-          );
-          nextCheckedValues = getValueByKeyPath(deDuplicatedKeys);
+          ({ checkedKeys } = conductCheck(nextRawCheckedKeys, true, pathKeyEntities) as {
+            checkedKeys: LegacyKey[];
+          });
         }
+
+        // Roll up to parent level keys
+        const deDuplicatedKeys = formatStrategyValues(
+          checkedKeys,
+          getPathKeyEntities,
+          showCheckedStrategy,
+        );
+        nextCheckedValues = getValueByKeyPath(deDuplicatedKeys);
       }
 
       triggerChange([...nextMissingValues, ...nextCheckedValues]);
