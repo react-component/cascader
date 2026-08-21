@@ -11,6 +11,7 @@ import type { GetEntities } from './useEntities';
 
 export default function useSelect(
   multiple: boolean,
+  checkStrictly: boolean,
   triggerChange: (nextValues: InternalValueType) => void,
   checkedValues: SingleValueType[],
   halfCheckedValues: SingleValueType[],
@@ -42,6 +43,11 @@ export default function useSelect(
         nextMissingValues = missingCheckedValues.filter(
           valueCells => toPathKey(valueCells) !== pathKey,
         );
+      } else if (checkStrictly) {
+        // No conduction, no strategy roll-up: precisely toggle this path only.
+        nextCheckedValues = existInChecked
+          ? checkedValues.filter(cells => toPathKey(cells) !== pathKey)
+          : [...checkedValues, valuePath];
       } else {
         // Update checked key first
         const nextRawCheckedKeys = existInChecked

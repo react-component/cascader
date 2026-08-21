@@ -26,6 +26,7 @@ export type PickType =
   | 'options'
   | 'prefixCls'
   | 'checkable'
+  | 'checkStrictly'
   | 'fieldNames'
   | 'showCheckedStrategy'
   | 'loadData'
@@ -58,6 +59,7 @@ export default function Panel<
     className,
     options,
     checkable,
+    checkStrictly,
     defaultValue,
     value,
     fieldNames,
@@ -101,6 +103,7 @@ export default function Panel<
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
+    !!checkStrictly,
     rawValues,
     getPathKeyEntities,
     getValueByKeyPath,
@@ -129,6 +132,7 @@ export default function Panel<
   // =========================== Select ===========================
   const handleSelection = useSelect(
     multiple,
+    !!checkStrictly,
     triggerChange,
     checkedValues,
     halfCheckedValues,

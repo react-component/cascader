@@ -71,9 +71,9 @@ interface BaseCascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
 > extends Omit<
-    BaseSelectPropsWithoutPrivate,
-    'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
-  > {
+  BaseSelectPropsWithoutPrivate,
+  'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
+> {
   // MISC
   id?: string;
   prefixCls?: string;
@@ -86,6 +86,15 @@ interface BaseCascaderProps<
   displayRender?: (label: string[], selectedOptions?: OptionType[]) => React.ReactNode;
   checkable?: boolean | React.ReactNode;
   showCheckedStrategy?: ShowCheckedStrategy;
+  /**
+   * Only takes effect when `checkable` is enabled (multiple mode).
+   * When true, parent and children nodes are checked independently:
+   * checking a parent does not check its descendants, and checking a
+   * child does not affect its ancestors (no conduction, no half-checked
+   * state). `showCheckedStrategy` is ignored under this mode.
+   * Has no effect in single-select mode (no `checkable`).
+   */
+  checkStrictly?: boolean;
 
   // Search
   /** @deprecated please use showSearch.autoClearSearchValue */
@@ -150,14 +159,7 @@ export type GetOptionType<
 > = false extends Multiple ? OptionType[] : OptionType[][];
 
 type SemanticName =
-  | 'input'
-  | 'prefix'
-  | 'suffix'
-  | 'placeholder'
-  | 'content'
-  | 'item'
-  | 'itemContent'
-  | 'itemRemove';
+  'input' | 'prefix' | 'suffix' | 'placeholder' | 'content' | 'item' | 'itemContent' | 'itemRemove';
 type PopupSemantic = 'list' | 'listItem';
 export interface CascaderProps<
   OptionType extends DefaultOptionType = DefaultOptionType,
@@ -214,6 +216,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
     onChange,
     displayRender,
     checkable,
+    checkStrictly,
 
     // Search
     showSearch,
@@ -300,6 +303,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // Fill `rawValues` with checked conduction values
   const [checkedValues, halfCheckedValues, missingCheckedValues] = useValues(
     multiple,
+    !!checkStrictly,
     rawValues,
     getPathKeyEntities,
     getValueByKeyPath,
@@ -308,14 +312,13 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
 
   const deDuplicatedValues = React.useMemo(() => {
     const checkedKeys = toPathKeys(checkedValues);
-    const deduplicateKeys = formatStrategyValues(
-      checkedKeys,
-      getPathKeyEntities,
-      showCheckedStrategy,
-    );
+    const deduplicateKeys = checkStrictly
+      ? checkedKeys
+      : formatStrategyValues(checkedKeys, getPathKeyEntities, showCheckedStrategy);
 
     return [...missingCheckedValues, ...getValueByKeyPath(deduplicateKeys)];
   }, [
+    checkStrictly,
     checkedValues,
     getPathKeyEntities,
     getValueByKeyPath,
@@ -353,6 +356,7 @@ const Cascader = React.forwardRef<CascaderRef, InternalCascaderProps>((props, re
   // =========================== Select ===========================
   const handleSelection = useSelect(
     multiple,
+    !!checkStrictly,
     triggerChange,
     checkedValues,
     halfCheckedValues,

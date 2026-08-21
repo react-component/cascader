@@ -7,6 +7,7 @@ import type { GetMissValues } from './useMissingValues';
 
 export default function useValues(
   multiple: boolean,
+  checkStrictly: boolean,
   rawValues: SingleValueType[],
   getPathKeyEntities: () => Record<string, DataEntity>,
   getValueByKeyPath: (pathKeys: LegacyKey[]) => SingleValueType[],
@@ -25,6 +26,13 @@ export default function useValues(
     }
 
     const keyPathValues = toPathKeys(existValues);
+
+    // When `checkStrictly`, parent and children checked state are not associated.
+    // No conduction, no half-checked state.
+    if (checkStrictly) {
+      return [getValueByKeyPath(keyPathValues), [], missingValues];
+    }
+
     const keyPathEntities = getPathKeyEntities();
 
     const { checkedKeys, halfCheckedKeys } = conductCheck(keyPathValues, true, keyPathEntities) as {
@@ -34,5 +42,5 @@ export default function useValues(
 
     // Convert key back to value cells
     return [getValueByKeyPath(checkedKeys), getValueByKeyPath(halfCheckedKeys), missingValues];
-  }, [multiple, rawValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
+  }, [multiple, checkStrictly, rawValues, getPathKeyEntities, getValueByKeyPath, getMissingValues]);
 }
