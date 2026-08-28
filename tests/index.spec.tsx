@@ -558,6 +558,23 @@ describe('Cascader.Basic', () => {
     expectOpen(container, false);
   });
 
+  it('should keep popup open when double clicking a disabled option', () => {
+    const options = addressOptions.map((option, index) => ({
+      ...option,
+      disabled: index === 0,
+    }));
+    const { container } = render(
+      <Cascader options={options} changeOnSelect>
+        <input readOnly />
+      </Cascader>,
+    );
+
+    fireEvent.click(container.querySelector('input')!);
+    expectOpen(container, true);
+    selectOption(container, 0, 0, 'doubleClick');
+    expectOpen(container, true);
+  });
+
   // https://github.com/ant-design/ant-design/issues/9793
   it('should not trigger onBlur and onFocus when select item', () => {
     // This function is handled by `rc-select` instead
