@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import * as React from 'react';
-import { pickAttrs } from '@rc-component/util';
+import { isReactRenderable, pickAttrs } from '@rc-component/util';
 import type { DefaultOptionType, SingleValueType } from '../Cascader';
 import CascaderContext from '../context';
 import { SEARCH_MARK } from '../hooks/useSearchOptions';
@@ -225,10 +225,10 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
               <div className={`${menuItemPrefixCls}-content`}>
                 {optionRender && value !== '__EMPTY__' ? optionRender(option) : label}
               </div>
-              {!isLoading && expandIcon && !isMergedLeaf && (
+              {!isLoading && isReactRenderable(expandIcon) && !isMergedLeaf && (
                 <div className={`${menuItemPrefixCls}-expand-icon`}>{expandIcon}</div>
               )}
-              {isLoading && loadingIcon && (
+              {isLoading && isReactRenderable(loadingIcon) && (
                 <div className={`${menuItemPrefixCls}-loading-icon`}>{loadingIcon}</div>
               )}
             </li>
