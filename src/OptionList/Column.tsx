@@ -104,6 +104,23 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
     [options, checkedSet, fieldNames, halfCheckedSet, loadingKeys, prevValuePath],
   );
 
+  const prevOptionsRef = React.useRef(options);
+
+  // Reset scroll when the column content is swapped but no option is active,
+  // e.g. the child column after switching to another parent option. The `ul`
+  // element is reused in this case and would keep its previous scroll offset.
+  React.useEffect(() => {
+    if (prevOptionsRef.current === options) {
+      return;
+    }
+    prevOptionsRef.current = options;
+
+    const menuElement = menuRef.current;
+    if (menuElement && !menuElement.querySelector(`.${menuItemPrefixCls}-active`)) {
+      menuElement.scrollTo?.(0, 0);
+    }
+  }, [options, menuItemPrefixCls]);
+
   React.useEffect(() => {
     if (menuRef.current) {
       const selector = `.${menuItemPrefixCls}-active`;
