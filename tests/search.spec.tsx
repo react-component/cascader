@@ -193,6 +193,17 @@ describe('Cascader.Search', () => {
     errorSpy.mockRestore();
   });
 
+  it('should not warn when limit is false', () => {
+    resetWarned();
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(<Cascader options={options} showSearch={{ limit: false }} />);
+
+    expect(errorSpy).not.toHaveBeenCalled();
+
+    errorSpy.mockRestore();
+  });
+
   it('onChange should be triggered when click option with changeOnSelect + multiple', () => {
     const onChange = jest.fn();
     const { container } = render(
