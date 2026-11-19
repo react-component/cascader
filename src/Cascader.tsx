@@ -27,12 +27,14 @@ import {
 import { formatStrategyValues, toPathOptions } from './utils/treeUtil';
 import { warningNullOptions } from './utils/warningPropsUtil';
 
+// Members carry `| undefined` to stay identical to how `Required<OptionType>`
+// strips them under `exactOptionalPropertyTypes` (#670).
 export interface BaseOptionType {
-  disabled?: boolean;
-  disableCheckbox?: boolean;
+  disabled?: boolean | undefined;
+  disableCheckbox?: boolean | undefined;
   label?: React.ReactNode;
-  value?: string | number | null;
-  children?: DefaultOptionType[];
+  value?: string | number | null | undefined;
+  children?: DefaultOptionType[] | undefined;
 }
 
 export type DefaultOptionType = BaseOptionType & Record<string, any>;
@@ -117,7 +119,9 @@ interface BaseCascaderProps<
   popupClassName?: string;
   popupMenuColumnStyle?: React.CSSProperties;
 
-  placement?: BaseSelectPropsWithoutPrivate['placement'];
+  // NonNullable: the indexed access includes `undefined`, which breaks
+  // `exactOptionalPropertyTypes` when this interface extends the select props (#671).
+  placement?: NonNullable<BaseSelectPropsWithoutPrivate['placement']>;
   builtinPlacements?: BuildInPlacements;
 
   onPopupVisibleChange?: (open: boolean) => void;
