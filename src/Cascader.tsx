@@ -74,7 +74,10 @@ interface BaseCascaderProps<
   ValueField extends keyof OptionType = keyof OptionType,
 > extends Omit<
   BaseSelectPropsWithoutPrivate,
-  'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch'
+  // 'placement' is omitted and redeclared below with the indexed access so
+  // consumers can still pass explicit `undefined` under
+  // `exactOptionalPropertyTypes` (#671).
+  'tokenSeparators' | 'labelInValue' | 'mode' | 'showSearch' | 'placement'
 > {
   // MISC
   id?: string;
@@ -119,9 +122,10 @@ interface BaseCascaderProps<
   popupClassName?: string;
   popupMenuColumnStyle?: React.CSSProperties;
 
-  // NonNullable: the indexed access includes `undefined`, which breaks
-  // `exactOptionalPropertyTypes` when this interface extends the select props (#671).
-  placement?: NonNullable<BaseSelectPropsWithoutPrivate['placement']>;
+  // Keep the indexed access (it includes `undefined` under
+  // `exactOptionalPropertyTypes`) so consumers can still pass an explicit
+  // undefined; 'placement' is omitted from the extends clause above (#671).
+  placement?: BaseSelectPropsWithoutPrivate['placement'];
   builtinPlacements?: BuildInPlacements;
 
   onPopupVisibleChange?: (open: boolean) => void;
@@ -143,11 +147,16 @@ export interface FieldNames<
 export type ValueType<
   OptionType extends DefaultOptionType = DefaultOptionType,
   ValueField extends keyof OptionType = keyof OptionType,
-> = keyof OptionType extends ValueField
-  ? unknown extends OptionType['value']
-    ? OptionType[ValueField]
-    : OptionType['value']
-  : OptionType[ValueField];
+> = Exclude<
+  keyof OptionType extends ValueField
+    ? unknown extends OptionType['value']
+      ? OptionType[ValueField]
+      : OptionType['value']
+    : OptionType[ValueField],
+  // BaseOptionType.value carries `| undefined` (#670); a selected value is
+  // never undefined while `null` stays part of the callback contract.
+  undefined
+>;
 
 export type GetValueType<
   OptionType extends DefaultOptionType = DefaultOptionType,
