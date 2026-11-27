@@ -192,7 +192,7 @@ export default function Column<OptionType extends DefaultOptionType = DefaultOpt
                 }
               }}
               onDoubleClick={() => {
-                if (changeOnSelect) {
+                if (changeOnSelect && !isOptionDisabled(disabled)) {
                   onToggleOpen(false);
                 }
               }}
